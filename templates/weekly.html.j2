@@ -56,14 +56,14 @@
     <h3>Top 5 op</h3>
     <ol>
       {% for t in top_up %}
-      <li>{{ t.isin }} — {{ '%.2f'|format(t.week_change_pct) }}%</li>
+      <li>{{ t.isin }} — {{ '%.2f'|format((t.week_change_pct | default(0.0))) }}%</li>
       {% endfor %}
     </ol>
 
     <h3>Top 5 ned</h3>
     <ol>
       {% for t in top_down %}
-      <li>{{ t.isin }} — {{ '%.2f'|format(t.week_change_pct) }}%</li>
+      <li>{{ t.isin }} — {{ '%.2f'|format((t.week_change_pct | default(0.0))) }}%</li>
       {% endfor %}
     </ol>
   </section>
