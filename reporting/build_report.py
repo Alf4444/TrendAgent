@@ -1,10 +1,6 @@
 # reporting/build_report.py
 """
-Bygger HTML-rapporter via Jinja2.
-
-Eksempler:
-python reporting/build_report.py --kind daily --data latest.json --template templates/daily.html.j2 --out build/daily.html
-python reporting/build_report.py --kind weekly --data latest.json --template templates/weekly.html.j2 --out build/weekly.html
+Renderer HTML-rapporter via Jinja2.
 """
 
 import argparse
@@ -23,14 +19,17 @@ def load_json(path):
         return json.load(f)
 
 def build_context(kind, data):
-    # data forventes at have { "rows": [...], "run_date": "YYYY-MM-DD" }
     rows = data.get("rows", [])
     run_date = data.get("run_date") or date.today().isoformat()
 
     if kind == "daily":
         ctx = {"rows": rows, "run_date": run_date}
     elif kind == "weekly":
-        # mock: samme data; i praksis leveres week_change_pct, ytd_return, drawdown m.v. fra modellen
+        # Sikr nøgler i mock/parse data
+        for r in rows:
+            r.setdefault("week_change_pct", 0.0)
+            r.setdefault("ytd_return", 0.0)
+            r.setdefault("drawdown", 0.0)
         top_sorted = sorted(rows, key=lambda r: r.get("week_change_pct", 0.0), reverse=True)
         ctx = {
             "rows": rows,
