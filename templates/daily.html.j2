@@ -1,54 +1,70 @@
-name: Daily Report (Mock)
+<!doctype html>
+<html lang="da">
+<head>
+  <meta charset="utf-8">
+  <title>TrendAgent – Daglig rapport ({{ run_date }})</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 24px; }
+    h1 { margin-bottom: 0; }
+    small { color: #666; }
+    table { border-collapse: collapse; width: 100%; margin-top: 16px; }
+    th, td { border: 1px solid #ddd; padding: 8px; font-size: 14px; }
+    th { background: #f7f7f7; text-align: left; }
+    tr.outlier-up { background: #e8f7ee; }
+    tr.outlier-down { background: #fdecea; }
+    .badge { padding: 2px 6px; border-radius: 6px; font-size: 12px; }
+    .b-up { background: #0f9d58; color: #fff; }
+    .b-down { background: #d93025; color: #fff; }
+    .b-neutral { background: #999; color: #fff; }
+  </style>
+</head>
+<body>
+  <h1>TrendAgent – Daglig rapport</h1>
+  <small>Kørselsdato: {{ run_date }}</small>
 
-on:
-  workflow_dispatch: {}
-  # Senere kan du tidsstyre:
-  # schedule:
-  #   - cron: "0 5 * * 1-5"  # hverdage kl. 05:00 UTC
+  <h2>Events</h2>
+  <p>Fokuser på rækker med <b>trend_shift</b> eller <b>cross_20_50</b>, samt outliers (±3%).</p>
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+  <table>
+    <thead>
+      <tr>
+        <th>ISIN</th>
+        <th>NAV</th>
+        <th>NAVDato</th>
+        <th>1D ændring %</th>
+        <th>Event</th>
+        <th>trend_state</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in rows %}
+      <tr class="{% if row.change_pct is defined and row.change_pct >= 3 %}outlier-up{% elif row.change_pct is defined and row.change_pct <= -3 %}outlier-down{% endif %}">
+        <td>{{ row.isin }}</td>
+        <td>{{ row.nav if row.nav is defined and row.nav is not none else '-' }}</td>
+        <td>{{ row.nav_date if row.nav_date is defined and row.nav_date is not none else '-' }}</td>
+        <td>
+          {% if row.change_pct is defined and row.change_pct is not none %}
+            {{ '%.2f'|format(row.change_pct) }}%
+          {% else %}
+            -
+          {% endif %}
+        </td>
+        <td>
+          {% if row.trend_shift %}<span class="badge b-neutral">trend_shift</span>{% endif %}
+          {% if row.cross_20_50 %} <span class="badge b-up">cross_20_50</span>{% endif %}
+        </td>
+        <td>
+          {% if row.trend_state == 'UP' %}<span class="badge b-up">UP</span>
+          {% elif row.trend_state == 'DOWN' %}<span class="badge b-down">DOWN</span>
+          {% else %}<span class="badge b-neutral">NEUTRAL</span>{% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      # (valgfrit) debug for at se repo-structure i runner
-      - name: Debug - list files
-        run: |
-          echo "PWD=$(pwd)"
-          ls -la
-          echo "---- data ----"
-          ls -la data || true
-          echo "---- templates ----"
-          ls -la templates || true
-          echo "---- parser ----"
-          ls -la parser || true
-          echo "---- reporting ----"
-          ls -la reporting || true
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install requirements
-        run: |
-          python -m pip install --upgrade pip setuptools wheel
-          pip install -r requirements.txt
-
-      - name: Generate latest.json (mock)
-        run: |
-          python parser/parse_pfa.py --out latest.json --mock
-
-      - name: Build daily HTML
-        run: |
-          python reporting/build_report.py --kind daily --data latest.json --template templates/daily.html.j2 --out build/daily.html
-
-      - name: Upload artifact (daily)
-        uses: actions/upload-artifact@v4
-        with:
-          name: trendagent-daily
-          path: build/daily.html
-          if-no-files-found: error
+  <p style="margin-top:16px;color:#666">
+    Note: Første milepæl bruger mock‑data; MA20/50/200 m.m. kommer fra Excel‑modellen i næste trin.
+  </p>
+</body>
+</html>
