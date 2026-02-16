@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="da">
+<head>
+  <meta charset="utf-8">
+  <title>TrendAgent – Ugentlig rapport (uge {{ week_label }})</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 24px; }
+    h1 { margin-bottom: 0; }
+    small { color: #666; }
+    section { margin-top: 18px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ddd; padding: 8px; font-size: 14px; }
+    th { background: #f7f7f7; text-align: left; }
+    .badge { padding: 2px 6px; border-radius: 6px; font-size: 12px; }
+    .b-up { background: #0f9d58; color: #fff; }
+    .b-down { background: #d93025; color: #fff; }
+    .b-neutral { background: #999; color: #fff; }
+  </style>
+</head>
+<body>
+  <h1>TrendAgent – Ugentlig rapport</h1>
+  <small>Uge: {{ week_label }} • Slutdato: {{ week_end_date }}</small>
+
+  <section>
+    <h2>Trendbillede</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ISIN</th>
+          <th>Ugeændring %</th>
+          <th>trend_state (ved ugeafslutning)</th>
+          <th>ytd_return</th>
+          <th>drawdown</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+        <tr>
+          <td>{{ row.isin }}</td>
+          <td>{{ '%.2f'|format(row.week_change_pct) if row.week_change_pct is defined else '-' }}%</td>
+          <td>
+            {% if row.trend_state == 'UP' %}<span class="badge b-up">UP</span>
+            {% elif row.trend_state == 'DOWN' %}<span class="badge b-down">DOWN</span>
+            {% else %}<span class="badge b-neutral">NEUTRAL</span>{% endif %}
+          </td>
+          <td>{{ '%.2f'|format(row.ytd_return) if row.ytd_return is defined else '-' }}%</td>
+          <td>{{ '%.2f'|format(row.drawdown) if row.drawdown is defined else '-' }}%</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Top 5 op/ned</h2>
+    <h3>Top 5 op</h3>
+    <ol>
+      {% for t in top_up %}
+      <li>{{ t.isin }} — {{ '%.2f'|format(t.week_change_pct) }}%</li>
+      {% endfor %}
+    </ol>
+
+    <h3>Top 5 ned</h3>
+    <ol>
+      {% for t in top_down %}
+      <li>{{ t.isin }} — {{ '%.2f'|format(t.week_change_pct) }}%</li>
+      {% endfor %}
+    </ol>
+  </section>
+
+  <p style="margin-top:16px;color:#666">
+    Note: Første milepæl bruger mock‑data; konsistente indikatorer kommer fra Excel‑modellen.
+  </p>
+</body>
+</html>
