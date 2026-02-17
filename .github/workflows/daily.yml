@@ -32,6 +32,12 @@ jobs:
           echo "PWD=$(pwd)"
           ls -la
 
+      - name: Lint - syntax check (parser)
+        run: |
+          set -euo pipefail
+          python -m py_compile parser/parse_pfa.py
+          echo "Syntax OK"
+
       - name: Generate latest.json (parse PDFs)
         run: |
           set -euo pipefail
