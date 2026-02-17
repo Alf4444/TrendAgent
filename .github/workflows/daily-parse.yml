@@ -19,3 +19,15 @@ jobs:
         run: |
           python -m pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
+
+      - name: Lint - syntax check (parser)
+        run: |
+          python -m py_compile parser/parse_pfa.py
+          echo "Syntax OK"
+
+      - name: Debug - show first lines of parser and funds.csv
+        run: |
+          sed -n '1,120p' parser/parse_pfa.py || true
+          sed -n '1,60p' data/funds.csv || true
+          echo "PWD=$(pwd)"
+          ls -la
