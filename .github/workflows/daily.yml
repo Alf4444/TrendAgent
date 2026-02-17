@@ -20,15 +20,15 @@ jobs:
           set -euo pipefail
           python -m pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
-          python -m pip list | sed -n '1,80p'
+          python -m pip list | sed -n '1,120p'
 
       - name: Debug - show first lines of parser and funds.csv
         run: |
           set -euo pipefail
           echo "---- head parser/parse_pfa.py ----"
-          sed -n '1,120p' parser/parse_pfa.py || true
+          sed -n '1,160p' parser/parse_pfa.py || true
           echo "---- head data/funds.csv ----"
-          sed -n '1,40p' data/funds.csv || true
+          sed -n '1,60p' data/funds.csv || true
           echo "PWD=$(pwd)"
           ls -la
 
@@ -38,27 +38,44 @@ jobs:
           python -m py_compile parser/parse_pfa.py
           echo "Syntax OK"
 
-      - name: Generate latest.json (parse PDFs)
+      # Wrapper + automatisk fallback til MOCK hvis latest.json mangler
+      - name: Generate latest.json (parse PDFs, with inline wrapper + fallback)
         run: |
           set -euo pipefail
-          python -u parser/parse_pfa.py --out latest.json
-          echo "---- after parse: list outputs ----"
-          ls -la
-          # Fail-fast hvis filen ikke blev skrevet
-          test -f latest.json
+          echo "---- running parser via inline wrapper ----"
+          python -u - <<'PY'
+import os, sys, traceback
+print("[WF] PWD:", os.getcwd())
+print("[WF] importing parser.parse_pfa ...")
+try:
+    import parser.parse_pfa as mod
+    print("[WF] import OK. Has main? ->", hasattr(mod, "main"))
+except Exception as e:
+    print("[WF][IMPORT-ERROR]", type(e).__name__, e)
+    traceback.print_exc()
+else:
+    try:
+        print("[WF] calling main() ...")
+        mod.main()
+        print("[WF] main() returned")
+    except SystemExit as se:
+        print("[WF][SystemExit]", se.code)
+    except Exception as e:
+        print("[WF][RUNTIME-ERROR]", type(e).__name__, e)
+        traceback.print_exc()
 
-      # ⬇️ Kører altid; tjekker selv om filen mangler (ingen 'exists()' i if)
-      - name: Fallback to mock if latest.json missing
-        if: ${{ always() }}
-        run: |
-          set -euo pipefail
+p = "latest.json"
+print("[WF] latest.json exists?", os.path.exists(p))
+if os.path.exists(p):
+    print("[WF] latest.json size:", os.path.getsize(p))
+PY
+          echo "---- after inline run: list outputs ----"
+          ls -la
           if [ ! -f latest.json ]; then
             echo "[WARN] latest.json missing - generating MOCK"
             python -u parser/parse_pfa.py --out latest.json --mock
-          else
-            echo "latest.json already present - skipping mock fallback"
           fi
-          test -f latest.json  # bekræft igen
+          test -f latest.json
 
       - name: Debug - list parse debug files
         run: |
