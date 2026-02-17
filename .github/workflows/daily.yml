@@ -38,15 +38,21 @@ jobs:
           python -u parser/parse_pfa.py --out latest.json
           echo "---- after parse: list outputs ----"
           ls -la
-          test -f latest.json  # fail-fast hvis den ikke eksisterer
+          # Fail-fast hvis filen ikke blev skrevet
+          test -f latest.json
 
+      # ⬇️ Kører altid; tjekker selv om filen mangler (ingen 'exists()' i if)
       - name: Fallback to mock if latest.json missing
-        if: ${{ always() && !exists('latest.json') }}
+        if: ${{ always() }}
         run: |
           set -euo pipefail
-          echo "[WARN] latest.json missing - generating MOCK"
-          python -u parser/parse_pfa.py --out latest.json --mock
-          test -f latest.json
+          if [ ! -f latest.json ]; then
+            echo "[WARN] latest.json missing - generating MOCK"
+            python -u parser/parse_pfa.py --out latest.json --mock
+          else
+            echo "latest.json already present - skipping mock fallback"
+          fi
+          test -f latest.json  # bekræft igen
 
       - name: Debug - list parse debug files
         run: |
@@ -56,7 +62,6 @@ jobs:
           ls -la build/pdfs || true
           ls -la build/text || true
 
-      # ⬇️ Disse to steps SKAL være her for at få HTML + artifact
       - name: Build daily HTML
         run: |
           set -euo pipefail
