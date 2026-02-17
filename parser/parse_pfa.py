@@ -1,197 +1,113 @@
 # parser/parse_pfa.py
-"""
-TrendAgent - PDF download & parsing
+import argparse, csv, io, json, os, requests
+from datetime import date
 
-- Læser data/funds.csv (isin,source_url)
-- Downloader PDF (requests m. UA/Referer; retry/backoff)
-- Ekstraherer tekst (pdfminer) fra BytesIO-stream
-- Finder "Indre værdi" (NAV) og "Indre værdi dato" via robust Stamdata-heuristik:
-  * Lås på 'Stamdata'
-  * Find etiketter: Opstart, Valuta, Type, Indre værdi, Indre værdi dato, Bæredygtighed
-  * Læs præcis samme antal værdilinjer efter 'Bæredygtighed' og map i rækkefølge
-- Logger kort parse-resultat pr. ISIN
-- Gemmer parse-debug (PDF + tekstuddrag)
-- Understøtter --mock
-"""
+def ensure_dir(path):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
 
-import argparse
-import csv
-import io
-import json
-import os
-import time
-from datetime import date, datetime
-from typing import Any, Dict, List, Optional, Tuple
+def load_funds(path="data/funds.csv"):
+    rows=[]
+    with open(path, encoding="utf-8") as f:
+        for r in csv.DictReader(f):
+            if r["isin"] and r["source_url"]:
+                rows.append(r)
+    return rows
 
-import requests
-from pdfminer.high_level import extract_text
+def build_mock_latest(funds):
+    base=100.0
+    out=[]
+    for i,f in enumerate(funds):
+        out.append({
+            "isin": f["isin"],
+            "nav": round(base+i*0.37,2),
+            "nav_date": date.today().isoformat(),
+            "change_pct": 0.0,
+            "trend_shift": False,
+            "cross_20_50": False,
+            "trend_state": "NEUTRAL",
+            "week_change_pct": 0.0,
+            "ytd_return": 0.0,
+            "drawdown": 0.0
+        })
+    return out
 
-UA = "TrendAgent/1.0 (+https://github.com/)"
-HEADERS = {
-    "User-Agent": UA,
-    "Accept": "application/pdf,*/*;q=0.8",
-    "Referer": "https://www.pfa.dk/",
-}
+def build_real_latest(funds):
+    # HER indsætter vi kun den ENKLE NAV-udtrækning
+    # Ud fra dine parse-debug-filer ved vi:
+    # - "Indre værdi" = første linje efter 4. label
+    # - "Indre værdi dato" = næste linje
+    import pdfminer.high_level
 
-# ---------- utils ----------
+    def get_nav_and_date(pdf_bytes):
+        text = pdfminer.high_level.extract_text(io.BytesIO(pdf_bytes))
+        lines=[l.strip() for l in text.splitlines() if l.strip()]
 
-def ensure_dir(path: str) -> None:
-    """Sørg for at mappen til 'path' findes."""
-    d = os.path.dirname(path)
-    if d and not os.path.exists(d):
-        os.makedirs(d, exist_ok=True)
-
-def load_funds(path: str = "data/funds.csv") -> List[Dict[str, str]]:
-    funds: List[Dict[str, str]] = []
-    with open(path, newline="", encoding="utf-8") as f:
-        rdr = csv.DictReader(f)
-        for row in rdr:
-            isin = (row.get("isin") or "").strip()
-            url = (row.get("source_url") or "").strip()
-            if isin and url:
-                funds.append({"isin": isin, "source_url": url})
-    return funds
-
-def http_get(url: str, retries: int = 3, backoff: float = 1.5, timeout: int = 45) -> Dict[str, Any]:
-    """Returner dict: {'ok': bool, 'status': int, 'ct': str|None, 'content': bytes|None, 'err': str|None}"""
-    last_err: Optional[str] = None
-    for attempt in range(1, retries + 1):
+        # Find "Stamdata"
         try:
-            resp = requests.get(url, headers=HEADERS, timeout=timeout, allow_redirects=True)
-            ct = resp.headers.get("Content-Type", "")
-            if resp.status_code == 200 and resp.content:
-                return {"ok": True, "status": resp.status_code, "ct": ct, "content": resp.content, "err": None}
-            last_err = f"HTTP {resp.status_code} (ct={ct})"
-        except Exception as e:
-            last_err = f"{type(e).__name__}: {e}"
-        time.sleep(backoff ** attempt)
-    return {"ok": False, "status": 0, "ct": None, "content": None, "err": last_err}
+            si = lines.index("Stamdata")
+        except:
+            return None, None
 
-def normalize_decimal(s: str) -> Optional[float]:
-    """Dansk formatering -> float. '1.234,56' -> 1234.56"""
-    if not s:
-        return None
-    t = s.strip().replace(" ", "")
-    t = t.replace(".", "").replace(",", ".")
-    try:
-        return float(t)
-    except ValueError:
-        return None
+        # De næste 6 labels er faste:
+        # Opstart, Valuta, Type, Indre værdi, Indre værdi dato, Bæredygtighed
+        # De næste 6 linjer er værdier i samme rækkefølge.
+        vals = lines[si+7:si+13]
+        if len(vals)<6:
+            return None,None
 
-def parse_date_to_iso(s: str) -> Optional[str]:
-    """dd-mm-åååå / dd.mm.åååå / dd/mm/åååå -> YYYY-MM-DD"""
-    if not s:
-        return None
-    t = s.strip()
-    for sep in ("-", ".", "/"):
-        parts = t.split(sep)
-        if len(parts) == 3 and all(parts):
-            d, m, y = parts
-            if len(y) == 2:
-                y = "20" + y
-            try:
-                dt = datetime(int(y), int(m), int(d))
-                return dt.date().isoformat()
-            except Exception:
-                pass
-    try:
-        return datetime.fromisoformat(t).date().isoformat()
-    except Exception:
-        return None
+        # Indre værdi = værdi[3]
+        # Indre værdi dato = værdi[4]
+        nav_raw = vals[3].replace(".", "").replace(",", ".")
+        try: nav=float(nav_raw)
+        except: nav=None
 
-# ---------- parsing heuristics ----------
+        date_raw = vals[4]
+        try:
+            d,m,y = date_raw.split("-")
+            nav_date = f"{y}-{m}-{d}"
+        except:
+            nav_date=None
 
-def extract_fields_from_text(text: str) -> Tuple[Optional[float], Optional[str]]:
-    """
-    1) Find 'Stamdata'-blok og par 6 etiketter -> 6 værdier.
-    2) Fallback: rullende vindue (op til +12 linjer).
-    """
-    nav_val: Optional[float] = None
-    nav_date_iso: Optional[str] = None
+        return nav, nav_date
 
-    # Hjælpere
-    def clean_value_string(s: str) -> str:
-        junk = [
-            "DKK", "dkk", "Kr.", "kr.", "kr",
-            "Kurs", "kurs",
-            "Indre", "indre", "værdi", "værdi:", "værdi.", "værdi,",
-            "pr.", "pr", "Dato", "dato:", "dato.", "dato,"
-        ]
-        out = s
-        for j in junk:
-            out = out.replace(j, " ")
-        return out
+    out=[]
+    for f in funds:
+        try:
+            r=requests.get(f["source_url"], timeout=20)
+            if r.status_code!=200:
+                out.append({"isin":f["isin"],"nav":None,"nav_date":None,
+                            "change_pct":None,"trend_shift":False,
+                            "cross_20_50":False,"trend_state":"NEUTRAL",
+                            "week_change_pct":None,"ytd_return":None,
+                            "drawdown":None})
+                continue
+            nav,nav_date=get_nav_and_date(r.content)
+        except:
+            nav,nav_date=None,None
 
-    def first_number_candidate(s: str) -> Optional[float]:
-        stage = (
-            s.replace(":", " ")
-             .replace("•", " ")
-             .replace("|", " ")
-             .replace("(", " ").replace(")", " ")
-             .replace("%", " ")
-        )
-        for tk in stage.split():
-            tk = tk.strip().strip(";,:.")
-            val = normalize_decimal(tk)
-            if val is not None:
-                return val
-        return None
+        out.append({
+            "isin":f["isin"],"nav":nav,"nav_date":nav_date,
+            "change_pct":None,"trend_shift":False,"cross_20_50":False,
+            "trend_state":"NEUTRAL",
+            "week_change_pct":None,"ytd_return":None,"drawdown":None
+        })
+    return out
 
-    def first_date_candidate(s: str) -> Optional[str]:
-        stage = s.replace("pr.", " ").replace("pr", " ")
-        tokens = stage.split()
-        for i, tk in enumerate(tokens):
-            iso = parse_date_to_iso(tk.strip(".:,;"))
-            if iso:
-                return iso
-            if i + 1 < len(tokens):
-                comb = (tk + tokens[i + 1]).strip(".:,;")
-                iso = parse_date_to_iso(comb)
-                if iso:
-                    return iso
-        return None
+def main():
+    ap=argparse.ArgumentParser()
+    ap.add_argument("--out",default="latest.json")
+    ap.add_argument("--mock",action="store_true")
+    args=ap.parse_args()
 
-    lines: List[str] = [ln.strip() for ln in text.splitlines() if ln.strip()]
-    lower = [ln.lower() for ln in lines]
-    n = len(lines)
+    funds=load_funds()
 
-    # --- 1) Find 'Stamdata'-område ---
-    start_idx: Optional[int] = None
-    for i, low in enumerate(lower):
-        if "stamdata" in low:
-            start_idx = i
-            break
-        window = " ".join(lower[i:i + 8])
-        if ("indre værdi" in window or "indrevaerdi" in window or "indreværdi" in window or "nav" in window or "kurs" in window) and \
-           ("indre værdi dato" in window or "indre vaerdi dato" in window or "indreværdi dato" in window):
-            start_idx = i
-            break
+    if args.mock:
+        rows=build_mock_latest(funds)
+    else:
+        rows=build_real_latest(funds)
 
-    end_idx: Optional[int] = None
-    if start_idx is not None:
-        for j in range(start_idx + 1, n):
-            low = lower[j]
-            if low in ("afkast", "omkostninger", "risiko", "risikoklasse", "afdeling"):
-                end_idx = j
-                break
-        if end_idx is None:
-            end_idx = min(n, start_idx + 80)
+    with open(args.out,"w",encoding="utf-8") as f:
+        json.dump({"rows":rows,"run_date":date.today().isoformat()},f,indent=2,ensure_ascii=False)
 
-    # --- 2) Parring label->værdi (strengt 6 etiketter i rækkefølge) ---
-    if start_idx is not None and end_idx is not None and end_idx > start_idx + 1:
-        block = lines[start_idx:end_idx]
-        block_low = [b.lower() for b in block]
-
-        required = ["opstart", "valuta", "type", "indre værdi", "indre værdi dato", "bæredygtighed"]
-
-        # Find første forekomst af hver required label i rækkefølge (efter hinanden i blokken)
-        pos: Dict[str, int] = {}
-        cur = 0
-        for req in required:
-            found = False
-            for idx in range(cur, len(block_low)):
-                if req in block_low[idx] or (req == "bæredygtighed" and "baeredygtighed" in block_low[idx]):
-                    pos[req] = idx
-                    cur = idx + 1
-                    found = True
-                    break
+if __name__=="__main__":
+    main()
