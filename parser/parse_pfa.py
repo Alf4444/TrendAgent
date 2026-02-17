@@ -2,22 +2,16 @@
 """
 TrendAgent - PDF download & parsing
 
-Funktionalitet:
-- Læser data/funds.csv (kolonner: isin,source_url)
-- Downloader PDF pr. fond (requests; UA/Referer; retry/backoff)
+- Læser data/funds.csv (isin,source_url)
+- Downloader PDF (requests m. UA/Referer; retry/backoff)
 - Ekstraherer tekst (pdfminer) fra BytesIO-stream
 - Finder "Indre værdi" (NAV) og "Indre værdi dato" via robust heuristik:
     * 'Stamdata'-blok: etiketter i én kolonne, værdier efterfølgende linjer
-    * Fallback: rullende vindue (op til +5 linjer) og flere nøgleord (NAV/Kurs)
-- Skriver latest.json (run_date=YYYY-MM-DD, rows=[{isin, nav, nav_date, ...}])
-- Gemmer parse-debug:
-    build/pdfs/<isin>.pdf
-    build/text/<isin>.txt
-- Understøtter --mock (syntetiske værdier) som fallback/test
-
-Kørsel lokalt (i repo-roden):
-    python parser/parse_pfa.py --out latest.json
-    python parser/parse_pfa.py --out latest.json --mock
+      (vi inkluderer "Bæredygtighed" som sidste label for korrekt anker)
+    * Fallback: rullende vindue (op til +12 linjer) med flere nøgleord (NAV/Kurs)
+- Logger kort parse-resultat pr. ISIN
+- Gemmer parse-debug (PDF + tekstuddrag)
+- Understøtter --mock
 """
 
 from __future__ import annotations
@@ -32,7 +26,7 @@ from datetime import date, datetime
 from typing import Optional, Tuple, Dict, Any, List
 
 import requests
-from pdfminer.high_level import extract_text  # korrekt import for pdfminer.six
+from pdfminer.high_level import extract_text
 
 UA = "TrendAgent/1.0 (+https://github.com/)"
 HEADERS = {
@@ -44,7 +38,6 @@ HEADERS = {
 # ---------- utils ----------
 
 def ensure_dir(path: str) -> None:
-    """Sørg for at mappen til 'path' findes."""
     d = os.path.dirname(path)
     if d and not os.path.exists(d):
         os.makedirs(d, exist_ok=True)
@@ -61,10 +54,6 @@ def load_funds(path: str = "data/funds.csv") -> List[Dict[str, str]]:
     return funds
 
 def http_get(url: str, retries: int = 3, backoff: float = 1.5, timeout: int = 45) -> Dict[str, Any]:
-    """
-    Robust GET med få retrys. Returnerer dict:
-    {'ok': bool, 'status': int, 'ct': str|None, 'content': bytes|None, 'err': str|None}
-    """
     last_err: Optional[str] = None
     for attempt in range(1, retries + 1):
         try:
@@ -79,25 +68,16 @@ def http_get(url: str, retries: int = 3, backoff: float = 1.5, timeout: int = 45
     return {"ok": False, "status": 0, "ct": None, "content": None, "err": last_err}
 
 def normalize_decimal(s: str) -> Optional[float]:
-    """
-    Dansk formatering -> float:
-      "1.234,56" -> 1234.56
-      "129,15"   -> 129.15
-    """
     if not s:
         return None
     t = s.strip().replace(" ", "")
-    t = t.replace(".", "").replace(",", ".")
+    t = t.replace(".", "").replace(",", ".")  # "1.234,56" -> "1234.56"
     try:
         return float(t)
     except ValueError:
         return None
 
 def parse_date_to_iso(s: str) -> Optional[str]:
-    """
-    Parse dd-mm-åååå / dd.mm.åååå / dd/mm/åååå -> ISO (YYYY-MM-DD).
-    Fald tilbage til datetime.fromisoformat.
-    """
     if not s:
         return None
     t = s.strip()
@@ -108,8 +88,7 @@ def parse_date_to_iso(s: str) -> Optional[str]:
             if len(y) == 2:
                 y = "20" + y
             try:
-                dt = datetime(int(y), int(m), int(d))
-                return dt.date().isoformat()
+                return datetime(int(y), int(m), int(d)).date().isoformat()
             except Exception:
                 pass
     try:
@@ -121,14 +100,10 @@ def parse_date_to_iso(s: str) -> Optional[str]:
 
 def extract_fields_from_text(text: str) -> Tuple[Optional[float], Optional[str]]:
     """
-    FundConnect-venlig heuristik:
-    1) Find et 'Stamdata'-lignende blok hvor etiketter (Opstart, Valuta, Type, Indre værdi, Indre værdi dato, …)
-       står i én kolonne og værdier kommer efterfølgende i samme rækkefølge.
-    2) Par etiketter med deres efterfølgende linjer (label->value).
-    3) Ekstrahér:
-       - NAV  = first_number_candidate(value_line) for "Indre værdi"/"NAV"/"Kurs"
-       - DATO = first_date_candidate(value_line)  for "Indre værdi dato"
-    4) Fallback: rullende vindue (op til +5 linjer) med brede nøgleord (nav/kurs mv.).
+    1) Find 'Stamdata'-blok og par etiketter -> værdier.
+       Vi inkluderer 'Bæredygtighed' som sidste label, fordi værdikolonnen starter
+       LIGE efter den linje i dine factsheets. (Se parse-debug eksempler.) 
+    2) Fallback: rullende vindue (op til +12 linjer).
     """
     nav_val: Optional[float] = None
     nav_date_iso: Optional[str] = None
@@ -154,8 +129,7 @@ def extract_fields_from_text(text: str) -> Tuple[Optional[float], Optional[str]]
              .replace("(", " ").replace(")", " ")
              .replace("%", " ")
         )
-        tokens = stage.split()
-        for tk in tokens:
+        for tk in stage.split():
             tk = tk.strip().strip(";,:.")
             val = normalize_decimal(tk)
             if val is not None:
@@ -165,7 +139,6 @@ def extract_fields_from_text(text: str) -> Tuple[Optional[float], Optional[str]]
     def first_date_candidate(s: str) -> Optional[str]:
         stage = s.replace("pr.", " ").replace("pr", " ")
         tokens = stage.split()
-        # tjek både enkelt-token og simpel token-sammenkædning
         for i, tk in enumerate(tokens):
             iso = parse_date_to_iso(tk.strip(".:,;"))
             if iso:
@@ -181,14 +154,14 @@ def extract_fields_from_text(text: str) -> Tuple[Optional[float], Optional[str]]
     n = len(lines)
     lower = [ln.lower() for ln in lines]
 
-    # --- 1) Forsøg at finde 'Stamdata'-blok ---
+    # --- 1) Find 'Stamdata'-blok ---
     start_idx: Optional[int] = None
     for i, low in enumerate(lower):
         if "stamdata" in low:
             start_idx = i
             break
-        # alternativ startdetektion: indenfor 6 linjer ses både 'indre værdi' og 'indre værdi dato'
-        window = " ".join(lower[i:i + 6])
+        # alternativ start: hvis vi indenfor 8 linjer ser både indre værdi og dato
+        window = " ".join(lower[i:i + 8])
         if ("indre værdi" in window or "indrevaerdi" in window or "indreværdi" in window or "nav" in window or "kurs" in window) and \
            ("indre værdi dato" in window or "indre vaerdi dato" in window or "indreværdi dato" in window):
             start_idx = i
@@ -198,32 +171,34 @@ def extract_fields_from_text(text: str) -> Tuple[Optional[float], Optional[str]]
     if start_idx is not None:
         for j in range(start_idx + 1, n):
             low = lower[j]
-            # heuristik for slut på blok (andre sektioner/overskrifter)
+            # heuristik for sektion-skift (overskrifter i dine ark)
             if low in ("afkast", "omkostninger", "risiko", "risikoklasse", "afdeling"):
                 end_idx = j
                 break
         if end_idx is None:
-            end_idx = min(n, start_idx + 60)  # maks 60 linjer frem
+            end_idx = min(n, start_idx + 80)
 
-    # --- 2) Hvis vi har blok-område, par etiketter med efterfølgende linjer ---
+    # --- 2) Parringslogik i blokken ---
     if start_idx is not None and end_idx is not None and end_idx > start_idx + 1:
         block = lines[start_idx:end_idx]
         block_low = [b.lower() for b in block]
 
-        # find labels i rækkefølge
         labels: List[Tuple[int, str]] = []
+        # *** VIGTIGT: 'bæredygtighed' med som sidste label-anker ***
         label_keys = [
             ("opstart", "opstart"),
             ("valuta", "valuta"),
             ("type", "type"),
-            ("indre værdi dato", "indre værdi dato"),
-            ("indre vaerdi dato", "indre værdi dato"),
-            ("indreværdi dato", "indre værdi dato"),
             ("indre værdi", "indre værdi"),
             ("indrevaerdi", "indre værdi"),
             ("indreværdi", "indre værdi"),
             ("nav", "indre værdi"),
             ("kurs", "indre værdi"),
+            ("indre værdi dato", "indre værdi dato"),
+            ("indre vaerdi dato", "indre værdi dato"),
+            ("indreværdi dato", "indre værdi dato"),
+            ("bæredygtighed", "bæredygtighed"),
+            ("baeredygtighed", "bæredygtighed"),
         ]
         for idx, low in enumerate(block_low):
             for key, norm in label_keys:
@@ -233,14 +208,14 @@ def extract_fields_from_text(text: str) -> Tuple[Optional[float], Optional[str]]
 
         if labels:
             last_label_idx = max(i for i, _ in labels)
-            value_lines = block[last_label_idx + 1: last_label_idx + 1 + len(labels)]
-            # byg label->value mapping i samme rækkefølge
+            # værdierne begynder lige efter sidste label (inkl. 'Bæredygtighed')
+            value_lines = block[last_label_idx + 1:]
+            # byg label->value i rækkefølgen labels blev fundet
             pairs: Dict[str, str] = {}
             for k, (lbl_idx, norm) in enumerate(labels):
                 if k < len(value_lines):
                     pairs.setdefault(norm, value_lines[k])
 
-            # --- 3) Ekstrahér fra mapping ---
             # NAV
             nav_source = pairs.get("indre værdi")
             if nav_source:
@@ -256,36 +231,32 @@ def extract_fields_from_text(text: str) -> Tuple[Optional[float], Optional[str]]
                     nav_date_iso = date_candidate
 
             if nav_val is not None and nav_date_iso is not None:
-                return nav_val, nav_date_iso  # færdig
+                return nav_val, nav_date_iso
 
-    # --- 4) Fallback: rullende vindue (op til +5 linjer) ---
+    # --- 3) Fallback: rullende vindue (op til +12 linjer) ---
     nav_keys = ("indre værdi", "indrevaerdi", "indreværdi", "nav", "kurs")
     date_keys = ("indre værdi dato", "indre vaerdi dato", "indreværdi dato")
-
     for i in range(n):
         if any(k in lower[i] for k in nav_keys):
-            window = " ".join(lines[i:i + 6])
+            window = " ".join(lines[i:i + 12])
             nav_candidate = first_number_candidate(clean_value_string(window))
             if nav_candidate is not None and nav_val is None:
                 nav_val = nav_candidate
-
         if any(k in lower[i] for k in date_keys):
-            window = " ".join(lines[i:i + 6])
+            window = " ".join(lines[i:i + 12])
             date_candidate = first_date_candidate(window)
             if date_candidate and nav_date_iso is None:
                 nav_date_iso = date_candidate
-
         if nav_val is not None and nav_date_iso is not None:
             break
 
     return nav_val, nav_date_iso
 
 def parse_pdf_bytes(pdf_bytes: bytes) -> Tuple[Optional[float], Optional[str], str]:
-    """Returner (nav, nav_date_iso, text_excerpt) og lad pdfminer læse fra BytesIO."""
     with io.BytesIO(pdf_bytes) as f:
         text = extract_text(f) or ""
     nav, nav_date = extract_fields_from_text(text)
-    return nav, nav_date, text[:4000]  # excerpt for debug
+    return nav, nav_date, text[:4000]
 
 # ---------- builders ----------
 
@@ -295,7 +266,6 @@ def build_latest(funds: List[Dict[str, str]]) -> List[Dict[str, Any]]:
         isin = f["isin"]
         url = f["source_url"]
 
-        # Download
         resp = http_get(url)
         status = resp["status"]
         ct = resp["ct"] or ""
@@ -309,7 +279,6 @@ def build_latest(funds: List[Dict[str, str]]) -> List[Dict[str, Any]]:
         nav_date: Optional[str] = None
 
         if ok and content:
-            # Gem PDF for debug
             pdf_path = f"build/pdfs/{isin}.pdf"
             ensure_dir(pdf_path)
             try:
@@ -318,14 +287,12 @@ def build_latest(funds: List[Dict[str, str]]) -> List[Dict[str, Any]]:
             except Exception as e:
                 print(f"[WARN] write PDF {isin}: {e}")
 
-            # Parse
             try:
                 nav, nav_date, excerpt = parse_pdf_bytes(content)
             except Exception as e:
                 print(f"[WARN] pdfminer parse failed {isin}: {e}")
                 excerpt = ""
 
-            # Gem tekstuddrag for debug
             txt_path = f"build/text/{isin}.txt"
             ensure_dir(txt_path)
             try:
@@ -336,14 +303,13 @@ def build_latest(funds: List[Dict[str, str]]) -> List[Dict[str, Any]]:
         else:
             print(f"[WARN] GET failed {isin}: {resp['err']}")
 
-        # Kort parse-summary i log (hjælper ved tuning)
         print(f"[PARSE] {isin}: NAV={nav} NAV_DATE={nav_date}")
 
         rows.append({
             "isin": isin,
             "nav": nav,
             "nav_date": nav_date,
-            # Øvrige felter (udfyldes senere af modellen/Excel)
+            # øvrige felter (udfyldes senere i modellen)
             "change_pct": None,
             "trend_shift": False,
             "cross_20_50": False,
@@ -381,7 +347,6 @@ def main() -> None:
     ap.add_argument("--mock", action="store_true", help="generate mock latest.json")
     args = ap.parse_args()
 
-    # sikr debug-mapper eksisterer
     ensure_dir("build/pdfs/dummy.bin")
     ensure_dir("build/text/dummy.txt")
 
