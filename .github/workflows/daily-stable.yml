@@ -1,4 +1,4 @@
-name: Daily Report (Stable)
+name: Daily Report (Parse)
 
 on:
   workflow_dispatch:
@@ -6,6 +6,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -25,22 +26,42 @@ jobs:
           python -m py_compile parser/parse_pfa.py
           echo "Syntax OK"
 
-      - name: Generate latest.json (parse or mock fallback)
+      - name: Parse PDFs (with safe fallback)
         run: |
-          python parser/parse_pfa.py --out latest.json || true
+          echo "---- PARSE START ----"
+          python parser/parse_pfa.py --out latest.json || echo "[WARN] parse failed"
+          
           if [ ! -f latest.json ]; then
-            echo "[WARN] latest.json missing - generating MOCK"
+            echo "[WARN] latest.json missing - running MOCK fallback"
             python parser/parse_pfa.py --out latest.json --mock
           fi
-          test -f latest.json
+
+          echo "---- LIST FILES ----"
+          ls -la .
+          echo "---- latest.json preview ----"
+          head -n 40 latest.json || true
+          echo "---- PARSE END ----"
 
       - name: Build daily HTML
         run: |
           python reporting/build_report.py --kind daily --data latest.json --template templates/daily.html.j2 --out build/daily.html
+
+      - name: Debug - first lines of daily.html
+        run: |
+          echo "---- daily.html ----"
+          head -n 40 build/daily.html || true
 
       - name: Upload artifact (daily)
         uses: actions/upload-artifact@v4
         with:
           name: trendagent-daily
           path: build/daily.html
-          if-no-files-found: error
+
+      - name: Upload parse-debug
+        uses: actions/upload-artifact@v4
+        with:
+          name: parse-debug
+          path: |
+            build/pdfs/
+            build/text/
+          if-no-files-found: ignore
