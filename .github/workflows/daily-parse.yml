@@ -21,32 +21,70 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
 
-      - name: Lint parser
+      - name: Lint - syntax check (parser)
         run: |
           python -m py_compile parser/parse_pfa.py
           echo "Syntax OK"
 
-      - name: Generate latest.json (parse or fallback)
+      # Kør parsing til en midlertidig fil, så vi ALTID kan uploade parse-debug,
+      # også selv om parsing ikke lykkes. HTML bygges bagefter med latest.json.
+      - name: Parse PDFs (write parse.json, never fail the job)
         run: |
-          echo "Running parser..."
-          python parser/parse_pfa.py --out latest.json || echo "[WARN] parsing failed"
-          
-          if [ ! -f latest.json ]; then
-            echo "[WARN] latest.json missing -> running MOCK"
+          echo "---- PARSE START ----"
+          python parser/parse_pfa.py --out parse.json || echo "[WARN] parse failed (continuing)"
+          echo "---- LIST FILES (after parse) ----"
+          ls -la .
+          echo "---- preview parse.json ----"
+          head -n 40 parse.json || true
+          echo "---- PARSE END ----"
+
+      # Vælg output til rapport:
+      # - Hvis parse.json findes -> brug den som latest.json
+      # - Ellers -> lav MOCK som latest.json (så HTML altid bygges)
+      - name: Produce latest.json (from parse.json or mock)
+        run: |
+          if [ -f parse.json ]; then
+            cp parse.json latest.json
+            echo "[OK] Using parse.json -> latest.json"
+          else
+            echo "[WARN] parse.json missing -> generating MOCK latest.json"
             python parser/parse_pfa.py --out latest.json --mock
           fi
-          
-          echo "--- after parse ---"
-          ls -la
-          echo "--- preview latest.json ---"
+          echo "---- preview latest.json ----"
           head -n 40 latest.json || true
 
       - name: Build daily HTML
         run: |
           python reporting/build_report.py --kind daily --data latest.json --template templates/daily.html.j2 --out build/daily.html
 
-      - name: Upload daily
+      - name: Debug - first lines of daily.html
+        run: |
+          echo "---- daily.html (first 40 lines) ----"
+          head -n 40 build/daily.html || true
+
+      - name: Upload artifact (daily)
         uses: actions/upload-artifact@v4
         with:
           name: trendagent-daily
           path: build/daily.html
+
+      # ALTID upload parse-debug. Hvis build/pdfs eller build/text ikke findes, ignorer.
+      - name: Upload parse-debug (pdfs + text)
+        uses: actions/upload-artifact@v4
+        with:
+          name: parse-debug
+          path: |
+            build/pdfs/
+            build/text/
+          if-no-files-found: ignore
+
+      # Hjælp: print hvilken fond der mangler NAV/dato (hurtig overblik)
+      - name: Show missing NAV/date rows
+        run: |
+          python - << 'PY'
+import json,sys
+with open("latest.json",encoding="utf-8") as f:
+    data=json.load(f)
+missing=[r["isin"] for r in data.get("rows",[]) if (r.get("nav") is None) or (r.get("nav_date") is None)]
+print("Missing NAV/date for:", missing)
+PY
