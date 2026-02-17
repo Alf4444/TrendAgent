@@ -14,8 +14,6 @@ TrendAgent - PDF download & parsing
 - Understøtter --mock
 """
 
-from __future__ import annotations
-
 import argparse
 import csv
 import io
@@ -23,7 +21,7 @@ import json
 import os
 import time
 from datetime import date, datetime
-from typing import Optional, Tuple, Dict, Any, List
+from typing import Any, Dict, List, Optional, Tuple
 
 import requests
 from pdfminer.high_level import extract_text
@@ -38,6 +36,7 @@ HEADERS = {
 # ---------- utils ----------
 
 def ensure_dir(path: str) -> None:
+    """Sørg for at mappen til 'path' findes."""
     d = os.path.dirname(path)
     if d and not os.path.exists(d):
         os.makedirs(d, exist_ok=True)
@@ -54,6 +53,7 @@ def load_funds(path: str = "data/funds.csv") -> List[Dict[str, str]]:
     return funds
 
 def http_get(url: str, retries: int = 3, backoff: float = 1.5, timeout: int = 45) -> Dict[str, Any]:
+    """Returner dict: {'ok': bool, 'status': int, 'ct': str|None, 'content': bytes|None, 'err': str|None}"""
     last_err: Optional[str] = None
     for attempt in range(1, retries + 1):
         try:
@@ -68,16 +68,18 @@ def http_get(url: str, retries: int = 3, backoff: float = 1.5, timeout: int = 45
     return {"ok": False, "status": 0, "ct": None, "content": None, "err": last_err}
 
 def normalize_decimal(s: str) -> Optional[float]:
+    """Dansk formatering -> float. '1.234,56' -> 1234.56"""
     if not s:
         return None
     t = s.strip().replace(" ", "")
-    t = t.replace(".", "").replace(",", ".")  # "1.234,56" -> "1234.56"
+    t = t.replace(".", "").replace(",", ".")
     try:
         return float(t)
     except ValueError:
         return None
 
 def parse_date_to_iso(s: str) -> Optional[str]:
+    """dd-mm-åååå / dd.mm.åååå / dd/mm/åååå -> YYYY-MM-DD"""
     if not s:
         return None
     t = s.strip()
@@ -88,7 +90,8 @@ def parse_date_to_iso(s: str) -> Optional[str]:
             if len(y) == 2:
                 y = "20" + y
             try:
-                return datetime(int(y), int(m), int(d)).date().isoformat()
+                dt = datetime(int(y), int(m), int(d))
+                return dt.date().isoformat()
             except Exception:
                 pass
     try:
@@ -100,7 +103,7 @@ def parse_date_to_iso(s: str) -> Optional[str]:
 
 def extract_fields_from_text(text: str) -> Tuple[Optional[float], Optional[str]]:
     """
-    1) Find 'Stamdata'-blok og par etiketter -> værdier (6 etiketter).
+    1) Find 'Stamdata'-blok og par 6 etiketter -> 6 værdier.
     2) Fallback: rullende vindue (op til +12 linjer).
     """
     nav_val: Optional[float] = None
@@ -152,13 +155,12 @@ def extract_fields_from_text(text: str) -> Tuple[Optional[float], Optional[str]]
     lower = [ln.lower() for ln in lines]
     n = len(lines)
 
-    # --- 1) Find 'Stamdata' område ---
+    # --- 1) Find 'Stamdata'-område ---
     start_idx: Optional[int] = None
     for i, low in enumerate(lower):
         if "stamdata" in low:
             start_idx = i
             break
-        # alternativ start: hvis vi indenfor 8 linjer ser både indre værdi og dato
         window = " ".join(lower[i:i + 8])
         if ("indre værdi" in window or "indrevaerdi" in window or "indreværdi" in window or "nav" in window or "kurs" in window) and \
            ("indre værdi dato" in window or "indre vaerdi dato" in window or "indreværdi dato" in window):
@@ -167,7 +169,6 @@ def extract_fields_from_text(text: str) -> Tuple[Optional[float], Optional[str]]
 
     end_idx: Optional[int] = None
     if start_idx is not None:
-        # stop ved kendte overskrifter/sektioner, ellers max +80 linjer
         for j in range(start_idx + 1, n):
             low = lower[j]
             if low in ("afkast", "omkostninger", "risiko", "risikoklasse", "afdeling"):
@@ -176,16 +177,21 @@ def extract_fields_from_text(text: str) -> Tuple[Optional[float], Optional[str]]
         if end_idx is None:
             end_idx = min(n, start_idx + 80)
 
-    # --- 2) Parring label->værdi (strengt 6 etiketter) ---
+    # --- 2) Parring label->værdi (strengt 6 etiketter i rækkefølge) ---
     if start_idx is not None and end_idx is not None and end_idx > start_idx + 1:
         block = lines[start_idx:end_idx]
         block_low = [b.lower() for b in block]
 
-        label_keys = [
-            ("opstart", "opstart"),
-            ("valuta", "valuta"),
-            ("type", "type"),
-            ("indre værdi", "indre værdi"),
-            ("indrevaerdi", "indre værdi"),
-            ("indreværdi", "indre værdi"),
-            ("indre værdi dato", "indre værdi dato"),
+        required = ["opstart", "valuta", "type", "indre værdi", "indre værdi dato", "bæredygtighed"]
+
+        # Find første forekomst af hver required label i rækkefølge (efter hinanden i blokken)
+        pos: Dict[str, int] = {}
+        cur = 0
+        for req in required:
+            found = False
+            for idx in range(cur, len(block_low)):
+                if req in block_low[idx] or (req == "bæredygtighed" and "baeredygtighed" in block_low[idx]):
+                    pos[req] = idx
+                    cur = idx + 1
+                    found = True
+                    break
