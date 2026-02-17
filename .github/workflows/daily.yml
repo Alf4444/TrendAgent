@@ -1,4 +1,4 @@
-    name: Daily Report (Mock)
+name: Daily Report (Parse)
 
 on:
   workflow_dispatch: {}
@@ -22,26 +22,27 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
 
-      # Vælg præcis én af de to følgende "Generate" steps
-      # (A) MOCK til test
-      - name: Generate latest.json (mock)
+      - name: Generate latest.json (parse PDFs)
         run: |
           python parser/parse_pfa.py --out latest.json
 
-      # (B) RIGTIG parsing (når du er klar)
-      # - name: Generate latest.json (parse PDFs)
-      #   run: |
-      #     python parser/parse_pfa.py --out latest.json
+      - name: Debug - show HTTP summary already printed by parser
+        run: |
+          echo "---- latest.json (head) ----"
+          head -n 50 latest.json || true
+          echo "---- list debug files ----"
+          ls -la build || true
+          ls -la build/pdfs || true
+          ls -la build/text || true
 
       - name: Build daily HTML
         run: |
           python reporting/build_report.py --kind daily --data latest.json --template templates/daily.html.j2 --out build/daily.html
 
-      # Lille sikkerheds-debug (valgfrit men anbefalet)
       - name: Debug - show first lines of daily.html
         run: |
           echo "---- first lines of build/daily.html ----"
-          head -n 10 build/daily.html || true
+          head -n 30 build/daily.html || true
 
       - name: Upload artifact (daily)
         uses: actions/upload-artifact@v4
@@ -49,3 +50,12 @@ jobs:
           name: trendagent-daily
           path: build/daily.html
           if-no-files-found: error
+
+      - name: Upload parse-debug (pdfs + text)
+        uses: actions/upload-artifact@v4
+        with:
+          name: parse-debug
+          path: |
+            build/pdfs/
+            build/text/
+          if-no-files-found: ignore
