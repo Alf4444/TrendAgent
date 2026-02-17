@@ -1,42 +1,43 @@
 # parser/parse_pfa.py
 """
-Fase 2: Download og parse PFA fakta-PDF'er for at udtrække:
-- "Indre værdi" (NAV) som decimaltal
-- "Indre værdi dato" (YYYY-MM-DD)
+TrendAgent - PDF download & parsing
+- Læser data/funds.csv (kolonner: isin,source_url)
+- Downloader PDF pr. fond (requests med UA + Accept)
+- Ekstraherer tekst (pdfminer) fra en fil-lignende stream (BytesIO)
+- Finder "Indre værdi" (NAV) og "Indre værdi dato" med defensiv substring/split
+- Gemmer parse-debug:
+    build/pdfs/<isin>.pdf    (downloadet PDF)
+    build/text/<isin>.txt    (første ~4000 tegn af udtrukket tekst)
+- Skriver latest.json -> bruges af rapportbyggeren
 
-Design:
-- Læs data/funds.csv (kolonner: isin, source_url)
-- For hver fond:
-  - download PDF (requests, user-agent, retry)
-  - extract_text (pdfminer.high_level)
-  - defensiv substring/split: find linjer med "Indre værdi" og "Indre værdi dato"
-  - konverter værdier (komma->punktum, strip)
-- Returnér 'latest.json' som:
-  { "rows": [ {isin, nav, nav_date}, ... ], "run_date": "YYYY-MM-DD" }
-
-Robusthed:
-- Per-fond try/except -> fortsæt hvis én PDF fejler
-- Tolerer tusindtalsseparatorer og komma-decimaler
-- Dato genkendes via enkle mønstre (dd-mm-åååå eller dd.mm.åååå); normaliser til ISO
-- Hvis felt mangler -> skriv None (og tag den i rapportsøjlen som '-')
-
-Kørsel:
+Kørsel lokalt:
 python parser/parse_pfa.py --out latest.json
-python parser/parse_pfa.py --out latest.json --mock   # fallback
 """
 
 import argparse
 import csv
+import io
 import json
 import os
 import time
 from datetime import date, datetime
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Dict, Any
 
 import requests
 from pdfminer.high_level import extract_text
 
 UA = "TrendAgent/1.0 (+https://github.com/)"
+HEADERS = {
+    "User-Agent": UA,
+    "Accept": "application/pdf,*/*;q=0.8",
+}
+
+# ---------- utils ----------
+
+def ensure_dir(path: str):
+    d = os.path.dirname(path)
+    if d and not os.path.exists(d):
+        os.makedirs(d, exist_ok=True)
 
 def load_funds(path="data/funds.csv"):
     funds = []
@@ -49,29 +50,27 @@ def load_funds(path="data/funds.csv"):
                 funds.append({"isin": isin, "source_url": url})
     return funds
 
-def http_get(url: str, retries: int = 3, backoff: float = 1.5, timeout: int = 30) -> Optional[bytes]:
-    last_exc = None
-    headers = {"User-Agent": UA}
+def http_get(url: str, retries: int = 3, backoff: float = 1.5, timeout: int = 45) -> Dict[str, Any]:
+    """Returner dict: {'ok': bool, 'status': int, 'ct': str|None, 'content': bytes|None, 'err': str|None}"""
+    last_err = None
     for attempt in range(1, retries + 1):
         try:
-            resp = requests.get(url, headers=headers, timeout=timeout)
-            # accepter 200-OK og PDF content-type (ikke et hårdt krav, nogle servere sætter ikke korrekt type)
+            resp = requests.get(url, headers=HEADERS, timeout=timeout, allow_redirects=True)
+            ct = resp.headers.get("Content-Type", "")
             if resp.status_code == 200 and resp.content:
-                return resp.content
+                return {"ok": True, "status": resp.status_code, "ct": ct, "content": resp.content, "err": None}
             else:
-                last_exc = RuntimeError(f"HTTP {resp.status_code}")
+                last_err = f"HTTP {resp.status_code} (ct={ct})"
         except Exception as e:
-            last_exc = e
-        time.sleep(backoff ** attempt)  # eksponentiel backoff
-    print(f"[WARN] GET failed for {url}: {last_exc}")
-    return None
+            last_err = f"{type(e).__name__}: {e}"
+        time.sleep(backoff ** attempt)
+    return {"ok": False, "status": 0, "ct": None, "content": None, "err": last_err}
 
 def normalize_decimal(s: str) -> Optional[float]:
     if not s:
         return None
-    # Fjern mellemrum, tusindtalssep . eller space, og brug . som decimal
     t = s.strip().replace(" ", "")
-    # Typisk dansk format: "1.234,56" -> "1234.56"
+    # "1.234,56" -> "1234.56"
     t = t.replace(".", "").replace(",", ".")
     try:
         return float(t)
@@ -82,12 +81,10 @@ def parse_date_to_iso(s: str) -> Optional[str]:
     if not s:
         return None
     t = s.strip()
-    # Tillad varianter: 16-02-2026, 16.02.2026, 16/02/2026
     for sep in ("-", ".", "/"):
         parts = t.split(sep)
         if len(parts) == 3 and all(parts):
             d, m, y = parts
-            # håndter 2-cifret år evt.
             if len(y) == 2:
                 y = "20" + y
             try:
@@ -95,81 +92,138 @@ def parse_date_to_iso(s: str) -> Optional[str]:
                 return dt.date().isoformat()
             except Exception:
                 pass
-    # Fallback: hvis allerede ISO
     try:
         return datetime.fromisoformat(t).date().isoformat()
     except Exception:
         return None
 
+# ---------- parsing heuristics ----------
+
 def extract_fields_from_text(text: str) -> Tuple[Optional[float], Optional[str]]:
     """
-    Heuristik:
-    - Find linjer der indeholder 'Indre værdi' -> tal efter kolon
-    - Find linjer der indeholder 'Indre værdi dato' -> dato efter kolon
+    Robust heuristik:
+    - Fang linjer med "Indre værdi" og "Indre værdi dato"
+    - Hvis tal/dato ikke står på samme linje, kig på næste linje
     """
     nav_val: Optional[float] = None
     nav_date_iso: Optional[str] = None
 
-    # Split pr. linje og trim
     lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
+    want_nav_next = False
+    want_date_next = False
+
     for ln in lines:
         low = ln.lower()
+
+        # Hvis vi forventer tal/dato på næste linje
+        if want_nav_next and nav_val is None:
+            # prøv hele linjen som et tal
+            cand = normalize_decimal(ln)
+            if cand is not None:
+                nav_val = cand
+            want_nav_next = False
+
+        if want_date_next and nav_date_iso is None:
+            iso = parse_date_to_iso(ln)
+            if iso:
+                nav_date_iso = iso
+            want_date_next = False
+
         # NAV
-        if ("indre værdi" in low or "indrevaerdi" in low or "indreværd" in low):
-            # Eksempler:
-            # "Indre værdi: 145,23"
-            # "Indre værdi 145,23 DKK"
-            after = ln
-            if ":" in ln:
-                after = ln.split(":", 1)[1]
-            # tag første token der ligner tal
-            tokens = after.replace("DKK", "").replace("kr", "").split()
+        if ("indre værdi" in low) or ("indrevaerdi" in low) or ("indreværdi" in low):
+            after = ln.split(":", 1)[1] if ":" in ln else ln
+            # Fjern valuta/ord
+            for j in ["DKK", "kr", "Kurs", "kurs", "Indre", "indre", "værdi", "værdi:", "værdi.", "værdi," ]:
+                after = after.replace(j, "")
+            tokens = after.replace(",", " , ").replace(".", " . ").split()
+            found = False
             for tk in tokens:
                 val = normalize_decimal(tk)
                 if val is not None:
                     nav_val = val
+                    found = True
                     break
+            if not found:
+                want_nav_next = True
 
         # NAV dato
-        if ("indre værdi dato" in low) or ("indreværdi dato" in low) or ("indre vaerdi dato" in low):
-            # "Indre værdi dato: 16-02-2026"
-            after = ln.split(":", 1)[1].strip() if ":" in ln else ln
+        if ("indre værdi dato" in low) or ("indre vaerdi dato" in low) or ("indreværdi dato" in low):
+            after = ln.split(":", 1)[1].strip() if ":" in ln else ""
             iso = parse_date_to_iso(after)
             if iso:
                 nav_date_iso = iso
+            else:
+                want_date_next = True
 
-        # Early exit hvis begge er fundet
         if nav_val is not None and nav_date_iso is not None:
             break
 
     return nav_val, nav_date_iso
 
-def parse_pdf_bytes(pdf_bytes: bytes) -> Tuple[Optional[float], Optional[str]]:
-    # Ekstraher brødtekst. pdfminer kan returnere lang tekst; vi kører bare heuristikken på hele.
-    text = extract_text(pdf_bytes)
-    return extract_fields_from_text(text)
+def parse_pdf_bytes(pdf_bytes: bytes) -> Tuple[Optional[float], Optional[str], str]:
+    """Returner (nav, nav_date_iso, text_excerpt)"""
+    # Brug en file-like stream til pdfminer
+    with io.BytesIO(pdf_bytes) as f:
+        text = extract_text(f) or ""
+    nav, nav_date = extract_fields_from_text(text)
+    # Begræns debug-uddrag så artifacts ikke bliver for store
+    excerpt = text[:4000]
+    return nav, nav_date, excerpt
+
+# ---------- hovedlogik ----------
 
 def build_latest(funds):
     rows = []
     for f in funds:
         isin = f["isin"]
         url = f["source_url"]
+
+        # Download
+        resp = http_get(url)
+        status = resp["status"]
+        ct = resp["ct"] or ""
+        ok = resp["ok"]
+        content = resp["content"] if ok else None
+        size = len(content) if content else 0
+
+        print(f"[HTTP] {isin} -> ok={ok} status={status} ct={ct} size={size}")
+
         nav = None
         nav_date = None
-        try:
-            content = http_get(url)
-            if content:
-                nav, nav_date = parse_pdf_bytes(content)
-            else:
-                print(f"[WARN] No content for {isin}")
-        except Exception as e:
-            print(f"[WARN] Parse failed for {isin}: {e}")
+
+        if ok and content:
+            # Gem PDF til debug
+            pdf_path = f"build/pdfs/{isin}.pdf"
+            ensure_dir(pdf_path)
+            try:
+                with open(pdf_path, "wb") as pf:
+                    pf.write(content)
+            except Exception as e:
+                print(f"[WARN] Could not write PDF for {isin}: {e}")
+
+            # Parse PDF
+            try:
+                nav, nav_date, excerpt = parse_pdf_bytes(content)
+            except Exception as e:
+                print(f"[WARN] pdfminer parse failed for {isin}: {e}")
+                excerpt = ""
+
+            # Gem tekst-uddrag til debug
+            txt_path = f"build/text/{isin}.txt"
+            ensure_dir(txt_path)
+            try:
+                with open(txt_path, "w", encoding="utf-8") as tf:
+                    tf.write(excerpt)
+            except Exception as e:
+                print(f"[WARN] Could not write text for {isin}: {e}")
+        else:
+            print(f"[WARN] GET failed for {isin}: {resp['err']}")
 
         rows.append({
             "isin": isin,
             "nav": nav,
             "nav_date": nav_date,
-            # felter til daglig/ugentlig skabelon; kan udfyldes af model senere
+            # felter til rapport (tomt nu - udfyldes senere af modellen)
             "change_pct": None,
             "trend_shift": False,
             "cross_20_50": False,
@@ -180,43 +234,12 @@ def build_latest(funds):
         })
     return rows
 
-def build_mock_latest(funds):
-    # fallback hvis --mock
-    base_nav = 100.0
-    res = []
-    for i, f in enumerate(funds):
-        nav = base_nav + i * 0.37
-        res.append({
-            "isin": f["isin"],
-            "nav": round(nav, 2),
-            "nav_date": date.today().isoformat(),
-            "change_pct": 0.0,
-            "trend_shift": False,
-            "cross_20_50": False,
-            "trend_state": "NEUTRAL",
-            "week_change_pct": 0.0,
-            "ytd_return": 0.0,
-            "drawdown": 0.0,
-        })
-    return res
-
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default="latest.json")
-    ap.add_argument("--mock", action="store_true")
     args = ap.parse_args()
 
+    ensure_dir("build/pdfs/dummy.bin")
+    ensure_dir("build/text/dummy.txt")
+
     funds = load_funds()
-    if args.mock:
-        rows = build_mock_latest(funds)
-    else:
-        rows = build_latest(funds)
-
-    payload = {"rows": rows, "run_date": date.today().isoformat()}
-    with open(args.out, "w", encoding="utf-8") as f:
-        json.dump(payload, f, ensure_ascii=False, indent=2)
-
-    print(f"Wrote {args.out} with {len(rows)} rows")
-
-if __name__ == "__main__":
-    main()
