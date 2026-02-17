@@ -1,4 +1,4 @@
-name: Daily Report (Parse)
+name: Daily Report (Stable)
 
 on:
   workflow_dispatch:
@@ -19,87 +19,24 @@ jobs:
         run: |
           python -m pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
-          python -m pip list | sed -n '1,120p'
 
       - name: Lint - syntax check (parser)
         run: |
           python -m py_compile parser/parse_pfa.py
           echo "Syntax OK"
 
-      - name: Debug - show first lines of parser and funds.csv
+      - name: Generate latest.json (parse or mock fallback)
         run: |
-          sed -n '1,200p' parser/parse_pfa.py || true
-          echo "---- funds.csv ----"
-          sed -n '1,80p' data/funds.csv || true
-          echo "PWD=$(pwd)"
-          ls -la
-
-      # ▶ Robust parse-step med fuld traceback og 2-lags fallback
-      - name: Generate latest.json (parse PDFs with wrapper + fallbacks)
-        run: |
-          set -euo pipefail
-          echo "---- wrapper: import + main() + assert file ----"
-          python -u - <<'PY'
-import os, sys, json, traceback
-print("[WF] PWD:", os.getcwd())
-try:
-    import parser.parse_pfa as mod
-    print("[WF] import OK. Has main? ->", hasattr(mod, "main"))
-except Exception as e:
-    print("[WF][IMPORT-ERROR]", type(e).__name__, e)
-    traceback.print_exc()
-    sys.exit(90)
-
-def call_main(mock=False):
-    try:
-        argv = sys.argv[:]
-        sys.argv = ["parse_pfa.py", "--out", "latest.json"] + (["--mock"] if mock else [])
-        mod.main()
-        return True
-    except SystemExit as se:
-        print("[WF][SystemExit]", se.code)
-        return os.path.exists("latest.json")
-    except Exception as e:
-        print("[WF][RUNTIME-ERROR]", type(e).__name__, e)
-        traceback.print_exc()
-        return False
-    finally:
-        sys.argv = ["python"]
-
-ok = call_main(mock=False)
-print("[WF] after parse: latest.json exists?", os.path.exists("latest.json"))
-
-if not ok or not os.path.exists("latest.json"):
-    print("[WF] parse did not write latest.json -> trying MOCK")
-    if not call_main(mock=True):
-        print("[WF] MOCK call returned False (unexpected)")
-
-if not os.path.exists("latest.json"):
-    print("[WF] last resort: writing minimal latest.json")
-    payload = {"rows": [], "run_date": "1970-01-01"}
-    with open("latest.json", "w", encoding="utf-8") as f:
-        json.dump(payload, f, ensure_ascii=False, indent=2)
-print("[WF] final exists?", os.path.exists("latest.json"), "size=", os.path.getsize("latest.json"))
-PY
-          echo "---- after wrapper: list outputs ----"
-          ls -la
+          python parser/parse_pfa.py --out latest.json || true
+          if [ ! -f latest.json ]; then
+            echo "[WARN] latest.json missing - generating MOCK"
+            python parser/parse_pfa.py --out latest.json --mock
+          fi
           test -f latest.json
-
-      - name: Debug - list parse debug files
-        run: |
-          echo "---- build/ ----"; ls -la build || true
-          echo "---- build/pdfs ----"; ls -la build/pdfs || true
-          echo "---- build/text ----"; ls -la build/text || true
-          echo "---- latest.json (head) ----"; sed -n '1,80p' latest.json || true
 
       - name: Build daily HTML
         run: |
           python reporting/build_report.py --kind daily --data latest.json --template templates/daily.html.j2 --out build/daily.html
-
-      - name: Debug - show first lines of daily.html
-        run: |
-          echo "---- daily.html (head) ----"
-          sed -n '1,40p' build/daily.html || true
 
       - name: Upload artifact (daily)
         uses: actions/upload-artifact@v4
@@ -107,12 +44,3 @@ PY
           name: trendagent-daily
           path: build/daily.html
           if-no-files-found: error
-
-      - name: Upload parse-debug (pdfs + text)
-        uses: actions/upload-artifact@v4
-        with:
-          name: parse-debug
-          path: |
-            build/pdfs/
-            build/text/
-          if-no-files-found: ignore
