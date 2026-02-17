@@ -1,14 +1,26 @@
 # parser/parse_pfa.py
 """
 TrendAgent - PDF download & parsing
-- Læser data/funds.csv (isin,source_url)
-- Downloader PDF (requests m. UA/Referer)
+
+Funktionalitet:
+- Læser data/funds.csv (kolonner: isin,source_url)
+- Downloader PDF pr. fond (requests; UA/Referer; retry/backoff)
 - Ekstraherer tekst (pdfminer) fra BytesIO-stream
-- Finder "Indre værdi" (NAV) og "Indre værdi dato" med defensiv heuristik (kig også på næste linje)
-- Gemmer parse-debug (build/pdfs/*.pdf, build/text/*.txt)
-- Skriver latest.json
-- Understøtter --mock som fallback
+- Finder "Indre værdi" (NAV) og "Indre værdi dato" via robust heuristik:
+    * 'Stamdata'-blok: etiketter i én kolonne, værdier efterfølgende linjer
+    * Fallback: rullende vindue (op til +5 linjer) og flere nøgleord (NAV/Kurs)
+- Skriver latest.json (run_date=YYYY-MM-DD, rows=[{isin, nav, nav_date, ...}])
+- Gemmer parse-debug:
+    build/pdfs/<isin>.pdf
+    build/text/<isin>.txt
+- Understøtter --mock (syntetiske værdier) som fallback/test
+
+Kørsel lokalt (i repo-roden):
+    python parser/parse_pfa.py --out latest.json
+    python parser/parse_pfa.py --out latest.json --mock
 """
+
+from __future__ import annotations
 
 import argparse
 import csv
@@ -17,10 +29,10 @@ import json
 import os
 import time
 from datetime import date, datetime
-from typing import Optional, Tuple, Dict, Any
+from typing import Optional, Tuple, Dict, Any, List
 
 import requests
-from pdfminer.high_level import extract_text  # korrekt import
+from pdfminer.high_level import extract_text  # korrekt import for pdfminer.six
 
 UA = "TrendAgent/1.0 (+https://github.com/)"
 HEADERS = {
@@ -31,24 +43,29 @@ HEADERS = {
 
 # ---------- utils ----------
 
-def ensure_dir(path: str):
+def ensure_dir(path: str) -> None:
+    """Sørg for at mappen til 'path' findes."""
     d = os.path.dirname(path)
     if d and not os.path.exists(d):
         os.makedirs(d, exist_ok=True)
 
-def load_funds(path="data/funds.csv"):
-    funds = []
+def load_funds(path: str = "data/funds.csv") -> List[Dict[str, str]]:
+    funds: List[Dict[str, str]] = []
     with open(path, newline="", encoding="utf-8") as f:
         rdr = csv.DictReader(f)
         for row in rdr:
             isin = (row.get("isin") or "").strip()
-            url  = (row.get("source_url") or "").strip()
+            url = (row.get("source_url") or "").strip()
             if isin and url:
                 funds.append({"isin": isin, "source_url": url})
     return funds
 
 def http_get(url: str, retries: int = 3, backoff: float = 1.5, timeout: int = 45) -> Dict[str, Any]:
-    last_err = None
+    """
+    Robust GET med få retrys. Returnerer dict:
+    {'ok': bool, 'status': int, 'ct': str|None, 'content': bytes|None, 'err': str|None}
+    """
+    last_err: Optional[str] = None
     for attempt in range(1, retries + 1):
         try:
             resp = requests.get(url, headers=HEADERS, timeout=timeout, allow_redirects=True)
@@ -62,16 +79,25 @@ def http_get(url: str, retries: int = 3, backoff: float = 1.5, timeout: int = 45
     return {"ok": False, "status": 0, "ct": None, "content": None, "err": last_err}
 
 def normalize_decimal(s: str) -> Optional[float]:
+    """
+    Dansk formatering -> float:
+      "1.234,56" -> 1234.56
+      "129,15"   -> 129.15
+    """
     if not s:
         return None
     t = s.strip().replace(" ", "")
-    t = t.replace(".", "").replace(",", ".")  # "1.234,56" -> "1234.56"
+    t = t.replace(".", "").replace(",", ".")
     try:
         return float(t)
     except ValueError:
         return None
 
 def parse_date_to_iso(s: str) -> Optional[str]:
+    """
+    Parse dd-mm-åååå / dd.mm.åååå / dd/mm/åååå -> ISO (YYYY-MM-DD).
+    Fald tilbage til datetime.fromisoformat.
+    """
     if not s:
         return None
     t = s.strip()
@@ -82,7 +108,8 @@ def parse_date_to_iso(s: str) -> Optional[str]:
             if len(y) == 2:
                 y = "20" + y
             try:
-                return datetime(int(y), int(m), int(d)).date().isoformat()
+                dt = datetime(int(y), int(m), int(d))
+                return dt.date().isoformat()
             except Exception:
                 pass
     try:
@@ -93,176 +120,82 @@ def parse_date_to_iso(s: str) -> Optional[str]:
 # ---------- parsing heuristics ----------
 
 def extract_fields_from_text(text: str) -> Tuple[Optional[float], Optional[str]]:
-    """Fang NAV/dato; kig også på næste linje hvis værdien ikke står efter kolon."""
+    """
+    FundConnect-venlig heuristik:
+    1) Find et 'Stamdata'-lignende blok hvor etiketter (Opstart, Valuta, Type, Indre værdi, Indre værdi dato, …)
+       står i én kolonne og værdier kommer efterfølgende i samme rækkefølge.
+    2) Par etiketter med deres efterfølgende linjer (label->value).
+    3) Ekstrahér:
+       - NAV  = first_number_candidate(value_line) for "Indre værdi"/"NAV"/"Kurs"
+       - DATO = first_date_candidate(value_line)  for "Indre værdi dato"
+    4) Fallback: rullende vindue (op til +5 linjer) med brede nøgleord (nav/kurs mv.).
+    """
     nav_val: Optional[float] = None
     nav_date_iso: Optional[str] = None
 
-    lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
-    want_nav_next = False
-    want_date_next = False
+    # Hjælpere
+    def clean_value_string(s: str) -> str:
+        junk = [
+            "DKK", "dkk", "Kr.", "kr.", "kr",
+            "Kurs", "kurs",
+            "Indre", "indre", "værdi", "værdi:", "værdi.", "værdi,",
+            "pr.", "pr", "Dato", "dato:", "dato.", "dato,"
+        ]
+        out = s
+        for j in junk:
+            out = out.replace(j, " ")
+        return out
 
-    for ln in lines:
-        low = ln.lower()
+    def first_number_candidate(s: str) -> Optional[float]:
+        stage = (
+            s.replace(":", " ")
+             .replace("•", " ")
+             .replace("|", " ")
+             .replace("(", " ").replace(")", " ")
+             .replace("%", " ")
+        )
+        tokens = stage.split()
+        for tk in tokens:
+            tk = tk.strip().strip(";,:.")
+            val = normalize_decimal(tk)
+            if val is not None:
+                return val
+        return None
 
-        # Hvis vi forventer tal/dato på næste linje
-        if want_nav_next and nav_val is None:
-            cand = normalize_decimal(ln)
-            if cand is not None:
-                nav_val = cand
-            want_nav_next = False
-
-        if want_date_next and nav_date_iso is None:
-            iso = parse_date_to_iso(ln)
+    def first_date_candidate(s: str) -> Optional[str]:
+        stage = s.replace("pr.", " ").replace("pr", " ")
+        tokens = stage.split()
+        # tjek både enkelt-token og simpel token-sammenkædning
+        for i, tk in enumerate(tokens):
+            iso = parse_date_to_iso(tk.strip(".:,;"))
             if iso:
-                nav_date_iso = iso
-            want_date_next = False
+                return iso
+            if i + 1 < len(tokens):
+                comb = (tk + tokens[i + 1]).strip(".:,;")
+                iso = parse_date_to_iso(comb)
+                if iso:
+                    return iso
+        return None
 
-        # NAV-linje (varianter)
-        if ("indre værdi" in low) or ("indrevaerdi" in low) or ("indreværdi" in low):
-            after = ln.split(":", 1)[1] if ":" in ln else ln
-            # fjern ord/valuta
-            junk = ["DKK", "kr", "Kurs", "kurs", "Indre", "indre", "værdi", "værdi:", "værdi.", "værdi,"]
-            for j in junk:
-                after = after.replace(j, "")
-            tokens = after.replace(",", " , ").replace(".", " . ").split()
-            found = False
-            for tk in tokens:
-                val = normalize_decimal(tk)
-                if val is not None:
-                    nav_val = val
-                    found = True
-                    break
-            if not found:
-                want_nav_next = True
+    lines: List[str] = [ln.strip() for ln in text.splitlines() if ln.strip()]
+    n = len(lines)
+    lower = [ln.lower() for ln in lines]
 
-        # Dato-linje (varianter)
-        if ("indre værdi dato" in low) or ("indre vaerdi dato" in low) or ("indreværdi dato" in low):
-            after = ln.split(":", 1)[1].strip() if ":" in ln else ""
-            iso = parse_date_to_iso(after)
-            if iso:
-                nav_date_iso = iso
-            else:
-                want_date_next = True
-
-        if nav_val is not None and nav_date_iso is not None:
+    # --- 1) Forsøg at finde 'Stamdata'-blok ---
+    start_idx: Optional[int] = None
+    for i, low in enumerate(lower):
+        if "stamdata" in low:
+            start_idx = i
+            break
+        # alternativ startdetektion: indenfor 6 linjer ses både 'indre værdi' og 'indre værdi dato'
+        window = " ".join(lower[i:i + 6])
+        if ("indre værdi" in window or "indrevaerdi" in window or "indreværdi" in window or "nav" in window or "kurs" in window) and \
+           ("indre værdi dato" in window or "indre vaerdi dato" in window or "indreværdi dato" in window):
+            start_idx = i
             break
 
-    return nav_val, nav_date_iso
-
-def parse_pdf_bytes(pdf_bytes: bytes) -> Tuple[Optional[float], Optional[str], str]:
-    """Returner (nav, nav_date_iso, text_excerpt)"""
-    with io.BytesIO(pdf_bytes) as f:
-        text = extract_text(f) or ""
-    nav, nav_date = extract_fields_from_text(text)
-    return nav, nav_date, text[:4000]
-
-# ---------- builders ----------
-
-def build_latest(funds):
-    rows = []
-    for f in funds:
-        isin = f["isin"]
-        url = f["source_url"]
-        resp = http_get(url)
-        status = resp["status"]
-        ct = resp["ct"] or ""
-        ok = resp["ok"]
-        content = resp["content"] if ok else None
-        size = len(content) if content else 0
-
-        print(f"[HTTP] {isin} -> ok={ok} status={status} ct={ct} size={size}")
-
-        nav = None
-        nav_date = None
-
-        if ok and content:
-            pdf_path = f"build/pdfs/{isin}.pdf"
-            ensure_dir(pdf_path)
-            try:
-                with open(pdf_path, "wb") as pf:
-                    pf.write(content)
-            except Exception as e:
-                print(f"[WARN] write PDF {isin}: {e}")
-
-            try:
-                nav, nav_date, excerpt = parse_pdf_bytes(content)
-            except Exception as e:
-                print(f"[WARN] pdfminer parse failed {isin}: {e}")
-                excerpt = ""
-
-            txt_path = f"build/text/{isin}.txt"
-            ensure_dir(txt_path)
-            try:
-                with open(txt_path, "w", encoding="utf-8") as tf:
-                    tf.write(excerpt)
-            except Exception as e:
-                print(f"[WARN] write TEXT {isin}: {e}")
-        else:
-            print(f"[WARN] GET failed {isin}: {resp['err']}")
-
-        rows.append({
-            "isin": isin,
-            "nav": nav,
-            "nav_date": nav_date,
-            "change_pct": None,
-            "trend_shift": False,
-            "cross_20_50": False,
-            "trend_state": "NEUTRAL",
-            "week_change_pct": None,
-            "ytd_return": None,
-            "drawdown": None,
-        })
-    return rows
-
-def build_mock_latest(funds):
-    base_nav = 100.0
-    rows = []
-    for i, f in enumerate(funds):
-        nav = base_nav + i * 0.37
-        rows.append({
-            "isin": f["isin"],
-            "nav": round(nav, 2),
-            "nav_date": date.today().isoformat(),
-            "change_pct": 0.0,
-            "trend_shift": False,
-            "cross_20_50": False,
-            "trend_state": "NEUTRAL",
-            "week_change_pct": 0.0,
-            "ytd_return": 0.0,
-            "drawdown": 0.0,
-        })
-    return rows
-
-# ---------- main ----------
-
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--out", default="latest.json")
-    ap.add_argument("--mock", action="store_true", help="generate mock latest.json")
-    args = ap.parse_args()
-
-    ensure_dir("build/pdfs/dummy.bin")
-    ensure_dir("build/text/dummy.txt")
-
-    funds = load_funds()
-    print(f"[INFO] Loaded {len(funds)} funds from data/funds.csv")
-    if not funds:
-        print("[ERROR] No funds to process – check data/funds.csv")
-
-    if args.mock:
-        rows = build_mock_latest(funds)
-    else:
-        rows = build_latest(funds)
-
-    payload = {"rows": rows, "run_date": date.today().isoformat()}
-    out_path = os.path.abspath(args.out)
-    with open(out_path, "w", encoding="utf-8") as f:
-        json.dump(payload, f, ensure_ascii=False, indent=2)
-
-    if not os.path.exists(out_path):
-        raise RuntimeError(f"latest.json was not written at {out_path}")
-
-    print(f"[OK] Wrote {out_path} with {len(rows)} rows")
-
-if __name__ == "__main__":
-    main()
+    end_idx: Optional[int] = None
+    if start_idx is not None:
+        for j in range(start_idx + 1, n):
+            low = lower[j]
+            # heuristik for slut på blok (andre sektioner/overskrifter)
