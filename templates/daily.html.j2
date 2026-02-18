@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="da">
 <head>
-  <meta charset="utf-8">
-  <title>TrendAgent – Daglig rapport ({{ run_date }})</title>
+  <meta charset="utf-8" />
+  <title>TrendAgent – Daglig rapport</title>
   <style>
     body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 24px; }
     h1 { margin-bottom: 0; }
@@ -27,45 +27,41 @@
 
   <table>
     <thead>
-      <tr>
-        <th>ISIN</th>
-        <th>NAV</th>
-        <th>NAVDato</th>
-        <th>1D ændring %</th>
-        <th>Event</th>
-        <th>trend_state</th>
-      </tr>
+    <tr>
+      <th>ISIN</th>
+      <th>NAV</th>
+      <th>NAVDato</th>
+      <th>1D ændring %</th>
+      <th>Event</th>
+      <th>trend_state</th>
+    </tr>
     </thead>
     <tbody>
-      {% for row in rows %}
-      {# Robust lokal variabel til change_pct (default 0.0 ved None/ikke defineret) #}
-      {% set cp = (row.change_pct if row.change_pct is defined and row.change_pct is not none else 0.0) %}
-
-      <tr class="{% if cp >= 3 %}outlier-up{% elif cp <= -3 %}outlier-down{% endif %}">
+    {% for row in funds %}
+      {% set cp = row.change_pct if row.change_pct is not none else 0.0 %}
+      <tr class="">
         <td>{{ row.isin }}</td>
+        <!-- (1) Dansk format på NAV -->
+        <td>{{ row.nav|dknum }}</td>
+        <td>{{ row.nav_date }}</td>
 
-        <td>{{ row.nav if row.nav is defined and row.nav is not none else '-' }}</td>
-        <td>{{ row.nav_date if row.nav_date is defined and row.nav_date is not none else '-' }}</td>
+        <!-- 1D ændring % -->
+        <td>{{ '%0.2f'|format(cp) }}%</td>
 
-        <!-- 1D ændring % (brug cp med default) -->
-        <td>{{ '%.2f'|format(cp) }}%</td>
+        <!-- Event -->
+        <td>{{ row.event }}</td>
 
+        <!-- trend_state -->
         <td>
-          {% if row.trend_shift %}<span class="badge b-neutral">trend_shift</span>{% endif %}
-          {% if row.cross_20_50 %} <span class="badge b-up">cross_20_50</span>{% endif %}
-        </td>
-
-        <td>
-          {% if row.trend_state == 'UP' %}
-            <span class="badge b-up">UP</span>
-          {% elif row.trend_state == 'DOWN' %}
-            <span class="badge b-down">DOWN</span>
-          {% else %}
-            <span class="badge b-neutral">NEUTRAL</span>
+          {% if cp >= 3 %}<span class="badge b-up">UP</span>
+          {% elif cp <= -3 %}<span class="badge b-down">DOWN</span>
+          {% else %}<span class="badge b-neutral">NEUTRAL</span>
           {% endif %}
         </td>
       </tr>
-      {% endfor %}
+    {% else %}
+      <tr><td colspan="6"><em>Ingen data tilgængelig</em></td></tr>
+    {% endfor %}
     </tbody>
   </table>
 
