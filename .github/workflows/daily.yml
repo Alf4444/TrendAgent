@@ -42,11 +42,17 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           
-          # Hent nyeste ændringer for at undgå 'rejected' fejl
+          # 1. Fortæl Git hvilke filer vi vil gemme FØRST
+          git add data/latest.json data/history.json build/daily.html
+          
+          # 2. Lav selve gemme-punktet (commit)
+          git commit -m "Update investment data and history [skip ci]" || echo "No changes"
+          
+          # 3. Hent nu eventuelle ændringer fra GitHub og læg dem under vores (rebase)
+          # Dette løser 'non-fast-forward' fejlen uden at ødelægge robottens arbejde.
           git pull origin main --rebase
           
-          git add data/latest.json data/history.json build/daily.html
-          git commit -m "Update investment data and history [skip ci]" || echo "No changes"
+          # 4. Skub det hele op
           git push origin main
 
       - name: Cleanup
