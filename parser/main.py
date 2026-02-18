@@ -26,7 +26,6 @@ def main():
             text = txt_file.read_text(encoding="utf-8", errors="ignore")
             data = parse_pfa_from_text(isin, text)
         else:
-            # Hvis filen mangler, opretter vi en tom post
             data = {"pfa_id": isin, "nav": None, "nav_date": None, "currency": None}
             print(f"[ADVARSEL] Tekstfil mangler for {isin}")
         
