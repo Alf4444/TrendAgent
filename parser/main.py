@@ -4,8 +4,8 @@ from pathlib import Path
 from parser.pfa import parse_pfa_from_text
 
 ROOT = Path(__file__).resolve().parents[1]
-TEXT_DIR = ROOT / "build" / "text"
-OUT_FILE = ROOT / "data" / "latest.json"
+TEXT_DIR = ROOT / "build/text"
+OUT_FILE = ROOT / "data/latest.json"
 HISTORY_FILE = ROOT / "data/history.json"
 CONFIG_FILE = ROOT / "config/pfa_pdfs.json"
 
@@ -17,11 +17,13 @@ def main():
 
     results = []
     
-    # Hent eksisterende historik hvis den findes
+    # Hent eksisterende historik
     history = {}
     if HISTORY_FILE.exists():
-        with open(HISTORY_FILE, "r") as f:
-            history = json.load(f)
+        try:
+            with open(HISTORY_FILE, "r") as f:
+                history = json.load(f)
+        except: history = {}
 
     for isin in isins:
         isin = isin.strip()
@@ -45,11 +47,11 @@ def main():
     with open(OUT_FILE, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
         
-    # Gem HISTORY (Vigtig for dine MA-beregninger!)
+    # Gem HISTORY
     with open(HISTORY_FILE, "w", encoding="utf-8") as f:
         json.dump(history, f, indent=2)
 
-    print(f"Parsing færdig. Navne er plukket og historik opdateret.")
+    print(f"Parsing færdig. Historik opdateret.")
 
 if __name__ == "__main__":
     main()
