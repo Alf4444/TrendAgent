@@ -1,81 +1,95 @@
-# reporting/build_daily.py
-import json, pathlib, datetime
+import json
+from pathlib import Path
+from datetime import datetime
 
-ROOT = pathlib.Path(__file__).resolve().parents[1]
-DATA = ROOT / "data" / "latest.json"
-OUT = ROOT / "build" / "daily.html"
+ROOT = Path(__file__).resolve().parents[1]
+DATA_FILE = ROOT / "data/latest.json"
+HISTORY_FILE = ROOT / "data/history.json"
+REPORT_FILE = ROOT / "build/daily.html"
 
-def dk_number(x):
-    if x is None or x == "": return "N/A"
-    try:
-        return f"{float(x):,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-    except: return "N/A"
-
-def render_html(funds):
-    today = datetime.date.today().isoformat()
+def build_report():
+    if not DATA_FILE.exists(): return
     
-    html = f"""<!doctype html>
-<html lang="da">
-<head>
-    <meta charset="utf-8" />
-    <title>TrendAgent – Rapport</title>
-    <style>
-        body {{ font-family: sans-serif; margin: 20px; color: #333; }}
-        table {{ border-collapse: collapse; width: 100%; border: 1px solid #ddd; }}
-        th, td {{ padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }}
-        th {{ background: #f4f4f4; }}
-        .pos {{ color: #28a745; font-weight: bold; }}
-        .neg {{ color: #dc3545; font-weight: bold; }}
-        .na {{ color: #999; font-style: italic; }}
-        .badge {{ padding: 4px 8px; border-radius: 4px; font-size: 11px; background: #eee; }}
-        a {{ color: #0066cc; text-decoration: none; }}
-    </style>
-</head>
-<body>
-    <h1>TrendAgent – Daglig status</h1>
-    <p><small>Genereret: {today}</small></p>
-    
-    <table>
-        <thead>
-            <tr>
-                <th>ISIN / PFA-ID</th>
-                <th>NAV</th>
-                <th>Dato</th>
-                <th>Valuta</th>
-                <th>Trend (MA)</th>
-                <th>Dokument</th>
-            </tr>
-        </thead>
-        <tbody>"""
+    with open(DATA_FILE, "r", encoding="utf-8") as f:
+        data = json.load(f)
 
-    for f in funds:
-        nav_val = dk_number(f.get("nav"))
-        # Simpel farvekode logic til senere brug (1D/5D)
-        change_class = "pos" if f.get("1d_change", 0) > 0 else "neg"
+    # Vi prøver at finde gårsdagens kurs i historikken for at regne Change %
+    history = {}
+    if HISTORY_FILE.exists():
+        with open(HISTORY_FILE, "r") as f:
+            history = json.load(f)
+
+    rows_html = ""
+    for item in data:
+        name = item.get("name") or item["isin"]
+        nav = item["nav"] or 0
+        date = item["nav_date"] or "-"
+        currency = item.get("currency", "-")
         
-        html += f"""
-            <tr>
-                <td><strong>{f.get('isin')}</strong></td>
-                <td>{nav_val}</td>
-                <td class="{'na' if not f.get('nav_date') else ''}">{f.get('nav_date') or 'Mangler'}</td>
-                <td>{f.get('currency') or '<span class="na">N/A</span>'}</td>
-                <td><span class="badge">NEUTRAL</span></td>
-                <td><a href="{f.get('url')}" target="_blank">Åbn PDF ↗</a></td>
-            </tr>"""
+        # Simpel logik til Change % (hvis vi har mindst 2 datapunkter)
+        change_html = '<span class="na">Ny</span>'
+        isin = item["isin"]
+        if isin in history and len(history[isin]) > 1:
+            dates = sorted(history[isin].keys())
+            last_date = dates[-1]
+            prev_date = dates[-2]
+            last_val = history[isin][last_date]
+            prev_val = history[isin][prev_date]
+            diff = ((last_val / prev_val) - 1) * 100
+            color = "pos" if diff > 0 else "neg"
+            change_html = f'<span class="{color}">{diff:+.2f}%</span>'
 
-    html += "</tbody></table></body></html>"
-    return html
+        rows_html += f"""
+        <tr>
+            <td><strong>{name}</strong><br><small style="color:#666">{item['isin']}</small></td>
+            <td>{nav:,.2f}</td>
+            <td>{change_html}</td>
+            <td>{date}</td>
+            <td>{currency}</td>
+            <td><a href="{item['url']}" target="_blank">PDF ↗</a></td>
+        </tr>
+        """
 
-def main():
-    if not DATA.exists():
-        print("Ingen data fundet!"); return
+    html_template = f"""
+    <!doctype html>
+    <html lang="da">
+    <head>
+        <meta charset="utf-8">
+        <title>TrendAgent Rapport</title>
+        <style>
+            body {{ font-family: sans-serif; margin: 40px; background: #f9f9f9; }}
+            table {{ border-collapse: collapse; width: 100%; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }}
+            th, td {{ padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }}
+            th {{ background: #2c3e50; color: white; }}
+            .pos {{ color: #27ae60; font-weight: bold; }}
+            .neg {{ color: #e74c3c; font-weight: bold; }}
+            .na {{ color: #95a5a6; }}
+        </style>
+    </head>
+    <body>
+        <h1>TrendAgent – Daglig Rapport</h1>
+        <p>Opdateret: {datetime.now().strftime('%Y-%m-%d %H:%M')}</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Fond Navn</th>
+                    <th>NAV (Kurs)</th>
+                    <th>Daglig %</th>
+                    <th>Dato</th>
+                    <th>Valuta</th>
+                    <th>Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                {rows_html}
+            </tbody>
+        </table>
+    </body>
+    </html>
+    """
     
-    funds = json.loads(DATA.read_text(encoding="utf-8"))
-    html_content = render_html(funds)
-    
-    OUT.parent.mkdir(exist_ok=True)
-    OUT.write_text(html_content, encoding="utf-8")
-    print(f"Rapport klar: {OUT}")
+    REPORT_FILE.parent.mkdir(exist_ok=True)
+    REPORT_FILE.write_text(html_template, encoding="utf-8")
 
 if __name__ == "__main__":
-    main()
+    build_report()
