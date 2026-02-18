@@ -46,3 +46,18 @@ jobs:
           git add data/latest.json build/daily.html
           git commit -m "Update data and report [skip ci]" || echo "No changes"
           git push origin main
+
+      # HER KOMMER DINE ARTIFACTS TILBAGE:
+      - name: Upload PDF and Text Debug Files
+        uses: actions/upload-artifact@v4
+        with:
+          name: parse-debug-files
+          path: |
+            build/pdf/
+            build/text/
+
+      - name: Upload Daily HTML Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-report-html
+          path: build/daily.html
