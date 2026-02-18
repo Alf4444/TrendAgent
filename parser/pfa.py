@@ -1,58 +1,41 @@
-name: Daily Report (Parse)
+import re
 
-on:
-  schedule:
-    - cron: "10 5 * * 1-5"
-  workflow_dispatch: {}
+def parse_pfa_from_text(pfa_id, text):
+    data = {"pfa_id": pfa_id, "nav": None, "nav_date": None, "currency": None}
+    if not text: return data
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    # 1. FIND VALUTA
+    # Vi leder efter Valuta efterfulgt af DKK/EUR/USD
+    cur_m = re.search(r"Valuta\s+(DKK|EUR|USD)", text)
+    if cur_m:
+        data["currency"] = cur_m.group(1).upper()
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
+    # 2. FIND DATO (Indre værdi dato)
+    # Vi kigger specifikt efter formatet DD-MM-ÅÅÅÅ efter ordet 'dato'
+    date_m = re.search(r"Indre\s+værdi\s+dato\s+(\d{2}-\d{2}-\d{4})", text, re.IGNORECASE)
+    if date_m:
+        d = date_m.group(1).split("-")
+        data["nav_date"] = f"{d[2]}-{d[1]}-{d[0]}"
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pdfplumber
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    # 3. FIND NAV (Indre værdi)
+    # Vi leder efter tallet der står efter "Indre værdi" men som IKKE følges af ordet "dato"
+    # Vi bruger en regex der fanger tal som 115,00 eller 1.200,50
+    nav_patterns = [
+        r"Indre\s+værdi\s+(?!dato\b)([\d\.,]+)",
+        r"Indre\s+værdi\n([\d\.,]+)"
+    ]
+    
+    for pattern in nav_patterns:
+        nav_m = re.search(pattern, text, re.IGNORECASE)
+        if nav_m:
+            val_str = nav_m.group(1).rstrip('.,')
+            # Rens tallet: fjern punktum (tusindtal) og gør komma til punktum (decimal)
+            if "," in val_str:
+                val_str = val_str.replace(".", "").replace(",", ".")
+            try:
+                data["nav"] = float(val_str)
+                break 
+            except:
+                continue
 
-      - name: Clear old build data
-        run: |
-          rm -rf build/text/*.txt
-          rm -rf build/pdf/*.pdf
-          rm -rf data/latest.json
-          mkdir -p build/text build/pdf data
-
-      - name: PDF → text
-        run: python parser/pdf_to_text.py
-
-      - name: Parse PFA PDFs → latest.json
-        run: python -m parser.main
-
-      - name: Build daily HTML
-        run: python reporting/build_daily.py
-
-      - name: Commit and Push Changes
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add data/latest.json build/daily.html
-          git commit -m "Update data and report [skip ci]" || echo "No changes"
-          git push origin main
-
-      - name: Upload debug files
-        uses: actions/upload-artifact@v4
-        with:
-          name: parse-debug
-          path: |
-            build/text/
-            build/pdf/
+    return data
