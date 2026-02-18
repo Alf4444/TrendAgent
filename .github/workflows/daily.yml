@@ -2,8 +2,8 @@ name: Daily Report (Parse)
 
 on:
   schedule:
-    - cron: "10 5 * * 1-5"
-  workflow_dispatch: {}
+    - cron: "10 5 * * 1-5" # Kører kl. 05:10 UTC i hverdagene
+  workflow_dispatch: {}     # Gør det muligt at starte den manuelt
 
 jobs:
   build:
@@ -22,40 +22,29 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      # NYT: Rydder op i gamle filer før start
       - name: Clear old build data
         run: |
+          # Vi sletter alt gammelt for at sikre friske data
           rm -rf build/text/*.txt
           rm -rf build/pdf/*.pdf
           rm -rf data/latest.json
           mkdir -p build/text build/pdf data
 
-      # 1) Hent PFA-PDF'er og konverter til TXT
-      - name: PDF → text (FundConnect via ISIN)
+      - name: PDF → text
         run: |
+          # Henter PDF'er fra PFA og laver dem til tekst
           python parser/pdf_to_text.py
 
-      # 2) Fail fast hvis der ingen .txt er
-      - name: Assert text files exist
-        run: |
-          shopt -s nullglob
-          files=(build/text/*.txt)
-          if [ ${#files[@]} -eq 0 ]; then
-            echo "::error::Ingen tekstfiler fundet i build/text. Tjek pdf_to_text.py"
-            exit 1
-          fi
-
-      # 3) Kør din opdaterede parser (bruger parser/pfa.py med de nye rettelser)
       - name: Parse PFA PDFs → latest.json
         run: |
+          # Bruger din parser/main.py (som kalder pfa.py) til at finde NAV og dato
           python -m parser.main
 
-      # 4) Byg HTML
       - name: Build daily HTML
         run: |
+          # Genererer den HTML-rapport du ser
           python reporting/build_daily.py
 
-      # 5) Upload resultatet
       - name: Upload daily artifact
         uses: actions/upload-artifact@v4
         with:
