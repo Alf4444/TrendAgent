@@ -1,4 +1,3 @@
-# parser/main.py
 import json
 from pathlib import Path
 from parser.pfa import parse_pfa_from_text
@@ -14,26 +13,28 @@ def main():
         links = json.loads(CONFIG_PDFS.read_text(encoding="utf-8"))
 
     results = []
-    
-    for txt_file in TEXT_DIR.glob("*.txt"):
+    txt_files = list(TEXT_DIR.glob("*.txt"))
+    print(f"Starter parsing af {len(txt_files)} filer.")
+
+    for txt_file in txt_files:
         pfa_id = txt_file.stem
         text = txt_file.read_text(encoding="utf-8", errors="ignore")
         
-        # Kør selve parseren
+        # Kald parseren
         data = parse_pfa_from_text(pfa_id, text)
         
-        # Tilføj URL fra config, hvis den findes
-        data["url"] = links.get(pfa_id, "")
-        if not data.get("isin"):
-             data["isin"] = pfa_id # Fallback hvis ISIN mangler
-
+        # Tilføj links og ISIN
+        data["url"] = links.get(pfa_id, f"https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin={pfa_id}")
+        data["isin"] = pfa_id
+        
         results.append(data)
-        print(f"[OK] Parsede {pfa_id}: NAV={data['nav']}, Dato={data['nav_date']}")
+        print(f"[LOG] {pfa_id} færdig: Kurs={data['nav']}, Dato={data['nav_date']}")
 
-    # Gem alt til latest.json
+    # Gem til data/latest.json
     OUT_FILE.parent.mkdir(exist_ok=True)
     with open(OUT_FILE, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
+    print("Parsing fuldført. latest.json er opdateret.")
 
 if __name__ == "__main__":
     main()
