@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Giver robotten lov til at gemme filer i dit repo
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -22,6 +22,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
+          pip install pdfplumber
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Clear old build data
@@ -40,16 +41,14 @@ jobs:
       - name: Build daily HTML
         run: python reporting/build_daily.py
 
-      # NYT: Gemmer data/latest.json og build/daily.html direkte i dit repo
       - name: Commit and Push Changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add data/latest.json build/daily.html
-          git commit -m "Update data and report [skip ci]" || echo "No changes to commit"
-          git push
+          git commit -m "Update data and report [skip ci]" || echo "No changes"
+          git push origin main
 
-      # NYT: Bringer parse-debug mappen tilbage under Artifacts
       - name: Upload debug files
         uses: actions/upload-artifact@v4
         with:
@@ -57,10 +56,3 @@ jobs:
           path: |
             build/text/
             build/pdf/
-          if-no-files-found: warn
-
-      - name: Upload daily report
-        uses: actions/upload-artifact@v4
-        with:
-          name: daily-report
-          path: build/daily.html
