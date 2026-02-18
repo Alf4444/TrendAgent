@@ -40,14 +40,19 @@ def main():
         else:
             data = {"pfa_id": isin, "name": "Mangler data", "nav": None, "nav_date": None}
         
+        # TILFØJ URL (Vigtigt for HTML rapporten)
         data["isin"] = isin
+        data["url"] = f"https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin={isin}"
+        
         results.append(data)
 
     # Gem LATEST
+    OUT_FILE.parent.mkdir(exist_ok=True)
     with open(OUT_FILE, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
         
-    # Gem HISTORY
+    # Gem HISTORY (Grundlaget for MA20, MA50, MA200)
+    HISTORY_FILE.parent.mkdir(exist_ok=True)
     with open(HISTORY_FILE, "w", encoding="utf-8") as f:
         json.dump(history, f, indent=2)
 
