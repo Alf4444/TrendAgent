@@ -13,20 +13,44 @@ def build_report():
 
     rows_html = ""
     for item in data:
-        ytd = item.get("return_ytd", "0,00")
-        # Farvekodning af ÅTD
-        ytd_val = float(ytd.replace(",", "."))
-        ytd_class = "pos" if ytd_val > 0 else "neg" if ytd_val < 0 else ""
+        # Hent værdier og håndter manglende data
+        nav = item.get("nav") or 0
+        ytd = item.get("return_ytd", "0,00").replace(",", ".")
+        w1 = item.get("return_1w", "0,00").replace(",", ".")
+        m1 = item.get("return_1m", "0,00").replace(",", ".")
+        
+        # Farvekode funktion
+        def get_color_class(val_str):
+            try:
+                v = float(val_str)
+                return "pos" if v > 0 else "neg" if v < 0 else ""
+            except: return ""
+
+        # Trend logik (Simpel version indtil MA200 er klar)
+        # Hvis 1 uge er bedre end 1 måned, er der positivt momentum
+        try:
+            trend_val = float(w1) - float(m1)
+            if trend_val > 0.5:
+                trend_html = '<span class="badge badge-up">STIGENDE ↑</span>'
+            elif trend_val < -0.5:
+                trend_html = '<span class="badge badge-down">FALDENDE ↓</span>'
+            else:
+                trend_html = '<span class="badge">NEUTRAL</span>'
+        except:
+            trend_html = '<span class="badge">INGEN DATA</span>'
 
         rows_html += f"""
         <tr>
-            <td><strong>{item.get('name', item['isin'])}</strong><br><small>{item['isin']}</small></td>
-            <td>{item.get('nav', 0):,.2f} {item.get('currency', '')}</td>
-            <td class="{ytd_class}">{ytd}%</td>
-            <td>{item.get('return_1w')}%</td>
-            <td>{item.get('return_1m')}%</td>
-            <td><span class="badge">OPSAMLER DATA</span></td>
-            <td><a href="{item.get('url', '#')}" target="_blank">PDF ↗</a></td>
+            <td>
+                <strong>{item.get('name', item['isin'])}</strong><br>
+                <small style="color: #666;">{item['isin']}</small>
+            </td>
+            <td style="font-family: monospace; font-weight: bold;">{nav:,.22f}</td>
+            <td class="{get_color_class(ytd)}">{ytd}%</td>
+            <td class="{get_color_class(w1)}">{w1}%</td>
+            <td class="{get_color_class(m1)}">{m1}%</td>
+            <td>{trend_html}</td>
+            <td><a href="{item.get('url', '#')}" class="pdf-link" target="_blank">PDF ↗</a></td>
         </tr>
         """
 
@@ -35,24 +59,41 @@ def build_report():
     <html lang="da">
     <head>
         <meta charset="utf-8">
+        <title>TrendAgent Pro</title>
         <style>
-            body {{ font-family: -apple-system, sans-serif; margin: 30px; background: #f0f2f5; color: #1c1e21; }}
-            table {{ width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }}
-            th, td {{ padding: 15px; text-align: left; border-bottom: 1px solid #eee; }}
-            th {{ background: #1a73e8; color: white; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; }}
-            .pos {{ color: #1e8e3e; font-weight: bold; }}
+            body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 40px; background: #f8f9fa; color: #333; }}
+            h1 {{ color: #1a73e8; margin-bottom: 5px; }}
+            .subtitle {{ color: #666; margin-bottom: 30px; }}
+            table {{ width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }}
+            th {{ background: #1a73e8; color: white; padding: 15px; text-align: left; font-size: 13px; text-transform: uppercase; }}
+            td {{ padding: 15px; border-bottom: 1px solid #edf2f7; }}
+            tr:hover {{ background: #f1f8ff; }}
+            .pos {{ color: #28a745; font-weight: bold; }}
             .neg {{ color: #d93025; font-weight: bold; }}
-            .badge {{ background: #e8f0fe; color: #1967d2; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }}
+            .badge {{ padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; background: #e8eaed; color: #5f6368; }}
+            .badge-up {{ background: #e6f4ea; color: #1e8e3e; }}
+            .badge-down {{ background: #fce8e6; color: #d93025; }}
+            .pdf-link {{ text-decoration: none; color: #1a73e8; font-weight: bold; }}
         </style>
     </head>
     <body>
         <h1>TrendAgent Dashboard</h1>
-        <p>Sidst opdateret: {datetime.now().strftime('%d-%m-%Y %H:%M')}</p>
+        <p class="subtitle">Opdateret: {datetime.now().strftime('%d. %b %Y kl. %H:%M')}</p>
         <table>
             <thead>
-                <tr><th>Fond</th><th>Kurs</th><th>ÅTD</th><th>1 Uge</th><th>1 Md</th><th>Trend (MA)</th><th>Link</th></tr>
+                <tr>
+                    <th>Investering</th>
+                    <th>Kurs (NAV)</th>
+                    <th>ÅTD</th>
+                    <th>1 Uge</th>
+                    <th>1 Md</th>
+                    <th>Trend</th>
+                    <th>Faktaark</th>
+                </tr>
             </thead>
-            <tbody>{rows_html}</tbody>
+            <tbody>
+                {rows_html}
+            </tbody>
         </table>
     </body>
     </html>
