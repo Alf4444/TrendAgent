@@ -49,7 +49,9 @@ jobs:
       - name: Parse PFA PDFs → latest.json (always)
         run: |
           set -euo pipefail
+          echo "[RUN] python -m parser.main"
           python -m parser.main
+          echo "[RUN] parser.main finished"
 
       - name: Diagnostics (tree + latest.json excerpt)
         run: |
