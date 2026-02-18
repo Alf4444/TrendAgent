@@ -23,13 +23,20 @@ LABELS_EXPECTED = [
     "Bæredygtighed",
 ]
 
-# Tal (både dansk og engelsk decimal) – vi tillader tusindtalsmellemrum/prikker
-NUM_RX = re.compile(r"(?<!\d)(\d{1,3}(?:[ .\u00A0]\d{3})*(?:[.,]\d+)?|\d+[.,]\d+)(?!\d)")
+# Tal (både dansk og engelsk decimal) – tillader tusindtals-mellemrum/prikker
+NUM_RX = re.compile(
+    r"(?<!\d)(\d{1,3}(?:[ .\u00A0]\d{3})*(?:[.,]\d+)?|\d+[.,]\d+)(?!\d)"
+)
 
 # Dato dd[-./]mm[-./]yyyy (tolererer spaces og en/em‑dash)
 DATE_RX = re.compile(
     r"\b(\d{1,2})\s*[-./" + re.escape(DASH_CHARS) + r"]\s*(\d{1,2})\s*[-./" + re.escape(DASH_CHARS) + r"]\s*(\d{4})\b"
 )
+
+
+# --------------------------
+# Hjælpere
+# --------------------------
 
 def _normalize_text(s: str) -> str:
     """Ensartet tekst fra PDF → mere robust parsing."""
@@ -44,6 +51,7 @@ def _normalize_text(s: str) -> str:
     # trim højre for hver linje
     return "\n".join([ln.rstrip() for ln in s.splitlines()])
 
+
 def _split_nonempty_lines(text: str) -> List[str]:
     out = []
     for ln in text.splitlines():
@@ -51,6 +59,7 @@ def _split_nonempty_lines(text: str) -> List[str]:
         if l != "":
             out.append(l)
     return out
+
 
 def _norm_number_auto(raw: str) -> Optional[float]:
     """
@@ -83,6 +92,7 @@ def _norm_number_auto(raw: str) -> Optional[float]:
     except ValueError:
         return None
 
+
 def _norm_date_to_iso(raw: str) -> Optional[str]:
     """
     dd-mm-yyyy (tillader '.', '/', en/em-dash + spaces) → yyyy-mm-dd
@@ -107,12 +117,14 @@ def _norm_date_to_iso(raw: str) -> Optional[str]:
     except ValueError:
         return None
 
-# --------------------------
-# Strategi A: 6 labels → 6 værdilinjer
-# --------------------------
 
 def _eq_label(a: str, b: str) -> bool:
     return a.strip().rstrip(":").lower() == b.strip().rstrip(":").lower()
+
+
+# --------------------------
+# Strategi A: 6 labels → 6 værdilinjer
+# --------------------------
 
 def _find_label_block(lines: List[str]) -> Optional[int]:
     n = len(lines)
@@ -127,6 +139,7 @@ def _find_label_block(lines: List[str]) -> Optional[int]:
             return i
     return None
 
+
 def _extract_by_block(text: str) -> Optional[Dict[str, str]]:
     lines = _split_nonempty_lines(text)
     i = _find_label_block(lines)
@@ -135,11 +148,12 @@ def _extract_by_block(text: str) -> Optional[Dict[str, str]]:
     j = i + len(LABELS_EXPECTED)
     if j + len(LABELS_EXPECTED) > len(lines):
         return None
-    values = lines[j : j + len(LABELS_EXPECTED)]
+    values = lines[j: j + len(LABELS_EXPECTED)]
     return dict(zip(LABELS_EXPECTED, values))
 
+
 # --------------------------
-# Strategi B: Label og værdi på SAMME linje (to‑kolonne tabel)
+# Strategi B: Label og værdi på SAMME linje
 # + fallback vindue 0..5 linjer frem
 # --------------------------
 
@@ -163,7 +177,8 @@ def _find_value_same_line(line: str, label_patterns: List[re.Pattern], want_date
                     return mn.group(1)
     return None
 
-def _find_value_next_lines(lines: List[str], start_idx: int, want_date: bool, lookahead: int = 6) -> Optional[str]:
+
+def _find_first_value_in_window(lines: List[str], start_idx: int, want_date: bool, lookahead: int = 6) -> Optional[str]:
     """
     Kig i samme linje og de efterfølgende lookahead-linjer efter første tal/dato.
     """
@@ -175,3 +190,143 @@ def _find_value_next_lines(lines: List[str], start_idx: int, want_date: bool, lo
                 dd, mm, yyyy = md.groups()
                 return f"{dd}-{mm}-{yyyy}"
         else:
+            mn = NUM_RX.search(ln)
+            if mn:
+                return mn.group(1)
+    return None
+
+
+def _extract_by_pairs_or_window(text: str) -> Dict[str, Optional[str]]:
+    lines = _split_nonempty_lines(text)
+
+    nav = None
+    nav_date = None
+
+    nav_labels = [
+        re.compile(r"\bIndre\s+værdi(?:\s*\(NAV\))?\b", re.IGNORECASE),
+        re.compile(r"\bIndre\s+værdi\s*pr\.\s*(?:bevis|andel)\b", re.IGNORECASE),
+    ]
+    date_labels = [
+        re.compile(r"\bIndre\s+værdi\s+dato\b", re.IGNORECASE),
+        re.compile(r"\bIndre\s+værdi\s*-\s*dato\b", re.IGNORECASE),
+    ]
+
+    # 1) Samme linje?
+    for ln in lines:
+        if nav is None:
+            nav = _find_value_same_line(ln, nav_labels, want_date=False)
+        if nav_date is None:
+            nav_date = _find_value_same_line(ln, date_labels, want_date=True)
+        if nav is not None and nav_date is not None:
+            break
+
+    # 2) Ellers: find label-linjen og kig 0..5 linjer frem
+    if nav is None:
+        for idx, ln in enumerate(lines):
+            if any(rx.search(ln) for rx in nav_labels):
+                nav = _find_first_value_in_window(lines, idx, want_date=False, lookahead=6)
+                if nav:
+                    break
+    if nav_date is None:
+        for idx, ln in enumerate(lines):
+            if any(rx.search(ln) for rx in date_labels):
+                nav_date = _find_first_value_in_window(lines, idx, want_date=True, lookahead=6)
+                if nav_date:
+                    break
+
+    return {
+        "Opstart": None,
+        "Valuta": None,
+        "Type": None,
+        "Indre værdi": nav,
+        "Indre værdi dato": nav_date,
+        "Bæredygtighed": None,
+    }
+
+
+# --------------------------
+# Strategi C: Global regex på hele teksten
+# --------------------------
+
+def _extract_by_global(text: str) -> Dict[str, Optional[str]]:
+    t = text
+    nav = None
+    nav_date = None
+
+    m = re.search(r"Indre\s+værdi\s*[:\-\s]*([^\n\r]{0,120})", t, flags=re.IGNORECASE)
+    if m:
+        tail = m.group(1)
+        mn = NUM_RX.search(tail)
+        if not mn:
+            more = t[m.end(): m.end() + 300]
+            mn = NUM_RX.search(more)
+        if mn:
+            nav = mn.group(1)
+
+    m = re.search(r"Indre\s+værdi\s+dato\s*[:\-\s]*([^\n\r]{0,120})", t, flags=re.IGNORECASE)
+    if m:
+        tail = m.group(1)
+        md = DATE_RX.search(tail)
+        if not md:
+            more = t[m.end(): m.end() + 300]
+            md = DATE_RX.search(more)
+        if md:
+            dd, mm, yyyy = md.groups()
+            nav_date = f"{dd}-{mm}-{yyyy}"
+
+    return {
+        "Opstart": None,
+        "Valuta": None,
+        "Type": None,
+        "Indre værdi": nav,
+        "Indre værdi dato": nav_date,
+        "Bæredygtighed": None,
+    }
+
+
+# --------------------------
+# Public API
+# --------------------------
+
+def extract_stamdata(raw_text: str) -> Dict[str, Optional[str]]:
+    """
+    Prøv i rækkefølge:
+      A) 6 labels → 6 værdilinjer (klassisk PFA-layout)
+      B) Label+værdi på samme linje / vindue (0..5 linjer efter label)
+      C) Global regex (sidste fallback)
+    """
+    text = _normalize_text(raw_text or "")
+
+    # A: Strikt blok
+    data = _extract_by_block(text)
+    if data:
+        return data
+
+    # B: Vindues-scan
+    data = _extract_by_pairs_or_window(text)
+    if data.get("Indre værdi") is None and data.get("Indre værdi dato") is None:
+        # C: Global fallback
+        data = _extract_by_global(text)
+    return data
+
+
+def parse_pfa_from_text(isin: str, text: str) -> Dict[str, Optional[str]]:
+    sd = extract_stamdata(text or "")
+
+    nav_raw = sd.get("Indre værdi")
+    nav = _norm_number_auto(nav_raw) if nav_raw else None
+
+    date_raw = sd.get("Indre værdi dato")
+    nav_date = _norm_date_to_iso(date_raw) if date_raw else None
+
+    currency = sd.get("Valuta")
+
+    return {
+        "isin": isin,
+        "nav_raw": nav_raw,
+        "nav": nav,
+        "nav_date_raw": date_raw,
+        "nav_date": nav_date,
+        "currency": currency,
+        "stamdata_raw": sd,
+    }
