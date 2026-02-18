@@ -53,3 +53,14 @@ jobs:
       - name: Cleanup temporary files
         if: always()
         run: rm -rf build/pdf build/text
+        
+      - name: Commit and Push
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          # Vi sørger for at tilføje alle vigtige data-filer
+          git add data/latest.json data/history.json build/daily.html
+          
+          git commit -m "Update investment data [skip ci]" || echo "No changes"
+          git push origin main
