@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 from parser.pfa import parse_pfa_from_text
 
@@ -14,7 +15,7 @@ def main():
     with open(CONFIG_FILE, "r") as f:
         isins = json.load(f)
 
-    # Kun aktive fonde
+    # Spring over fonde der starter med # eller -
     active_isins = [i.strip() for i in isins if not i.strip().startswith(("#", "-"))]
     results = []
     
@@ -28,21 +29,27 @@ def main():
     for isin in active_isins:
         txt_file = TEXT_DIR / f"{isin}.txt"
         
+        # Opret basis data for at undgå KeyError
+        data = {
+            "isin": isin,
+            "url": f"https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin={isin}",
+            "name": "Mangler data",
+            "nav": None,
+            "nav_date": None
+        }
+        
         if txt_file.exists():
             text = txt_file.read_text(encoding="utf-8", errors="ignore")
-            data = parse_pfa_from_text(isin, text)
+            parsed = parse_pfa_from_text(isin, text)
+            data.update(parsed) # Opdater med rigtige tal fra PDF
             
+            # Gem i historikken
             if data["nav"] and data["nav_date"]:
                 if isin not in history: history[isin] = {}
                 history[isin][data["nav_date"]] = data["nav"]
-        else:
-            data = {"isin": isin, "name": "Mangler data", "nav": None}
         
-        data["isin"] = isin
-        data["url"] = f"https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin={isin}"
         results.append(data)
 
-    # Gem filer
     OUT_FILE.parent.mkdir(exist_ok=True)
     with open(OUT_FILE, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
@@ -50,7 +57,7 @@ def main():
     with open(HISTORY_FILE, "w", encoding="utf-8") as f:
         json.dump(history, f, indent=2)
 
-    print(f"Parsing færdig for {len(results)} fonde.")
+    print(f"Parsing færdig for {len(results)} aktive fonde.")
 
 if __name__ == "__main__":
     main()
