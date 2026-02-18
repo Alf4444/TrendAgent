@@ -9,28 +9,49 @@ def parse_pfa_from_text(pfa_id, text):
         "currency": None
     }
     
-    if not text: return data
+    if not text:
+        return data
 
-    # Fjerner alle mærkelige linjeskift og dobbelt-mellemrum
-    clean = " ".join(text.split())
+    # Fjern alle mærkelige linjeskift og gør alt til ét langt stykke tekst
+    # Dette løser problemet hvis "Indre værdi" er delt over to linjer
+    clean_text = " ".join(text.split())
 
-    # 1. Valuta (DKK, EUR, USD)
-    cur_m = re.search(r"Valuta\s+(DKK|EUR|USD)", clean, re.IGNORECASE)
-    if cur_m: data["currency"] = cur_m.group(1).upper()
+    # 1. FIND VALUTA
+    # Vi kigger efter 'Valuta' efterfulgt af 3 store bogstaver
+    curr_match = re.search(r"Valuta\s+([A-Z]{3})", clean_text, re.IGNORECASE)
+    if curr_match:
+        data["currency"] = curr_match.group(1).upper()
 
-    # 2. Indre værdi dato (Kursdatoen) - Vi leder efter DD-MM-ÅÅÅÅ
-    date_m = re.search(r"Indre\s+værdi\s+dato\s+(\d{2}-\d{2}-\d{4})", clean, re.IGNORECASE)
-    if date_m:
-        d = date_m.group(1).split("-")
-        data["nav_date"] = f"{d[2]}-{d[1]}-{d[0]}" # Gemmer som ÅÅÅÅ-MM-DD
+    # 2. FIND DATO (Kursdato)
+    # I dine filer står der typisk "Indre værdi dato 17-02-2026"
+    # Vi leder efter mønstret med bindestreger
+    date_match = re.search(r"Indre\s+værdi\s+dato\s+(\d{2}-\d{2}-\d{4})", clean_text, re.IGNORECASE)
+    if date_match:
+        d = date_match.group(1).split("-")
+        data["nav_date"] = f"{d[2]}-{d[1]}-{d[0]}" # Gem som 2026-02-17
+    else:
+        # Fallback: Hvis den bare finder en dato i nærheden af 'Indre værdi'
+        date_fallback = re.search(r"(\d{2}-\d{2}-\d{4})", clean_text)
+        if date_fallback:
+            d = date_fallback.group(1).split("-")
+            data["nav_date"] = f"{d[2]}-{d[1]}-{d[0]}"
 
-    # 3. Indre værdi (NAV) - Vi tager tallet efter "Indre værdi"
-    # Vi bruger et negativt lookahead for at sikre vi ikke tager datoen her
-    nav_m = re.search(r"Indre\s+værdi\s+(?!dato)([\d\.,]+)", clean, re.IGNORECASE)
-    if nav_m:
-        val = nav_m.group(1).replace(".", "").replace(",", ".")
+    # 3. FIND NAV (Kursen)
+    # Vi leder efter tallet der står efter "Indre værdi" (men ikke ordet "dato")
+    # Vi leder efter et tal som f.eks. 115,00 eller 1.200,50
+    nav_match = re.search(r"Indre\s+værdi\s+([\d\.,]+)", clean_text, re.IGNORECASE)
+    if nav_match:
+        val_str = nav_match.group(1)
+        # Hvis tallet ender på et punktum eller komma pga. en sætning, fjerner vi det
+        val_str = val_str.rstrip('.,')
+        
+        # Rens tallet: fjern tusindtals-punktum og skift komma til punktum
+        if "," in val_str:
+            val_str = val_str.replace(".", "").replace(",", ".")
+        
         try:
-            data["nav"] = float(val)
-        except: pass
+            data["nav"] = float(val_str)
+        except:
+            pass
 
     return data
