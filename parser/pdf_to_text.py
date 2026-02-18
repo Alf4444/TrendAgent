@@ -8,15 +8,19 @@ def convert_pdfs():
     txt_dir = base_dir / "build" / "text"
     txt_dir.mkdir(parents=True, exist_ok=True)
 
-    for pdf_path in pdf_dir.glob("*.pdf"):
+    pdf_files = list(pdf_dir.glob("*.pdf"))
+    if not pdf_files:
+        print("Ingen PDF-filer fundet i build/pdf/")
+        return
+
+    for pdf_path in pdf_files:
         txt_path = txt_dir / f"{pdf_path.stem}.txt"
-        print(f"Konverterer: {pdf_path.name}")
+        print(f"Læser: {pdf_path.name}")
         
         full_text = []
         try:
             with pdfplumber.open(pdf_path) as pdf:
                 for page in pdf.pages:
-                    # Udtrækker tekst fra både brødtekst og tabeller
                     text = page.extract_text()
                     if text:
                         full_text.append(text)
