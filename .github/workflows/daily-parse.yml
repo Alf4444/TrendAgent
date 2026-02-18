@@ -1,14 +1,15 @@
 name: Daily Report (Parse)
 
 on:
-  workflow_dispatch:
+  schedule:
+    - cron: "10 5 * * 1-5"   # hverdage 05:10 CET; justér efter behov
+  workflow_dispatch: {}
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repo
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Python
@@ -16,75 +17,44 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install requirements
+      - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip setuptools wheel
-          pip install -r requirements.txt
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Lint - syntax check (parser)
+      # (Behold jeres eksisterende PDF→TXT step her.
+      #  Denne placeholder sikrer at build/text/ findes, så parse-debug altid kan uploades.)
+      - name: Ensure build folders exist
         run: |
-          python -m py_compile parser/parse_pfa.py
-          echo "Syntax OK"
+          set -euo pipefail
+          mkdir -p build/text
+          mkdir -p build/pdf
+          mkdir -p data
 
-      # Kør parsing til en midlertidig fil, så vi ALTID kan uploade parse-debug,
-      # også selv om parsing ikke lykkes. HTML bygges bagefter med latest.json.
-      - name: Parse PDFs (write parse.json, never fail the job)
+      - name: Parse PFA PDFs → latest.json (always)
         run: |
-          echo "---- PARSE START ----"
-          python parser/parse_pfa.py --out parse.json || echo "[WARN] parse failed (continuing)"
-          echo "---- LIST FILES (after parse) ----"
-          ls -la .
-          echo "---- preview parse.json ----"
-          head -n 40 parse.json || true
-          echo "---- PARSE END ----"
-
-      # Vælg output til rapport:
-      # - Hvis parse.json findes -> brug den som latest.json
-      # - Ellers -> lav MOCK som latest.json (så HTML altid bygges)
-      - name: Produce latest.json (from parse.json or mock)
-        run: |
-          if [ -f parse.json ]; then
-            cp parse.json latest.json
-            echo "[OK] Using parse.json -> latest.json"
-          else
-            echo "[WARN] parse.json missing -> generating MOCK latest.json"
-            python parser/parse_pfa.py --out latest.json --mock
-          fi
-          echo "---- preview latest.json ----"
-          head -n 40 latest.json || true
+          set -euo pipefail
+          python -m parser.main
 
       - name: Build daily HTML
         run: |
-          python reporting/build_report.py --kind daily --data latest.json --template templates/daily.html.j2 --out build/daily.html
+          set -euo pipefail
+          python reporting/build_daily.py
+        # reporting/build_daily.py skal læse data/latest.json og skrive build/daily.html
 
-      - name: Debug - first lines of daily.html
-        run: |
-          echo "---- daily.html (first 40 lines) ----"
-          head -n 40 build/daily.html || true
-
-      - name: Upload artifact (daily)
+      - name: Upload daily artifact
         uses: actions/upload-artifact@v4
         with:
-          name: trendagent-daily
+          name: daily
           path: build/daily.html
+          if-no-files-found: error
 
-      # ALTID upload parse-debug. Hvis build/pdfs eller build/text ikke findes, ignorer.
-      - name: Upload parse-debug (pdfs + text)
+      - name: Upload parse-debug (text + pdf)
         uses: actions/upload-artifact@v4
         with:
           name: parse-debug
           path: |
-            build/pdfs/
             build/text/
+            build/pdf/
           if-no-files-found: ignore
-
-      # Hjælp: print hvilken fond der mangler NAV/dato (hurtig overblik)
-      - name: Show missing NAV/date rows
-        run: |
-          python - << 'PY'
-import json,sys
-with open("latest.json",encoding="utf-8") as f:
-    data=json.load(f)
-missing=[r["isin"] for r in data.get("rows",[]) if (r.get("nav") is None) or (r.get("nav_date") is None)]
-print("Missing NAV/date for:", missing)
-PY
