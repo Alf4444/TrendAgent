@@ -23,41 +23,33 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install pdfplumber pandas jinja2 requests pdfminer.six
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Clear and Create Folders
+      - name: Preparation (Clean start)
         run: |
-          rm -rf build/text build/pdf data/latest.json
+          rm -rf build/
           mkdir -p build/text build/pdf data config
 
-      - name: Download and Convert PDF → text
+      - name: Download and Convert
         run: python parser/pdf_to_text.py
 
-      - name: Parse PFA PDFs → latest.json
+      - name: Parse to JSON
         run: python -m parser.main
 
-      - name: Build daily HTML
+      - name: Build HTML Report
         run: python reporting/build_daily.py
 
-      - name: Commit and Push Changes
+      - name: Commit and Push
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add data/latest.json build/daily.html
-          git commit -m "Update data and report [skip ci]" || echo "No changes"
+          
+          # Her fortæller vi GitHub, hvilke filer der skal gemmes (commit)
+          # Vi gemmer 'history.json' så vi kan regne gennemsnit (MA20/50/200) senere
+          git add data/latest.json data/history.json build/daily.html
+          
+          git commit -m "Update data, history and report [skip ci]" || echo "No changes"
           git push origin main
 
-      # HER KOMMER DINE ARTIFACTS TILBAGE:
-      - name: Upload PDF and Text Debug Files
-        uses: actions/upload-artifact@v4
-        with:
-          name: parse-debug-files
-          path: |
-            build/pdf/
-            build/text/
-
-      - name: Upload Daily HTML Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: daily-report-html
-          path: build/daily.html
+      - name: Cleanup temporary files
+        if: always()
+        run: rm -rf build/pdf build/text
