@@ -48,11 +48,3 @@ jobs:
           git add data/latest.json build/daily.html
           git commit -m "Update data and report [skip ci]" || echo "No changes"
           git push origin main
-
-      - name: Upload debug files
-        uses: actions/upload-artifact@v4
-        with:
-          name: parse-debug
-          path: |
-            build/text/
-            build/pdf/
