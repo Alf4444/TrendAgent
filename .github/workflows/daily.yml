@@ -33,18 +33,18 @@ jobs:
       # - name: PDF → text
       #   run: |
       #     python parser/pdf_to_text.py
-
+      
 - name: Seed text if empty (temporary)
   run: |
     set -euo pipefail
     mkdir -p build/text
-    if [ -z "$(ls -A build/text || true)" ]; then
+    if [ -z "$(ls -A build/text 2>/dev/null)" ]; then
       echo "[SEED] build/text is empty → copying samples/text/*.txt"
       cp -v samples/text/*.txt build/text/ || true
     else
       echo "[SEED] build/text already has files"
     fi
-``
+    
       - name: Parse PFA PDFs → latest.json (always)
         run: |
           set -euo pipefail
