@@ -41,7 +41,10 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          # Vi tvinger GitHub til at huske disse filer til næste kørsel:
+          
+          # Hent nyeste ændringer for at undgå 'rejected' fejl
+          git pull origin main --rebase
+          
           git add data/latest.json data/history.json build/daily.html
           git commit -m "Update investment data and history [skip ci]" || echo "No changes"
           git push origin main
