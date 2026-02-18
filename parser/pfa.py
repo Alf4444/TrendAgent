@@ -1,22 +1,28 @@
 import re
 
 def parse_pfa_from_text(pfa_id, text):
-    data = {"pfa_id": pfa_id, "nav": None, "nav_date": None, "currency": None}
+    data = {"pfa_id": pfa_id, "name": None, "nav": None, "nav_date": None, "currency": None}
     if not text: return data
 
-    # 1. FIND VALUTA
+    # 1. FIND NAVN (Tager den første linje og fjerner overflødig tekst)
+    lines = text.split('\n')
+    if lines:
+        raw_name = lines[0].strip()
+        # Fjern "Investeringsprofil Stamdata" hvis det er kommet med op i navnet
+        data["name"] = raw_name.replace("Investeringsprofil Stamdata", "").strip()
+
+    # 2. FIND VALUTA
     cur_m = re.search(r"Valuta\s*\n?\s*([A-Z]{3})", text)
     if cur_m:
         data["currency"] = cur_m.group(1).upper()
 
-    # 2. FIND DATO (Specifikt efter Indre værdi dato)
+    # 3. FIND DATO
     date_m = re.search(r"Indre\s+værdi\s+dato\s*\n?\s*(\d{2}-\d{2}-\d{4})", text, re.IGNORECASE)
     if date_m:
         d = date_m.group(1).split("-")
         data["nav_date"] = f"{d[2]}-{d[1]}-{d[0]}"
 
-    # 3. FIND NAV (Kursen)
-    # Vi leder efter "Indre værdi" efterfulgt af et tal, men vi ignorerer hvis der står "dato" bagefter
+    # 4. FIND NAV (Kursen)
     nav_m = re.search(r"Indre\s+værdi\s*\n?\s*([\d\.,]+)(?!\s*dato)", text, re.IGNORECASE)
     if nav_m:
         val_str = nav_m.group(1).rstrip('.,')
