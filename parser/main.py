@@ -1,5 +1,6 @@
 # parser/main.py
 import json
+import re
 from pathlib import Path
 from parser.pfa import parse_pfa_from_text
 
@@ -9,38 +10,39 @@ OUT_FILE = ROOT / "data" / "latest.json"
 CONFIG_PDFS = ROOT / "config" / "pfa_pdfs.json"
 
 def main():
-    print("[PARSE] Starter parsing af fonde...")
+    print("[PARSE] Starter parsing...")
     
-    # 1. Indlæs mapping (ISIN, Navne, URL'er) fra din nye config-fil
-    mapping = {}
+    # Indlæs links fra config/pfa_pdfs.json
+    links = {}
     if CONFIG_PDFS.exists():
-        with open(CONFIG_PDFS, encoding="utf-8") as f:
-            # Vi antager her at filen er en liste af objekter med "pfa_id", "isin", "name"
-            # Hvis din struktur er anderledes, skal vi lige tilpasse denne linje
-            data = json.load(f)
-            # Vi laver et opslagsværk så vi hurtigt kan finde info via PFA-koden
-            mapping = {item["pfa_id"]: item for item in data}
+        links = json.loads(CONFIG_PDFS.read_text(encoding="utf-8"))
 
     results = []
     
-    # 2. Gennemgå alle tekstfiler fra PDF-konverteringen
     for txt_file in TEXT_DIR.glob("*.txt"):
         pfa_id = txt_file.stem
-        text = txt_file.read_text(encoding="utf-8")
+        text = txt_file.read_text(encoding="utf-8", errors="ignore")
         
-        # Brug den nye robuste parser fra pfa.py
+        # 1. Kør den robuste parser (pfa.py)
         data = parse_pfa_from_text(pfa_id, text)
         
-        # Tilføj ekstra info fra din pfa_pdfs.json hvis den findes
-        info = mapping.get(pfa_id, {})
-        data["isin"] = info.get("isin", pfa_id)
-        data["name"] = info.get("name", "Ukendt fond")
-        data["url"] = info.get("url", "")
+        # 2. Hent PDF URL og find ISIN i den (hvis muligt)
+        pdf_url = links.get(pfa_id, "")
+        isin_match = re.search(r"isin=([A-Z0-9]+)", pdf_url)
+        isin = isin_match.group(1) if isin_match else pfa_id
+        
+        # 3. Berig data
+        data.update({
+            "isin": isin,
+            "pfa_id": pfa_id,
+            "url": pdf_url,
+            "name": pfa_id # Navnet kommer ofte øverst i TXT, men PFA-ID er unikt
+        })
         
         results.append(data)
-        print(f"[OK] Behandlede {pfa_id}: NAV={data['nav']}, Dato={data['nav_date']}")
+        print(f"[OK] {pfa_id} -> NAV: {data['nav']}, Dato: {data['nav_date']}")
 
-    # 3. GEM DATA (Dette er det vigtige skridt!)
+    # Gem til data/latest.json
     OUT_FILE.parent.mkdir(exist_ok=True)
     with open(OUT_FILE, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
