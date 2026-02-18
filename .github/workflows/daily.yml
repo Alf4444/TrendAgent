@@ -28,23 +28,23 @@ jobs:
           set -euo pipefail
           mkdir -p build/text build/pdf data templates reporting
 
-      # TODO: Kør jeres rigtige PDF→TXT step her (ellers vil NAV/Dato blive None)
-      # Eksempel:
+      # (Valgfrit senere) PDF -> text step, når I vil hente rigtige PDF'er
       # - name: PDF → text
       #   run: |
+      #     set -euo pipefail
       #     python parser/pdf_to_text.py
-      
-- name: Seed text if empty (temporary)
-  run: |
-    set -euo pipefail
-    mkdir -p build/text
-    if [ -z "$(ls -A build/text 2>/dev/null)" ]; then
-      echo "[SEED] build/text is empty → copying samples/text/*.txt"
-      cp -v samples/text/*.txt build/text/ || true
-    else
-      echo "[SEED] build/text already has files"
-    fi
-    
+
+      - name: Seed text if empty (temporary)
+        run: |
+          set -euo pipefail
+          mkdir -p build/text
+          if [ -z "$(ls -A build/text 2>/dev/null)" ]; then
+            echo "[SEED] build/text is empty → copying samples/text/*.txt"
+            cp -v samples/text/*.txt build/text/ || true
+          else
+            echo "[SEED] build/text already has files"
+          fi
+
       - name: Parse PFA PDFs → latest.json (always)
         run: |
           set -euo pipefail
@@ -53,21 +53,12 @@ jobs:
       - name: Diagnostics (tree + latest.json excerpt)
         run: |
           set -euo pipefail
-          echo "== Repo tree =="
-          ls -la
-          echo "== reporting/ =="
-          ls -la reporting || true
-          echo "== templates/ =="
-          ls -la templates || true
-          echo "== data/latest.json =="
-          if [ -f data/latest.json ]; then head -n 100 data/latest.json; else echo "missing latest.json"; fi
-          echo "== build/text/ =="
-          ls -la build/text || true
+          echo "== build/text (should contain 3 files) =="; ls -la build/text || true
+          echo "== data/latest.json (first 60 lines) =="; head -n 60 data/latest.json || true
 
       - name: Build daily HTML
         run: |
           set -euo pipefail
-          # Kør builder med korrekt sti
           python reporting/build_daily.py
 
       - name: Upload daily artifact
@@ -85,3 +76,4 @@ jobs:
             build/text/
             build/pdf/
           if-no-files-found: ignore
+``
