@@ -1,0 +1,12 @@
+Opstart
+Valuta
+Type
+Indre værdi
+Indre værdi dato
+Bæredygtighed
+01-01-2018
+DKK
+Afdeling
+128,53
+17-02-2026
+Artikel 8
