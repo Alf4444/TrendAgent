@@ -8,31 +8,29 @@ def parse_pfa_from_text(pfa_id, text):
         "nav_date": None,
         "currency": None
     }
-
-    # 1. Valuta - kig efter 'Valuta' og derefter koden
-    currency_match = re.search(r"Valuta\s+(DKK|EUR|USD)", text, re.IGNORECASE)
-    if currency_match:
-        data["currency"] = currency_match.group(1)
-
-    # 2. Indre værdi (NAV) - vi kigger efter tallet lige efter 'Indre værdi'
-    # Bemærk: Vi undgår 'Indre værdi dato' ved at bruge et negativt lookahead
-    nav_match = re.search(r"Indre værdi\s+(?!dato)([\d\.,]+)", text, re.IGNORECASE)
-    if nav_match:
-        nav_str = nav_match.group(1).replace(".", "").replace(",", ".")
-        try:
-            data["nav"] = float(nav_str)
-        except:
-            pass
-
-    # 3. Indre værdi dato - find datoen efter den specifikke overskrift
-    date_match = re.search(r"Indre værdi dato\s+(\d{2}-\d{2}-\d{4})", text, re.IGNORECASE)
-    if date_match:
-        d = date_match.group(1)
-        parts = d.split("-")
-        data["nav_date"] = f"{parts[2]}-{parts[1]}-{parts[0]}"
     
-    # Debug print hvis data mangler
-    if not data["nav"] or not data["nav_date"]:
-        print(f"[DEBUG] Kunne ikke parse alt for {pfa_id}. NAV: {data['nav']}, Dato: {data['nav_date']}")
+    if not text: return data
+
+    # Fjerner alle mærkelige linjeskift og dobbelt-mellemrum
+    clean = " ".join(text.split())
+
+    # 1. Valuta (DKK, EUR, USD)
+    cur_m = re.search(r"Valuta\s+(DKK|EUR|USD)", clean, re.IGNORECASE)
+    if cur_m: data["currency"] = cur_m.group(1).upper()
+
+    # 2. Indre værdi dato (Kursdatoen) - Vi leder efter DD-MM-ÅÅÅÅ
+    date_m = re.search(r"Indre\s+værdi\s+dato\s+(\d{2}-\d{2}-\d{4})", clean, re.IGNORECASE)
+    if date_m:
+        d = date_m.group(1).split("-")
+        data["nav_date"] = f"{d[2]}-{d[1]}-{d[0]}" # Gemmer som ÅÅÅÅ-MM-DD
+
+    # 3. Indre værdi (NAV) - Vi tager tallet efter "Indre værdi"
+    # Vi bruger et negativt lookahead for at sikre vi ikke tager datoen her
+    nav_m = re.search(r"Indre\s+værdi\s+(?!dato)([\d\.,]+)", clean, re.IGNORECASE)
+    if nav_m:
+        val = nav_m.group(1).replace(".", "").replace(",", ".")
+        try:
+            data["nav"] = float(val)
+        except: pass
 
     return data
