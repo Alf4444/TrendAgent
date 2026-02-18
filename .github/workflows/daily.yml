@@ -2,12 +2,14 @@ name: Daily Report (Parse)
 
 on:
   schedule:
-    - cron: "10 5 * * 1-5" # Kører kl. 05:10 UTC i hverdagene
-  workflow_dispatch: {}     # Gør det muligt at starte den manuelt
+    - cron: "10 5 * * 1-5"
+  workflow_dispatch: {}
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # Giver robotten lov til at gemme filer i dit repo
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,28 +26,40 @@ jobs:
 
       - name: Clear old build data
         run: |
-          # Vi sletter alt gammelt for at sikre friske data
           rm -rf build/text/*.txt
           rm -rf build/pdf/*.pdf
           rm -rf data/latest.json
           mkdir -p build/text build/pdf data
 
       - name: PDF → text
-        run: |
-          # Henter PDF'er fra PFA og laver dem til tekst
-          python parser/pdf_to_text.py
+        run: python parser/pdf_to_text.py
 
       - name: Parse PFA PDFs → latest.json
-        run: |
-          # Bruger din parser/main.py (som kalder pfa.py) til at finde NAV og dato
-          python -m parser.main
+        run: python -m parser.main
 
       - name: Build daily HTML
-        run: |
-          # Genererer den HTML-rapport du ser
-          python reporting/build_daily.py
+        run: python reporting/build_daily.py
 
-      - name: Upload daily artifact
+      # NYT: Gemmer data/latest.json og build/daily.html direkte i dit repo
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/latest.json build/daily.html
+          git commit -m "Update data and report [skip ci]" || echo "No changes to commit"
+          git push
+
+      # NYT: Bringer parse-debug mappen tilbage under Artifacts
+      - name: Upload debug files
+        uses: actions/upload-artifact@v4
+        with:
+          name: parse-debug
+          path: |
+            build/text/
+            build/pdf/
+          if-no-files-found: warn
+
+      - name: Upload daily report
         uses: actions/upload-artifact@v4
         with:
           name: daily-report
