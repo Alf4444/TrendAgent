@@ -3,457 +3,54 @@
     <html lang="da">
     <head>
         <meta charset="utf-8">
-        <title>TrendAgent Rapport</title>
         <style>
-            body { font-family: sans-serif; margin: 40px; background: #f9f9f9; }
-            table { border-collapse: collapse; width: 100%; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-            th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
-            th { background: #2c3e50; color: white; }
-            .pos { color: #27ae60; font-weight: bold; }
-            .neg { color: #e74c3c; font-weight: bold; }
-            .na { color: #95a5a6; }
+            body { font-family: -apple-system, sans-serif; margin: 30px; background: #f0f2f5; color: #1c1e21; }
+            table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+            th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
+            th { background: #1a73e8; color: white; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; }
+            .pos { color: #1e8e3e; font-weight: bold; }
+            .neg { color: #d93025; font-weight: bold; }
+            .badge { background: #e8f0fe; color: #1967d2; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
         </style>
     </head>
     <body>
-        <h1>TrendAgent – Daglig Rapport</h1>
-        <p>Genereret: 2026-02-18 20:11</p>
+        <h1>TrendAgent Dashboard</h1>
+        <p>Sidst opdateret: 18-02-2026 20:31</p>
         <table>
             <thead>
-                <tr>
-                    <th>Fond Navn</th>
-                    <th>NAV (Kurs)</th>
-                    <th>Daglig %</th>
-                    <th>Dato</th>
-                    <th>Valuta</th>
-                    <th>Link</th>
-                </tr>
+                <tr><th>Fond</th><th>Kurs</th><th>ÅTD</th><th>1 Uge</th><th>1 Md</th><th>Trend (MA)</th><th>Link</th></tr>
             </thead>
             <tbody>
-                
         <tr>
-            <td><strong>Kerne Invest Indeks Mellemlange Obligationer</strong><br><small style="color:#666">PFA000002202</small></td>
-            <td>142.68</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
+            <td><strong>Kerne Invest Indeks Mellemlange Obligationer</strong><br><small>PFA000002202</small></td>
+            <td>142.68 DKK</td>
+            <td class="neg">-0,45%</td>
+            <td>0,16%</td>
+            <td>0,53%</td>
+            <td><span class="badge">OPSAMLER DATA</span></td>
             <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002202" target="_blank">PDF ↗</a></td>
         </tr>
         
         <tr>
-            <td><strong>iShares Inflation Linked Govt Bond UCITS ETF</strong><br><small style="color:#666">PFA000002203</small></td>
-            <td>150.03</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
+            <td><strong>iShares Inflation Linked Govt Bond UCITS ETF</strong><br><small>PFA000002203</small></td>
+            <td>150.03 DKK</td>
+            <td class="pos">1,78%</td>
+            <td>0,32%</td>
+            <td>0,81%</td>
+            <td><span class="badge">OPSAMLER DATA</span></td>
             <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002203" target="_blank">PDF ↗</a></td>
         </tr>
         
         <tr>
-            <td><strong>Kerne Invest Globale Aktier</strong><br><small style="color:#666">PFA000002206</small></td>
-            <td>666.33</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
+            <td><strong>Kerne Invest Globale Aktier</strong><br><small>PFA000002206</small></td>
+            <td>666.33 DKK</td>
+            <td class="pos">2,82%</td>
+            <td>-0,03%</td>
+            <td>-0,31%</td>
+            <td><span class="badge">OPSAMLER DATA</span></td>
             <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002206" target="_blank">PDF ↗</a></td>
         </tr>
-        
-        <tr>
-            <td><strong>PFA Danske Erhvervsejendomme Core</strong><br><small style="color:#666">PFA000002226</small></td>
-            <td>195.64</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002226" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>Kerne Invest Danske Aktier</strong><br><small style="color:#666">PFA000002228</small></td>
-            <td>412.83</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002228" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>PFA Indeks Europa Aktier</strong><br><small style="color:#666">PFA000002230</small></td>
-            <td>253.46</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002230" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>PFA Indeks USA Aktier</strong><br><small style="color:#666">PFA000002232</small></td>
-            <td>488.30</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002232" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>PFA Indeks Globale Aktier</strong><br><small style="color:#666">PFA000002233</small></td>
-            <td>398.34</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002233" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>iShares MSCI Emerging Markets UCITS ETF</strong><br><small style="color:#666">PFA000002234</small></td>
-            <td>222.13</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002234" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>PFA Indeks Globale Obligationer</strong><br><small style="color:#666">PFA000002235</small></td>
-            <td>102.63</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002235" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>PFA Pengemarked</strong><br><small style="color:#666">PFA000002299</small></td>
-            <td>111.60</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002299" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>PFA Indeks 25</strong><br><small style="color:#666">PFA000002425</small></td>
-            <td>112.96</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002425" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>PFA Indeks 50</strong><br><small style="color:#666">PFA000002450</small></td>
-            <td>125.14</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002450" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>PFA Indeks 75</strong><br><small style="color:#666">PFA000002475</small></td>
-            <td>137.94</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002475" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>Lazard Emerging Markets Equity Fund</strong><br><small style="color:#666">PFA000002703</small></td>
-            <td>408.00</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>USD</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002703" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>C WorldWide Globale Aktier</strong><br><small style="color:#666">PFA000002706</small></td>
-            <td>528.37</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002706" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>Maj Invest Globale Obligationer Akkumulerende</strong><br><small style="color:#666">PFA000002712</small></td>
-            <td>102.64</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002712" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>iShares Global IG Corp Bond EUR Hedged UCITS ETF</strong><br><small style="color:#666">PFA000002713</small></td>
-            <td>174.20</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>EUR</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002713" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>WM Opportunistisk Emerging Markets Obligationer</strong><br><small style="color:#666">PFA000002715</small></td>
-            <td>313.35</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>USD</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002715" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>iShares Global High Yield Corp Bond EUR Hedged UCITS ETF</strong><br><small style="color:#666">PFA000002716</small></td>
-            <td>314.88</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002716" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>Maj Invest Danske Aktier</strong><br><small style="color:#666">PFA000002722</small></td>
-            <td>572.05</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002722" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>Sydinvest Globale EM-aktier</strong><br><small style="color:#666">PFA000002726</small></td>
-            <td>202.69</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002726" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>Sydinvest HøjrenteLande</strong><br><small style="color:#666">PFA000002728</small></td>
-            <td>149.09</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002728" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>Sparinvest Value Aktier</strong><br><small style="color:#666">PFA000002729</small></td>
-            <td>341.85</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002729" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>C WorldWide Asien</strong><br><small style="color:#666">PFA000002732</small></td>
-            <td>381.13</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002732" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>SKAGEN Global</strong><br><small style="color:#666">PFA000002734</small></td>
-            <td>329.04</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002734" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>Magna Eastern European Fund</strong><br><small style="color:#666">PFA000002735</small></td>
-            <td>149.69</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002735" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>Nordea Invest European High Yield Bonds</strong><br><small style="color:#666">PFA000002736</small></td>
-            <td>215.74</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002736" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>iShares MSCI China UCITS ETF</strong><br><small style="color:#666">PFA000002738</small></td>
-            <td>141.70</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>EUR</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002738" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>BLS Invest Danske Aktier</strong><br><small style="color:#666">PFA000002739</small></td>
-            <td>326.24</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002739" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>Threadneedle Pan European ESG Equities</strong><br><small style="color:#666">PFA000002741</small></td>
-            <td>288.98</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002741" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>DWS Xtrackers, Råvarer</strong><br><small style="color:#666">PFA000002742</small></td>
-            <td>188.29</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002742" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>BankInvest Højt Udbytte Aktier</strong><br><small style="color:#666">PFA000002746</small></td>
-            <td>182.69</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002746" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>UBS Globale Bæredygtige Aktier</strong><br><small style="color:#666">PFA000002748</small></td>
-            <td>234.74</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>USD</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002748" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>Fundsmith Equity Fund</strong><br><small style="color:#666">PFA000002749</small></td>
-            <td>108.74</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>EUR</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002749" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>Qblue Global Equities Responsible Transition Fund</strong><br><small style="color:#666">PFA000002750</small></td>
-            <td>129.73</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002750" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>Robeco Global SDG Equities</strong><br><small style="color:#666">PFA000002751</small></td>
-            <td>110.90</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>EUR</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002751" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>Robeco Biodiversity Equities</strong><br><small style="color:#666">PFA000002752</small></td>
-            <td>106.63</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>EUR</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002752" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>Robeco Circular Economy Equities</strong><br><small style="color:#666">PFA000002753</small></td>
-            <td>127.00</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>EUR</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002753" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>Robeco Sustainable Water Equities</strong><br><small style="color:#666">PFA000002754</small></td>
-            <td>106.26</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>EUR</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002754" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>Maj Invest UCITS ETF Defence & Cybersecurity Fund</strong><br><small style="color:#666">PFA000002755</small></td>
-            <td>120.02</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002755" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>iShares Global Aerospace & Defence UCITS ETF</strong><br><small style="color:#666">PFA000002756</small></td>
-            <td>135.80</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>USD</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002756" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>iShares MSCI ACWI Global Equities UCITS ETF</strong><br><small style="color:#666">PFA000002757</small></td>
-            <td>106.65</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>EUR</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002757" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>iShares MSCI World Health Care Sector Advanced UCITS ETF</strong><br><small style="color:#666">PFA000002758</small></td>
-            <td>113.38</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>EUR</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002758" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>iShares Core MSCI Japan IMI UCITS ETF</strong><br><small style="color:#666">PFA000002759</small></td>
-            <td>115.00</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>EUR</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002759" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>Xtrackers MSCI World EUR Hedged UCITS ETF</strong><br><small style="color:#666">PFA000002760</small></td>
-            <td>102.59</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>EUR</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002760" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-        <tr>
-            <td><strong>Maj Invest Guld, Sølv & Miner UCITS ETF</strong><br><small style="color:#666">PFA000002761</small></td>
-            <td>125.16</td>
-            <td><span class="na">Ny</span></td>
-            <td>2026-02-17</td>
-            <td>DKK</td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002761" target="_blank">PDF ↗</a></td>
-        </tr>
-        
-            </tbody>
+        </tbody>
         </table>
     </body>
     </html>
