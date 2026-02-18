@@ -4,48 +4,29 @@ from datetime import datetime
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_FILE = ROOT / "data/latest.json"
-HISTORY_FILE = ROOT / "data/history.json"
 REPORT_FILE = ROOT / "build/daily.html"
 
 def build_report():
     if not DATA_FILE.exists(): return
-    
     with open(DATA_FILE, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    history = {}
-    if HISTORY_FILE.exists():
-        with open(HISTORY_FILE, "r") as f:
-            history = json.load(f)
-
     rows_html = ""
     for item in data:
-        # Brug navnet fra parseren, ellers ISIN
-        name = item.get("name") or item["isin"]
-        nav = item["nav"] or 0
-        date = item["nav_date"] or "-"
-        currency = item.get("currency", "-")
-        url = item.get("url", "#")
-        
-        # Beregn daglig ændring hvis vi har historik
-        change_html = '<span class="na">Ny</span>'
-        isin = item["isin"]
-        if isin in history and len(history[isin]) > 1:
-            dates = sorted(history[isin].keys())
-            last_val = history[isin][dates[-1]]
-            prev_val = history[isin][dates[-2]]
-            diff = ((last_val / prev_val) - 1) * 100
-            color = "pos" if diff > 0 else "neg"
-            change_html = f'<span class="{color}">{diff:+.2f}%</span>'
+        ytd = item.get("return_ytd", "0,00")
+        # Farvekodning af ÅTD
+        ytd_val = float(ytd.replace(",", "."))
+        ytd_class = "pos" if ytd_val > 0 else "neg" if ytd_val < 0 else ""
 
         rows_html += f"""
         <tr>
-            <td><strong>{name}</strong><br><small style="color:#666">{item['isin']}</small></td>
-            <td>{nav:,.2f}</td>
-            <td>{change_html}</td>
-            <td>{date}</td>
-            <td>{currency}</td>
-            <td><a href="{url}" target="_blank">PDF ↗</a></td>
+            <td><strong>{item.get('name', item['isin'])}</strong><br><small>{item['isin']}</small></td>
+            <td>{item.get('nav', 0):,.2f} {item.get('currency', '')}</td>
+            <td class="{ytd_class}">{ytd}%</td>
+            <td>{item.get('return_1w')}%</td>
+            <td>{item.get('return_1m')}%</td>
+            <td><span class="badge">OPSAMLER DATA</span></td>
+            <td><a href="{item.get('url', '#')}" target="_blank">PDF ↗</a></td>
         </tr>
         """
 
@@ -54,39 +35,28 @@ def build_report():
     <html lang="da">
     <head>
         <meta charset="utf-8">
-        <title>TrendAgent Rapport</title>
         <style>
-            body {{ font-family: sans-serif; margin: 40px; background: #f9f9f9; }}
-            table {{ border-collapse: collapse; width: 100%; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }}
-            th, td {{ padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }}
-            th {{ background: #2c3e50; color: white; }}
-            .pos {{ color: #27ae60; font-weight: bold; }}
-            .neg {{ color: #e74c3c; font-weight: bold; }}
-            .na {{ color: #95a5a6; }}
+            body {{ font-family: -apple-system, sans-serif; margin: 30px; background: #f0f2f5; color: #1c1e21; }}
+            table {{ width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }}
+            th, td {{ padding: 15px; text-align: left; border-bottom: 1px solid #eee; }}
+            th {{ background: #1a73e8; color: white; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; }}
+            .pos {{ color: #1e8e3e; font-weight: bold; }}
+            .neg {{ color: #d93025; font-weight: bold; }}
+            .badge {{ background: #e8f0fe; color: #1967d2; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }}
         </style>
     </head>
     <body>
-        <h1>TrendAgent – Daglig Rapport</h1>
-        <p>Genereret: {datetime.now().strftime('%Y-%m-%d %H:%M')}</p>
+        <h1>TrendAgent Dashboard</h1>
+        <p>Sidst opdateret: {datetime.now().strftime('%d-%m-%Y %H:%M')}</p>
         <table>
             <thead>
-                <tr>
-                    <th>Fond Navn</th>
-                    <th>NAV (Kurs)</th>
-                    <th>Daglig %</th>
-                    <th>Dato</th>
-                    <th>Valuta</th>
-                    <th>Link</th>
-                </tr>
+                <tr><th>Fond</th><th>Kurs</th><th>ÅTD</th><th>1 Uge</th><th>1 Md</th><th>Trend (MA)</th><th>Link</th></tr>
             </thead>
-            <tbody>
-                {rows_html}
-            </tbody>
+            <tbody>{rows_html}</tbody>
         </table>
     </body>
     </html>
     """
-    
     REPORT_FILE.parent.mkdir(exist_ok=True)
     REPORT_FILE.write_text(html_template, encoding="utf-8")
 
