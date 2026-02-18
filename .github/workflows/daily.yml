@@ -28,13 +28,13 @@ jobs:
           set -euo pipefail
           mkdir -p build/text build/pdf data templates reporting config
 
-      # === NYT: Hent PFA-PDF'er og konverter til TXT ===
+      # 1) Hent PDF og lav TXT
       - name: PDF → text (FundConnect via ISIN)
         run: |
           set -euo pipefail
           python parser/pdf_to_text.py
 
-      # Behold seed som sidste fallback, hvis build/text ender tom
+      # (midlertidig) seed hvis tom
       - name: Seed text if empty (temporary)
         run: |
           set -euo pipefail
@@ -46,23 +46,112 @@ jobs:
             echo "[SEED] build/text already has files"
           fi
 
-      - name: Parse PFA PDFs → latest.json (always)
+      # 2) Fail fast hvis der ingen .txt er
+      - name: Assert text files exist (fail fast if none)
         run: |
           set -euo pipefail
-          python -m parser.main
+          shopt -s nullglob
+          files=(build/text/*.txt)
+          echo "Found ${#files[@]} .txt files in build/text"
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "::error::No text files in build/text. PDF extraction likely failed or wrote to another folder."
+            exit 1
+          fi
 
-      - name: Diagnostics (tree + latest.json excerpt)
+      # 3) Kør din nuværende parser (kan give 0 matches uden fejl)
+      - name: Parse PFA PDFs → latest.json (primary)
+        run: |
+          set -euo pipefail
+          # Kør nuværende parser
+          python -m parser.main || true
+          # Hvis den ikke skrev output, så vil næste step (assert) fortælle det
+
+      # 4) Hvis primary ikke lavede en fil, så brug fallback-parser (ny)
+      - name: Fallback parse (from TXT → data/latest.json)
+        if: ${{ !hashFiles('data/latest.json') }}
+        run: |
+          set -euo pipefail
+          python - << 'PYCODE'
+          import re, json, os, glob, sys, pathlib
+          from datetime import datetime
+
+          TEXT_DIR = pathlib.Path("build/text")
+          OUT_PATH = pathlib.Path("data/latest.json")
+          OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+          # Regex'er der matcher dansk format:
+          # - "Indre værdi 125,16" (komma som decimalseparator)
+          # - "Indre værdi dato 17-02-2026" (dd-mm-yyyy)
+          re_nav = re.compile(r"Indre\s*v[æa]rdi\s*([0-9]+(?:[.,][0-9]+)?)", re.IGNORECASE)
+          re_date = re.compile(r"Indre\s*v[æa]rdi\s*dato\s*([0-9]{2}-[0-9]{2}-[0-9]{4})", re.IGNORECASE)
+
+          results = []
+          for path in sorted(TEXT_DIR.glob("*.txt")):
+            txt = path.read_text(encoding="utf-8", errors="ignore")
+
+            m_nav = re_nav.search(txt)
+            m_date = re_date.search(txt)
+
+            nav_val = None
+            nav_date = None
+
+            if m_nav:
+              nav_str = m_nav.group(1).replace(".", "").replace(",", ".")
+              try:
+                nav_val = float(nav_str)
+              except ValueError:
+                nav_val = None
+
+            if m_date:
+              nav_date_raw = m_date.group(1)
+              try:
+                # Normaliser til ISO (YYYY-MM-DD)
+                nav_date = datetime.strptime(nav_date_raw, "%d-%m-%Y").date().isoformat()
+              except Exception:
+                nav_date = nav_date_raw
+
+            results.append({
+              "id": path.stem,         # f.eks. PFA000002761
+              "nav": nav_val,
+              "nav_date": nav_date,
+            })
+
+          with OUT_PATH.open("w", encoding="utf-8") as f:
+            json.dump({"funds": results}, f, ensure_ascii=False, indent=2)
+
+          print(f"Wrote {OUT_PATH} with {len(results)} entries")
+          PYCODE
+
+      # 5) Bekræft at latest.json nu findes og ikke er tom
+      - name: Assert latest.json exists and not empty
+        run: |
+          set -euo pipefail
+          test -s data/latest.json || (echo "::error::data/latest.json missing or empty" && exit 1)
+          echo "== data/latest.json (first 120 lines) =="
+          head -n 120 data/latest.json || true
+
+      # 6) Udvidet diagnostik
+      - name: Enhanced diagnostics (tree + sample content)
         run: |
           set -euo pipefail
           echo "== build/pdf =="; ls -la build/pdf || true
-          echo "== build/text (should contain files) =="; ls -la build/text || true
-          echo "== data/latest.json (first 80 lines) =="; head -n 80 data/latest.json || true
+          echo "== build/text (should contain .txt) =="; ls -la build/text || true
+          echo "== First TXT preview =="
+          first_txt="$(ls build/text/*.txt 2>/dev/null | head -n1 || true)"
+          echo "FIRST_TXT: $first_txt"
+          if [ -n "${first_txt:-}" ] && [ -f "$first_txt" ]; then
+            head -n 40 "$first_txt" || true
+          fi
+          echo "== data/latest.json (first 120 lines) =="
+          head -n 120 data/latest.json || true
 
+      # 7) Byg HTML
       - name: Build daily HTML
         run: |
           set -euo pipefail
           python reporting/build_daily.py
 
+      # 8) Upload artifacts
       - name: Upload daily artifact
         uses: actions/upload-artifact@v4
         with:
@@ -71,6 +160,7 @@ jobs:
           if-no-files-found: error
 
       - name: Upload parse-debug (text + pdf)
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: parse-debug
@@ -78,3 +168,11 @@ jobs:
             build/text/
             build/pdf/
           if-no-files-found: ignore
+
+      - name: Upload data artifact (latest.json)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: data-latest-json
+          path: data/latest.json
+          if-no-files-found: warn
