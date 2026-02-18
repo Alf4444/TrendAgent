@@ -1,82 +1,18 @@
-name: Daily Report (Parse)
-
-on:
-  schedule:
-    - cron: "10 5 * * 1-5"
-  workflow_dispatch: {}
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install dependencies
+- name: Parse PFA PDFs → latest.json (always)
         run: |
           set -euo pipefail
-          python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-
-      - name: Ensure build folders exist
-        run: |
-          set -euo pipefail
-          mkdir -p build/text build/pdf data templates reporting config
-
-      # === NYT: Hent PFA-PDF'er og konverter til TXT ===
-      - name: PDF → text (FundConnect via ISIN)
-        run: |
-          set -euo pipefail
-          python parser/pdf_to_text.py
-
-      # Behold seed som sidste fallback, hvis build/text ender tom
-      - name: Seed text if empty (temporary)
-        run: |
-          set -euo pipefail
-          mkdir -p build/text
-          if [ -z "$(ls -A build/text 2>/dev/null)" ]; then
-            echo "[SEED] build/text is empty → copying samples/text/*.txt"
-            cp -v samples/text/*.txt build/text/ || true
-          else
-            echo "[SEED] build/text already has files"
-          fi
-
-      - name: Parse PFA PDFs → latest.json (always)
-        run: |
-          set -euo pipefail
-          echo "[RUN] python -m parser.main"
-          python -m parser.main
+          echo "[RUN] python - <<PY (run parser/main.py via runpy)"
+          python - << 'PY'
+import os, json, pathlib, runpy
+print("[PY] CWD:", os.getcwd())
+# Kør filen direkte for at undgå navnekonflikten med stdlib 'parser'
+runpy.run_path("parser/main.py", run_name="__main__")
+p = pathlib.Path("data/latest.json")
+print("[PY] latest.json exists:", p.exists())
+if p.exists():
+    js = json.loads(p.read_text(encoding="utf-8"))
+    print("[PY] funds count:", len(js.get("funds", [])))
+else:
+    print("[PY][WARN] latest.json missing (unexpected)")
+PY
           echo "[RUN] parser.main finished"
-
-      - name: Diagnostics (tree + latest.json excerpt)
-        run: |
-          set -euo pipefail
-          echo "== build/pdf =="; ls -la build/pdf || true
-          echo "== build/text (should contain files) =="; ls -la build/text || true
-          echo "== data/latest.json (first 80 lines) =="; head -n 80 data/latest.json || true
-
-      - name: Build daily HTML
-        run: |
-          set -euo pipefail
-          python reporting/build_daily.py
-
-      - name: Upload daily artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: daily
-          path: build/daily.html
-          if-no-files-found: error
-
-      - name: Upload parse-debug (text + pdf)
-        uses: actions/upload-artifact@v4
-        with:
-          name: parse-debug
-          path: |
-            build/text/
-            build/pdf/
-          if-no-files-found: ignore
