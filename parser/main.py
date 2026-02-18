@@ -3,14 +3,17 @@
 
 from __future__ import annotations
 import json
+import re
 from pathlib import Path
 from typing import List, Dict, Set
 
-from parser.pfa import parse_pfa_from_text  # din eksisterende parser
+from parser.pfa import parse_pfa_from_text
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILD = ROOT / "build"
 TEXT_DIR = BUILD / "text"
+DEBUG_DIR = BUILD / "debug"
+DEBUG_DIR.mkdir(parents=True, exist_ok=True)
 OUT_DIR = ROOT / "data"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -43,28 +46,16 @@ def _load_text(isin: str) -> str:
         return p.read_text(encoding="utf-8", errors="ignore")
     return ""
 
-def main():
-    # 1) ISIN-kilder: config → textfiler → fallback (3 standard)
-    isins = _load_isins_from_config()
-    if not isins:
-        isins = _discover_isins_from_text()
-    if not isins:
-        isins = {"PFA000002738", "PFA000002735", "PFA000002761"}
-        print("[PARSE] No ISINs discovered; using default 3 for now.")
-
-    # 2) Parse
-    results: List[Dict] = []
-    for isin in sorted(isins):
-        txt = _load_text(isin)
-        parsed = parse_pfa_from_text(isin, txt)
-        results.append(parsed)
-        print(f"[PARSE] {isin}: NAV={parsed.get('nav')} NAVDato={parsed.get('nav_date')}")
-
-    # 3) Skriv altid latest.json
-    latest = {"funds": results}
-    out_path = OUT_DIR / "latest.json"
-    out_path.write_text(json.dumps(latest, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"[WRITE] {out_path} ({len(results)} fonde)")
-
-if __name__ == "__main__":
-    main()
+def _write_debug(isin: str, txt: str, parsed: Dict) -> None:
+    """
+    Skriv en lille debug-fil pr. ISIN med match-kontekst.
+    """
+    lines = txt.splitlines()
+    def _ctx(pattern: str) -> str:
+        idxs = [i for i, ln in enumerate(lines) if re.search(pattern, ln, flags=re.IGNORECASE)]
+        if not idxs:
+            return "(label not found)"
+        out = []
+        for i in idxs[:2]:  # max to hits
+            start = max(0, i - 5)
+            end = min(len(lines), i + 6)
