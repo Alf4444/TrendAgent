@@ -19,9 +19,11 @@ def download_and_convert():
     with open(config_file, "r") as f:
         isins = json.load(f)
 
-    print(f"Starter behandling af {len(isins)} fonde...")
+    # Filtrer listen med det samme
+    active_isins = [i for i in isins if not i.strip().startswith(("#", "-"))]
+    print(f"Starter behandling: {len(active_isins)} aktive fonde ({len(isins) - len(active_isins)} deaktiveret)")
 
-    for isin in isins:
+    for isin in active_isins:
         isin = isin.strip()
         pdf_path = pdf_dir / f"{isin}.pdf"
         txt_path = txt_dir / f"{isin}.txt"
@@ -38,7 +40,7 @@ def download_and_convert():
                         if page_text:
                             text += page_text + "\n"
                     txt_path.write_text(text, encoding="utf-8")
-                print(f"[OK] Downloadet og konverteret: {isin}")
+                print(f"[OK] Behandlet: {isin}")
             else:
                 print(f"[FEJL] Kunne ikke hente {isin} (Status: {r.status_code})")
         except Exception as e:
