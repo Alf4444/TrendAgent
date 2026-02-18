@@ -1,22 +1,27 @@
 import json
+import os
 from pathlib import Path
 from parser.pfa import parse_pfa_from_text
 
 ROOT = Path(__file__).resolve().parents[1]
 TEXT_DIR = ROOT / "build" / "text"
 OUT_FILE = ROOT / "data" / "latest.json"
-CONFIG_FILE = ROOT / "config" / "pfa_pdfs.json"
+HISTORY_FILE = ROOT / "data/history.json"
+CONFIG_FILE = ROOT / "config/pfa_pdfs.json"
 
 def main():
-    if not CONFIG_FILE.exists():
-        print("Config fil mangler!")
-        return
+    if not CONFIG_FILE.exists(): return
 
     with open(CONFIG_FILE, "r") as f:
         isins = json.load(f)
 
     results = []
-    print(f"Starter parsing af {len(isins)} fonde fra config.")
+    
+    # Hent eksisterende historik hvis den findes
+    history = {}
+    if HISTORY_FILE.exists():
+        with open(HISTORY_FILE, "r") as f:
+            history = json.load(f)
 
     for isin in isins:
         isin = isin.strip()
@@ -25,20 +30,26 @@ def main():
         if txt_file.exists():
             text = txt_file.read_text(encoding="utf-8", errors="ignore")
             data = parse_pfa_from_text(isin, text)
+            
+            # Gem i historikken (isin -> dato -> kurs)
+            if data["nav"] and data["nav_date"]:
+                if isin not in history: history[isin] = {}
+                history[isin][data["nav_date"]] = data["nav"]
         else:
-            data = {"pfa_id": isin, "nav": None, "nav_date": None, "currency": None}
-            print(f"[ADVARSEL] Tekstfil mangler for {isin}")
+            data = {"pfa_id": isin, "name": "Mangler data", "nav": None, "nav_date": None}
         
-        data["url"] = f"https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin={isin}"
         data["isin"] = isin
-        
         results.append(data)
-        print(f"[LOG] {isin}: Kurs={data['nav']}, Dato={data['nav_date']}")
 
-    OUT_FILE.parent.mkdir(exist_ok=True)
+    # Gem LATEST
     with open(OUT_FILE, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
-    print(f"Færdig! latest.json indeholder nu {len(results)} fonde.")
+        
+    # Gem HISTORY (Vigtig for dine MA-beregninger!)
+    with open(HISTORY_FILE, "w", encoding="utf-8") as f:
+        json.dump(history, f, indent=2)
+
+    print(f"Parsing færdig. Navne er plukket og historik opdateret.")
 
 if __name__ == "__main__":
     main()
