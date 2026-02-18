@@ -25,14 +25,12 @@ jobs:
           pip install pdfplumber pandas jinja2 requests pdfminer.six
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Clear old build data
+      - name: Clear and Create Folders
         run: |
-          rm -rf build/text/*.txt
-          rm -rf build/pdf/*.pdf
-          rm -rf data/latest.json
-          mkdir -p build/text build/pdf data
+          rm -rf build/text build/pdf data/latest.json
+          mkdir -p build/text build/pdf data config
 
-      - name: PDF → text
+      - name: Download and Convert PDF → text
         run: python parser/pdf_to_text.py
 
       - name: Parse PFA PDFs → latest.json
