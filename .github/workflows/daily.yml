@@ -2,7 +2,7 @@ name: Daily Report (Parse)
 
 on:
   schedule:
-    - cron: "10 5 * * 1-5"   # hverdage 05:10 CET; justér efter behov
+    - cron: "10 5 * * 1-5"
   workflow_dispatch: {}
 
 jobs:
@@ -23,25 +23,41 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      # (Behold jeres eksisterende PDF→TXT step her.
-      #  Denne placeholder sikrer at build/text/ findes, så parse-debug altid kan uploades.)
       - name: Ensure build folders exist
         run: |
           set -euo pipefail
-          mkdir -p build/text
-          mkdir -p build/pdf
-          mkdir -p data
+          mkdir -p build/text build/pdf data templates reporting
+
+      # TODO: Kør jeres rigtige PDF→TXT step her (ellers vil NAV/Dato blive None)
+      # Eksempel:
+      # - name: PDF → text
+      #   run: |
+      #     python parser/pdf_to_text.py
 
       - name: Parse PFA PDFs → latest.json (always)
         run: |
           set -euo pipefail
           python -m parser.main
 
+      - name: Diagnostics (tree + latest.json excerpt)
+        run: |
+          set -euo pipefail
+          echo "== Repo tree =="
+          ls -la
+          echo "== reporting/ =="
+          ls -la reporting || true
+          echo "== templates/ =="
+          ls -la templates || true
+          echo "== data/latest.json =="
+          if [ -f data/latest.json ]; then head -n 100 data/latest.json; else echo "missing latest.json"; fi
+          echo "== build/text/ =="
+          ls -la build/text || true
+
       - name: Build daily HTML
         run: |
           set -euo pipefail
+          # Kør builder med korrekt sti
           python reporting/build_daily.py
-        # reporting/build_daily.py skal læse data/latest.json og skrive build/daily.html
 
       - name: Upload daily artifact
         uses: actions/upload-artifact@v4
