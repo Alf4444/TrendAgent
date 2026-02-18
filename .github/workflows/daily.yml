@@ -26,14 +26,15 @@ jobs:
       - name: Ensure build folders exist
         run: |
           set -euo pipefail
-          mkdir -p build/text build/pdf data templates reporting
+          mkdir -p build/text build/pdf data templates reporting config
 
-      # (Frivilligt senere) PDF -> text step, når I vil hente rigtige PDF'er
-      # - name: PDF → text
-      #   run: |
-      #     set -euo pipefail
-      #     python parser/pdf_to_text.py
+      # === NYT: Hent PFA-PDF'er og konverter til TXT ===
+      - name: PDF → text (FundConnect via ISIN)
+        run: |
+          set -euo pipefail
+          python parser/pdf_to_text.py
 
+      # Behold seed som sidste fallback, hvis build/text ender tom
       - name: Seed text if empty (temporary)
         run: |
           set -euo pipefail
@@ -53,8 +54,9 @@ jobs:
       - name: Diagnostics (tree + latest.json excerpt)
         run: |
           set -euo pipefail
-          echo "== build/text (should contain 3 files) =="; ls -la build/text || true
-          echo "== data/latest.json (first 60 lines) =="; head -n 60 data/latest.json || true
+          echo "== build/pdf =="; ls -la build/pdf || true
+          echo "== build/text (should contain files) =="; ls -la build/text || true
+          echo "== data/latest.json (first 80 lines) =="; head -n 80 data/latest.json || true
 
       - name: Build daily HTML
         run: |
