@@ -1,30 +1,58 @@
-import re
+name: Daily Report (Parse)
 
-def parse_pfa_from_text(pfa_id, text):
-    data = {"pfa_id": pfa_id, "nav": None, "nav_date": None, "currency": None}
-    if not text: return data
+on:
+  schedule:
+    - cron: "10 5 * * 1-5"
+  workflow_dispatch: {}
 
-    # 1. FIND VALUTA (Kig efter linje der kun indeholder valuta-kode efter 'Valuta')
-    cur_m = re.search(r"Valuta\s*\n?\s*(DKK|EUR|USD)", text, re.IGNORECASE)
-    if cur_m:
-        data["currency"] = cur_m.group(1).upper()
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    # 2. FIND DATO (Vi udelukker 'Største beholdninger')
-    # Vi leder efter datoen der står specifikt ved "Indre værdi dato"
-    date_m = re.search(r"Indre\s+værdi\s+dato\s*\n?\s*(\d{2}-\d{2}-\d{4})", text, re.IGNORECASE)
-    if date_m:
-        d = date_m.group(1).split("-")
-        data["nav_date"] = f"{d[2]}-{d[1]}-{d[0]}"
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
-    # 3. FIND NAV (Kursen)
-    # Vi leder efter tallet umiddelbart efter "Indre værdi" (uden 'dato')
-    nav_m = re.search(r"Indre\s+værdi\s*\n?\s*([\d\.,]+)(?!\s*dato)", text, re.IGNORECASE)
-    if nav_m:
-        val_str = nav_m.group(1).rstrip('.,')
-        if "," in val_str:
-            val_str = val_str.replace(".", "").replace(",", ".")
-        try:
-            data["nav"] = float(val_str)
-        except: pass
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pdfplumber
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    return data
+      - name: Clear old build data
+        run: |
+          rm -rf build/text/*.txt
+          rm -rf build/pdf/*.pdf
+          rm -rf data/latest.json
+          mkdir -p build/text build/pdf data
+
+      - name: PDF → text
+        run: python parser/pdf_to_text.py
+
+      - name: Parse PFA PDFs → latest.json
+        run: python -m parser.main
+
+      - name: Build daily HTML
+        run: python reporting/build_daily.py
+
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/latest.json build/daily.html
+          git commit -m "Update data and report [skip ci]" || echo "No changes"
+          git push origin main
+
+      - name: Upload debug files
+        uses: actions/upload-artifact@v4
+        with:
+          name: parse-debug
+          path: |
+            build/text/
+            build/pdf/
