@@ -5,7 +5,8 @@
     "nav": 142.68,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002202"
+    "isin": "PFA000002202",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002202"
   },
   {
     "pfa_id": "PFA000002203",
@@ -13,7 +14,8 @@
     "nav": 150.03,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002203"
+    "isin": "PFA000002203",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002203"
   },
   {
     "pfa_id": "PFA000002206",
@@ -21,7 +23,8 @@
     "nav": 666.33,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002206"
+    "isin": "PFA000002206",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002206"
   },
   {
     "pfa_id": "PFA000002226",
@@ -29,7 +32,8 @@
     "nav": 195.64,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002226"
+    "isin": "PFA000002226",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002226"
   },
   {
     "pfa_id": "PFA000002228",
@@ -37,7 +41,8 @@
     "nav": 412.83,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002228"
+    "isin": "PFA000002228",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002228"
   },
   {
     "pfa_id": "PFA000002230",
@@ -45,7 +50,8 @@
     "nav": 253.46,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002230"
+    "isin": "PFA000002230",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002230"
   },
   {
     "pfa_id": "PFA000002232",
@@ -53,7 +59,8 @@
     "nav": 488.3,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002232"
+    "isin": "PFA000002232",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002232"
   },
   {
     "pfa_id": "PFA000002233",
@@ -61,7 +68,8 @@
     "nav": 398.34,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002233"
+    "isin": "PFA000002233",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002233"
   },
   {
     "pfa_id": "PFA000002234",
@@ -69,7 +77,8 @@
     "nav": 222.13,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002234"
+    "isin": "PFA000002234",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002234"
   },
   {
     "pfa_id": "PFA000002235",
@@ -77,7 +86,8 @@
     "nav": 102.63,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002235"
+    "isin": "PFA000002235",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002235"
   },
   {
     "pfa_id": "PFA000002299",
@@ -85,7 +95,8 @@
     "nav": 111.6,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002299"
+    "isin": "PFA000002299",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002299"
   },
   {
     "pfa_id": "PFA000002425",
@@ -93,7 +104,8 @@
     "nav": 112.96,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002425"
+    "isin": "PFA000002425",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002425"
   },
   {
     "pfa_id": "PFA000002450",
@@ -101,7 +113,8 @@
     "nav": 125.14,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002450"
+    "isin": "PFA000002450",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002450"
   },
   {
     "pfa_id": "PFA000002475",
@@ -109,7 +122,8 @@
     "nav": 137.94,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002475"
+    "isin": "PFA000002475",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002475"
   },
   {
     "pfa_id": "PFA000002703",
@@ -117,7 +131,8 @@
     "nav": 408.0,
     "nav_date": "2026-02-17",
     "currency": "USD",
-    "isin": "PFA000002703"
+    "isin": "PFA000002703",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002703"
   },
   {
     "pfa_id": "PFA000002706",
@@ -125,7 +140,8 @@
     "nav": 528.37,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002706"
+    "isin": "PFA000002706",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002706"
   },
   {
     "pfa_id": "PFA000002712",
@@ -133,7 +149,8 @@
     "nav": 102.64,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002712"
+    "isin": "PFA000002712",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002712"
   },
   {
     "pfa_id": "PFA000002713",
@@ -141,7 +158,8 @@
     "nav": 174.2,
     "nav_date": "2026-02-17",
     "currency": "EUR",
-    "isin": "PFA000002713"
+    "isin": "PFA000002713",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002713"
   },
   {
     "pfa_id": "PFA000002715",
@@ -149,7 +167,8 @@
     "nav": 313.35,
     "nav_date": "2026-02-17",
     "currency": "USD",
-    "isin": "PFA000002715"
+    "isin": "PFA000002715",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002715"
   },
   {
     "pfa_id": "PFA000002716",
@@ -157,7 +176,8 @@
     "nav": 314.88,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002716"
+    "isin": "PFA000002716",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002716"
   },
   {
     "pfa_id": "PFA000002722",
@@ -165,7 +185,8 @@
     "nav": 572.05,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002722"
+    "isin": "PFA000002722",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002722"
   },
   {
     "pfa_id": "PFA000002726",
@@ -173,7 +194,8 @@
     "nav": 202.69,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002726"
+    "isin": "PFA000002726",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002726"
   },
   {
     "pfa_id": "PFA000002728",
@@ -181,7 +203,8 @@
     "nav": 149.09,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002728"
+    "isin": "PFA000002728",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002728"
   },
   {
     "pfa_id": "PFA000002729",
@@ -189,7 +212,8 @@
     "nav": 341.85,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002729"
+    "isin": "PFA000002729",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002729"
   },
   {
     "pfa_id": "PFA000002732",
@@ -197,7 +221,8 @@
     "nav": 381.13,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002732"
+    "isin": "PFA000002732",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002732"
   },
   {
     "pfa_id": "PFA000002734",
@@ -205,7 +230,8 @@
     "nav": 329.04,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002734"
+    "isin": "PFA000002734",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002734"
   },
   {
     "pfa_id": "PFA000002735",
@@ -213,7 +239,8 @@
     "nav": 149.69,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002735"
+    "isin": "PFA000002735",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002735"
   },
   {
     "pfa_id": "PFA000002736",
@@ -221,7 +248,8 @@
     "nav": 215.74,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002736"
+    "isin": "PFA000002736",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002736"
   },
   {
     "pfa_id": "PFA000002738",
@@ -229,7 +257,8 @@
     "nav": 141.7,
     "nav_date": "2026-02-17",
     "currency": "EUR",
-    "isin": "PFA000002738"
+    "isin": "PFA000002738",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002738"
   },
   {
     "pfa_id": "PFA000002739",
@@ -237,7 +266,8 @@
     "nav": 326.24,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002739"
+    "isin": "PFA000002739",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002739"
   },
   {
     "pfa_id": "PFA000002741",
@@ -245,7 +275,8 @@
     "nav": 288.98,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002741"
+    "isin": "PFA000002741",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002741"
   },
   {
     "pfa_id": "PFA000002742",
@@ -253,7 +284,8 @@
     "nav": 188.29,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002742"
+    "isin": "PFA000002742",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002742"
   },
   {
     "pfa_id": "PFA000002746",
@@ -261,7 +293,8 @@
     "nav": 182.69,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002746"
+    "isin": "PFA000002746",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002746"
   },
   {
     "pfa_id": "PFA000002748",
@@ -269,7 +302,8 @@
     "nav": 234.74,
     "nav_date": "2026-02-17",
     "currency": "USD",
-    "isin": "PFA000002748"
+    "isin": "PFA000002748",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002748"
   },
   {
     "pfa_id": "PFA000002749",
@@ -277,7 +311,8 @@
     "nav": 108.74,
     "nav_date": "2026-02-17",
     "currency": "EUR",
-    "isin": "PFA000002749"
+    "isin": "PFA000002749",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002749"
   },
   {
     "pfa_id": "PFA000002750",
@@ -285,7 +320,8 @@
     "nav": 129.73,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002750"
+    "isin": "PFA000002750",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002750"
   },
   {
     "pfa_id": "PFA000002751",
@@ -293,7 +329,8 @@
     "nav": 110.9,
     "nav_date": "2026-02-17",
     "currency": "EUR",
-    "isin": "PFA000002751"
+    "isin": "PFA000002751",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002751"
   },
   {
     "pfa_id": "PFA000002752",
@@ -301,7 +338,8 @@
     "nav": 106.63,
     "nav_date": "2026-02-17",
     "currency": "EUR",
-    "isin": "PFA000002752"
+    "isin": "PFA000002752",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002752"
   },
   {
     "pfa_id": "PFA000002753",
@@ -309,7 +347,8 @@
     "nav": 127.0,
     "nav_date": "2026-02-17",
     "currency": "EUR",
-    "isin": "PFA000002753"
+    "isin": "PFA000002753",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002753"
   },
   {
     "pfa_id": "PFA000002754",
@@ -317,7 +356,8 @@
     "nav": 106.26,
     "nav_date": "2026-02-17",
     "currency": "EUR",
-    "isin": "PFA000002754"
+    "isin": "PFA000002754",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002754"
   },
   {
     "pfa_id": "PFA000002755",
@@ -325,7 +365,8 @@
     "nav": 120.02,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002755"
+    "isin": "PFA000002755",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002755"
   },
   {
     "pfa_id": "PFA000002756",
@@ -333,7 +374,8 @@
     "nav": 135.8,
     "nav_date": "2026-02-17",
     "currency": "USD",
-    "isin": "PFA000002756"
+    "isin": "PFA000002756",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002756"
   },
   {
     "pfa_id": "PFA000002757",
@@ -341,7 +383,8 @@
     "nav": 106.65,
     "nav_date": "2026-02-17",
     "currency": "EUR",
-    "isin": "PFA000002757"
+    "isin": "PFA000002757",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002757"
   },
   {
     "pfa_id": "PFA000002758",
@@ -349,7 +392,8 @@
     "nav": 113.38,
     "nav_date": "2026-02-17",
     "currency": "EUR",
-    "isin": "PFA000002758"
+    "isin": "PFA000002758",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002758"
   },
   {
     "pfa_id": "PFA000002759",
@@ -357,7 +401,8 @@
     "nav": 115.0,
     "nav_date": "2026-02-17",
     "currency": "EUR",
-    "isin": "PFA000002759"
+    "isin": "PFA000002759",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002759"
   },
   {
     "pfa_id": "PFA000002760",
@@ -365,7 +410,8 @@
     "nav": 102.59,
     "nav_date": "2026-02-17",
     "currency": "EUR",
-    "isin": "PFA000002760"
+    "isin": "PFA000002760",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002760"
   },
   {
     "pfa_id": "PFA000002761",
@@ -373,6 +419,7 @@
     "nav": 125.16,
     "nav_date": "2026-02-17",
     "currency": "DKK",
-    "isin": "PFA000002761"
+    "isin": "PFA000002761",
+    "url": "https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002761"
   }
 ]
