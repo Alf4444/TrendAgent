@@ -1,18 +1,88 @@
-- name: Parse PFA PDFs → latest.json (always)
+name: Daily Report (Parse)
+
+on:
+  schedule:
+    - cron: "10 5 * * 1-5"
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONUNBUFFERED: "1"  # print vises straks (ingen buffering)
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
         run: |
           set -euo pipefail
-          echo "[RUN] python - <<PY (run parser/main.py via runpy)"
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Ensure build folders exist
+        run: |
+          set -euo pipefail
+          mkdir -p build/text build/pdf build/debug data templates reporting config
+
+      - name: PDF → text (FundConnect via ISIN)
+        run: |
+          set -euo pipefail
+          python parser/pdf_to_text.py
+
+      - name: Seed text if empty (temporary)
+        run: |
+          set -euo pipefail
+          mkdir -p build/text
+          if [ -z "$(ls -A build/text 2>/dev/null)" ]; then
+            echo "[SEED] build/text is empty → copying samples/text/*.txt"
+            cp -v samples/text/*.txt build/text/ || true
+          else
+            echo "[SEED] build/text already has files"
+          fi
+
+      # ======== PARSE (kør din parser/main.py direkte fra sti via runpy) ========
+      - name: Parse PFA PDFs → latest.json (always)
+        run: |
+          set -euo pipefail
+          echo "[RUN] Executing parser/main.py with runpy (avoids stdlib 'parser' name clash)"
           python - << 'PY'
-import os, json, pathlib, runpy
+import os, json, pathlib, runpy, sys
 print("[PY] CWD:", os.getcwd())
-# Kør filen direkte for at undgå navnekonflikten med stdlib 'parser'
-runpy.run_path("parser/main.py", run_name="__main__")
+try:
+    runpy.run_path("parser/main.py", run_name="__main__")
+except SystemExit as e:
+    print("[PY][WARN] parser.main exited:", e)
 p = pathlib.Path("data/latest.json")
 print("[PY] latest.json exists:", p.exists())
 if p.exists():
-    js = json.loads(p.read_text(encoding="utf-8"))
-    print("[PY] funds count:", len(js.get("funds", [])))
+    try:
+        js = json.loads(p.read_text(encoding="utf-8"))
+        funds = js.get("funds", [])
+        print("[PY] funds count:", len(funds))
+        for row in funds[:5]:
+            print("[PY] sample:", row.get("isin"), row.get("nav"), row.get("nav_date"))
+    except Exception as ex:
+        print("[PY][ERROR] Unable to read latest.json:", ex)
 else:
-    print("[PY][WARN] latest.json missing (unexpected)")
+    print("[PY][WARN] latest.json missing")
 PY
-          echo "[RUN] parser.main finished"
+          echo "[RUN] parser/main.py finished"
+      # ========================================================================
+
+      - name: Diagnostics (tree + latest.json excerpt)
+        run: |
+          set -euo pipefail
+          echo "== build/pdf =="; ls -la build/pdf || true
+          echo "== build/text (should contain files) =="; ls -la build/text || true
+          echo "== data/latest.json (first 120 lines) =="
+          if [ -f data/latest.json ]; then head -n 120 data/latest.json; else echo "missing latest.json"; fi
+
+      - name: Build daily HTML
+        run: |
