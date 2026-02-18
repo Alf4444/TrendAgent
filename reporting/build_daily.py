@@ -7,10 +7,14 @@ OUT = ROOT / "build" / "daily.html"
 OUT.parent.mkdir(parents=True, exist_ok=True)
 
 def dk_number(x):
-    if x is None or (isinstance(x, float) and math.isnan(x)):
+    if x is None:
+        return ""
+    try:
+        x = float(x)
+    except Exception:
         return ""
     # 1234.56 -> "1.234,56"
-    s = f"{float(x):,.2f}"
+    s = f"{x:,.2f}"
     s = s.replace(",", "X").replace(".", ",").replace("X", ".")
     return s
 
@@ -22,7 +26,6 @@ def load_funds():
     funds = obj.get("funds", obj if isinstance(obj, list) else [])
     norm = []
     for f in funds:
-        # Normaliser felter
         isin = f.get("isin") or ""
         pfa = f.get("pfa_code") or f.get("id") or ""
         disp_id = isin or pfa  # brug PFA-kode hvis ISIN ikke findes
@@ -41,25 +44,25 @@ def load_funds():
 
 def render_html(rows):
     today = datetime.date.today().isoformat()
-    head = """<!doctype html>
+    head = f"""<!doctype html>
 <html lang="da">
 <head>
 <meta charset="utf-8" />
 <title>TrendAgent – Daglig rapport</title>
 <style>
- body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 24px; }
- h1 { margin-bottom: 0; }
- small { color: #666; }
- table { border-collapse: collapse; width: 100%; margin-top: 16px; }
- th, td { border: 1px solid #ddd; padding: 8px; font-size: 14px; }
- th { background: #f7f7f7; text-align: left; }
- .badge { padding: 2px 6px; border-radius: 6px; font-size: 12px; }
- .b-neutral { background: #999; color: #fff; }
+ body {{ font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 24px; }}
+ h1 {{ margin-bottom: 0; }}
+ small {{ color: #666; }}
+ table {{ border-collapse: collapse; width: 100%; margin-top: 16px; }}
+ th, td {{ border: 1px solid #ddd; padding: 8px; font-size: 14px; }}
+ th {{ background: #f7f7f7; text-align: left; }}
+ .badge {{ padding: 2px 6px; border-radius: 6px; font-size: 12px; }}
+ .b-neutral {{ background: #999; color: #fff; }}
 </style>
 </head>
 <body>
 <h1>TrendAgent – Daglig rapport</h1>
-<small>Kørselsdato: %s</small>
+<small>Kørselsdato: {today}</small>
 <h2>Events</h2>
 <p>Fokuser på rækker med <b>trend_shift</b> eller <b>cross_20_50</b>, samt outliers (±3%).</p>
 <table>
@@ -76,8 +79,7 @@ def render_html(rows):
 </tr>
 </thead>
 <tbody>
-""" % today
-
+"""
     trs = []
     for r in rows:
         td_id = r["id"]
@@ -85,10 +87,14 @@ def render_html(rows):
         td_nav = dk_number(r["nav"])
         td_date = r["nav_date"]
         td_cur = r["currency"]
-        td_chg = "0.00%"   # placeholder (kommer fra model senere)
+        td_chg = "0.00%"   # placeholder (model kommer senere)
         td_evt = ""
         td_trend = '<span class="badge b-neutral">NEUTRAL</span>'
-        trs.append(f"<tr><td>{td_id}</td><td>{td_name}</td><td>{td_nav}</td><td>{td_date}</td><td>{td_cur}</td><td>{td_chg}</td><td>{td_evt}</td><td>{td_trend}</td></tr>")
+        trs.append(
+            f"<tr><td>{td_id}</td><td>{td_name}</td><td>{td_nav}</td>"
+            f"<td>{td_date}</td><td>{td_cur}</td><td>{td_chg}</td>"
+            f"<td>{td_evt}</td><td>{td_trend}</td></tr>"
+        )
 
     tail = """
 </tbody>
