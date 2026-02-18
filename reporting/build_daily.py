@@ -13,7 +13,6 @@ def build_report():
     with open(DATA_FILE, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    # Vi prøver at finde gårsdagens kurs i historikken for at regne Change %
     history = {}
     if HISTORY_FILE.exists():
         with open(HISTORY_FILE, "r") as f:
@@ -21,20 +20,20 @@ def build_report():
 
     rows_html = ""
     for item in data:
+        # Brug navnet fra parseren, ellers ISIN
         name = item.get("name") or item["isin"]
         nav = item["nav"] or 0
         date = item["nav_date"] or "-"
         currency = item.get("currency", "-")
+        url = item.get("url", "#")
         
-        # Simpel logik til Change % (hvis vi har mindst 2 datapunkter)
+        # Beregn daglig ændring hvis vi har historik
         change_html = '<span class="na">Ny</span>'
         isin = item["isin"]
         if isin in history and len(history[isin]) > 1:
             dates = sorted(history[isin].keys())
-            last_date = dates[-1]
-            prev_date = dates[-2]
-            last_val = history[isin][last_date]
-            prev_val = history[isin][prev_date]
+            last_val = history[isin][dates[-1]]
+            prev_val = history[isin][dates[-2]]
             diff = ((last_val / prev_val) - 1) * 100
             color = "pos" if diff > 0 else "neg"
             change_html = f'<span class="{color}">{diff:+.2f}%</span>'
@@ -46,7 +45,7 @@ def build_report():
             <td>{change_html}</td>
             <td>{date}</td>
             <td>{currency}</td>
-            <td><a href="{item['url']}" target="_blank">PDF ↗</a></td>
+            <td><a href="{url}" target="_blank">PDF ↗</a></td>
         </tr>
         """
 
@@ -68,7 +67,7 @@ def build_report():
     </head>
     <body>
         <h1>TrendAgent – Daglig Rapport</h1>
-        <p>Opdateret: {datetime.now().strftime('%Y-%m-%d %H:%M')}</p>
+        <p>Genereret: {datetime.now().strftime('%Y-%m-%d %H:%M')}</p>
         <table>
             <thead>
                 <tr>
