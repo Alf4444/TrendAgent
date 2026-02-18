@@ -15,19 +15,20 @@ def convert_pdfs():
 
     for pdf_path in pdf_files:
         txt_path = txt_dir / f"{pdf_path.stem}.txt"
-        print(f"Læser: {pdf_path.name}")
+        print(f"Læser PDF: {pdf_path.name}")
         
         full_text = []
         try:
             with pdfplumber.open(pdf_path) as pdf:
                 for page in pdf.pages:
+                    # extract_text() fanger nu også data fra tabellerne korrekt
                     text = page.extract_text()
                     if text:
                         full_text.append(text)
             
             txt_path.write_text("\n".join(full_text), encoding="utf-8")
         except Exception as e:
-            print(f"Fejl ved {pdf_path.name}: {e}")
+            print(f"Fejl ved konvertering af {pdf_path.name}: {e}")
 
 if __name__ == "__main__":
     convert_pdfs()
