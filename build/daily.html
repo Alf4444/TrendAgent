@@ -3,54 +3,80 @@
     <html lang="da">
     <head>
         <meta charset="utf-8">
+        <title>TrendAgent Pro</title>
         <style>
-            body { font-family: -apple-system, sans-serif; margin: 30px; background: #f0f2f5; color: #1c1e21; }
-            table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-            th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
-            th { background: #1a73e8; color: white; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; }
-            .pos { color: #1e8e3e; font-weight: bold; }
+            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 40px; background: #f8f9fa; color: #333; }
+            h1 { color: #1a73e8; margin-bottom: 5px; }
+            .subtitle { color: #666; margin-bottom: 30px; }
+            table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+            th { background: #1a73e8; color: white; padding: 15px; text-align: left; font-size: 13px; text-transform: uppercase; }
+            td { padding: 15px; border-bottom: 1px solid #edf2f7; }
+            tr:hover { background: #f1f8ff; }
+            .pos { color: #28a745; font-weight: bold; }
             .neg { color: #d93025; font-weight: bold; }
-            .badge { background: #e8f0fe; color: #1967d2; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+            .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; background: #e8eaed; color: #5f6368; }
+            .badge-up { background: #e6f4ea; color: #1e8e3e; }
+            .badge-down { background: #fce8e6; color: #d93025; }
+            .pdf-link { text-decoration: none; color: #1a73e8; font-weight: bold; }
         </style>
     </head>
     <body>
         <h1>TrendAgent Dashboard</h1>
-        <p>Sidst opdateret: 18-02-2026 20:31</p>
+        <p class="subtitle">Opdateret: 18. Feb 2026 kl. 20:37</p>
         <table>
             <thead>
-                <tr><th>Fond</th><th>Kurs</th><th>ÅTD</th><th>1 Uge</th><th>1 Md</th><th>Trend (MA)</th><th>Link</th></tr>
+                <tr>
+                    <th>Investering</th>
+                    <th>Kurs (NAV)</th>
+                    <th>ÅTD</th>
+                    <th>1 Uge</th>
+                    <th>1 Md</th>
+                    <th>Trend</th>
+                    <th>Faktaark</th>
+                </tr>
             </thead>
             <tbody>
+                
         <tr>
-            <td><strong>Kerne Invest Indeks Mellemlange Obligationer</strong><br><small>PFA000002202</small></td>
-            <td>142.68 DKK</td>
-            <td class="neg">-0,45%</td>
-            <td>0,16%</td>
-            <td>0,53%</td>
-            <td><span class="badge">OPSAMLER DATA</span></td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002202" target="_blank">PDF ↗</a></td>
+            <td>
+                <strong>Kerne Invest Indeks Mellemlange Obligationer</strong><br>
+                <small style="color: #666;">PFA000002202</small>
+            </td>
+            <td style="font-family: monospace; font-weight: bold;">142.6800000000000068212103</td>
+            <td class="neg">-0.45%</td>
+            <td class="pos">0.16%</td>
+            <td class="pos">0.53%</td>
+            <td><span class="badge">NEUTRAL</span></td>
+            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002202" class="pdf-link" target="_blank">PDF ↗</a></td>
         </tr>
         
         <tr>
-            <td><strong>iShares Inflation Linked Govt Bond UCITS ETF</strong><br><small>PFA000002203</small></td>
-            <td>150.03 DKK</td>
-            <td class="pos">1,78%</td>
-            <td>0,32%</td>
-            <td>0,81%</td>
-            <td><span class="badge">OPSAMLER DATA</span></td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002203" target="_blank">PDF ↗</a></td>
+            <td>
+                <strong>iShares Inflation Linked Govt Bond UCITS ETF</strong><br>
+                <small style="color: #666;">PFA000002203</small>
+            </td>
+            <td style="font-family: monospace; font-weight: bold;">150.0300000000000011368684</td>
+            <td class="pos">1.78%</td>
+            <td class="pos">0.32%</td>
+            <td class="pos">0.81%</td>
+            <td><span class="badge">NEUTRAL</span></td>
+            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002203" class="pdf-link" target="_blank">PDF ↗</a></td>
         </tr>
         
         <tr>
-            <td><strong>Kerne Invest Globale Aktier</strong><br><small>PFA000002206</small></td>
-            <td>666.33 DKK</td>
-            <td class="pos">2,82%</td>
-            <td>-0,03%</td>
-            <td>-0,31%</td>
-            <td><span class="badge">OPSAMLER DATA</span></td>
-            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002206" target="_blank">PDF ↗</a></td>
+            <td>
+                <strong>Kerne Invest Globale Aktier</strong><br>
+                <small style="color: #666;">PFA000002206</small>
+            </td>
+            <td style="font-family: monospace; font-weight: bold;">666.3300000000000409272616</td>
+            <td class="pos">2.82%</td>
+            <td class="neg">-0.03%</td>
+            <td class="neg">-0.31%</td>
+            <td><span class="badge">NEUTRAL</span></td>
+            <td><a href="https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin=PFA000002206" class="pdf-link" target="_blank">PDF ↗</a></td>
         </tr>
-        </tbody>
+        
+            </tbody>
         </table>
     </body>
     </html>
