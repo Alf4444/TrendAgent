@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -21,13 +23,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install pdfplumber pandas jinja2 requests pdfminer.six
+          pip install pdfplumber pandas requests pdfminer.six
 
-      - name: Preparation (Clean start)
-        run: |
-          rm -rf build/
-          mkdir -p build/text build/pdf data config
+      - name: Preparation
+        run: mkdir -p build/text build/pdf data config
 
       - name: Download and Convert
         run: python parser/pdf_to_text.py
@@ -38,29 +37,15 @@ jobs:
       - name: Build HTML Report
         run: python reporting/build_daily.py
 
-      - name: Commit and Push
+      - name: Commit and Push Data
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          
-          # Her fortæller vi GitHub, hvilke filer der skal gemmes (commit)
-          # Vi gemmer 'history.json' så vi kan regne gennemsnit (MA20/50/200) senere
+          # Vi tvinger GitHub til at huske disse filer til næste kørsel:
           git add data/latest.json data/history.json build/daily.html
-          
-          git commit -m "Update data, history and report [skip ci]" || echo "No changes"
+          git commit -m "Update investment data and history [skip ci]" || echo "No changes"
           git push origin main
 
-      - name: Cleanup temporary files
+      - name: Cleanup
         if: always()
         run: rm -rf build/pdf build/text
-        
-      - name: Commit and Push
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          
-          # Vi sørger for at tilføje alle vigtige data-filer
-          git add data/latest.json data/history.json build/daily.html
-          
-          git commit -m "Update investment data [skip ci]" || echo "No changes"
-          git push origin main
