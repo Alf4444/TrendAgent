@@ -4,12 +4,10 @@ def parse_pfa_from_text(pfa_id, text):
     data = {"pfa_id": pfa_id, "name": None, "nav": None, "nav_date": None, "currency": None}
     if not text: return data
 
-    # 1. FIND NAVN (Tager den første linje og fjerner overflødig tekst)
+    # 1. FIND NAVN (Hent første linje og rens den)
     lines = text.split('\n')
     if lines:
-        raw_name = lines[0].strip()
-        # Fjern "Investeringsprofil Stamdata" hvis det er kommet med op i navnet
-        data["name"] = raw_name.replace("Investeringsprofil Stamdata", "").strip()
+        data["name"] = lines[0].replace("Investeringsprofil Stamdata", "").strip()
 
     # 2. FIND VALUTA
     cur_m = re.search(r"Valuta\s*\n?\s*([A-Z]{3})", text)
