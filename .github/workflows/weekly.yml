@@ -1,9 +1,9 @@
-name: Weekly Report (Mock)
+name: Weekly Report
 
 on:
   workflow_dispatch: {}
-  # schedule:
-  #   - cron: "0 6 * * 1"  # mandage kl. 06:00 UTC
+  schedule:
+    - cron: "0 10 * * 0"  # Kører hver søndag kl. 10:00 UTC
 
 jobs:
   build:
@@ -22,13 +22,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Generate latest.json (mock)
-        run: |
-          python parser/parse_pfa.py --out latest.json --mock
+      # Her fjernede vi "Generate latest.json (mock)" trinnet helt, 
+      # da vi nu bruger de rigtige data fra /data mappen.
 
       - name: Build weekly HTML
         run: |
-          python reporting/build_report.py --kind weekly --data latest.json --template templates/weekly.html.j2 --out build/weekly.html
+          python reporting/build_weekly_report.py
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
