@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 # Importér din PFA parser-logik
 from pfa import parse_pfa_from_text
 
+# Stier defineret ud fra projektets rod
 ROOT = Path(__file__).resolve().parents[1]
 TEXT_DIR = ROOT / "build/text"
 OUT_FILE = ROOT / "data/latest.json"
@@ -13,8 +14,8 @@ CONFIG_FILE = ROOT / "config/pfa_pdfs.json"
 
 def calculate_backfill(nav, nav_date_str, returns):
     """
-    Beregner historiske kurser baseret på afkast-procenter.
-    returns: dict med f.eks. {'1w': -0.5, '1m': 2.3, ...}
+    Beregner historiske kurser baseret på afkast-procenter fra faktaarket.
+    Dette giver robotten 'hukommelse' med det samme.
     """
     backfill = {}
     try:
@@ -22,7 +23,7 @@ def calculate_backfill(nav, nav_date_str, returns):
     except:
         current_date = datetime.now()
 
-    # Definition af intervaller i dage
+    # Intervaller defineret i dage (standard for finansiel rapportering)
     intervals = {
         '1w': 7,
         '1m': 30,
@@ -33,6 +34,7 @@ def calculate_backfill(nav, nav_date_str, returns):
 
     for key, days in intervals.items():
         pct = returns.get(f'return_{key}')
+        # Vi tjekker om pct er et tal (float/int) og ikke None eller "-"
         if pct is not None and isinstance(pct, (int, float)):
             # Formel: Gammel_kurs = Ny_kurs / (1 + (pct/100))
             hist_price = nav / (1 + (pct / 100))
@@ -49,9 +51,11 @@ def main():
     with open(CONFIG_FILE, "r") as f:
         isins = json.load(f)
 
+    # Filtrér inaktive ISINs fra (dem med # eller -)
     active_isins = [i.strip() for i in isins if not i.strip().startswith(("#", "-"))]
     results = []
     
+    # Indlæs eksisterende historik
     history = {}
     if HISTORY_FILE.exists():
         try:
@@ -63,6 +67,7 @@ def main():
     for isin in active_isins:
         txt_file = TEXT_DIR / f"{isin}.txt"
         
+        # Basis-objekt hvis parsing fejler
         data = {
             "isin": isin,
             "url": f"https://pfapension.os.fundconnect.com/api/v1/public/printer/solutions/default/factsheet?language=da-DK&isin={isin}",
@@ -73,32 +78,38 @@ def main():
             "return_1m": None,
             "return_3m": None,
             "return_6m": None,
-            "return_1y": None
+            "return_1y": None,
+            "return_ytd": None
         }
         
         if txt_file.exists():
             text = txt_file.read_text(encoding="utf-8", errors="ignore")
             parsed = parse_pfa_from_text(isin, text)
-            data.update(parsed) 
+            data.update(parsed) # Fyld data op med de rigtige tal
             
-            # --- BACKFILL LOGIK ---
+            # --- BACKFILL & HISTORIK LOGIK ---
             if data["nav"] and data["nav_date"]:
                 if isin not in history: 
                     history[isin] = {}
                 
-                # Gem dagens kurs
+                # 1. Gem den dagsaktuelle kurs
                 history[isin][data["nav_date"]] = data["nav"]
                 
-                # Beregn og gem historiske kurser (Backfill)
+                # 2. Beregn og gem de historiske 'tidsmaskine' punkter
                 historical_points = calculate_backfill(data["nav"], data["nav_date"], data)
                 for h_date, h_nav in historical_points.items():
-                    # Vi overskriver kun hvis datoen ikke allerede findes (for at beskytte rigtig log)
+                    # Vi overskriver ALDRIG eksisterende (rigtig) logget data med backfill
                     if h_date not in history[isin]:
                         history[isin][h_date] = h_nav
         
         results.append(data)
 
+    # --- GEM DATA ---
     OUT_FILE.parent.mkdir(exist_ok=True)
+    
+    # Sorter historikken kronologisk for hver fond (vigtigt for MA-beregning)
+    for isin in history:
+        history[isin] = dict(sorted(history[isin].items()))
     
     with open(OUT_FILE, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
@@ -106,7 +117,7 @@ def main():
     with open(HISTORY_FILE, "w", encoding="utf-8") as f:
         json.dump(history, f, indent=2)
 
-    print(f"Parsing færdig. Backfill genereret for {len(results)} fonde.")
+    print(f"Parsing færdig. Historik og backfill gemt for {len(results)} fonde.")
 
 if __name__ == "__main__":
     main()
