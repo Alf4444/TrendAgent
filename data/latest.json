@@ -5,11 +5,13 @@
     "name": "Kerne Invest Indeks Mellemlange Obligationer",
     "nav": 142.64,
     "nav_date": "2026-02-20",
+    "return_1w": 0.01,
+    "return_1m": 0.54,
+    "return_3m": 0.45,
+    "return_6m": 1.05,
+    "return_1y": -0.03,
     "currency": "DKK",
-    "return_1w": "0,01",
-    "return_1m": "0,54",
-    "return_3m": "0,45",
-    "return_ytd": "-0,45"
+    "return_ytd": -0.45
   },
   {
     "isin": "PFA000002203",
@@ -17,11 +19,13 @@
     "name": "iShares Inflation Linked Govt Bond UCITS ETF",
     "nav": 150.37,
     "nav_date": "2026-02-20",
+    "return_1w": 0.2,
+    "return_1m": 1.08,
+    "return_3m": 1.38,
+    "return_6m": 2.18,
+    "return_1y": 2.63,
     "currency": "DKK",
-    "return_1w": "0,20",
-    "return_1m": "1,08",
-    "return_3m": "1,38",
-    "return_ytd": "2,00"
+    "return_ytd": 2.0
   },
   {
     "isin": "PFA000002206",
@@ -29,11 +33,13 @@
     "name": "Kerne Invest Globale Aktier",
     "nav": 675.23,
     "nav_date": "2026-02-20",
+    "return_1w": 1.99,
+    "return_1m": 3.73,
+    "return_3m": 8.07,
+    "return_6m": 12.57,
+    "return_1y": 11.28,
     "currency": "DKK",
-    "return_1w": "1,99",
-    "return_1m": "3,73",
-    "return_3m": "8,07",
-    "return_ytd": "4,20"
+    "return_ytd": 4.2
   },
   {
     "isin": "PFA000002226",
@@ -41,11 +47,13 @@
     "name": "PFA Danske Erhvervsejendomme Core",
     "nav": 195.69,
     "nav_date": "2026-02-20",
+    "return_1w": 0.06,
+    "return_1m": 0.53,
+    "return_3m": 0.86,
+    "return_6m": 2.46,
+    "return_1y": 4.72,
     "currency": "DKK",
-    "return_1w": "0,06",
-    "return_1m": "0,53",
-    "return_3m": "0,86",
-    "return_ytd": "0,67"
+    "return_ytd": 0.67
   },
   {
     "isin": "PFA000002228",
@@ -53,11 +61,13 @@
     "name": "Kerne Invest Danske Aktier",
     "nav": 414.34,
     "nav_date": "2026-02-20",
+    "return_1w": 0.82,
+    "return_1m": -1.85,
+    "return_3m": 5.75,
+    "return_6m": 7.4,
+    "return_1y": 6.55,
     "currency": "DKK",
-    "return_1w": "0,82",
-    "return_1m": "-1,85",
-    "return_3m": "5,75",
-    "return_ytd": "-0,10"
+    "return_ytd": -0.1
   },
   {
     "isin": "PFA000002230",
@@ -65,11 +75,13 @@
     "name": "PFA Indeks Europa Aktier",
     "nav": 257.07,
     "nav_date": "2026-02-20",
+    "return_1w": 2.09,
+    "return_1m": 5.2,
+    "return_3m": 12.78,
+    "return_6m": 14.17,
+    "return_1y": 4.78,
     "currency": "DKK",
-    "return_1w": "2,09",
-    "return_1m": "5,20",
-    "return_3m": "12,78",
-    "return_ytd": "2,22"
+    "return_ytd": 2.22
   },
   {
     "isin": "PFA000002232",
@@ -77,11 +89,13 @@
     "name": "PFA Indeks USA Aktier",
     "nav": 493.84,
     "nav_date": "2026-02-20",
+    "return_1w": 1.66,
+    "return_1m": 0.9,
+    "return_3m": 3.16,
+    "return_6m": 6.97,
+    "return_1y": 1.0,
     "currency": "DKK",
-    "return_1w": "1,66",
-    "return_1m": "0,90",
-    "return_3m": "3,16",
-    "return_ytd": "1,60"
+    "return_ytd": 1.6
   },
   {
     "isin": "PFA000002233",
@@ -89,11 +103,13 @@
     "name": "PFA Indeks Globale Aktier",
     "nav": 403.27,
     "nav_date": "2026-02-20",
+    "return_1w": 1.6,
+    "return_1m": 2.57,
+    "return_3m": 6.54,
+    "return_6m": 10.18,
+    "return_1y": 2.57,
     "currency": "DKK",
-    "return_1w": "1,60",
-    "return_1m": "2,57",
-    "return_3m": "6,54",
-    "return_ytd": "1,54"
+    "return_ytd": 1.54
   },
   {
     "isin": "PFA000002234",
@@ -101,11 +117,13 @@
     "name": "iShares MSCI Emerging Markets UCITS ETF",
     "nav": 223.68,
     "nav_date": "2026-02-20",
+    "return_1w": 1.24,
+    "return_1m": 5.35,
+    "return_3m": 11.59,
+    "return_6m": 22.4,
+    "return_1y": 24.44,
     "currency": "DKK",
-    "return_1w": "1,24",
-    "return_1m": "5,35",
-    "return_3m": "11,59",
-    "return_ytd": "10,94"
+    "return_ytd": 10.94
   },
   {
     "isin": "PFA000002235",
@@ -113,11 +131,13 @@
     "name": "PFA Indeks Globale Obligationer",
     "nav": 102.7,
     "nav_date": "2026-02-20",
+    "return_1w": 0.13,
+    "return_1m": 0.8,
+    "return_3m": 1.08,
+    "return_6m": 1.57,
+    "return_1y": 0.82,
     "currency": "DKK",
-    "return_1w": "0,13",
-    "return_1m": "0,80",
-    "return_3m": "1,08",
-    "return_ytd": "0,12"
+    "return_ytd": 0.12
   },
   {
     "isin": "PFA000002299",
@@ -125,11 +145,13 @@
     "name": "PFA Pengemarked",
     "nav": 111.61,
     "nav_date": "2026-02-20",
+    "return_1w": 0.03,
+    "return_1m": 0.16,
+    "return_3m": 0.45,
+    "return_6m": 0.9,
+    "return_1y": 1.94,
     "currency": "DKK",
-    "return_1w": "0,03",
-    "return_1m": "0,16",
-    "return_3m": "0,45",
-    "return_ytd": "0,26"
+    "return_ytd": 0.26
   },
   {
     "isin": "PFA000002425",
@@ -137,11 +159,13 @@
     "name": "PFA Indeks 25",
     "nav": 113.37,
     "nav_date": "2026-02-20",
+    "return_1w": 0.5,
+    "return_1m": 1.23,
+    "return_3m": 2.39,
+    "return_6m": 3.63,
+    "return_1y": 1.26,
     "currency": "DKK",
-    "return_1w": "0,50",
-    "return_1m": "1,23",
-    "return_3m": "2,39",
-    "return_ytd": "0,47"
+    "return_ytd": 0.47
   },
   {
     "isin": "PFA000002450",
@@ -149,11 +173,13 @@
     "name": "PFA Indeks 50",
     "nav": 125.96,
     "nav_date": "2026-02-20",
+    "return_1w": 0.86,
+    "return_1m": 1.68,
+    "return_3m": 3.75,
+    "return_6m": 5.77,
+    "return_1y": 1.69,
     "currency": "DKK",
-    "return_1w": "0,86",
-    "return_1m": "1,68",
-    "return_3m": "3,75",
-    "return_ytd": "0,83"
+    "return_ytd": 0.83
   },
   {
     "isin": "PFA000002475",
@@ -161,11 +187,13 @@
     "name": "PFA Indeks 75",
     "nav": 139.24,
     "nav_date": "2026-02-20",
+    "return_1w": 1.23,
+    "return_1m": 2.11,
+    "return_3m": 5.13,
+    "return_6m": 7.96,
+    "return_1y": 2.13,
     "currency": "DKK",
-    "return_1w": "1,23",
-    "return_1m": "2,11",
-    "return_3m": "5,13",
-    "return_ytd": "1,18"
+    "return_ytd": 1.18
   },
   {
     "isin": "PFA000002703",
@@ -173,11 +201,13 @@
     "name": "Lazard Emerging Markets Equity Fund",
     "nav": 413.89,
     "nav_date": "2026-02-20",
+    "return_1w": 1.93,
+    "return_1m": 7.97,
+    "return_3m": 17.09,
+    "return_6m": 29.5,
+    "return_1y": 33.16,
     "currency": "USD",
-    "return_1w": "1,93",
-    "return_1m": "7,97",
-    "return_3m": "17,09",
-    "return_ytd": "13,89"
+    "return_ytd": 13.89
   },
   {
     "isin": "PFA000002706",
@@ -185,11 +215,13 @@
     "name": "C WorldWide Globale Aktier",
     "nav": 536.81,
     "nav_date": "2026-02-20",
+    "return_1w": 1.76,
+    "return_1m": -0.07,
+    "return_3m": 2.22,
+    "return_6m": 6.42,
+    "return_1y": -3.31,
     "currency": "DKK",
-    "return_1w": "1,76",
-    "return_1m": "-0,07",
-    "return_3m": "2,22",
-    "return_ytd": "0,90"
+    "return_ytd": 0.9
   },
   {
     "isin": "PFA000002712",
@@ -197,11 +229,13 @@
     "name": "Maj Invest Globale Obligationer Akkumulerende",
     "nav": 102.7,
     "nav_date": "2026-02-20",
+    "return_1w": 0.23,
+    "return_1m": 1.84,
+    "return_3m": 2.26,
+    "return_6m": 4.78,
+    "return_1y": 5.97,
     "currency": "DKK",
-    "return_1w": "0,23",
-    "return_1m": "1,84",
-    "return_3m": "2,26",
-    "return_ytd": "2,29"
+    "return_ytd": 2.29
   },
   {
     "isin": "PFA000002713",
@@ -209,11 +243,13 @@
     "name": "iShares Global IG Corp Bond EUR Hedged UCITS ETF",
     "nav": 174.2,
     "nav_date": "2026-02-20",
+    "return_1w": -0.0,
+    "return_1m": 1.15,
+    "return_3m": 1.29,
+    "return_6m": 2.35,
+    "return_1y": 5.13,
     "currency": "EUR",
-    "return_1w": "-0,00",
-    "return_1m": "1,15",
-    "return_3m": "1,29",
-    "return_ytd": "1,02"
+    "return_ytd": 1.02
   },
   {
     "isin": "PFA000002715",
@@ -221,11 +257,13 @@
     "name": "WM Opportunistisk Emerging Markets Obligationer",
     "nav": 313.32,
     "nav_date": "2026-02-20",
+    "return_1w": 0.46,
+    "return_1m": 2.09,
+    "return_3m": 1.28,
+    "return_6m": 6.75,
+    "return_1y": 1.35,
     "currency": "USD",
-    "return_1w": "0,46",
-    "return_1m": "2,09",
-    "return_3m": "1,28",
-    "return_ytd": "1,87"
+    "return_ytd": 1.87
   },
   {
     "isin": "PFA000002716",
@@ -233,11 +271,13 @@
     "name": "iShares Global High Yield Corp Bond EUR Hedged UCITS ETF",
     "nav": 315.52,
     "nav_date": "2026-02-20",
+    "return_1w": 0.21,
+    "return_1m": 0.57,
+    "return_3m": 1.79,
+    "return_6m": 2.42,
+    "return_1y": 5.18,
     "currency": "DKK",
-    "return_1w": "0,21",
-    "return_1m": "0,57",
-    "return_3m": "1,79",
-    "return_ytd": "0,80"
+    "return_ytd": 0.8
   },
   {
     "isin": "PFA000002722",
@@ -245,11 +285,13 @@
     "name": "Maj Invest Danske Aktier",
     "nav": 574.85,
     "nav_date": "2026-02-20",
+    "return_1w": 0.82,
+    "return_1m": -3.41,
+    "return_3m": 2.72,
+    "return_6m": 4.59,
+    "return_1y": 5.4,
     "currency": "DKK",
-    "return_1w": "0,82",
-    "return_1m": "-3,41",
-    "return_3m": "2,72",
-    "return_ytd": "-3,30"
+    "return_ytd": -3.3
   },
   {
     "isin": "PFA000002726",
@@ -257,11 +299,13 @@
     "name": "Sydinvest Globale EM-aktier",
     "nav": 205.01,
     "nav_date": "2026-02-20",
+    "return_1w": 1.35,
+    "return_1m": 6.22,
+    "return_3m": 13.02,
+    "return_6m": 24.72,
+    "return_1y": 24.93,
     "currency": "DKK",
-    "return_1w": "1,35",
-    "return_1m": "6,22",
-    "return_3m": "13,02",
-    "return_ytd": "11,57"
+    "return_ytd": 11.57
   },
   {
     "isin": "PFA000002728",
@@ -269,11 +313,13 @@
     "name": "Sydinvest HøjrenteLande",
     "nav": 148.85,
     "nav_date": "2026-02-20",
+    "return_1w": 0.06,
+    "return_1m": 2.34,
+    "return_3m": 2.89,
+    "return_6m": 6.78,
+    "return_1y": 8.32,
     "currency": "DKK",
-    "return_1w": "0,06",
-    "return_1m": "2,34",
-    "return_3m": "2,89",
-    "return_ytd": "2,61"
+    "return_ytd": 2.61
   },
   {
     "isin": "PFA000002729",
@@ -281,11 +327,13 @@
     "name": "Sparinvest Value Aktier",
     "nav": 344.98,
     "nav_date": "2026-02-20",
+    "return_1w": 0.83,
+    "return_1m": 6.26,
+    "return_3m": 16.07,
+    "return_6m": 18.94,
+    "return_1y": 14.87,
     "currency": "DKK",
-    "return_1w": "0,83",
-    "return_1m": "6,26",
-    "return_3m": "16,07",
-    "return_ytd": "8,56"
+    "return_ytd": 8.56
   },
   {
     "isin": "PFA000002732",
@@ -293,11 +341,13 @@
     "name": "C WorldWide Asien",
     "nav": 385.11,
     "nav_date": "2026-02-20",
+    "return_1w": 1.79,
+    "return_1m": 7.12,
+    "return_3m": 12.84,
+    "return_6m": 23.77,
+    "return_1y": 22.96,
     "currency": "DKK",
-    "return_1w": "1,79",
-    "return_1m": "7,12",
-    "return_3m": "12,84",
-    "return_ytd": "12,11"
+    "return_ytd": 12.11
   },
   {
     "isin": "PFA000002734",
@@ -305,11 +355,13 @@
     "name": "SKAGEN Global",
     "nav": 335.01,
     "nav_date": "2026-02-20",
+    "return_1w": 1.73,
+    "return_1m": -4.05,
+    "return_3m": -3.47,
+    "return_6m": -7.82,
+    "return_1y": -13.54,
     "currency": "DKK",
-    "return_1w": "1,73",
-    "return_1m": "-4,05",
-    "return_3m": "-3,47",
-    "return_ytd": "-6,84"
+    "return_ytd": -6.84
   },
   {
     "isin": "PFA000002735",
@@ -317,11 +369,13 @@
     "name": "Magna Eastern European Fund",
     "nav": 151.22,
     "nav_date": "2026-02-20",
+    "return_1w": 0.47,
+    "return_1m": 4.07,
+    "return_3m": 17.5,
+    "return_6m": 15.69,
+    "return_1y": 33.07,
     "currency": "DKK",
-    "return_1w": "0,47",
-    "return_1m": "4,07",
-    "return_3m": "17,50",
-    "return_ytd": "11,95"
+    "return_ytd": 11.95
   },
   {
     "isin": "PFA000002736",
@@ -329,11 +383,13 @@
     "name": "Nordea Invest European High Yield Bonds",
     "nav": 216.13,
     "nav_date": "2026-02-20",
+    "return_1w": 0.23,
+    "return_1m": 0.53,
+    "return_3m": 1.56,
+    "return_6m": 2.05,
+    "return_1y": 5.09,
     "currency": "DKK",
-    "return_1w": "0,23",
-    "return_1m": "0,53",
-    "return_3m": "1,56",
-    "return_ytd": "0,86"
+    "return_ytd": 0.86
   },
   {
     "isin": "PFA000002738",
@@ -341,11 +397,13 @@
     "name": "iShares MSCI China UCITS ETF",
     "nav": 140.64,
     "nav_date": "2026-02-20",
+    "return_1w": -0.44,
+    "return_1m": -4.01,
+    "return_3m": -4.29,
+    "return_6m": 0.68,
+    "return_1y": 3.1,
     "currency": "EUR",
-    "return_1w": "-0,44",
-    "return_1m": "-4,01",
-    "return_3m": "-4,29",
-    "return_ytd": "-0,94"
+    "return_ytd": -0.94
   },
   {
     "isin": "PFA000002739",
@@ -353,11 +411,13 @@
     "name": "BLS Invest Danske Aktier",
     "nav": 329.22,
     "nav_date": "2026-02-20",
+    "return_1w": 1.01,
+    "return_1m": -4.57,
+    "return_3m": -2.18,
+    "return_6m": -3.74,
+    "return_1y": -8.99,
     "currency": "DKK",
-    "return_1w": "1,01",
-    "return_1m": "-4,57",
-    "return_3m": "-2,18",
-    "return_ytd": "-7,52"
+    "return_ytd": -7.52
   },
   {
     "isin": "PFA000002741",
@@ -365,11 +425,13 @@
     "name": "Threadneedle Pan European ESG Equities",
     "nav": 294.35,
     "nav_date": "2026-02-20",
+    "return_1w": 2.53,
+    "return_1m": 5.32,
+    "return_3m": 13.48,
+    "return_6m": 14.34,
+    "return_1y": 12.6,
     "currency": "DKK",
-    "return_1w": "2,53",
-    "return_1m": "5,32",
-    "return_3m": "13,48",
-    "return_ytd": "8,60"
+    "return_ytd": 8.6
   },
   {
     "isin": "PFA000002742",
@@ -377,11 +439,13 @@
     "name": "DWS Xtrackers, Råvarer",
     "nav": 196.99,
     "nav_date": "2026-02-20",
+    "return_1w": 2.81,
+    "return_1m": 4.36,
+    "return_3m": 14.47,
+    "return_6m": 30.82,
+    "return_1y": 11.73,
     "currency": "DKK",
-    "return_1w": "2,81",
-    "return_1m": "4,36",
-    "return_3m": "14,47",
-    "return_ytd": "9,35"
+    "return_ytd": 9.35
   },
   {
     "isin": "PFA000002746",
@@ -389,11 +453,13 @@
     "name": "BankInvest Højt Udbytte Aktier",
     "nav": 184.04,
     "nav_date": "2026-02-20",
+    "return_1w": 0.94,
+    "return_1m": 2.45,
+    "return_3m": 5.45,
+    "return_6m": 4.33,
+    "return_1y": -1.98,
     "currency": "DKK",
-    "return_1w": "0,94",
-    "return_1m": "2,45",
-    "return_3m": "5,45",
-    "return_ytd": "2,21"
+    "return_ytd": 2.21
   },
   {
     "isin": "PFA000002748",
@@ -401,11 +467,13 @@
     "name": "UBS Globale Bæredygtige Aktier",
     "nav": 237.67,
     "nav_date": "2026-02-20",
+    "return_1w": 1.37,
+    "return_1m": 0.16,
+    "return_3m": 4.31,
+    "return_6m": 8.49,
+    "return_1y": 5.93,
     "currency": "USD",
-    "return_1w": "1,37",
-    "return_1m": "0,16",
-    "return_3m": "4,31",
-    "return_ytd": "0,28"
+    "return_ytd": 0.28
   },
   {
     "isin": "PFA000002749",
@@ -413,11 +481,13 @@
     "name": "Fundsmith Equity Fund",
     "nav": 109.68,
     "nav_date": "2026-02-20",
+    "return_1w": 0.89,
+    "return_1m": -1.95,
+    "return_3m": -0.72,
+    "return_6m": -1.33,
+    "return_1y": -10.37,
     "currency": "EUR",
-    "return_1w": "0,89",
-    "return_1m": "-1,95",
-    "return_3m": "-0,72",
-    "return_ytd": "-1,91"
+    "return_ytd": -1.91
   },
   {
     "isin": "PFA000002750",
@@ -425,11 +495,13 @@
     "name": "Qblue Global Equities Responsible Transition Fund",
     "nav": 132.86,
     "nav_date": "2026-02-20",
+    "return_1w": 2.46,
+    "return_1m": 2.92,
+    "return_3m": 8.59,
+    "return_6m": 6.02,
+    "return_1y": -3.0,
     "currency": "DKK",
-    "return_1w": "2,46",
-    "return_1m": "2,92",
-    "return_3m": "8,59",
-    "return_ytd": "4,39"
+    "return_ytd": 4.39
   },
   {
     "isin": "PFA000002751",
@@ -437,11 +509,13 @@
     "name": "Robeco Global SDG Equities",
     "nav": 111.62,
     "nav_date": "2026-02-20",
+    "return_1w": 0.76,
+    "return_1m": 1.87,
+    "return_3m": 3.37,
+    "return_6m": 2.97,
+    "return_1y": -1.25,
     "currency": "EUR",
-    "return_1w": "0,76",
-    "return_1m": "1,87",
-    "return_3m": "3,37",
-    "return_ytd": "1,26"
+    "return_ytd": 1.26
   },
   {
     "isin": "PFA000002752",
@@ -449,11 +523,13 @@
     "name": "Robeco Biodiversity Equities",
     "nav": 107.73,
     "nav_date": "2026-02-20",
+    "return_1w": 0.91,
+    "return_1m": 4.81,
+    "return_3m": 9.15,
+    "return_6m": 1.5,
+    "return_1y": -0.81,
     "currency": "EUR",
-    "return_1w": "0,91",
-    "return_1m": "4,81",
-    "return_3m": "9,15",
-    "return_ytd": "6,25"
+    "return_ytd": 6.25
   },
   {
     "isin": "PFA000002753",
@@ -461,11 +537,13 @@
     "name": "Robeco Circular Economy Equities",
     "nav": 129.18,
     "nav_date": "2026-02-20",
+    "return_1w": 1.52,
+    "return_1m": 3.13,
+    "return_3m": 8.92,
+    "return_6m": 10.23,
+    "return_1y": 10.62,
     "currency": "EUR",
-    "return_1w": "1,52",
-    "return_1m": "3,13",
-    "return_3m": "8,92",
-    "return_ytd": "6,04"
+    "return_ytd": 6.04
   },
   {
     "isin": "PFA000002754",
@@ -473,11 +551,13 @@
     "name": "Robeco Sustainable Water Equities",
     "nav": 107.11,
     "nav_date": "2026-02-20",
+    "return_1w": 0.7,
+    "return_1m": 2.28,
+    "return_3m": 6.41,
+    "return_6m": 4.02,
+    "return_1y": 1.6,
     "currency": "EUR",
-    "return_1w": "0,70",
-    "return_1m": "2,28",
-    "return_3m": "6,41",
-    "return_ytd": "5,54"
+    "return_ytd": 5.54
   },
   {
     "isin": "PFA000002755",
@@ -485,11 +565,13 @@
     "name": "Maj Invest UCITS ETF Defence & Cybersecurity Fund",
     "nav": 123.35,
     "nav_date": "2026-02-20",
+    "return_1w": 3.09,
+    "return_1m": -0.64,
+    "return_3m": 13.73,
+    "return_6m": 16.78,
+    "return_1y": 35.92,
     "currency": "DKK",
-    "return_1w": "3,09",
-    "return_1m": "-0,64",
-    "return_3m": "13,73",
-    "return_ytd": "12,03"
+    "return_ytd": 12.03
   },
   {
     "isin": "PFA000002756",
@@ -497,11 +579,13 @@
     "name": "iShares Global Aerospace & Defence UCITS ETF",
     "nav": 139.29,
     "nav_date": "2026-02-20",
+    "return_1w": 4.08,
+    "return_1m": 1.0,
+    "return_3m": 18.81,
+    "return_6m": 22.8,
+    "return_1y": 47.0,
     "currency": "USD",
-    "return_1w": "4,08",
-    "return_1m": "1,00",
-    "return_3m": "18,81",
-    "return_ytd": "14,35"
+    "return_ytd": 14.35
   },
   {
     "isin": "PFA000002757",
@@ -509,11 +593,13 @@
     "name": "iShares MSCI ACWI Global Equities UCITS ETF",
     "nav": 107.98,
     "nav_date": "2026-02-20",
+    "return_1w": 1.57,
+    "return_1m": 2.62,
+    "return_3m": 6.99,
+    "return_6m": 11.58,
+    "return_1y": 8.39,
     "currency": "EUR",
-    "return_1w": "1,57",
-    "return_1m": "2,62",
-    "return_3m": "6,99",
-    "return_ytd": "3,56"
+    "return_ytd": 3.56
   },
   {
     "isin": "PFA000002758",
@@ -521,11 +607,13 @@
     "name": "iShares MSCI World Health Care Sector Advanced UCITS ETF",
     "nav": 113.17,
     "nav_date": "2026-02-20",
+    "return_1w": 0.18,
+    "return_1m": 0.7,
+    "return_3m": 2.63,
+    "return_6m": 12.94,
+    "return_1y": 0.03,
     "currency": "EUR",
-    "return_1w": "0,18",
-    "return_1m": "0,70",
-    "return_3m": "2,63",
-    "return_ytd": "1,84"
+    "return_ytd": 1.84
   },
   {
     "isin": "PFA000002759",
@@ -533,11 +621,13 @@
     "name": "iShares Core MSCI Japan IMI UCITS ETF",
     "nav": 115.87,
     "nav_date": "2026-02-20",
+    "return_1w": -0.81,
+    "return_1m": 6.62,
+    "return_3m": 14.89,
+    "return_6m": 16.73,
+    "return_1y": 22.05,
     "currency": "EUR",
-    "return_1w": "-0,81",
-    "return_1m": "6,62",
-    "return_3m": "14,89",
-    "return_ytd": "12,54"
+    "return_ytd": 12.54
   },
   {
     "isin": "PFA000002760",
@@ -545,11 +635,13 @@
     "name": "Xtrackers MSCI World EUR Hedged UCITS ETF",
     "nav": 103.74,
     "nav_date": "2026-02-20",
+    "return_1w": 1.17,
+    "return_1m": 2.14,
+    "return_3m": 6.72,
+    "return_6m": 9.06,
+    "return_1y": 14.22,
     "currency": "EUR",
-    "return_1w": "1,17",
-    "return_1m": "2,14",
-    "return_3m": "6,72",
-    "return_ytd": "2,15"
+    "return_ytd": 2.15
   },
   {
     "isin": "PFA000002761",
@@ -557,10 +649,12 @@
     "name": "Maj Invest Guld, Sølv & Miner UCITS ETF",
     "nav": 132.86,
     "nav_date": "2026-02-20",
+    "return_1w": 2.87,
+    "return_1m": 2.2,
+    "return_3m": 41.36,
+    "return_6m": 18.66,
+    "return_1y": 21.48,
     "currency": "DKK",
-    "return_1w": "2,87",
-    "return_1m": "2,20",
-    "return_3m": "41,36",
-    "return_ytd": "26,92"
+    "return_ytd": 26.92
   }
 ]
