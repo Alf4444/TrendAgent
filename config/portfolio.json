@@ -1,8 +1,13 @@
 {
-  "PFA000002761": {
+  "PFA000002703": {
     "active": true,
-    "buy_date": "2026-02-10",
-    "buy_price": 120.50
+    "buy_date": "2026-02-23",
+    "buy_price": 415,21
+  },
+  "PFA000002735": {
+    "active": true,
+    "buy_date": "2025-07-08",
+    "buy_price": 129,19
   },
   "PFA000002760": {
     "active": false,
