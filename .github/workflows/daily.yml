@@ -15,8 +15,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          # Vi sikrer os at vi har skriveadgang
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -28,29 +26,18 @@ jobs:
           pip install requests pdfplumber
 
       - name: Run Main Robot
-        # HVIS din main.py ligger i en mappe, så ret det til: python mappenavn/main.py
-        run: python main.py || echo "main.py ikke fundet, tjek filplacering"
-
-      - name: Run Test Data Generator
-        run: python utils/generate_test_data.py || echo "Test data script fejlede eller ikke fundet"
+        # RETTET: Vi peger nu på parser mappen
+        run: python parser/main.py
 
       - name: Build Dashboard
+        # RETTET: Vi peger på reporting mappen
         run: python reporting/build_daily.py
 
       - name: Commit and Push changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # Tving Git til at acceptere robotten som ejer af mappen
-          git config --global --add safe.directory /github/workspace
-          
-          # Ryd op i eventuelle låste filer
           git add -A
-          
-          # Prøv at hente de nyeste ændringer og flet dem (autostash redder os fra "unstaged" fejlen)
           git pull --rebase --autostash origin main
-          
-          # Gem og send
-          git commit -m "Robot: Opdateret dashboard og historik [skip ci]" || echo "Intet at gemme"
+          git commit -m "Update daily report [skip ci]" || echo "No changes"
           git push origin main
