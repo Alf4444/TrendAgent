@@ -1,5 +1,5 @@
 # 📈 TrendAgent Dashboard
-**Opdateret:** 23-02-2026 18:32
+**Opdateret:** 23-02-2026 19:47
 
 | Status | Fond | Kurs | ÅTD | Trend | Momentum | Drawdown |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
