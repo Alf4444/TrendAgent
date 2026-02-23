@@ -26,11 +26,12 @@ jobs:
           pip install requests pdfplumber
 
       - name: Run Main Robot
-        # RETTET: Vi peger nu på parser mappen
-        run: python parser/main.py
+        # Vi går ind i mappen parser, så Python ikke bliver forvirret over navnet "parser"
+        run: |
+          cd parser
+          python main.py
 
       - name: Build Dashboard
-        # RETTET: Vi peger på reporting mappen
         run: python reporting/build_daily.py
 
       - name: Commit and Push changes
@@ -39,5 +40,5 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add -A
           git pull --rebase --autostash origin main
-          git commit -m "Update daily report [skip ci]" || echo "No changes"
+          git commit -m "Robot: Opdateret data [skip ci]" || echo "Intet at gemme"
           git push origin main
