@@ -1,8 +1,10 @@
 import json
 import os
 from pathlib import Path
-from parser.pfa import parse_pfa_from_text
+# RETTET: Vi fjerner "parser." fra importen, da vi kører scriptet inde fra mappen
+from pfa import parse_pfa_from_text
 
+# ROOT er korrekt: Det peger et niveau op fra parser-mappen
 ROOT = Path(__file__).resolve().parents[1]
 TEXT_DIR = ROOT / "build/text"
 OUT_FILE = ROOT / "data/latest.json"
@@ -10,7 +12,9 @@ HISTORY_FILE = ROOT / "data/history.json"
 CONFIG_FILE = ROOT / "config/pfa_pdfs.json"
 
 def main():
-    if not CONFIG_FILE.exists(): return
+    if not CONFIG_FILE.exists(): 
+        print(f"Fejl: Fandt ikke {CONFIG_FILE}")
+        return
 
     with open(CONFIG_FILE, "r") as f:
         isins = json.load(f)
@@ -24,7 +28,8 @@ def main():
         try:
             with open(HISTORY_FILE, "r") as f:
                 history = json.load(f)
-        except: history = {}
+        except: 
+            history = {}
 
     for isin in active_isins:
         txt_file = TEXT_DIR / f"{isin}.txt"
@@ -45,12 +50,15 @@ def main():
             
             # Gem i historikken
             if data["nav"] and data["nav_date"]:
-                if isin not in history: history[isin] = {}
+                if isin not in history: 
+                    history[isin] = {}
                 history[isin][data["nav_date"]] = data["nav"]
         
         results.append(data)
 
+    # Sørg for at mappen findes
     OUT_FILE.parent.mkdir(exist_ok=True)
+    
     with open(OUT_FILE, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
         
