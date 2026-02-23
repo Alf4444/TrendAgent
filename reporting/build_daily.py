@@ -12,11 +12,15 @@ README_FILE = ROOT / "README.md"
 def get_ma(prices, window):
     clean_prices = [p for p in prices if p is not None]
     if not clean_prices: return None
+    # Vi tager de sidste 'window' antal datapunkter vi har
     relevant_prices = clean_prices[-window:]
     return sum(relevant_prices) / len(relevant_prices)
 
 def build_report():
-    if not DATA_FILE.exists(): return
+    if not DATA_FILE.exists(): 
+        print("Fejl: latest.json mangler")
+        return
+    
     with open(DATA_FILE, "r", encoding="utf-8") as f:
         latest_data = json.load(f)
     with open(HISTORY_FILE, "r") as f:
@@ -32,48 +36,66 @@ def build_report():
         nav = item.get('nav')
         if nav is None: continue
         
+        # Hent historik og sørg for at datoerne er sorteret korrekt
         price_dict = history.get(isin, {}).copy()
-        today_str = datetime.now().strftime('%Y-%m-%d')
-        price_dict[today_str] = nav
         price_history = [v for k, v in sorted(price_dict.items())]
         
+        if not price_history:
+            price_history = [nav]
+
+        # Beregn MA200 (Gennemsnit af de punkter vi har, max 200)
         ma200 = get_ma(price_history, 200)
+        
+        # Beregn dagsændring (sammenlign med forrige punkt i historikken)
         prev_nav = price_history[-2] if len(price_history) > 1 else nav
         day_chg = ((nav - prev_nav) / prev_nav * 100) if prev_nav else 0
+        
+        # Afstand til trend (MA200)
         dist_ma200 = ((nav - ma200) / ma200 * 100) if ma200 else 0
         
+        # Signal logik (Kryds over/under MA200)
         signal, has_signal = "–", 0
-        if ma200:
+        if ma200 and len(price_history) > 1:
             curr_bull = nav > ma200
             prev_ma200 = get_ma(price_history[:-1], 200) or ma200
             prev_bull = prev_nav > prev_ma200
-            if curr_bull and not prev_bull: signal, has_signal = "🚀 KØB", 1
-            elif not curr_bull and prev_bull: signal, has_signal = "⚠️ SALG", 1
+            
+            if curr_bull and not prev_bull: 
+                signal, has_signal = "🚀 KØB", 1
+            elif not curr_bull and prev_bull: 
+                signal, has_signal = "⚠️ SALG", 1
 
         is_active = portfolio.get(isin, {}).get('active', False)
         t_state = "BULL" if nav > (ma200 or 0) else "BEAR"
         t_color = "#28a745" if t_state == "BULL" else "#d93025"
 
         processed_list.append({
-            'isin': isin, 'name': item.get('name'), 'nav': nav,
-            'day_chg': day_chg, 'dist_ma200': dist_ma200,
-            'signal': signal, 'has_signal': has_signal,
-            'is_active': is_active, 't_state': t_state, 't_color': t_color,
+            'isin': isin, 
+            'name': item.get('name'), 
+            'nav': nav,
+            'day_chg': day_chg, 
+            'dist_ma200': dist_ma200,
+            'signal': signal, 
+            'has_signal': has_signal,
+            'is_active': is_active, 
+            't_state': t_state, 
+            't_color': t_color,
             'history': price_history
         })
 
-    # SORTERING
+    # SORTERING: Aktive først, dernæst signaler, til sidst største dags-udsving
     sorted_data = sorted(processed_list, key=lambda x: (not x['is_active'], not x['has_signal'], -abs(x['day_chg'])))
 
-    # README START
+    # README GENERERING
     readme_content = f"# 📈 TrendAgent Fokus\n**Opdateret:** {timestamp}\n\n"
-    readme_content += "| Stat | Fond | Signal | Egen % | Trend | Afstand | 1D % |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n"
+    readme_content += "| | Fond | Signal | Egen % | Trend | Afstand |\n| :--- | :--- | :--- | :--- | :--- | :--- |\n"
 
     rows_html = ""
     for d in sorted_data:
         p_data = portfolio.get(d['isin'], {})
         buy_price = p_data.get('buy_price')
         p_ret_val = "–"
+        
         if d['is_active'] and buy_price:
             p_ret = ((d['nav'] - buy_price) / buy_price * 100)
             p_color = "#1a73e8" if p_ret > 10 else ("#28a745" if p_ret > 0 else "#d93025")
@@ -82,6 +104,7 @@ def build_report():
         else:
             p_ret_html = "–"
 
+        # Drawdown (fald fra højeste punkt i historikken)
         ath = max(d['history']) if d['history'] else d['nav']
         dd = ((d['nav'] - ath) / ath * 100) if ath > 0 else 0
         
@@ -98,29 +121,15 @@ def build_report():
             <td style="color:#d93025">{dd:.1f}%</td>
         </tr>
         """
-        # Tilføj til README (kun de vigtige/øverste)
-        if d['is_active'] or d['has_signal'] or (len(readme_content.split('\n')) < 20):
-            readme_content += f"| {'⭐' if d['is_active'] else '🔍'} | {d['name'][:20]} | {d['signal']} | {p_ret_val} | {d['t_state']} | {d['dist_ma200']:+.1f}% | {d['day_chg']:+.2f}% |\n"
+        
+        # README: Kun aktive eller dem med signal for at holde det kompakt
+        if d['is_active'] or d['has_signal']:
+            readme_content += f"| {'⭐' if d['is_active'] else '🔍'} | {d['name'][:20]} | {d['signal']} | {p_ret_val} | {d['t_state']} | {d['dist_ma200']:+.1f}% |\n"
 
-    # HTML Template
+    # HTML TEMPLATE (Dashboard)
     html_content = f"""
     <!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'>
     <style>
-        body {{ font-family: sans-serif; background: #f4f7f9; margin: 10px; }}
-        table {{ width: 100%; border-collapse: collapse; background: white; font-size: 12px; }}
-        th, td {{ padding: 10px; border: 1px solid #eee; text-align: left; }}
-        th {{ background: #1a73e8; color: white; position: sticky; top: 0; }}
-        .active-row {{ background: #fff8e1; font-weight: bold; border-left: 5px solid #ffca28; }}
-        .signal-row {{ background: #e3f2fd; }}
-    </style></head>
-    <body><h2>🚀 TrendAgent Fokus</h2><p>Opdateret: {timestamp}</p>
-    <table><thead><tr><th></th><th>Fond</th><th>Signal</th><th>Egen %</th><th>Trend</th><th>Afstand til Trend</th><th>1D %</th><th>Drawdown</th></tr></thead>
-    <tbody>{rows_html}</tbody></table></body></html>
-    """
-    
-    REPORT_FILE.write_text(html_content, encoding="utf-8")
-    README_FILE.write_text(readme_content, encoding="utf-8")
-    print("Færdig: Dashboard og README opdateret!")
-
-if __name__ == "__main__":
-    build_report()
+        body {{ font-family: sans-serif; background: #f4f7f9; margin: 10px; color: #333; }}
+        table {{ width: 100%; border-collapse: collapse; background: white; font-size: 13px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }}
+        th, td {{ padding: 12
