@@ -30,18 +30,17 @@ def build_report():
 
     timestamp = datetime.now().strftime('%d-%m-%Y %H:%M')
     
-    # Sortering: Ejer-fonde først, derefter efter ÅTD afkast
+    # Sortering: Aktive fonde øverst, derefter efter navn
     def sort_key(x):
         isin = x.get('isin')
-        is_owned = portfolio.get(isin, {}).get('active', False)
-        ytd = float(x.get('return_ytd', '0').replace(',', '.'))
-        return (is_owned, ytd)
+        is_active = portfolio.get(isin, {}).get('active', False)
+        return (not is_active, x.get('name', ''))
 
-    sorted_data = sorted(latest_data, key=sort_key, reverse=True)
+    sorted_data = sorted(latest_data, key=sort_key)
 
-    # README Opbygning
-    readme_content = f"# 📈 TrendAgent Pro\n**Opdateret:** {timestamp}\n\n"
-    readme_content += "| Status | Fond | Kurs | ÅTD | Trend | Drawdown |\n| :--- | :--- | :--- | :--- | :--- | :--- |\n"
+    # README Start
+    readme_content = f"# 📈 TrendAgent Technical Dashboard\n**Analyse genereret:** {timestamp}\n\n"
+    readme_content += "| Status | Fond | Kurs | ÅTD | Trend | Momentum | Drawdown |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n"
 
     rows_html = ""
     for item in sorted_data:
@@ -49,55 +48,90 @@ def build_report():
         nav = item.get('nav', 0)
         ytd = item.get('return_ytd', '0,00')
         
-        # Hent prishistorik
+        # Hent historiske priser i kronologisk rækkefølge
         price_history = [v for k, v in sorted(history.get(isin, {}).items())]
+        
+        # Tekniske beregninger
         ma20 = get_ma(price_history, 20)
         ma50 = get_ma(price_history, 50)
+        ma200 = get_ma(price_history, 200)
         
-        # Drawdown
+        # 1. Trend State (Langsigtet)
+        trend_state = "⏳ Opsamler"
+        if ma200:
+            trend_state = "🐂 BULL" if nav > ma200 else "🐻 BEAR"
+        elif ma50: # Backup hvis vi ikke har 200 dage endnu
+            trend_state = "OP" if nav > ma50 else "NED"
+
+        # 2. Momentum / Shift (MA20 vs MA50)
+        momentum = "➡️ Neutral"
+        if ma20 and ma50:
+            if ma20 > ma50:
+                momentum = "🔥 SHIFT OP" if price_history[-2] < ma50 else "🟢 Positiv"
+            else:
+                momentum = "❄️ SHIFT NED" if price_history[-2] > ma50 else "🔴 Negativ"
+
+        # 3. Drawdown (Fald fra ATH i historikken)
         ath = max(price_history) if price_history else nav
         dd = ((nav - ath) / ath * 100) if ath > 0 else 0
 
-        # Portfolio Logik - HER ER LØSNINGEN PÅ DIT SPØRGSMÅL
-        port_info = portfolio.get(isin)
-        if port_info:
-            if port_info.get('active'):
-                status_icon, status_text = "✅", "EJER"
-                # Beregn personligt afkast hvis buy_price findes
-                buy_p = port_info.get('buy_price', 0)
-                p_ret = f" ({((nav-buy_p)/buy_p*100):+.1f}%)" if buy_p > 0 else ""
-                status_text += p_ret
-            else:
-                status_icon, status_text = "📦", "SOLGT"
-        else:
-            status_icon, status_text = "👀", "OVERVÅGER"
+        # Portfolio Status (Kun visuel markering)
+        is_active = portfolio.get(isin, {}).get('active', False)
+        status_icon = "⭐" if is_active else "🔍"
 
-        # Trend Logik
-        trend_state = "Opsamler data..."
-        if ma20:
-            trend_state = "OP" if nav > ma20 else "NED"
-
-        # Formatering til tabeller
+        # Formatering
         nav_str = "{:,.2f}".format(nav).replace(",", "X").replace(".", ",").replace("X", ".")
         
-        readme_content += f"| {status_icon} | {item.get('name')[:30]} | {nav_str} | {ytd}% | {trend_state} | {dd:.1f}% |\n"
+        # README Række
+        readme_content += f"| {status_icon} | {item.get('name')[:30]} | {nav_str} | {ytd}% | {trend_state} | {momentum} | {dd:.1f}% |\n"
         
+        # HTML Række
+        row_class = "active-row" if is_active else ""
         rows_html += f"""
-        <tr style="background: {'#e7f3ff' if status_icon == '✅' else 'white'}">
-            <td>{status_icon} {status_text}</td>
+        <tr class="{row_class}">
+            <td>{status_icon}</td>
             <td><strong>{item.get('name')}</strong></td>
-            <td>{nav_str}</td>
-            <td>{ytd}%</td>
-            <td>{trend_state}</td>
-            <td style="color: red">{dd:.1f}%</td>
+            <td style="font-family: monospace;">{nav_str}</td>
+            <td style="font-weight: bold; color: {'green' if float(ytd.replace(',','.')) >= 0 else 'red'}">{ytd}%</td>
+            <td><span class="badge">{trend_state}</span></td>
+            <td>{momentum}</td>
+            <td style="color: #d93025;">{dd:.1f}%</td>
         </tr>
         """
 
     # Gem filer
     README_FILE.write_text(readme_content, encoding="utf-8")
     
-    html_template = f"<html><head><meta charset='utf-8'><style>body{{font-family:sans-serif;padding:20px;}}table{{width:100%;border-collapse:collapse;}}th,td{{padding:10px;border-bottom:1px solid #eee;}}th{{background:#eee;}}</style></head><body><h1>TrendAgent Pro</h1><table><thead><tr><th>Status</th><th>Fond</th><th>Kurs</th><th>ÅTD</th><th>Trend</th><th>Drawdown</th></tr></thead><tbody>{rows_html}</tbody></table></body></html>"
+    html_template = f"""
+    <!DOCTYPE html>
+    <html lang="da">
+    <head>
+        <meta charset="utf-8">
+        <style>
+            body {{ font-family: -apple-system, sans-serif; margin: 20px; background: #f8f9fa; color: #333; }}
+            table {{ width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }}
+            th, td {{ padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }}
+            th {{ background: #1a73e8; color: white; font-size: 12px; text-transform: uppercase; }}
+            .active-row {{ background: #f1f8ff; font-weight: 500; }}
+            .badge {{ padding: 4px 8px; border-radius: 4px; background: #eee; font-size: 11px; font-weight: bold; }}
+        </style>
+    </head>
+    <body>
+        <h1>TrendAgent Technical Analysis</h1>
+        <p>Sidst opdateret: {timestamp} (PFA Data)</p>
+        <table>
+            <thead>
+                <tr>
+                    <th></th><th>Fond</th><th>NAV</th><th>ÅTD</th><th>Trend</th><th>Momentum (20/50)</th><th>Drawdown</th>
+                </tr>
+            </thead>
+            <tbody>{rows_html}</tbody>
+        </table>
+    </body>
+    </html>
+    """
     REPORT_FILE.write_text(html_template, encoding="utf-8")
+    print("Dashboard opdateret med tekniske signaler!")
 
 if __name__ == "__main__":
     build_report()
