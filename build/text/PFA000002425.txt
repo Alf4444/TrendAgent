@@ -1,0 +1,62 @@
+PFA Indeks 25
+Investeringsprofil Stamdata
+Fonden er en balanceret fond, der investerer 25% i PFA Indeks Globale Aktier og Opstart 25-04-2022
+75% i PFA Indeks Globale Obligationer med månedlig rebalancering. Der benyttes Valuta DKK
+Type Investeringsprodukt
+en indeksnær investeringsstrategi til at opnå et afkast svarende til fondens
+Indre værdi 113,37
+benchmark, dog kan fondens afkast afvige fra benchmarkafkastet, da en
+Indre værdi dato 20-02-2026
+omfattende ESG-screening foretages. Det betyder, at selskaber på PFA’s
+Bæredygtighed Artikel 8
+eksklusionsliste eller med en lav ESG-score samt visse lande/sektorer helt eller
+delvist udelades. Fonden egner sig til informerede eller erfarne pensionskunder,
+som har indsigt i og erfaring med værdipapirhandel, og som ønsker et
+opsparingsprodukt med lavere risiko, hvorfor der kan accepteres lavere afkast på
+investeringen. Pensionskunder bør have en tidshorisont på min. 3 år. Fonden
+indeholder valutarisiko, da den har eksponering til investeringer i udenlandsk valuta,
+som kun delvist afdækkes til EUR eller DKK.
+Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
+Afdeling 0,50% 1,23% 2,39% 3,63%
+PFA Indeks 25 Benchmark
+Benchmark 0,47% 1,26% 2,44% 3,91%
+120 Afkast ÅTD 1 år 3 år 5 år
+112 Afdeling 1,70% 3,71% 20,24% -
+Benchmark 1,75% 4,39% 21,95% -
+104
+Omkostninger %
+96 Andre løbende omkostninger 0,49
+Resultatgebyrer 0,00
+Transaktionsomkostninger (Direkte + indirekte) 0,09
+Oprettelsesomkostninger 0,19
+2023 2024 2025 2026
+Udtrædelsesomkostninger 0,19
+ÅOP 0,54
+Afdelingens risiko 1 år 3 år 5 år Risikoindikator
+Sharpe 0,81 0,64 -
+Std. Afv. 5,66% 4,79% - 1 2 3 4 5 6 7
+Største beholdninger (31-12-2025) % Formuefordeling
+Var% Germany 15/04/2030 2,27
+Cash DKK 1,58
+4 NYKRE 01-10-2056 (01E) 1,56 Obligationer 71,34 %
+1% RDKRE 10F 2031/01/01 1,30 Aktier 24,77 %
+1% REALKREDIT DANMARK 10F JA Andet 2,33 %
+1,23
+2030/01/01 Kontanter 1,58 %
+1 NYKRE 01-07-2030 13H 1,21
+NVIDIA Corp 1,20
+Var% Germany 15/04/2046 1,14
+Apple 1,07
+GERMANY (FEDERAL REPUBLIC OF) 0,99 Europa 59,36 %
+RegS Nordamerika 31,73 %
+Asien (ex.Japan) 2,29 %
+Japan 1,63 %
+Andet 4,99 %
+En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
+fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
+Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke
+finansiel rådgivning eller lignende - PFA yder ikke rådgivning om valg af PFA-fonde. PFA tilstræber, at hjemmesiden indeholder opdateret og korrekt information, men påtager sig
+intet ansvar for fejl, mangler eller for fuldstændigheden af den tilgængelige information. PFA påtager sig endvidere ikke noget ansvar for eventuelle tab, der følger af
+dispositioner foretaget på baggrund af denne hjemmeside. Historiske afkast er ingen garanti for fremtidige afkast, ligesom investeringsbeslutninger kan være forbundet med tab.
+Den viste værdi af de tilgængelige PFA-fonde kan både stige og falde som følge af markedsudsving og omkostninger i forbindelse med køb, salg og administration m.v. Samtlige
+vilkår fremgår af Pensionsvilkår for PFA Plus. Ved uoverensstemmelse mellem oplysninger på hjemmesiden og pensionsvilkårene er sidstnævnte gældende.
