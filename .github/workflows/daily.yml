@@ -1,9 +1,9 @@
 name: Daily Report
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: '10 5 * * 1-5'
-  workflow_dispatch:
 
 jobs:
   build:
@@ -13,8 +13,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -22,22 +20,22 @@ jobs:
           python-version: '3.9'
 
       - name: Install dependencies
-        run: |
-          pip install requests pdfplumber
+        run: pip install requests pdfplumber
 
-      - name: Preparation
-        # Vi opretter mapperne så scriptet ikke fejler
+      - name: 1. Preparation
         run: |
-          mkdir -p data
           mkdir -p build/text
+          mkdir -p data
 
-      - name: Run Main Robot (Hent og Parse)
-        # Vi kører den herfra så den kan finde config og gemme i data/
-        run: |
-          cd parser
-          python main.py
+      - name: 2. Download and Convert PDF
+        # Her kører vi dit konverterings-script
+        run: python parser/pdf_to_text.py
 
-      - name: Build Dashboard
+      - name: 3. Parse to JSON
+        # Nu hvor tekst-filerne findes, kan vi trække data ud
+        run: python parser/main.py
+
+      - name: 4. Build HTML Report
         run: python reporting/build_daily.py
 
       - name: Commit and Push changes
@@ -46,5 +44,5 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add -A
           git pull --rebase --autostash origin main
-          git commit -m "Robot: Opdateret dashboard med friske data [skip ci]" || echo "Intet at gemme"
+          git commit -m "Update dashboard [skip ci]" || echo "No changes"
           git push origin main
