@@ -9,13 +9,12 @@ PORTFOLIO_FILE = ROOT / "config/portfolio.json"
 REPORT_FILE = ROOT / "build/daily.html"
 README_FILE = ROOT / "README.md"
 
-def get_moving_average(history_list, days):
-    if len(history_list) < days: return None
-    return sum(history_list[-days:]) / days
+def get_ma(prices, window):
+    if len(prices) < window: return None
+    return sum(prices[-window:]) / window
 
 def build_report():
     if not DATA_FILE.exists(): return
-    
     with open(DATA_FILE, "r", encoding="utf-8") as f:
         latest_data = json.load(f)
     
@@ -30,96 +29,75 @@ def build_report():
             portfolio = json.load(f)
 
     timestamp = datetime.now().strftime('%d-%m-%Y %H:%M')
-    readme_content = f"# 📈 TrendAgent Pro Dashboard\n**Opdateret:** {timestamp}\n\n"
-    readme_content += "| Fond | Kurs | ÅTD | Trend | Status | Drawdown |\n| :--- | :--- | :--- | :--- | :--- | :--- |\n"
+    
+    # Sortering: Ejer-fonde først, derefter efter ÅTD afkast
+    def sort_key(x):
+        isin = x.get('isin')
+        is_owned = portfolio.get(isin, {}).get('active', False)
+        ytd = float(x.get('return_ytd', '0').replace(',', '.'))
+        return (is_owned, ytd)
+
+    sorted_data = sorted(latest_data, key=sort_key, reverse=True)
+
+    # README Opbygning
+    readme_content = f"# 📈 TrendAgent Pro\n**Opdateret:** {timestamp}\n\n"
+    readme_content += "| Status | Fond | Kurs | ÅTD | Trend | Drawdown |\n| :--- | :--- | :--- | :--- | :--- | :--- |\n"
 
     rows_html = ""
-    
-    for item in latest_data:
+    for item in sorted_data:
         isin = item.get('isin')
         nav = item.get('nav', 0)
         ytd = item.get('return_ytd', '0,00')
         
-        # Hent historik for MA beregninger
-        isin_history = list(history.get(isin, {}).values())
-        ma20 = get_moving_average(isin_history, 20)
-        ma50 = get_moving_average(isin_history, 50)
+        # Hent prishistorik
+        price_history = [v for k, v in sorted(history.get(isin, {}).items())]
+        ma20 = get_ma(price_history, 20)
+        ma50 = get_ma(price_history, 50)
         
-        # Drawdown beregning (fra historikken vi har indtil nu)
-        if isin_history:
-            ath = max(isin_history)
-            drawdown = ((nav - ath) / ath) * 100 if ath > 0 else 0
+        # Drawdown
+        ath = max(price_history) if price_history else nav
+        dd = ((nav - ath) / ath * 100) if ath > 0 else 0
+
+        # Portfolio Logik - HER ER LØSNINGEN PÅ DIT SPØRGSMÅL
+        port_info = portfolio.get(isin)
+        if port_info:
+            if port_info.get('active'):
+                status_icon, status_text = "✅", "EJER"
+                # Beregn personligt afkast hvis buy_price findes
+                buy_p = port_info.get('buy_price', 0)
+                p_ret = f" ({((nav-buy_p)/buy_p*100):+.1f}%)" if buy_p > 0 else ""
+                status_text += p_ret
+            else:
+                status_icon, status_text = "📦", "SOLGT"
         else:
-            drawdown = 0
+            status_icon, status_text = "👀", "OVERVÅGER"
 
-        # Portfolio logik (Aktiv/Inaktiv)
-        port_info = portfolio.get(isin, {"active": False})
-        is_active = port_info.get("active", False)
-        status_tag = "✅ EJER" if is_active else "👀 OVERVÅGER"
-        
-        # Trend State & Signals (Placeholder indtil mere data findes)
-        trend_state = "DATA OPSAMLES"
-        trend_icon = "⏳"
-        
-        if ma20 and ma50:
-            if nav > ma20 and ma20 > ma50:
-                trend_state = "STÆRK OP"
-                trend_icon = "🚀"
-            elif nav < ma20:
-                trend_state = "SVAGHED"
-                trend_icon = "⚠️"
-        
-        # Byg README række
-        readme_content += f"| {item.get('name')[:30]} | {nav:,.2f} | {ytd}% | {trend_icon} {trend_state} | {status_tag} | {drawdown:.1f}% |\n"
+        # Trend Logik
+        trend_state = "Opsamler data..."
+        if ma20:
+            trend_state = "OP" if nav > ma20 else "NED"
 
-        # Byg HTML række
+        # Formatering til tabeller
+        nav_str = "{:,.2f}".format(nav).replace(",", "X").replace(".", ",").replace("X", ".")
+        
+        readme_content += f"| {status_icon} | {item.get('name')[:30]} | {nav_str} | {ytd}% | {trend_state} | {dd:.1f}% |\n"
+        
         rows_html += f"""
-        <tr class="{'active-row' if is_active else ''}">
-            <td><strong>{item.get('name')}</strong><br><small>{isin}</small></td>
-            <td style="font-family: monospace;">{nav:,.2f}</td>
-            <td style="font-weight: bold;">{ytd}%</td>
-            <td>{trend_icon} {trend_state}</td>
-            <td>{status_tag}</td>
-            <td style="color: red;">{drawdown:.1f}%</td>
+        <tr style="background: {'#e7f3ff' if status_icon == '✅' else 'white'}">
+            <td>{status_icon} {status_text}</td>
+            <td><strong>{item.get('name')}</strong></td>
+            <td>{nav_str}</td>
+            <td>{ytd}%</td>
+            <td>{trend_state}</td>
+            <td style="color: red">{dd:.1f}%</td>
         </tr>
         """
 
-    # Gem README.md
+    # Gem filer
     README_FILE.write_text(readme_content, encoding="utf-8")
-
-    # Gem HTML
-    html_template = f"""
-    <!DOCTYPE html>
-    <html lang="da">
-    <head>
-        <meta charset="utf-8">
-        <style>
-            body {{ font-family: sans-serif; margin: 30px; background: #f0f2f5; }}
-            .card {{ background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }}
-            table {{ width: 100%; border-collapse: collapse; }}
-            th, td {{ padding: 12px; text-align: left; border-bottom: 1px solid #eee; }}
-            th {{ background: #1a73e8; color: white; }}
-            .active-row {{ background: #e7f3ff; border-left: 5px solid #1a73e8; }}
-        </style>
-    </head>
-    <body>
-        <div class="card">
-            <h1>TrendAgent Pro</h1>
-            <p>Sidst opdateret: {timestamp}</p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Investering</th><th>Kurs</th><th>ÅTD</th><th>Trend Analyse</th><th>Status</th><th>Drawdown</th>
-                    </tr>
-                </thead>
-                <tbody>{rows_html}</tbody>
-            </table>
-        </div>
-    </body>
-    </html>
-    """
+    
+    html_template = f"<html><head><meta charset='utf-8'><style>body{{font-family:sans-serif;padding:20px;}}table{{width:100%;border-collapse:collapse;}}th,td{{padding:10px;border-bottom:1px solid #eee;}}th{{background:#eee;}}</style></head><body><h1>TrendAgent Pro</h1><table><thead><tr><th>Status</th><th>Fond</th><th>Kurs</th><th>ÅTD</th><th>Trend</th><th>Drawdown</th></tr></thead><tbody>{rows_html}</tbody></table></body></html>"
     REPORT_FILE.write_text(html_template, encoding="utf-8")
-    print("Dashboard opgraderet med portefølje-logik og nye målepunkter!")
 
 if __name__ == "__main__":
     build_report()
