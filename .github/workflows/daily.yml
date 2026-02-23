@@ -1,60 +1,45 @@
-name: Daily Report (Parse)
+name: Daily Report
 
 on:
   schedule:
-    - cron: "10 5 * * 1-5"
-  workflow_dispatch: {}
+    - cron: '10 5 * * 1-5'  # Kører kl. 05:10 hverdage
+  workflow_dispatch:        # Giver dig en "Run workflow" knap så du kan køre den manuelt
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: '3.9'
 
       - name: Install dependencies
         run: |
-          pip install pdfplumber pandas requests pdfminer.six
+          pip install requests pdfplumber
 
-      - name: Preparation
-        run: mkdir -p build/text build/pdf data config
+      - name: Run Main Robot (Hent data)
+        run: python main.py
 
-      - name: Download and Convert
-        run: python parser/pdf_to_text.py
+      - name: Run Test Data Generator (KUN DENNE ENE GANG)
+        # Vi lader den stå her, så du kan køre den manuelt. 
+        # Når du er færdig med at teste, kan du slette linjen herunder.
+        run: python utils/generate_test_data.py
 
-      - name: Parse to JSON
-        run: python -m parser.main
-
-      - name: Build HTML Report
+      - name: Build Dashboard
         run: python reporting/build_daily.py
 
-      - name: Commit and Push Data
+      - name: Commit and Push changes
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          
-          # 1. Fortæl Git hvilke filer vi vil gemme FØRST
-          git add data/latest.json data/history.json build/daily.html
-          
-          # 2. Lav selve gemme-punktet (commit)
-          git commit -m "Update investment data and history [skip ci]" || echo "No changes"
-          
-          # 3. Hent nu eventuelle ændringer fra GitHub og læg dem under vores (rebase)
-          # Dette løser 'non-fast-forward' fejlen uden at ødelægge robottens arbejde.
-          git pull origin main --rebase
-          
-          # 4. Skub det hele op
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add -A
+          # Vi bruger --rebase for at undgå fejlen fra før
+          git pull --rebase origin main
+          git commit -m "Update daily data and test history" || echo "No changes to commit"
           git push origin main
-
-      - name: Cleanup
-        if: always()
-        run: rm -rf build/pdf build/text
