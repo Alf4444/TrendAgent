@@ -10,8 +10,8 @@
     "return_3m": 0.45,
     "return_6m": 1.05,
     "return_1y": -0.03,
-    "currency": "DKK",
-    "return_ytd": -0.45
+    "return_ytd": -0.45,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002203",
@@ -24,8 +24,8 @@
     "return_3m": 1.38,
     "return_6m": 2.18,
     "return_1y": 2.63,
-    "currency": "DKK",
-    "return_ytd": 2.0
+    "return_ytd": 2.0,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002206",
@@ -38,8 +38,8 @@
     "return_3m": 8.07,
     "return_6m": 12.57,
     "return_1y": 11.28,
-    "currency": "DKK",
-    "return_ytd": 4.2
+    "return_ytd": 4.2,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002226",
@@ -52,8 +52,8 @@
     "return_3m": 0.86,
     "return_6m": 2.46,
     "return_1y": 4.72,
-    "currency": "DKK",
-    "return_ytd": 0.67
+    "return_ytd": 0.67,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002228",
@@ -66,8 +66,8 @@
     "return_3m": 5.75,
     "return_6m": 7.4,
     "return_1y": 6.55,
-    "currency": "DKK",
-    "return_ytd": -0.1
+    "return_ytd": -0.1,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002230",
@@ -80,8 +80,8 @@
     "return_3m": 12.78,
     "return_6m": 14.17,
     "return_1y": 4.78,
-    "currency": "DKK",
-    "return_ytd": 2.22
+    "return_ytd": 2.22,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002232",
@@ -94,8 +94,8 @@
     "return_3m": 3.16,
     "return_6m": 6.97,
     "return_1y": 1.0,
-    "currency": "DKK",
-    "return_ytd": 1.6
+    "return_ytd": 1.6,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002233",
@@ -108,8 +108,8 @@
     "return_3m": 6.54,
     "return_6m": 10.18,
     "return_1y": 2.57,
-    "currency": "DKK",
-    "return_ytd": 1.54
+    "return_ytd": 1.54,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002234",
@@ -122,8 +122,8 @@
     "return_3m": 11.59,
     "return_6m": 22.4,
     "return_1y": 24.44,
-    "currency": "DKK",
-    "return_ytd": 10.94
+    "return_ytd": 10.94,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002235",
@@ -136,8 +136,8 @@
     "return_3m": 1.08,
     "return_6m": 1.57,
     "return_1y": 0.82,
-    "currency": "DKK",
-    "return_ytd": 0.12
+    "return_ytd": 0.12,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002299",
@@ -150,8 +150,8 @@
     "return_3m": 0.45,
     "return_6m": 0.9,
     "return_1y": 1.94,
-    "currency": "DKK",
-    "return_ytd": 0.26
+    "return_ytd": 0.26,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002425",
@@ -164,8 +164,8 @@
     "return_3m": 2.39,
     "return_6m": 3.63,
     "return_1y": 1.26,
-    "currency": "DKK",
-    "return_ytd": 0.47
+    "return_ytd": 0.47,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002450",
@@ -178,8 +178,8 @@
     "return_3m": 3.75,
     "return_6m": 5.77,
     "return_1y": 1.69,
-    "currency": "DKK",
-    "return_ytd": 0.83
+    "return_ytd": 0.83,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002475",
@@ -192,8 +192,8 @@
     "return_3m": 5.13,
     "return_6m": 7.96,
     "return_1y": 2.13,
-    "currency": "DKK",
-    "return_ytd": 1.18
+    "return_ytd": 1.18,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002703",
@@ -206,8 +206,8 @@
     "return_3m": 17.09,
     "return_6m": 29.5,
     "return_1y": 33.16,
-    "currency": "USD",
-    "return_ytd": 13.89
+    "return_ytd": 13.89,
+    "currency": "USD"
   },
   {
     "isin": "PFA000002706",
@@ -220,8 +220,8 @@
     "return_3m": 2.22,
     "return_6m": 6.42,
     "return_1y": -3.31,
-    "currency": "DKK",
-    "return_ytd": 0.9
+    "return_ytd": 0.9,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002712",
@@ -234,8 +234,8 @@
     "return_3m": 2.26,
     "return_6m": 4.78,
     "return_1y": 5.97,
-    "currency": "DKK",
-    "return_ytd": 2.29
+    "return_ytd": 2.29,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002713",
@@ -248,8 +248,8 @@
     "return_3m": 1.29,
     "return_6m": 2.35,
     "return_1y": 5.13,
-    "currency": "EUR",
-    "return_ytd": 1.02
+    "return_ytd": 1.02,
+    "currency": "EUR"
   },
   {
     "isin": "PFA000002715",
@@ -262,8 +262,8 @@
     "return_3m": 1.28,
     "return_6m": 6.75,
     "return_1y": 1.35,
-    "currency": "USD",
-    "return_ytd": 1.87
+    "return_ytd": 1.87,
+    "currency": "USD"
   },
   {
     "isin": "PFA000002716",
@@ -276,8 +276,8 @@
     "return_3m": 1.79,
     "return_6m": 2.42,
     "return_1y": 5.18,
-    "currency": "DKK",
-    "return_ytd": 0.8
+    "return_ytd": 0.8,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002722",
@@ -290,8 +290,8 @@
     "return_3m": 2.72,
     "return_6m": 4.59,
     "return_1y": 5.4,
-    "currency": "DKK",
-    "return_ytd": -3.3
+    "return_ytd": -3.3,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002726",
@@ -304,8 +304,8 @@
     "return_3m": 13.02,
     "return_6m": 24.72,
     "return_1y": 24.93,
-    "currency": "DKK",
-    "return_ytd": 11.57
+    "return_ytd": 11.57,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002728",
@@ -318,8 +318,8 @@
     "return_3m": 2.89,
     "return_6m": 6.78,
     "return_1y": 8.32,
-    "currency": "DKK",
-    "return_ytd": 2.61
+    "return_ytd": 2.61,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002729",
@@ -332,8 +332,8 @@
     "return_3m": 16.07,
     "return_6m": 18.94,
     "return_1y": 14.87,
-    "currency": "DKK",
-    "return_ytd": 8.56
+    "return_ytd": 8.56,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002732",
@@ -346,8 +346,8 @@
     "return_3m": 12.84,
     "return_6m": 23.77,
     "return_1y": 22.96,
-    "currency": "DKK",
-    "return_ytd": 12.11
+    "return_ytd": 12.11,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002734",
@@ -360,8 +360,8 @@
     "return_3m": -3.47,
     "return_6m": -7.82,
     "return_1y": -13.54,
-    "currency": "DKK",
-    "return_ytd": -6.84
+    "return_ytd": -6.84,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002735",
@@ -374,8 +374,8 @@
     "return_3m": 17.5,
     "return_6m": 15.69,
     "return_1y": 33.07,
-    "currency": "DKK",
-    "return_ytd": 11.95
+    "return_ytd": 11.95,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002736",
@@ -388,8 +388,8 @@
     "return_3m": 1.56,
     "return_6m": 2.05,
     "return_1y": 5.09,
-    "currency": "DKK",
-    "return_ytd": 0.86
+    "return_ytd": 0.86,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002738",
@@ -402,8 +402,8 @@
     "return_3m": -4.29,
     "return_6m": 0.68,
     "return_1y": 3.1,
-    "currency": "EUR",
-    "return_ytd": -0.94
+    "return_ytd": -0.94,
+    "currency": "EUR"
   },
   {
     "isin": "PFA000002739",
@@ -416,8 +416,8 @@
     "return_3m": -2.18,
     "return_6m": -3.74,
     "return_1y": -8.99,
-    "currency": "DKK",
-    "return_ytd": -7.52
+    "return_ytd": -7.52,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002741",
@@ -430,8 +430,8 @@
     "return_3m": 13.48,
     "return_6m": 14.34,
     "return_1y": 12.6,
-    "currency": "DKK",
-    "return_ytd": 8.6
+    "return_ytd": 8.6,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002742",
@@ -444,8 +444,8 @@
     "return_3m": 14.47,
     "return_6m": 30.82,
     "return_1y": 11.73,
-    "currency": "DKK",
-    "return_ytd": 9.35
+    "return_ytd": 9.35,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002746",
@@ -458,8 +458,8 @@
     "return_3m": 5.45,
     "return_6m": 4.33,
     "return_1y": -1.98,
-    "currency": "DKK",
-    "return_ytd": 2.21
+    "return_ytd": 2.21,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002748",
@@ -472,8 +472,8 @@
     "return_3m": 4.31,
     "return_6m": 8.49,
     "return_1y": 5.93,
-    "currency": "USD",
-    "return_ytd": 0.28
+    "return_ytd": 0.28,
+    "currency": "USD"
   },
   {
     "isin": "PFA000002749",
@@ -486,8 +486,8 @@
     "return_3m": -0.72,
     "return_6m": -1.33,
     "return_1y": -10.37,
-    "currency": "EUR",
-    "return_ytd": -1.91
+    "return_ytd": -1.91,
+    "currency": "EUR"
   },
   {
     "isin": "PFA000002750",
@@ -500,8 +500,8 @@
     "return_3m": 8.59,
     "return_6m": 6.02,
     "return_1y": -3.0,
-    "currency": "DKK",
-    "return_ytd": 4.39
+    "return_ytd": 4.39,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002751",
@@ -514,8 +514,8 @@
     "return_3m": 3.37,
     "return_6m": 2.97,
     "return_1y": -1.25,
-    "currency": "EUR",
-    "return_ytd": 1.26
+    "return_ytd": 1.26,
+    "currency": "EUR"
   },
   {
     "isin": "PFA000002752",
@@ -528,8 +528,8 @@
     "return_3m": 9.15,
     "return_6m": 1.5,
     "return_1y": -0.81,
-    "currency": "EUR",
-    "return_ytd": 6.25
+    "return_ytd": 6.25,
+    "currency": "EUR"
   },
   {
     "isin": "PFA000002753",
@@ -542,8 +542,8 @@
     "return_3m": 8.92,
     "return_6m": 10.23,
     "return_1y": 10.62,
-    "currency": "EUR",
-    "return_ytd": 6.04
+    "return_ytd": 6.04,
+    "currency": "EUR"
   },
   {
     "isin": "PFA000002754",
@@ -556,8 +556,8 @@
     "return_3m": 6.41,
     "return_6m": 4.02,
     "return_1y": 1.6,
-    "currency": "EUR",
-    "return_ytd": 5.54
+    "return_ytd": 5.54,
+    "currency": "EUR"
   },
   {
     "isin": "PFA000002755",
@@ -570,8 +570,8 @@
     "return_3m": 13.73,
     "return_6m": 16.78,
     "return_1y": 35.92,
-    "currency": "DKK",
-    "return_ytd": 12.03
+    "return_ytd": 12.03,
+    "currency": "DKK"
   },
   {
     "isin": "PFA000002756",
@@ -584,8 +584,8 @@
     "return_3m": 18.81,
     "return_6m": 22.8,
     "return_1y": 47.0,
-    "currency": "USD",
-    "return_ytd": 14.35
+    "return_ytd": 14.35,
+    "currency": "USD"
   },
   {
     "isin": "PFA000002757",
@@ -598,8 +598,8 @@
     "return_3m": 6.99,
     "return_6m": 11.58,
     "return_1y": 8.39,
-    "currency": "EUR",
-    "return_ytd": 3.56
+    "return_ytd": 3.56,
+    "currency": "EUR"
   },
   {
     "isin": "PFA000002758",
@@ -612,8 +612,8 @@
     "return_3m": 2.63,
     "return_6m": 12.94,
     "return_1y": 0.03,
-    "currency": "EUR",
-    "return_ytd": 1.84
+    "return_ytd": 1.84,
+    "currency": "EUR"
   },
   {
     "isin": "PFA000002759",
@@ -626,8 +626,8 @@
     "return_3m": 14.89,
     "return_6m": 16.73,
     "return_1y": 22.05,
-    "currency": "EUR",
-    "return_ytd": 12.54
+    "return_ytd": 12.54,
+    "currency": "EUR"
   },
   {
     "isin": "PFA000002760",
@@ -640,8 +640,8 @@
     "return_3m": 6.72,
     "return_6m": 9.06,
     "return_1y": 14.22,
-    "currency": "EUR",
-    "return_ytd": 2.15
+    "return_ytd": 2.15,
+    "currency": "EUR"
   },
   {
     "isin": "PFA000002761",
@@ -654,7 +654,7 @@
     "return_3m": 41.36,
     "return_6m": 18.66,
     "return_1y": 21.48,
-    "currency": "DKK",
-    "return_ytd": 26.92
+    "return_ytd": 26.92,
+    "currency": "DKK"
   }
 ]
