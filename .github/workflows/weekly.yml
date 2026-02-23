@@ -3,7 +3,7 @@ name: Weekly Report
 on:
   workflow_dispatch: {}
   schedule:
-    - cron: "0 10 * * 0"  # Kører hver søndag kl. 10:00 UTC
+    - cron: "0 6 * * 0"  # Kl. 06:00 UTC er kl. 07:00 i Danmark (vintertid) UTC
 
 jobs:
   build:
