@@ -1,15 +1,18 @@
 {
   "PFA000002703": {
+    "name": "Lazard Emerging Markets Equity Fund",
     "active": true,
     "buy_date": "2026-02-23",
-    "buy_price": 415,21
+    "buy_price": 415.21
   },
   "PFA000002735": {
+    "name": "Magna Eastern European Fund",
     "active": true,
     "buy_date": "2025-07-08",
-    "buy_price": 129,19
+    "buy_price": 129.19
   },
   "PFA000002760": {
+    "name": "PFA Pension - High Yield Obligationer",
     "active": false,
     "buy_date": "2026-01-01",
     "sell_date": "2026-02-15"
