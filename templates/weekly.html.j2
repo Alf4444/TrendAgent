@@ -2,74 +2,86 @@
 <html lang="da">
 <head>
   <meta charset="utf-8">
-  <title>TrendAgent – Ugentlig rapport (uge {{ week_label }})</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TrendAgent – Ugentlig Status (Uge {{ week_label }})</title>
   <style>
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 24px; }
-    h1 { margin-bottom: 0; }
-    small { color: #666; }
-    section { margin-top: 18px; }
-    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
-    th, td { border: 1px solid #ddd; padding: 8px; font-size: 14px; }
-    th { background: #f7f7f7; text-align: left; }
-    .badge { padding: 2px 6px; border-radius: 6px; font-size: 12px; }
-    .b-up { background: #0f9d58; color: #fff; }
-    .b-down { background: #d93025; color: #fff; }
-    .b-neutral { background: #999; color: #fff; }
+    body { font-family: -apple-system, sans-serif; background: #f4f7f9; margin: 20px; color: #333; }
+    .container { max-width: 1000px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    h1 { color: #1a73e8; margin-bottom: 5px; }
+    h2 { border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 30px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 15px; }
+    th, td { padding: 12px; border-bottom: 1px solid #eee; text-align: left; }
+    th { background: #f8f9fa; font-weight: 600; }
+    .active-row { background: #fffde7; }
+    .badge { padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 11px; }
+    .b-up { background: #e6f4ea; color: #1e7e34; }
+    .b-down { background: #fce8e6; color: #d93025; }
+    .pos { color: #1e7e34; font-weight: bold; }
+    .neg { color: #d93025; font-weight: bold; }
+    .list-container { display: flex; gap: 20px; }
+    .list-box { flex: 1; background: #f8f9fa; padding: 15px; border-radius: 8px; }
   </style>
 </head>
 <body>
-  <h1>TrendAgent – Ugentlig rapport</h1>
-  <small>Uge: {{ week_label }} • Slutdato: {{ week_end_date }}</small>
+  <div class="container">
+    <h1>📈 TrendAgent Weekly</h1>
+    <p>Uge {{ week_label }} • Slutdato {{ week_end_date }}</p>
 
-  <section>
-    <h2>Trendbillede</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>ISIN</th>
-          <th>Ugeændring %</th>
-          <th>trend_state (ved ugeafslutning)</th>
-          <th>ytd_return</th>
-          <th>drawdown</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for row in rows %}
-        <tr>
-          <td>{{ row.isin }}</td>
-          <td>{{ '%.2f'|format(row.week_change_pct) if row.week_change_pct is defined else '-' }}%</td>
-          <td>
-            {% if row.trend_state == 'UP' %}<span class="badge b-up">UP</span>
-            {% elif row.trend_state == 'DOWN' %}<span class="badge b-down">DOWN</span>
-            {% else %}<span class="badge b-neutral">NEUTRAL</span>{% endif %}
-          </td>
-          <td>{{ '%.2f'|format(row.ytd_return) if row.ytd_return is defined else '-' }}%</td>
-          <td>{{ '%.2f'|format(row.drawdown) if row.drawdown is defined else '-' }}%</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </section>
+    <section>
+      <h2>Portefølje & Trendbillede</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Fond</th>
+            <th>Uge %</th>
+            <th>Trend</th>
+            <th>ÅTD</th>
+            <th>Drawdown</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in rows %}
+          <tr class="{{ 'active-row' if row.is_active else '' }}">
+            <td>
+              {{ '⭐' if row.is_active else '' }} <strong>{{ row.name[:40] }}</strong><br>
+              <small style="color:#888">{{ row.isin }}</small>
+            </td>
+            <td class="{{ 'pos' if row.week_change_pct > 0 else 'neg' }}">
+              {{ '%.2f'|format(row.week_change_pct) }}%
+            </td>
+            <td>
+              {% if row.trend_state == 'UP' %}
+                <span class="badge b-up">BULL</span>
+              {% else %}
+                <span class="badge b-down">BEAR</span>
+              {% endif %}
+            </td>
+            <td>{{ '%.2f'|format(row.ytd_return) }}%</td>
+            <td style="color:#d93025">{{ '%.2f'|format(row.drawdown) }}%</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
 
-  <section>
-    <h2>Top 5 op/ned</h2>
-    <h3>Top 5 op</h3>
-    <ol>
-      {% for t in top_up %}
-      <li>{{ t.isin }} — {{ '%.2f'|format((t.week_change_pct | default(0.0))) }}%</li>
-      {% endfor %}
-    </ol>
-
-    <h3>Top 5 ned</h3>
-    <ol>
-      {% for t in top_down %}
-      <li>{{ t.isin }} — {{ '%.2f'|format((t.week_change_pct | default(0.0))) }}%</li>
-      {% endfor %}
-    </ol>
-  </section>
-
-  <p style="margin-top:16px;color:#666">
-    Note: Første milepæl bruger mock‑data; konsistente indikatorer kommer fra Excel‑modellen.
-  </p>
+    <section class="list-container">
+      <div class="list-box">
+        <h3>🚀 Top 5 Op (Uge)</h3>
+        <ul style="list-style: none; padding: 0;">
+          {% for t in top_up %}
+          <li style="margin-bottom: 8px;"><strong>{{ t.name[:25] }}</strong>: <span class="pos">+{{ '%.2f'|format(t.week_change_pct) }}%</span></li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="list-box">
+        <h3>⚠️ Top 5 Ned (Uge)</h3>
+        <ul style="list-style: none; padding: 0;">
+          {% for t in top_down %}
+          <li style="margin-bottom: 8px;"><strong>{{ t.name[:25] }}</strong>: <span class="neg">{{ '%.2f'|format(t.week_change_pct) }}%</span></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </section>
+  </div>
 </body>
 </html>
