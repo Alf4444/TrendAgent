@@ -1,9 +1,9 @@
 import json
 from pathlib import Path
-from datetime import datetime, timedelta
+from datetime import datetime
 from jinja2 import Template
 
-# Stier
+# Stier konfigureret efter din faste struktur
 ROOT = Path(__file__).resolve().parents[1]
 HISTORY_FILE = ROOT / "data/history.json"
 LATEST_FILE = ROOT / "data/latest.json"
@@ -29,7 +29,6 @@ def build_weekly():
     with open(PORTFOLIO_FILE, "r") as f:
         portfolio = json.load(f)
 
-    # Map ISIN til Navne og YTD data
     names_map = {i['isin']: i.get('name', i['isin']) for i in latest_data}
     
     ytd_map = {}
@@ -100,31 +99,29 @@ def build_weekly():
         })
 
     if not TEMPLATE_FILE.exists():
-        print(f"Fejl: Template mangler.")
         return
 
     sorted_rows = sorted(rows, key=lambda x: (not x['is_active'], -x['momentum']))
     template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
     
-    # HER ER RETTELSEN: Vi sender både 'avg_port_ret' OG 'avg_portfolio_return' 
-    # for at være helt sikre på at ramme det din template forventer.
     current_avg = sum(active_returns)/len(active_returns) if active_returns else 0
 
+    # Sikrer alle variable som din template kræver for at undgå 'Undefined' fejl
     html_output = template.render(
         timestamp=datetime.now().strftime('%d-%m-%Y'),
         week_num=datetime.now().strftime('%V'),
         rows=sorted_rows,
         portfolio_alerts=portfolio_alerts,
         market_opportunities=market_opportunities[:10],
-        avg_port_ret=current_avg,
         avg_portfolio_return=current_avg,
+        avg_port_ret=current_avg,
         top_winners=sorted(rows, key=lambda x: x['change_pct'], reverse=True)[:5],
         top_losers=sorted(rows, key=lambda x: x['change_pct'])[:5]
     )
 
     REPORT_FILE.parent.mkdir(exist_ok=True)
     REPORT_FILE.write_text(html_output, encoding="utf-8")
-    print(f"Weekly Rapport færdig for uge {datetime.now().strftime('%V')}.")
+    print(f"Weekly Rapport færdig.")
 
 if __name__ == "__main__":
     build_weekly()
