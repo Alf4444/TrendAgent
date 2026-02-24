@@ -3,11 +3,15 @@ name: Weekly Report
 on:
   workflow_dispatch: {}
   schedule:
-    - cron: "0 6 * * 0"  # Kl. 06:00 UTC er kl. 07:00 i Danmark (vintertid) UTC
+    - cron: "0 6 * * 0"
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    # DETTE MANGLER HØJST SANDSYNLIGT:
+    permissions:
+      contents: write
+    
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -22,16 +26,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Her fjernede vi "Generate latest.json (mock)" trinnet helt, 
-      # da vi nu bruger de rigtige data fra /data mappen.
-
       - name: Build weekly HTML
         run: |
           python reporting/build_weekly_report.py
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: trendagent-weekly
-          path: build/weekly.html
-          if-no-files-found: error
+      # DETTE MANGLER OGSÅ:
+      - name: Commit and Push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add build/weekly.html
+          git commit -m "Ugentlig rapport opdateret [skip ci]" || echo "Ingen ændringer"
+          git push
