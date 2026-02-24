@@ -4,9 +4,9 @@ Der investeres primært i obligationer udstedt af lande, virksomheder og statsli
 samt overstatslige organisationer i Emerging Markets. Fonden er generelt Valuta USD
 Type Investeringsforening
 diversificeret efter land, valuta og udsteder, men kan til enhver tid have mere
-Indre værdi 313,32
+Indre værdi 313,45
 koncentrerede positioner. Den gennemsnitlige kreditkvalitet for selskaberne i
-Indre værdi dato 20-02-2026
+Indre værdi dato 23-02-2026
 porteføljen kan være lavere end Investment Grade. Der benyttes en aktiv
 Bæredygtighed Artikel 8
 investeringsstrategi til at opnå et afkast, der er bedre end afkastet af fondens
@@ -17,11 +17,11 @@ der kan accepteres lavere afkast på investeringen. Pensionskunder bør have en
 tidshorisont på min. 3 år. Fonden indeholder valutarisiko, da den indeholder
 investeringer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 0,46% 2,09% 1,28% 6,75%
+Afdeling 0,49% 1,37% 1,28% 7,12%
 WM Opportunistisk Emerging Markets Obligationer
 Afkast ÅTD 1 år 3 år 5 år
 120
-Afdeling 1,87% 1,35% 23,10% 15,88%
+Afdeling 1,92% 0,89% 22,17% 17,17%
 112
 Omkostninger %
 104 Andre løbende omkostninger 0,74
@@ -33,7 +33,7 @@ Udtrædelsesomkostninger 0,55
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,27 0,57 0,12
-Std. Afv. 10,45% 7,53% 8,38% 1 2 3 4 5 6 7
+Std. Afv. 8,99% 7,20% 8,20% 1 2 3 4 5 6 7
 Største beholdninger (30-09-2025) % Formuefordeling
 US DollarOn-Hand 3,20
 CDX-EMS43V1-5Y 0.0000 06-20-30 2,11
@@ -50,9 +50,9 @@ CDX-EMS43V1-5Y 0.0000 06-20-30 2,11
 10% BRAZIL NTN/F BNTNF 2031/02/01 1,17
 > 7 år 56,99 %
 REPUBLIC OF PARAGUAY 6.65% 2055-
-1,16 3-5 år 12,55 %
+1,16 3-5 år 12,50 %
 03-04
-1-3 år 11,68 %
+1-3 år 11,73 %
 6.0% REPUBLIC OF SERBIA 6% 2034-
 06-12 1,16 5-7 år 6,72 %
 Andet 12,06 %

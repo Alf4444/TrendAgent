@@ -4,9 +4,9 @@ Der investeres i en portefølje af aktier fra udviklede lande via selskaber hør
 under GICS-industrien inden for rumfart og forsvar. Selskaberne producerer civil Valuta USD
 Type Investeringsforening
 eller militær rumfart og forsvar, udstyr, dele eller produkter, forsvarselektronik og
-Indre værdi 139,29
+Indre værdi 137,53
 rumudstyr. Der benyttes en indeksnær investeringsstrategi til at opnå et afkast
-Indre værdi dato 20-02-2026
+Indre værdi dato 23-02-2026
 svarende til fondens benchmark, S&P Developed BMI Select Aerospace & Defence
 Bæredygtighed Artikel 6
 35/20 Capped Index. Fonden er ikke ESG-screenet og egner sig til informerede
@@ -17,11 +17,11 @@ tidshorisont på min. 3 år, og fonden bør indgå i en diversificeret porteføl
 investeringer. Fonden indeholder valutarisiko, da den er eksponeret over for
 værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 4,08% 1,00% 18,81% 22,80%
+Afdeling 1,94% 0,88% 18,81% 20,29%
 iShares Global Aerospace & Defence UCITS ETF
 Afkast ÅTD 1 år 3 år 5 år
 180
-Afdeling 14,35% 47,00% - -
+Afdeling 12,91% 44,86% - -
 150
 Omkostninger %
 120 Andre løbende omkostninger 0,66
@@ -33,7 +33,7 @@ Udtrædelsesomkostninger 0,30
 Maj '24 Sep '24 Jan '25 Maj '25 Sep '25 Jan '26
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 2,30 - -
-Std. Afv. 21,89% - - 1 2 3 4 5 6 7
+Std. Afv. 19,80% - - 1 2 3 4 5 6 7
 Største beholdninger (30-01-2026) % Formuefordeling
 Boeing 7,65
 RAYTHEON TECHNOLOGIES CORP 7,51

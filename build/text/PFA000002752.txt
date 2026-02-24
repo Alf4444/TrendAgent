@@ -4,9 +4,9 @@ Fonden investerer primært i globale aktier gennem ca. 80 selskaber, der Opstart
 understøtter bæredygtigt brug af naturressourcer og biodiversitetsfremmende Valuta EUR
 Type Investeringsforening
 løsninger. Selskaberne udvælges på baggrund af fundamental selskabsanalyse og
-Indre værdi 107,73
+Indre værdi 106,60
 en internt udviklet model, der måler deres bidrag til FN’s 17 Verdensmål. Fonden er
-Indre værdi dato 20-02-2026
+Indre værdi dato 23-02-2026
 fuldt bæredygtig jf. Artikel 9 i EU’s Disclosureforordning. Der benyttes en aktiv
 Bæredygtighed Artikel 9
 investeringsstrategi til at opnå et afkast, der er bedre end afkastet af fondens
@@ -17,11 +17,11 @@ tidshorisont, som er bekendte med risikoen ved at investere i fonden og kan
 acceptere tab på investeringen. Fonden indeholder valutarisiko, da den er
 eksponeret over for værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 0,91% 4,81% 9,15% 1,50%
+Afdeling -0,55% 2,28% 6,51% -0,42%
 Robeco Biodiversity Equities
 Afkast ÅTD 1 år 3 år 5 år
 132
-Afdeling 6,25% -0,81% 13,06% -
+Afdeling 5,14% -1,14% 13,47% -
 120
 Omkostninger %
 108 Andre løbende omkostninger 1,38
@@ -33,7 +33,7 @@ Udtrædelsesomkostninger 0,24
 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe -0,04 0,18 -
-Std. Afv. 19,20% 14,35% - 1 2 3 4 5 6 7
+Std. Afv. 14,59% 12,55% - 1 2 3 4 5 6 7
 Største beholdninger (31-12-2025) % Formuefordeling
 Veolia Environnement 5,93
 UNILEVER ORD 4,87

@@ -4,9 +4,9 @@ Der investeres i en portefølje af globale aktier eksklusive Emerging Markets, h
 porteføljen som udgangspunkt sammensættes ud fra de selskaber, der indgår i Valuta EUR
 Type Investeringsforening
 fondens benchmark, MSCI World 100% Hedged to EUR Index. Der benyttes en
-Indre værdi 103,74
+Indre værdi 102,84
 indeksnær investeringsstrategi til at opnå et afkast lig fondens benchmark. Fonden
-Indre værdi dato 20-02-2026
+Indre værdi dato 23-02-2026
 er ikke ESG-screenet og egner sig til informerede eller erfarne pensionskunder, som
 Bæredygtighed Artikel 6
 har indsigt i og erfaring med værdipapirhandel og som ønsker et opsparingsprodukt
@@ -15,11 +15,11 @@ bør have en tidshorisont på min. 3 år. Fonden indeholder valutarisiko, da den
 eksponering til investeringer i udenlandsk valuta. Valutaeksponeringen tilstræbes
 fuldt afdækket til EUR.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 1,17% 2,14% 6,72% 9,06%
+Afdeling 0,38% -0,09% 5,15% 7,13%
 Xtrackers MSCI World EUR Hedged UCITS ETF
 Afkast ÅTD 1 år 3 år 5 år
 160
-Afdeling 2,15% 14,22% - -
+Afdeling 1,26% 14,68% - -
 140
 Omkostninger %
 120 Andre løbende omkostninger 0,37
@@ -31,7 +31,7 @@ Udtrædelsesomkostninger 0,10
 Jan '24 Jul '24 Jan '25 Jul '25 Jan '26
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 1,51 - -
-Std. Afv. 16,42% - - 1 2 3 4 5 6 7
+Std. Afv. 12,51% - - 1 2 3 4 5 6 7
 Største beholdninger (30-01-2026) % Formuefordeling
 NVIDIA Corp 5,46
 Apple 4,53

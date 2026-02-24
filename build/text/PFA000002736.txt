@@ -4,9 +4,9 @@ Der investeres i en koncentreret portefølje af virksomhedsobligationer med lav 
 kreditværdighed typisk udstedt af europæiske selskaber med High-Yield status. Valuta DKK
 Type Investeringsforening
 Selskaberne udvælges på baggrund af tilbagebetalingsevnen samt obligationernes
-Indre værdi 216,13
+Indre værdi 216,18
 konstruktion ift. kapitalstrukturen. Der benyttes en aktiv investeringsstrategi til at
-Indre værdi dato 20-02-2026
+Indre værdi dato 23-02-2026
 opnå et afkast, der er bedre end afkastet af fondens benchmark, ICE Bof AML
 Bæredygtighed Artikel 8
 European Currency High Yield Constrained Index. Fonden egner sig til informerede
@@ -17,11 +17,11 @@ lavere afkast på investeringen. Pensionskunder bør have en tidshorisont på mi
 indeholder valutarisiko, da den er eksponeret over for værdipapirer i udenlandsk
 valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 0,23% 0,53% 1,56% 2,05%
+Afdeling 0,22% 0,30% 1,68% 2,17%
 Nordea Invest European High Yield Bonds
 Afkast ÅTD 1 år 3 år 5 år
 120
-Afdeling 0,86% 5,09% 25,01% 17,59%
+Afdeling 0,89% 5,09% 25,65% 17,68%
 110
 Omkostninger %
 100 Andre løbende omkostninger 0,57
@@ -33,7 +33,7 @@ Udtrædelsesomkostninger 0,20
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 2,32 1,46 0,32
-Std. Afv. 3,10% 5,67% 6,90% 1 2 3 4 5 6 7
+Std. Afv. 2,10% 4,65% 6,46% 1 2 3 4 5 6 7
 Største beholdninger (31-12-2025) % Formuefordeling
 Net Cash 3,35
 IRON MOUNTAIN 4.75 Jan34 1,12

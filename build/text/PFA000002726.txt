@@ -4,9 +4,9 @@ Der investeres i en portefølje af aktier fra Emerging og Frontier Markets, dvs.
 med stort vækstpotentiale. Porteføljen består af ca. 135 selskaber på tværs af Valuta DKK
 Type Investeringsforening
 forskellige brancher. Selskaberne vælges ud fra globale og lokale markedsanalyser,
-Indre værdi 205,01
+Indre værdi 206,94
 strukturelle temaer og selskabsanalyser med fokus på kvalitet og afkastpotentiale.
-Indre værdi dato 20-02-2026
+Indre værdi dato 23-02-2026
 Der benyttes en aktiv investeringsstrategi til at opnå et afkast, der er bedre end
 Bæredygtighed Artikel 8
 afkastet af fondens benchmark, MSCI Emerging+Frontier Markets. Fonden egner
@@ -17,23 +17,23 @@ på min. 3 år og fonden bør indgå i en diversificeret portefølje af øvrige 
 Fonden indeholder valutarisiko, da den indeholder investeringer i udenlandsk
 valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 1,35% 6,22% 13,02% 24,72%
+Afdeling 2,33% 5,52% 17,38% 25,94%
 Sydinvest Globale EM-aktier
 Afkast ÅTD 1 år 3 år 5 år
+140
+Afdeling 12,62% 24,38% 49,91% 21,67%
 120
-Afdeling 11,57% 24,93% 48,51% 16,52%
-105
 Omkostninger %
-90 Andre løbende omkostninger 1,49
+100 Andre løbende omkostninger 1,49
 Resultatgebyrer 0,00
-75 Transaktionsomkostninger (Direkte + indirekte) 1,06
+80 Transaktionsomkostninger (Direkte + indirekte) 1,06
 Oprettelsesomkostninger 0,32
 Udtrædelsesomkostninger 0,39
 ÅOP 2,66
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 1,27 0,72 -
-Std. Afv. 21,05% 15,73% - 1 2 3 4 5 6 7
+Std. Afv. 17,75% 14,84% - 1 2 3 4 5 6 7
 Største beholdninger (30-01-2026) % Formuefordeling
 Taiwan Semiconductor Manufacturing Co
 9,56
