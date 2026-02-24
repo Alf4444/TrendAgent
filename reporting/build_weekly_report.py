@@ -3,7 +3,6 @@ from pathlib import Path
 from datetime import datetime, timedelta
 from jinja2 import Template
 
-# Stier
 ROOT = Path(__file__).resolve().parents[1]
 HISTORY_FILE = ROOT / "data/history.json"
 LATEST_FILE = ROOT / "data/latest.json"
@@ -17,8 +16,7 @@ def calculate_ma(prices, window=200):
     return sum(relevant) / len(relevant)
 
 def build_weekly():
-    if not HISTORY_FILE.exists() or not LATEST_FILE.exists():
-        return
+    if not HISTORY_FILE.exists() or not LATEST_FILE.exists(): return
 
     with open(HISTORY_FILE, "r") as f: history = json.load(f)
     with open(LATEST_FILE, "r", encoding="utf-8") as f: latest_list = json.load(f)
@@ -29,7 +27,6 @@ def build_weekly():
 
     names_map = {i['isin']: i.get('name', i['isin']) for i in latest_list}
     latest_map = {i['isin']: i for i in latest_list}
-
     rows = []
     portfolio_alerts = []
     market_opportunities = []
@@ -44,17 +41,14 @@ def build_weekly():
         curr_ma200 = calculate_ma(all_prices, 200)
         curr_state = "UP" if curr_nav > curr_ma200 else "DOWN"
         
-        # Historik check (7 dage)
         target_date = datetime.strptime(dates[-1], "%Y-%m-%d") - timedelta(days=7)
         past_date = min(dates, key=lambda d: abs((datetime.strptime(d, "%Y-%m-%d") - target_date).days))
         past_nav = prices_dict[past_date]
-        past_ma200 = calculate_ma(all_prices[:dates.index(past_date)+1], 200)
-        past_state = "UP" if past_nav > past_ma200 else "DOWN"
+        past_state = "UP" if past_nav > calculate_ma(all_prices[:dates.index(past_date)+1], 200) else "DOWN"
         
         is_active = portfolio.get(isin, {}).get('active', False)
         fund_name = names_map.get(isin, isin)
 
-        # Trend logik
         if is_active:
             if past_state == "DOWN" and curr_state == "UP":
                 portfolio_alerts.append({"name": fund_name, "msg": "🚀 Skiftet til BULL", "type": "BULL"})
@@ -63,7 +57,6 @@ def build_weekly():
         elif past_state == "DOWN" and curr_state == "UP":
             market_opportunities.append({"name": fund_name})
 
-        # Momentum og afkast
         momentum = ((curr_nav - curr_ma200) / curr_ma200 * 100) if curr_ma200 > 0 else 0
         week_change = ((curr_nav - past_nav) / past_nav * 100) if past_nav else 0
         if is_active: active_returns.append(week_change)
@@ -75,7 +68,6 @@ def build_weekly():
             "drawdown": ((curr_nav - max(all_prices)) / max(all_prices) * 100) if max(all_prices) > 0 else 0
         })
 
-    # DATA TIL BOKSENE (VIGTIGT!)
     top_up = sorted(rows, key=lambda x: x['week_change_pct'], reverse=True)[:5]
     top_down = sorted(rows, key=lambda x: x['week_change_pct'])[:5]
     avg_return = sum(active_returns) / len(active_returns) if active_returns else 0
@@ -83,7 +75,6 @@ def build_weekly():
     table_rows = sorted(rows, key=lambda x: (not x['is_active'], -x['momentum']))
     chart_rows = [r for r in table_rows if r['is_active']][:10]
 
-    # Render
     template_html = TEMPLATE_FILE.read_text(encoding="utf-8")
     output = Template(template_html).render(
         week_label=datetime.now().strftime("%V"),
@@ -100,7 +91,5 @@ def build_weekly():
 
     REPORT_FILE.parent.mkdir(exist_ok=True)
     REPORT_FILE.write_text(output, encoding="utf-8")
-    print("Ugerapport færdig: build/weekly.html opdateret.")
 
-if __name__ == "__main__":
-    build_weekly()
+if __name__ == "__main__": build_weekly()
