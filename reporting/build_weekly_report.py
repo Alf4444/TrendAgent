@@ -29,15 +29,17 @@ def build_weekly():
     with open(PORTFOLIO_FILE, "r") as f:
         portfolio = json.load(f)
 
-    # Map ISIN til Navne og YTD data fra latest.json
+    # Map ISIN til Navne og YTD data
     names_map = {i['isin']: i.get('name', i['isin']) for i in latest_data}
     
-    # Håndtering af YTD (hvis det er gemt som streng med komma, konverteres det til float)
     ytd_map = {}
     for i in latest_data:
         ytd_val = i.get('return_ytd', 0)
         if isinstance(ytd_val, str):
-            ytd_val = float(ytd_val.replace(',', '.'))
+            try:
+                ytd_val = float(ytd_val.replace(',', '.'))
+            except:
+                ytd_val = 0
         ytd_map[i['isin']] = ytd_val
     
     rows = []
@@ -46,7 +48,6 @@ def build_weekly():
     market_opportunities = []
 
     for isin, price_dict in history.items():
-        # Sorter datoer og find priser
         dates = sorted(price_dict.keys())
         all_prices = [price_dict[d] for d in dates]
         
@@ -56,19 +57,15 @@ def build_weekly():
         curr_p = all_prices[-1]
         ma200 = get_ma(all_prices, 200)
         
-        # --- 7-DAGES ANALYSE (Trend Shift & Change %) ---
         past_idx = max(0, len(all_prices) - 7)
         past_p = all_prices[past_idx]
         
-        # Trend status nu
         curr_state = "BULL" if curr_p > ma200 else "BEAR"
         
-        # Trend status for 7 dage siden
         past_history = all_prices[:past_idx+1]
         past_ma200 = get_ma(past_history, 200) or ma200
         past_state = "BULL" if past_p > past_ma200 else "BEAR"
         
-        # Detekter Shift
         shift = None
         if past_state == "BEAR" and curr_state == "BULL":
             shift = "UP"
@@ -79,7 +76,6 @@ def build_weekly():
         fund_name = names_map.get(isin, isin)
         week_chg = ((curr_p - past_p) / past_p * 100)
 
-        # Alarmer og opsamling
         if is_active:
             active_returns.append(week_chg)
             if shift == "UP":
@@ -89,7 +85,6 @@ def build_weekly():
         elif shift == "UP":
             market_opportunities.append({"name": fund_name})
 
-        # Beregn Drawdown (fald fra All-Time High i historikken)
         ath = max(all_prices)
         drawdown = ((curr_p - ath) / ath * 100)
 
@@ -104,30 +99,32 @@ def build_weekly():
             "drawdown": round(drawdown, 1)
         })
 
-    # --- GENERER HTML ---
     if not TEMPLATE_FILE.exists():
-        print(f"Fejl: Template mangler på {TEMPLATE_FILE}")
+        print(f"Fejl: Template mangler.")
         return
 
-    # Sortering: Aktive fonde først, derefter højeste momentum
     sorted_rows = sorted(rows, key=lambda x: (not x['is_active'], -x['momentum']))
-
     template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
     
+    # HER ER RETTELSEN: Vi sender både 'avg_port_ret' OG 'avg_portfolio_return' 
+    # for at være helt sikre på at ramme det din template forventer.
+    current_avg = sum(active_returns)/len(active_returns) if active_returns else 0
+
     html_output = template.render(
         timestamp=datetime.now().strftime('%d-%m-%Y'),
         week_num=datetime.now().strftime('%V'),
         rows=sorted_rows,
         portfolio_alerts=portfolio_alerts,
         market_opportunities=market_opportunities[:10],
-        avg_port_ret=sum(active_returns)/len(active_returns) if active_returns else 0,
+        avg_port_ret=current_avg,
+        avg_portfolio_return=current_avg,
         top_winners=sorted(rows, key=lambda x: x['change_pct'], reverse=True)[:5],
         top_losers=sorted(rows, key=lambda x: x['change_pct'])[:5]
     )
 
     REPORT_FILE.parent.mkdir(exist_ok=True)
     REPORT_FILE.write_text(html_output, encoding="utf-8")
-    print(f"Weekly Rapport færdig: {len(rows)} fonde analyseret for uge {datetime.now().strftime('%V')}.")
+    print(f"Weekly Rapport færdig for uge {datetime.now().strftime('%V')}.")
 
 if __name__ == "__main__":
     build_weekly()
