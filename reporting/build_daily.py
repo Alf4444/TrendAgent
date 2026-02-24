@@ -11,7 +11,7 @@ README_FILE = ROOT / "README.md"
 
 def get_ma(prices, window):
     clean_prices = [p for p in prices if p is not None]
-    if not clean_prices: return None
+    if not clean_prices or len(clean_prices) < window: return None
     relevant_prices = clean_prices[-window:]
     return sum(relevant_prices) / len(relevant_prices)
 
@@ -41,7 +41,20 @@ def build_report():
         if not price_history:
             price_history = [nav]
 
+        # --- TEKNISKE INDIKATORER ---
+        ma20 = get_ma(price_history, 20)
+        ma50 = get_ma(price_history, 50)
         ma200 = get_ma(price_history, 200)
+        
+        # Cross-over logik (20 vs 50)
+        cross_20_50 = "–"
+        if ma20 and ma50 and len(price_history) > 1:
+            prev_ma20 = get_ma(price_history[:-1], 20)
+            prev_ma50 = get_ma(price_history[:-1], 50)
+            if prev_ma20 and prev_ma50:
+                if prev_ma20 < prev_ma50 and ma20 > ma50: cross_20_50 = "🚀 GOLDEN"
+                elif prev_ma20 > prev_ma50 and ma20 < ma50: cross_20_50 = "💀 DEATH"
+
         prev_nav = price_history[-2] if len(price_history) > 1 else nav
         day_chg = ((nav - prev_nav) / prev_nav * 100) if prev_nav else 0
         dist_ma200 = ((nav - ma200) / ma200 * 100) if ma200 else 0
@@ -66,22 +79,19 @@ def build_report():
             'day_chg': day_chg, 'dist_ma200': dist_ma200,
             'signal': signal, 'has_signal': has_signal,
             'is_active': is_active, 't_state': t_state, 't_color': t_color,
-            'history': price_history
+            'history': price_history, 'cross_20_50': cross_20_50
         })
 
-    # --- NY INTELLIGENT SORTERING ---
-    # 1. Dine aktive fonde (Stjerne) altid øverst
-    # 2. Derefter nye KØB signaler (Muligheder)
-    # 3. Derefter resten, sorteret efter afstand til trend (stærkeste trends først)
+    # --- SORTERING ---
     sorted_data = sorted(processed_list, key=lambda x: (
         not x['is_active'], 
         not (x['has_signal'] and 'KØB' in x['signal']), 
         -x['dist_ma200']
     ))
 
-    # README GENERERING
+    # --- README GENERERING ---
     readme_content = f"# 📈 TrendAgent Fokus\n**Opdateret:** {timestamp}\n\n"
-    readme_content += "| | Fond | Signal | Egen % | Trend | Afstand |\n| :--- | :--- | :--- | :--- | :--- | :--- |\n"
+    readme_content += "| | Fond | Signal | Egen % | Trend | Afstand | Cross |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n"
 
     rows_html = ""
     for d in sorted_data:
@@ -109,20 +119,20 @@ def build_report():
             <td>{p_ret_html}</td>
             <td style="color:{d['t_color']}; font-weight:bold;">{d['t_state']}</td>
             <td style="font-weight:bold;">{d['dist_ma200']:+.1f}%</td>
+            <td>{d['cross_20_50']}</td>
             <td style="color:{'#28a745' if d['day_chg'] > 0 else '#d93025'}">{d['day_chg']:+.2f}%</td>
             <td style="color:#d93025">{dd:.1f}%</td>
         </tr>
         """
         
-        # README: Kun aktive eller relevante signaler
         if d['is_active'] or (d['has_signal'] and 'KØB' in d['signal']):
-            readme_content += f"| {'⭐' if d['is_active'] else '🔍'} | {d['name'][:20]} | {d['signal']} | {p_ret_val} | {d['t_state']} | {d['dist_ma200']:+.1f}% |\n"
+            readme_content += f"| {'⭐' if d['is_active'] else '🔍'} | {d['name'][:20]} | {d['signal']} | {p_ret_val} | {d['t_state']} | {d['dist_ma200']:+.1f}% | {d['cross_20_50']} |\n"
 
-    # HTML TEMPLATE
+    # --- HTML GENERERING ---
     html_content = f"""
     <!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'>
     <style>
-        body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f4f7f9; margin: 10px; color: #333; }}
+        body {{ font-family: -apple-system, sans-serif; background: #f4f7f9; margin: 10px; color: #333; }}
         table {{ width: 100%; border-collapse: collapse; background: white; font-size: 13px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden; }}
         th, td {{ padding: 12px 10px; border-bottom: 1px solid #eee; text-align: left; }}
         th {{ background: #1a73e8; color: white; position: sticky; top: 0; }}
@@ -136,7 +146,7 @@ def build_report():
             <small style="color: #666;">Opdateret: {timestamp}</small>
         </div>
         <table>
-            <thead><tr><th></th><th>Fond</th><th>Signal</th><th>Egen %</th><th>Trend</th><th>Afstand</th><th>1D %</th><th>DD</th></tr></thead>
+            <thead><tr><th></th><th>Fond</th><th>Signal</th><th>Egen %</th><th>Trend</th><th>Afstand</th><th>Cross</th><th>1D %</th><th>DD</th></tr></thead>
             <tbody>{rows_html}</tbody>
         </table>
     </body></html>
@@ -145,7 +155,7 @@ def build_report():
     REPORT_FILE.parent.mkdir(exist_ok=True)
     REPORT_FILE.write_text(html_content, encoding="utf-8")
     README_FILE.write_text(readme_content, encoding="utf-8")
-    print(f"Rapport færdig: {len(processed_list)} fonde sorteret efter relevans.")
+    print(f"Daily Rapport færdig: {len(processed_list)} fonde opdateret i README og HTML.")
 
 if __name__ == "__main__":
     build_report()
