@@ -4,9 +4,9 @@ Der investeres i en veldiversificeret portefølje af High Yield obligationer fra
 udstedere i globale markeder eksklusive Emerging Markets. Der benyttes en Valuta DKK
 Type Investeringsforening
 indeksnær investeringsstrategi til at opnå et afkast svarende til fondens benchmark.
-Indre værdi 315,34
+Indre værdi 315,18
 Fonden er ikke ESG-screenet og egner sig til informerede eller erfarne
-Indre værdi dato 23-02-2026
+Indre værdi dato 24-02-2026
 pensionskunder, som har indsigt i og erfaring med værdipapirhandel, og som
 Bæredygtighed Artikel 6
 ønsker et opsparingsprodukt med eksponering til High Yield obligationer og lavere
@@ -15,11 +15,11 @@ en tidshorisont på min. 3 år. Fonden indeholder valutarisiko, da den har ekspo
 til investeringer i udenlandsk valuta. Valutaeksponeringen tilstræbes fuldt afdækket
 til EUR.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -0,12% 0,23% 1,76% 2,29%
+Afdeling 0,09% 0,17% 1,57% 2,24%
 iShares Global High Yield Corp Bond EUR Hedged UCITS ETF
 Afkast ÅTD 1 år 3 år 5 år
 128
-Afdeling 0,75% 5,11% - -
+Afdeling 0,69% 5,01% - -
 120
 Omkostninger %
 112 Andre løbende omkostninger 0,77
@@ -31,7 +31,7 @@ Udtrædelsesomkostninger 0,15
 Jan '24 Jul '24 Jan '25 Jul '25 Jan '26
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 2,40 - -
-Std. Afv. 1,92% - - 1 2 3 4 5 6 7
+Std. Afv. 1,75% - - 1 2 3 4 5 6 7
 Største beholdninger (31-12-2025) % Formuefordeling
 Cash EUR 1,54
 BLK ICS USD LEAF AGENCY DIST 1,01

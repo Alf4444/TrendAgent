@@ -4,9 +4,9 @@ Der investeres i danske realkreditobligationer samt EU og US stats-, indeks-, hi
 yield og investment grade obligationer, vha. en optimeringsmode med månedlig Valuta DKK
 Type Investeringsprodukt
 rebalancering. Der benyttes en indeksnær investeringsstrategi til at opnå et afkast
-Indre værdi 102,76
+Indre værdi 102,78
 svarende til fondens benchmark, dog kan fondens afkast afvige fra
-Indre værdi dato 23-02-2026
+Indre værdi dato 24-02-2026
 benchmarkafkastet, da en omfattende ESG-screening foretages. Fonden egner sig
 Bæredygtighed Artikel 8
 til informerede eller erfarne pensionskunder, som har indsigt i og erfaring med
@@ -17,12 +17,12 @@ investeringer. Fonden indeholder valutarisiko, da den har eksponering til
 investeringer i udenlandsk valuta. Valutaeksponeringen tilstræbes fuldt afdækket til
 DKK.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 0,17% 0,79% 1,10% 1,56%
+Afdeling 0,14% 0,81% 1,05% 1,58%
 PFA Indeks Globale Obligationer Benchmark
-Benchmark 0,18% 0,81% 1,11% 1,79%
+Benchmark 0,14% 0,82% 1,05% 1,80%
 105 Afkast ÅTD 1 år 3 år 5 år
-100 Afdeling 1,19% 2,78% 10,61% -
-Benchmark 1,22% 3,19% 11,70% -
+100 Afdeling 1,20% 2,73% 11,04% -
+Benchmark 1,23% 3,13% 12,15% -
 95
 Omkostninger %
 90 Andre løbende omkostninger 0,38
@@ -34,7 +34,7 @@ Udtrædelsesomkostninger 0,20
 ÅOP 0,44
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,58 0,19 -
-Std. Afv. 1,45% 3,42% - 1 2 3 4 5 6 7
+Std. Afv. 1,66% 3,55% - 1 2 3 4 5 6 7
 Største beholdninger (31-12-2025) % Formuefordeling
 Var% Germany 15/04/2030 3,01
 Cash DKK 2,29

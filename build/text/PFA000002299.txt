@@ -6,7 +6,7 @@ Type Investeringsprodukt
 handelsaktivitet. Investeringerne i porteføljen har en varighed på maksimalt 1 år.
 Indre værdi 111,63
 Fonden egner sig til pensionskunder, som har indsigt i og erfaring med
-Indre værdi dato 23-02-2026
+Indre værdi dato 24-02-2026
 værdipapirhandel og som holder sig informerede om udviklingen i kapitalmarkedet.
 Bæredygtighed Artikel 6
 Den er desuden egnet til pensionskunder med en tidshorisont på minimum 3 år, og
@@ -15,11 +15,11 @@ kontanter med lavere risiko, hvorfor der kan accepteres et lavere afkast på fon
 Fonden har ingen valutarisiko, da den er dansk og udelukkende investerer i danske
 aktiver.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 0,03% 0,15% 0,45% 0,91%
+Afdeling 0,03% 0,16% 0,45% 0,91%
 PFA Pengemarked
 Afkast ÅTD 1 år 3 år 5 år
 112
-Afdeling 0,28% 1,94% 8,75% 8,21%
+Afdeling 0,28% 1,93% 8,75% 8,22%
 108
 Omkostninger %
 104 Andre løbende omkostninger 0,20
@@ -31,7 +31,7 @@ Udtrædelsesomkostninger 0,10
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 6,99 1,17 -0,55
-Std. Afv. 0,10% 0,23% 0,52% 1 2 3 4 5 6 7
+Std. Afv. 0,09% 0,23% 0,52% 1 2 3 4 5 6 7
 Største beholdninger (31-12-2025) % Formuefordeling
 3.22% Realkredit Danmark A/S
 22,16

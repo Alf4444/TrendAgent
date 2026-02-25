@@ -4,9 +4,9 @@ Der investeres i en portefølje af globale aktier inklusive Emerging Markets, hv
 porteføljen som udgangspunkt sammensættes ud fra de selskaber, der indgår i Valuta EUR
 Type Investeringsforening
 fondens benchmark, MSCI All Countries World Index Net. Der benyttes en
-Indre værdi 107,23
+Indre værdi 108,01
 indeksnær investeringsstrategi til at opnå et afkast lig fondens benchmark. Fonden
-Indre værdi dato 23-02-2026
+Indre værdi dato 24-02-2026
 er ikke ESG-screenet og egner sig til informerede eller erfarne pensionskunder, som
 Bæredygtighed Artikel 6
 har indsigt i og erfaring med værdipapirhandel og som ønsker et opsparingsprodukt
@@ -14,23 +14,23 @@ med højere risiko, hvorfor der kan accepteres tab på investeringen. Pensionsku
 bør have en tidshorisont på min. 3 år. Fonden indeholder valutarisiko, da den har
 eksponering til investeringer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 0,87% 0,63% 5,77% 10,22%
+Afdeling 1,27% 1,37% 5,56% 11,03%
 iShares MSCI ACWI Global Equities UCITS ETF
 Afkast ÅTD 1 år 3 år 5 år
-210
-Afdeling 2,84% 8,55% 56,66% 75,94%
 180
+Afdeling 3,59% 9,98% 58,85% 76,30%
+150
 Omkostninger %
-150 Andre løbende omkostninger 0,40
+120 Andre løbende omkostninger 0,40
 Resultatgebyrer 0,00
-120 Transaktionsomkostninger (Direkte + indirekte) 0,01
+90 Transaktionsomkostninger (Direkte + indirekte) 0,01
 Oprettelsesomkostninger 0,10
 Udtrædelsesomkostninger 0,10
 ÅOP 0,44
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,88 1,02 0,96
-Std. Afv. 15,60% 11,20% 12,29% 1 2 3 4 5 6 7
+Std. Afv. 13,99% 9,91% 11,41% 1 2 3 4 5 6 7
 Største beholdninger (30-01-2026) % Formuefordeling
 NVIDIA Corp 4,82
 Apple 3,99
