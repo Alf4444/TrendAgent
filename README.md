@@ -1,5 +1,5 @@
 # 📈 TrendAgent Fokus
-**Opdateret:** 26-02-2026 21:04
+**Opdateret:** 26-02-2026 23:30
 
 | | Fond | Signal | Egen % | Trend | Afstand | Cross |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
