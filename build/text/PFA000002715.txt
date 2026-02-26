@@ -4,9 +4,9 @@ Der investeres primært i obligationer udstedt af lande, virksomheder og statsli
 samt overstatslige organisationer i Emerging Markets. Fonden er generelt Valuta USD
 Type Investeringsforening
 diversificeret efter land, valuta og udsteder, men kan til enhver tid have mere
-Indre værdi 313,86
+Indre værdi 313,72
 koncentrerede positioner. Den gennemsnitlige kreditkvalitet for selskaberne i
-Indre værdi dato 24-02-2026
+Indre værdi dato 25-02-2026
 porteføljen kan være lavere end Investment Grade. Der benyttes en aktiv
 Bæredygtighed Artikel 8
 investeringsstrategi til at opnå et afkast, der er bedre end afkastet af fondens
@@ -17,23 +17,23 @@ der kan accepteres lavere afkast på investeringen. Pensionskunder bør have en
 tidshorisont på min. 3 år. Fonden indeholder valutarisiko, da den indeholder
 investeringer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 0,17% 1,50% 1,35% 7,27%
+Afdeling 0,20% 1,46% 1,49% 7,06%
 WM Opportunistisk Emerging Markets Obligationer
 Afkast ÅTD 1 år 3 år 5 år
+130
+Afdeling 2,00% 0,97% 21,95% 18,97%
 120
-Afdeling 2,05% 1,10% 22,00% 17,09%
-112
 Omkostninger %
-104 Andre løbende omkostninger 0,74
+110 Andre løbende omkostninger 0,74
 Resultatgebyrer 0,00
-96 Transaktionsomkostninger (Direkte + indirekte) 0,13
+100 Transaktionsomkostninger (Direkte + indirekte) 0,13
 Oprettelsesomkostninger 0,55
 Udtrædelsesomkostninger 0,55
 ÅOP 1,03
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,27 0,57 0,12
-Std. Afv. 8,95% 7,13% 8,26% 1 2 3 4 5 6 7
+Std. Afv. 8,42% 6,82% 8,33% 1 2 3 4 5 6 7
 Største beholdninger (30-09-2025) % Formuefordeling
 US DollarOn-Hand 3,20
 CDX-EMS43V1-5Y 0.0000 06-20-30 2,11

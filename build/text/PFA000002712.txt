@@ -4,9 +4,9 @@ Der investeres i en portefølje af danske og globale obligationer. En stor del a
 porteføljen består af nordeuropæiske stats- og realkreditobligationer, som normalt Valuta DKK
 Type Investeringsforening
 klarer sig godt, når der er uro på de finansielle markeder. Der kan investeres i
-Indre værdi 102,91
+Indre værdi 102,92
 emerging markets-obligationer og op til 35% af formuen kan placeres i
-Indre værdi dato 24-02-2026
+Indre værdi dato 25-02-2026
 kreditobligationer. Den korrigerede varighed er mellem 0 og 9 år. Fonden egner sig
 Bæredygtighed Artikel 8
 til informerede eller erfarne pensionskunder, som har indsigt i og erfaring med
@@ -16,11 +16,11 @@ investeringen. Pensionskunder bør have en tidshorisont på min. 3 år, og fonde
 indgå i en diversificeret portefølje af øvrige investeringer. Fonden indeholder
 valutarisiko, da den er eksponeret over for værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 0,26% 1,91% 2,41% 5,04%
+Afdeling 0,20% 1,93% 2,36% 5,09%
 Maj Invest Globale Obligationer Akkumulerende
 Afkast ÅTD 1 år 3 år 5 år
 120
-Afdeling 2,49% 5,82% 20,37% 16,37%
+Afdeling 2,50% 5,86% 20,39% 16,89%
 112
 Omkostninger %
 104 Andre løbende omkostninger 0,65
@@ -32,7 +32,7 @@ Udtrædelsesomkostninger 0,15
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,81 0,76 0,18
-Std. Afv. 3,19% 4,46% 5,08% 1 2 3 4 5 6 7
+Std. Afv. 3,22% 4,38% 4,87% 1 2 3 4 5 6 7
 Største beholdninger (31-12-2025) % Formuefordeling
 1% NYKRE 13/H 2031/01/01 5,34
 2% NDASS 2 01/10/2043 5,31

@@ -4,9 +4,9 @@ Der investeres udelukkende i en portefølje af danske obligationer og kontanter 
 henblik på at holde risikoen lav. Investeringsstrategien er aktiv, men med begrænset Valuta DKK
 Type Investeringsprodukt
 handelsaktivitet. Investeringerne i porteføljen har en varighed på maksimalt 1 år.
-Indre værdi 111,63
+Indre værdi 111,64
 Fonden egner sig til pensionskunder, som har indsigt i og erfaring med
-Indre værdi dato 24-02-2026
+Indre værdi dato 25-02-2026
 værdipapirhandel og som holder sig informerede om udviklingen i kapitalmarkedet.
 Bæredygtighed Artikel 6
 Den er desuden egnet til pensionskunder med en tidshorisont på minimum 3 år, og
@@ -15,11 +15,11 @@ kontanter med lavere risiko, hvorfor der kan accepteres et lavere afkast på fon
 Fonden har ingen valutarisiko, da den er dansk og udelukkende investerer i danske
 aktiver.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 0,03% 0,16% 0,45% 0,91%
+Afdeling 0,03% 0,16% 0,45% 0,90%
 PFA Pengemarked
 Afkast ÅTD 1 år 3 år 5 år
 112
-Afdeling 0,28% 1,93% 8,75% 8,22%
+Afdeling 0,29% 1,92% 8,76% 8,24%
 108
 Omkostninger %
 104 Andre løbende omkostninger 0,20

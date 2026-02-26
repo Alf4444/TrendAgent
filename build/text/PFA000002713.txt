@@ -4,9 +4,9 @@ Der investeres i en veldiversificeret portefølje af Investment Grade obligation
 udstedere i globale markeder inklusive Emerging Markets. Der benyttes en Valuta EUR
 Type Investeringsforening
 indeksnær investeringsstrategi til at opnå et afkast svarende til fondens benchmark.
-Indre værdi 174,29
+Indre værdi 174,26
 Fonden er ikke ESG-screenet og egner sig til informerede eller erfarne
-Indre værdi dato 24-02-2026
+Indre værdi dato 25-02-2026
 pensionskunder, som har indsigt i og erfaring med værdipapirhandel, og som
 Bæredygtighed Artikel 6
 ønsker et opsparingsprodukt med eksponering til Investment Grade obligationer og
@@ -15,23 +15,23 @@ have en tidshorisont på min. 3 år. Fonden indeholder valutarisiko, da den har
 eksponering til investeringer i udenlandsk valuta. Valutaeksponeringen tilstræbes
 fuldt afdækket til EUR.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 0,05% 0,85% 1,09% 2,17%
+Afdeling 0,08% 0,83% 0,85% 2,38%
 iShares Global IG Corp Bond EUR Hedged UCITS ETF
 Afkast ÅTD 1 år 3 år 5 år
+112
+Afdeling 1,06% 4,09% 14,18% -2,91%
 104
-Afdeling 1,08% 4,60% 14,20% -3,53%
-96
 Omkostninger %
-88 Andre løbende omkostninger 0,47
+96 Andre løbende omkostninger 0,47
 Resultatgebyrer 0,00
-80 Transaktionsomkostninger (Direkte + indirekte) 0,02
+88 Transaktionsomkostninger (Direkte + indirekte) 0,02
 Oprettelsesomkostninger 0,10
 Udtrædelsesomkostninger 0,10
 ÅOP 0,51
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 1,24 0,49 -0,36
-Std. Afv. 2,19% 4,73% 6,38% 1 2 3 4 5 6 7
+Std. Afv. 2,43% 4,90% 6,07% 1 2 3 4 5 6 7
 Største beholdninger (30-01-2026) % Formuefordeling
 USD/EUR (Future) 0,76
 0.1% JAPAN 10YEAR ISSUE 2028/12/20 0,30
@@ -45,11 +45,11 @@ PFIZER INVSTMNT PFE 4.75 05/19/33 0,06
 5,05% CVS HEALTH CORP 25/03/2048 0,05
 BANK OF AMER CRP BAC 5.288
 0,05
-04/25/34 > 7 år 32,39 %
-Meta Plat 4.875 15/11/35 0,05 1-3 år 17,34 %
-3-5 år 15,75 %
+04/25/34 > 7 år 32,34 %
+Meta Plat 4.875 15/11/35 0,05 1-3 år 17,31 %
+3-5 år 15,78 %
 5-7 år 11,38 %
-Andet 23,14 %
+Andet 23,18 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke
