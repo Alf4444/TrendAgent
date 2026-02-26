@@ -5,18 +5,26 @@
   <title>TrendAgent Weekly</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    body { font-family: -apple-system, sans-serif; background: #f0f2f5; padding: 20px; }
+    body { font-family: -apple-system, sans-serif; background: #f0f2f5; padding: 20px; color: #1a1a1a; }
     .container { max-width: 1050px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
     .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-    .score-box { border: 2px solid #22c55e; background: #e6f4ea; padding: 15px; border-radius: 8px; text-align: center; }
+    .score-box { border: 2px solid #22c55e; background: #e6f4ea; padding: 15px; border-radius: 8px; text-align: center; min-width: 150px; }
     .grid { display: flex; gap: 20px; margin-bottom: 25px; }
     .box { flex: 1; padding: 15px; border-radius: 8px; border: 1px solid #ddd; background: #fafafa; }
     .chart-container { height: 250px; margin-bottom: 30px; }
-    table { width: 100%; border-collapse: collapse; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
     th, td { padding: 12px; border-bottom: 1px solid #eee; text-align: left; font-size: 14px; }
-    th { background: #f8f9fa; color: #666; font-size: 12px; text-transform: uppercase; }
+    th { background: #f8f9fa; color: #666; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
     .active { background: #fffde7; font-weight: bold; }
-    .footer { margin-top: 40px; padding: 20px; background: #f8f9fa; border-radius: 8px; font-size: 13px; }
+    .trend-bull { color: #22c55e; font-weight: bold; }
+    .trend-bear { color: #ef4444; font-weight: bold; }
+    
+    /* Footer Styling */
+    .footer { margin-top: 40px; padding: 25px; background: #f8f9fa; border-radius: 8px; border-top: 1px solid #eee; }
+    .footer h2, .footer h3 { margin-top: 0; color: #333; }
+    .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 15px; }
+    .footer-col p { font-size: 13px; line-height: 1.6; color: #555; margin-bottom: 10px; }
+    .strategy-box { margin-top: 20px; padding: 15px; background: #fff; border-radius: 6px; border-left: 5px solid #22c55e; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
   </style>
 </head>
 <body>
@@ -28,34 +36,41 @@
       </div>
       <div class="score-box">
         <small>UGENS AFKAST (⭐)</small><br>
-        <strong style="font-size: 24px;">{{ '%.2f'|format(avg_portfolio_return) }}%</strong>
+        <strong style="font-size: 24px; color: #15803d;">{{ '%.2f'|format(avg_portfolio_return) }}%</strong>
       </div>
     </div>
 
     {% if portfolio_alerts or market_opportunities %}
-    <div style="background: #fffde7; border-left: 5px solid #fbc02d; padding: 15px; margin-bottom: 25px;">
-      {% for a in portfolio_alerts %}<div><strong>⭐ {{ a.name }}</strong>: {{ a.msg }}</div>{% endfor %}
+    <div style="background: #fffde7; border-left: 5px solid #fbc02d; padding: 20px; margin-bottom: 25px; border-radius: 4px;">
+      {% for a in portfolio_alerts %}
+        <div style="margin-bottom: 8px; font-size: 16px;">{{ a.msg }} <strong>{{ a.name }}</strong></div>
+      {% endfor %}
+      
       {% if market_opportunities %}
-        <div style="margin-top:10px;"><strong>🎯 Nye BULL-muligheder:</strong> 
-        {% for o in market_opportunities %}{{ o.name }}{{ ", " if not loop.last }}{% endfor %}</div>
+        <div style="margin-top:10px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.05);">
+          <strong>🎯 Nye BULL-muligheder:</strong> 
+          <span style="color: #444;">
+          {% for o in market_opportunities %}{{ o.name }}{{ ", " if not loop.last }}{% endfor %}
+          </span>
+        </div>
       {% endif %}
     </div>
     {% endif %}
 
     <div class="grid">
       <div class="box" style="border-top: 4px solid #22c55e;">
-        <h4>🚀 Ugens Top 5</h4>
+        <h4 style="margin-top:0;">🚀 Ugens Top 5</h4>
         {% for t in top_up %}
-          <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px;">
-            <span>{{ t.name[:30] }}</span> <strong>+{{ '%.2f'|format(t.week_change_pct) }}%</strong>
+          <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
+            <span>{{ t.name[:35] }}</span> <strong style="color: #16a34a;">+{{ '%.2f'|format(t.week_change_pct) }}%</strong>
           </div>
         {% endfor %}
       </div>
       <div class="box" style="border-top: 4px solid #ef4444;">
-        <h4>⚠️ Ugens Bund 5</h4>
+        <h4 style="margin-top:0;">⚠️ Ugens Bund 5</h4>
         {% for t in top_down %}
-          <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px;">
-            <span>{{ t.name[:30] }}</span> <strong>{{ '%.2f'|format(t.week_change_pct) }}%</strong>
+          <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
+            <span>{{ t.name[:35] }}</span> <strong style="color: #dc2626;">{{ '%.2f'|format(t.week_change_pct) }}%</strong>
           </div>
         {% endfor %}
       </div>
@@ -67,29 +82,53 @@
 
     <table>
       <thead>
-        <tr><th>Fond</th><th>Uge %</th><th>Trend</th><th>Momentum</th><th>ÅTD</th><th>DD</th></tr>
+        <tr>
+          <th>Fond</th>
+          <th>Uge %</th>
+          <th>Trend</th>
+          <th>Momentum</th>
+          <th>ÅTD</th>
+          <th>Drawdown</th>
+        </tr>
       </thead>
       <tbody>
         {% for row in rows %}
         <tr class="{{ 'active' if row.is_active else '' }}">
           <td>{{ '⭐' if row.is_active else '' }} {{ row.name[:45] }}</td>
-          <td style="color: {{ '#1e7e34' if row.week_change_pct > 0 else '#d93025' }}">{{ '%.2f'|format(row.week_change_pct) }}%</td>
-          <td>{{ 'BULL' if row.trend_state == 'UP' else 'BEAR' }}</td>
+          <td style="color: {{ '#16a34a' if row.week_change_pct > 0 else '#dc2626' }}; font-weight: 500;">
+            {{ '%.2f'|format(row.week_change_pct) }}%
+          </td>
+          <td class="{{ 'trend-bull' if row.trend_state == 'UP' else 'trend-bear' }}">
+            {{ 'BULL' if row.trend_state == 'UP' else 'BEAR' }}
+          </td>
           <td>{{ row.momentum }}%</td>
           <td>{{ '%.2f'|format(row.ytd_return) }}%</td>
-          <td style="color: #d93025;">{{ '%.2f'|format(row.drawdown) }}%</td>
+          <td style="color: #dc2626;">{{ '%.2f'|format(row.drawdown) }}%</td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
 
     <div class="footer">
-      <h3>Metodik & Definitioner</h3>
-      <p><strong>Ugens Afkast (⭐):</strong> Gennemsnitlig vækst for dine aktive investeringer i den forgangne uge.</p>
-      <p><strong>Top/Bund 5:</strong> Viser de fonde i hele overvågningslisten, der har haft de største udsving (positivt/negativt) de sidste 7 dage.</p>
-      <p><strong>MA200 Momentum:</strong> Den procentvise afstand til det 200-dages glidende gennemsnit. Positive tal betyder BULL-marked.</p>
-      <p><strong>Trend (BULL/BEAR):</strong> En fond er i BULL-marked, når prisen ligger over MA200. BEAR-marked indikerer en teknisk nedtrend.</p>
-      <p><strong>Drawdown (DD):</strong> Hvor meget fonden er faldet fra sin top i den opsamlede historik. Bruges til at vurdere risikoen for yderligere fald.</p>
+      <h2 style="border-bottom: 1px solid #ddd; padding-bottom: 10px;">Metodik & Strategi</h2>
+      
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3>📈 Købs- & Salgssignaler</h3>
+          <p><strong>Nye BULL-muligheder (KØB):</strong> Vises når en fond bryder over sit 200-dages glidende gennemsnit (MA200). Dette indikerer starten på en positiv trend og en potentiel købsmulighed.</p>
+          <p><strong>Trend skiftet til BEAR (SÆLG):</strong> Dette signal triggers for dine aktive fonde (⭐), hvis kursen falder under MA200. Det er et teknisk tegn på, at trenden er brudt, og risikoen for større fald er øget.</p>
+        </div>
+        
+        <div class="footer-col">
+          <h3>📊 Definitioner</h3>
+          <p><strong>MA200 Momentum:</strong> Den procentvise afstand fra den nuværende kurs til gennemsnittet for de sidste 200 handelsdage. Et positivt tal betyder BULL-marked (pris over gennemsnit).</p>
+          <p><strong>Drawdown (DD):</strong> Viser det aktuelle fald fra fondens højeste punkt (All-Time High) i den opsamlede historik. Bruges til at vurdere risiko og volatilitet.</p>
+        </div>
+      </div>
+
+      <div class="strategy-box">
+        <strong>Vores Tilgang:</strong> Vi investerer systematisk i fonde med positivt momentum. Ved at kombinere teknisk trend-analyse (MA200) med officielle afkast-data fra faktaarkene, sikres et objektivt beslutningsgrundlag fri for mavefornemmelser.
+      </div>
     </div>
   </div>
 
@@ -100,12 +139,24 @@
       data: {
         labels: {{ chart_labels | tojson }},
         datasets: [{
+          label: 'Momentum % (Afstand til MA200)',
           data: {{ chart_values | tojson }},
-          backgroundColor: 'rgba(34, 197, 94, 0.7)',
+          backgroundColor: 'rgba(34, 197, 94, 0.6)',
+          borderColor: 'rgba(34, 197, 94, 1)',
           borderWidth: 1
         }]
       },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+      options: { 
+        responsive: true, 
+        maintainAspectRatio: false, 
+        plugins: { 
+          legend: { display: false },
+          title: { display: true, text: 'Top 10 Stærkeste Trends (Momentum %)', font: { size: 14 } }
+        },
+        scales: {
+          y: { beginAtZero: true }
+        }
+      }
     });
   </script>
 </body>
