@@ -85,6 +85,7 @@
         <tr>
           <th>Fond</th>
           <th>Uge %</th>
+          <th>Total %</th>
           <th>Trend</th>
           <th>Momentum</th>
           <th>ÅTD</th>
@@ -95,9 +96,15 @@
         {% for row in rows %}
         <tr class="{{ 'active' if row.is_active else '' }}">
           <td>{{ '⭐' if row.is_active else '' }} {{ row.name[:45] }}</td>
+          
           <td style="color: {{ '#16a34a' if row.week_change_pct > 0 else '#dc2626' }}; font-weight: 500;">
             {{ '%.2f'|format(row.week_change_pct) }}%
           </td>
+
+          <td style="font-weight: bold; color: {{ '#16a34a' if (row.total_return or 0) > 0 else '#dc2626' if (row.total_return or 0) < 0 else '#666' }}">
+            {{ '%.2f'|format(row.total_return) if row.total_return is not none else '-' }}%
+          </td>
+
           <td class="{{ 'trend-bull' if row.trend_state == 'UP' else 'trend-bear' }}">
             {{ 'BULL' if row.trend_state == 'UP' else 'BEAR' }}
           </td>
@@ -121,8 +128,9 @@
         
         <div class="footer-col">
           <h3>📊 Definitioner</h3>
+          <p><strong>Total %:</strong> Dit personlige afkast siden købsdatoen (baseret på din GAK). Vises kun for aktive fonde.</p>
           <p><strong>MA200 Momentum:</strong> Den procentvise afstand fra den nuværende kurs til gennemsnittet for de sidste 200 handelsdage. Et positivt tal betyder BULL-marked (pris over gennemsnit).</p>
-          <p><strong>Drawdown (DD):</strong> Viser det aktuelle fald fra fondens højeste punkt (All-Time High) i den opsamlede historik. Bruges til at vurdere risiko og volatilitet.</p>
+          <p><strong>Drawdown (DD):</strong> Viser det aktuelle fald fra fondens højeste punkt (All-Time High) i den opsamlede historik.</p>
         </div>
       </div>
 
