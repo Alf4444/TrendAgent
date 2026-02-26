@@ -25,7 +25,15 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          
+      - name: Reparer historik (Backfill)
+        run: |
+          python data/backfill_data.py
 
+      - name: Build Weekly Report
+        run: |
+          python reporting/build_weekly_report.py
+        
       - name: Build weekly HTML
         run: |
           python reporting/build_weekly_report.py
