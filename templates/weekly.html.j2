@@ -101,7 +101,7 @@
             {{ '%.2f'|format(row.week_change_pct) }}%
           </td>
 
-          <td style="font-weight: bold; color: {{ '#16a34a' if (row.total_return or 0) > 0 else '#dc2626' if (row.total_return or 0) < 0 else '#666' }}">
+          <td style="font-weight: bold; color: {{ '#16a34a' if (row.total_return or 0) > 0 and row.week_change_pct >= 0 else '#dc2626' if row.total_return is not none else '#666' }}">
             {{ '%.2f'|format(row.total_return) if row.total_return is not none else '-' }}%
           </td>
 
@@ -128,7 +128,8 @@
         
         <div class="footer-col">
           <h3>📊 Definitioner</h3>
-          <p><strong>Total %:</strong> Dit personlige afkast siden købsdatoen (baseret på din GAK). Vises kun for aktive fonde.</p>
+          <p><strong>Total %:</strong> Dit personlige afkast siden køb. <br>
+             <span style="color: #dc2626; font-weight: bold;">Rød farve</span> indikerer advarsel: Enten er fonden i samlet minus, eller også har den haft en <strong>negativ uge</strong> (faldende kurs).</p>
           <p><strong>MA200 Momentum:</strong> Den procentvise afstand fra den nuværende kurs til gennemsnittet for de sidste 200 handelsdage. Et positivt tal betyder BULL-marked (pris over gennemsnit).</p>
           <p><strong>Drawdown (DD):</strong> Viser det aktuelle fald fra fondens højeste punkt (All-Time High) i den opsamlede historik.</p>
         </div>
