@@ -12,95 +12,95 @@ TEMPLATE_FILE = ROOT / "templates/weekly.html.j2"
 REPORT_FILE = ROOT / "build/weekly.html"
 
 def get_ma(prices, window):
-    clean_prices = [p for p in prices if p is not None]
-    if not clean_prices: return None
-    actual_window = min(len(clean_prices), window)
-    relevant = clean_prices[-actual_window:]
+    if not prices: return None
+    actual_window = min(len(prices), window)
+    relevant = prices[-actual_window:]
     return sum(relevant) / len(relevant)
 
 def build_weekly():
-    if not HISTORY_FILE.exists() or not LATEST_FILE.exists():
-        print("Fejl: Datafiler mangler.")
-        return
-
-    with open(HISTORY_FILE, "r") as f:
+    # 1. Hent rådata
+    with open(HISTORY_FILE, "r", encoding="utf-8") as f:
         history = json.load(f)
     with open(LATEST_FILE, "r", encoding="utf-8") as f:
-        latest_data = json.load(f)
-    with open(PORTFOLIO_FILE, "r") as f:
+        latest_list = json.load(f)
+    with open(PORTFOLIO_FILE, "r", encoding="utf-8") as f:
         portfolio = json.load(f)
 
-    # Tidsdata
-    now = datetime.now()
-    date_str = now.strftime("%d-%m-%Y")
-    week_num = now.isocalendar()[1]
-
-    # Map officielle data fra latest.json
-    names_map = {i['isin']: i.get('name', i['isin']) for i in latest_data}
-    ytd_map = {i['isin']: i.get('return_ytd', 0) for i in latest_data}
-    official_week_map = {i['isin']: i.get('return_1w', 0) for i in latest_data}
+    # 2. Skab et opslagsværk fra latest.json (De officielle tal)
+    latest_map = {item['isin']: item for item in latest_list}
     
+    now = datetime.now()
+    date_str = latest_list[0]['nav_date'] if latest_list else now.strftime("%Y-%m-%d")
+    week_num = datetime.strptime(date_str, "%Y-%m-%d").isocalendar()[1]
+
     rows = []
     active_returns = []
     portfolio_alerts = []
     market_opportunities = []
 
     for isin, price_dict in history.items():
+        if isin not in latest_map: continue
+        
+        # Hent officielle tal
+        official = latest_map[isin]
+        curr_p = official['nav']
+        week_chg = official.get('return_1w', 0) # HER er præcisionen!
+        ytd_chg = official.get('return_ytd', 0)
+        fund_name = official.get('name', isin)
+
+        # Beregn Trend baseret på historik
         dates = sorted(price_dict.keys())
         all_prices = [price_dict[d] for d in dates]
-        if not all_prices: continue
-
-        curr_p = all_prices[-1]
         ma200 = get_ma(all_prices, 200)
-        
-        # BRUG OFFICIELT UGE-AFKAST FRA LATEST.JSON FOR VALIDITET
-        week_chg = official_week_map.get(isin, 0)
         
         curr_state = "UP" if ma200 and curr_p > ma200 else "DOWN"
         
-        # Shift detection
-        past_idx = max(0, len(all_prices) - 7)
-        past_p = all_prices[past_idx]
-        past_history = all_prices[:past_idx+1]
-        past_ma200 = get_ma(past_history, 200) or ma200
-        past_state = "UP" if past_ma200 and past_p > past_ma200 else "DOWN"
-        
+        # Shift detection (har trenden ændret sig siden sidst?)
+        past_state = "DOWN" # Default
+        if len(all_prices) > 1:
+            past_p = all_prices[-2]
+            past_ma200 = get_ma(all_prices[:-1], 200)
+            past_state = "UP" if past_ma200 and past_p > past_ma200 else "DOWN"
+
         is_active = portfolio.get(isin, {}).get('active', False)
-        fund_name = names_map.get(isin, isin)
 
         if is_active:
             active_returns.append(week_chg)
             if past_state == "DOWN" and curr_state == "UP":
-                portfolio_alerts.append({"name": fund_name, "msg": "🚀 Skiftet til BULL"})
+                portfolio_alerts.append({"name": fund_name, "msg": "🚀 Trend skiftet til BULL (KØB)"})
             elif past_state == "UP" and curr_state == "DOWN":
-                portfolio_alerts.append({"name": fund_name, "msg": "⚠️ Skiftet til BEAR"})
+                portfolio_alerts.append({"name": fund_name, "msg": "⚠️ Trend skiftet til BEAR (SÆLG)"})
         elif past_state == "DOWN" and curr_state == "UP":
             market_opportunities.append({"name": fund_name})
 
+        # Momentum & Risk
         momentum = round(((curr_p - ma200) / ma200 * 100), 1) if ma200 else 0
-        ath = max(all_prices)
-        drawdown = ((curr_p - ath) / ath * 100) if ath else 0
+        ath = max(all_prices) if all_prices else curr_p
+        drawdown = ((curr_p - ath) / ath * 100) if ath > 0 else 0
 
         rows.append({
-            "name": fund_name, "is_active": is_active, "week_change_pct": week_chg,
-            "trend_state": curr_state, "momentum": momentum,
-            "ytd_return": ytd_map.get(isin, 0), "drawdown": drawdown
+            "name": fund_name, 
+            "is_active": is_active, 
+            "week_change_pct": week_chg,
+            "trend_state": curr_state, 
+            "momentum": momentum,
+            "ytd_return": ytd_chg, 
+            "drawdown": drawdown
         })
 
-    # SIKRING: Initialiser altid lister, så Jinja2 ikke fejler
-    chart_labels = []
-    chart_values = []
+    # Data til grafen (Top 10 Momentum)
     sorted_momentum = sorted(rows, key=lambda x: x['momentum'], reverse=True)[:10]
-    chart_labels = [r['name'][:15] for r in sorted_momentum]
+    chart_labels = [r['name'][:20] for r in sorted_momentum]
     chart_values = [r['momentum'] for r in sorted_momentum]
 
+    # Render Template
     template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
     html_output = template.render(
         report_date=date_str,
         week_number=week_num,
         avg_portfolio_return=sum(active_returns)/len(active_returns) if active_returns else 0,
         portfolio_alerts=portfolio_alerts,
-        market_opportunities=market_opportunities[:10],
+        market_opportunities=market_opportunities[:8],
         top_up=sorted(rows, key=lambda x: x['week_change_pct'], reverse=True)[:5],
         top_down=sorted(rows, key=lambda x: x['week_change_pct'])[:5],
         rows=sorted(rows, key=lambda x: (not x['is_active'], -x['momentum'])),
@@ -110,7 +110,7 @@ def build_weekly():
 
     REPORT_FILE.parent.mkdir(exist_ok=True)
     REPORT_FILE.write_text(html_output, encoding="utf-8")
-    print(f"Weekly Rapport færdig. Analyseret {len(rows)} fonde.")
+    print(f"Præcis Weekly Rapport færdig. {len(rows)} fonde opdateret.")
 
 if __name__ == "__main__":
     build_weekly()
