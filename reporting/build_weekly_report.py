@@ -32,6 +32,11 @@ def build_weekly():
     with open(PORTFOLIO_FILE, "r") as f:
         portfolio = json.load(f)
 
+    # Tidsdata til rapporten
+    now = datetime.now()
+    date_str = now.strftime("%d-%m-%Y")
+    week_num = now.isocalendar()[1]
+
     # Map ISIN til Navne og YTD fra din latest.json
     names_map = {i['isin']: i.get('name', i['isin']) for i in latest_data}
     ytd_map = {i['isin']: i.get('return_ytd', 0) for i in latest_data}
@@ -59,7 +64,7 @@ def build_weekly():
         # Trend status (UP/DOWN)
         curr_state = "UP" if ma200 and curr_p > ma200 else "DOWN"
         
-        # Detect shifts (til alarmer)
+        # Detect shifts (til alarmer) - HER ER DIN GAMLE LOGIK GENINDSAT
         past_history = all_prices[:past_idx+1]
         past_ma200 = get_ma(past_history, 200) or ma200
         past_state = "UP" if past_ma200 and past_p > past_ma200 else "DOWN"
@@ -91,7 +96,9 @@ def build_weekly():
             "drawdown": drawdown
         })
 
-    if not TEMPLATE_FILE.exists(): return
+    if not TEMPLATE_FILE.exists(): 
+        print("Fejl: Template mangler")
+        return
 
     # Sortering efter din faste logik
     sorted_rows = sorted(rows, key=lambda x: (not x['is_active'], -x['momentum']))
@@ -103,6 +110,8 @@ def build_weekly():
 
     template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
     html_output = template.render(
+        report_date=date_str,          # NYT FELT
+        week_number=week_num,          # NYT FELT
         avg_portfolio_return=current_avg,
         portfolio_alerts=portfolio_alerts,
         market_opportunities=market_opportunities[:10],
