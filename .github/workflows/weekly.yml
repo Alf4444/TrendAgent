@@ -8,7 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # DETTE MANGLER HØJST SANDSYNLIGT:
     permissions:
       contents: write
     
@@ -34,15 +33,11 @@ jobs:
         run: |
           python reporting/build_weekly_report.py
         
-      - name: Build weekly HTML
-        run: |
-          python reporting/build_weekly_report.py
-
-      # DETTE MANGLER OGSÅ:
       - name: Commit and Push changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add build/weekly.html
-          git commit -m "Ugentlig rapport opdateret [skip ci]" || echo "Ingen ændringer"
+          # VIGTIGT: Vi tilføjer både den nye rapport OG den opdaterede historik
+          git add build/weekly.html data/history.json
+          git commit -m "Ugentlig rapport og historik opdateret [skip ci]" || echo "Ingen ændringer"
           git push
