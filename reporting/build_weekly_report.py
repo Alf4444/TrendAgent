@@ -26,7 +26,7 @@ def build_weekly():
     with open(PORTFOLIO_FILE, "r", encoding="utf-8") as f:
         portfolio = json.load(f)
 
-    # 2. Skab et opslagsværk fra latest.json (De officielle tal)
+    # 2. Skab et opslagsværk fra latest.json
     latest_map = {item['isin']: item for item in latest_list}
     
     now = datetime.now()
@@ -41,10 +41,9 @@ def build_weekly():
     for isin, price_dict in history.items():
         if isin not in latest_map: continue
         
-        # Hent officielle tal
         official = latest_map[isin]
         curr_p = official['nav']
-        week_chg = official.get('return_1w', 0) # HER er præcisionen!
+        week_chg = official.get('return_1w', 0)
         ytd_chg = official.get('return_ytd', 0)
         fund_name = official.get('name', isin)
 
@@ -55,14 +54,21 @@ def build_weekly():
         
         curr_state = "UP" if ma200 and curr_p > ma200 else "DOWN"
         
-        # Shift detection (har trenden ændret sig siden sidst?)
-        past_state = "DOWN" # Default
+        # Shift detection
+        past_state = "DOWN"
         if len(all_prices) > 1:
             past_p = all_prices[-2]
             past_ma200 = get_ma(all_prices[:-1], 200)
             past_state = "UP" if past_ma200 and past_p > past_ma200 else "DOWN"
 
-        is_active = portfolio.get(isin, {}).get('active', False)
+        # Portfolio data & Gevinstberegning
+        port_info = portfolio.get(isin, {})
+        is_active = port_info.get('active', False)
+        buy_p = port_info.get('buy_price')
+        
+        total_return = None
+        if is_active and buy_p:
+            total_return = ((curr_p - buy_p) / buy_p) * 100
 
         if is_active:
             active_returns.append(week_chg)
@@ -82,13 +88,14 @@ def build_weekly():
             "name": fund_name, 
             "is_active": is_active, 
             "week_change_pct": week_chg,
+            "total_return": total_return,  # DENNE ER NY
             "trend_state": curr_state, 
             "momentum": momentum,
             "ytd_return": ytd_chg, 
             "drawdown": drawdown
         })
 
-    # Data til grafen (Top 10 Momentum)
+    # Data til grafen
     sorted_momentum = sorted(rows, key=lambda x: x['momentum'], reverse=True)[:10]
     chart_labels = [r['name'][:20] for r in sorted_momentum]
     chart_values = [r['momentum'] for r in sorted_momentum]
@@ -103,6 +110,7 @@ def build_weekly():
         market_opportunities=market_opportunities[:8],
         top_up=sorted(rows, key=lambda x: x['week_change_pct'], reverse=True)[:5],
         top_down=sorted(rows, key=lambda x: x['week_change_pct'])[:5],
+        # Sortering: Aktive først, derefter momentum
         rows=sorted(rows, key=lambda x: (not x['is_active'], -x['momentum'])),
         chart_labels=chart_labels,
         chart_values=chart_values
@@ -110,7 +118,7 @@ def build_weekly():
 
     REPORT_FILE.parent.mkdir(exist_ok=True)
     REPORT_FILE.write_text(html_output, encoding="utf-8")
-    print(f"Præcis Weekly Rapport færdig. {len(rows)} fonde opdateret.")
+    print(f"Weekly Rapport færdig med personlig gevinst. {len(rows)} fonde opdateret.")
 
 if __name__ == "__main__":
     build_weekly()
