@@ -1,0 +1,50 @@
+import json
+from pathlib import Path
+from datetime import datetime
+
+ROOT = Path(__file__).resolve().parents[1]
+LATEST_FILE = ROOT / "data/latest.json"
+PERF_HISTORY_FILE = ROOT / "data/performance_history.json"
+
+def update_performance_tracking():
+    if not LATEST_FILE.exists():
+        print("Ingen latest.json fundet.")
+        return
+
+    # Hent nyeste data
+    with open(LATEST_FILE, "r", encoding="utf-8") as f:
+        latest_data = json.load(f)
+
+    # Hent eksisterende performance historik
+    try:
+        with open(PERF_HISTORY_FILE, "r", encoding="utf-8") as f:
+            perf_history = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        perf_history = {}
+
+    for fund in latest_data:
+        isin = fund['isin']
+        dato = fund['nav_date']
+        
+        if isin not in perf_history:
+            perf_history[isin] = {}
+
+        # Vi gemmer et snapshot af alle officielle performance-tal for denne dato
+        perf_history[isin][dato] = {
+            "nav": fund.get("nav"),
+            "1w": fund.get("return_1w"),
+            "1m": fund.get("return_1m"),
+            "3m": fund.get("return_3m"),
+            "6m": fund.get("return_6m"),
+            "1y": fund.get("return_1y"),
+            "ytd": fund.get("return_ytd")
+        }
+
+    # Gem den opdaterede historik
+    with open(PERF_HISTORY_FILE, "w", encoding="utf-8") as f:
+        json.dump(perf_history, f, indent=2, ensure_ascii=False)
+    
+    print(f"Performance historik opdateret for {len(latest_data)} fonde.")
+
+if __name__ == "__main__":
+    update_performance_tracking()
