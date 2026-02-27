@@ -3,9 +3,8 @@ name: Daily Report
 on:
   workflow_dispatch:
   schedule:
-    # Kører kl. 22:00 UTC, som svarer til kl. 23:00 dansk vintertid
-    # Kører alle hverdage (mandag-fredag)
-    - cron: '0 22 * * 1-5'
+    # 18:00 Dansk tid svarer til 17:00 UTC
+    - cron: '0 17 * * 1-5'
 
 jobs:
   build:
@@ -13,7 +12,6 @@ jobs:
     permissions:
       contents: write
     
-    # Sætter tidszonen til dansk tid for alle steps
     env:
       TZ: 'Europe/Copenhagen'
 
@@ -30,7 +28,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install requests pdfplumber
+          # VIGTIGT: jinja2 er nødvendig for den nye skabelon
+          pip install requests pdfplumber jinja2
 
       - name: 1. Preparation
         run: |
@@ -38,23 +37,20 @@ jobs:
           mkdir -p data
 
       - name: 2. Download and Convert PDF
-        # Kører dit konverterings-script
         run: python parser/pdf_to_text.py
 
       - name: 3. Parse to JSON
-        # Trækker data ud af de genererede tekstfiler
         run: python parser/main.py
 
-      - name: 4. Build HTML Report
-        # Bygger dashboard og README
-        run: python reporting/build_daily.py
+      - name: 4. Build HTML Report & README
+        # Her har vi rettet filnavnet til det fulde navn
+        run: python reporting/build_daily_report.py
 
       - name: Commit and Push changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add -A
-          # --autostash sikrer os mod "unstaged changes" fejlen vi så tidligere
           git pull --rebase --autostash origin main
-          git commit -m "Robot: Daglig opdatering (kl. 23:00 tjek) [skip ci]" || echo "Ingen ændringer at gemme"
+          git commit -m "Robot: Daglig opdatering (kl. 18:00 tjek) [skip ci]" || echo "Ingen ændringer at gemme"
           git push origin main
