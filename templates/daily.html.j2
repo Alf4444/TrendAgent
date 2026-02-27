@@ -1,72 +1,87 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="da">
 <head>
-  <meta charset="utf-8" />
-  <title>TrendAgent – Daglig rapport</title>
-  <style>
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 24px; }
-    h1 { margin-bottom: 0; }
-    small { color: #666; }
-    table { border-collapse: collapse; width: 100%; margin-top: 16px; }
-    th, td { border: 1px solid #ddd; padding: 8px; font-size: 14px; }
-    th { background: #f7f7f7; text-align: left; }
-    tr.outlier-up { background: #e8f7ee; }
-    tr.outlier-down { background: #fdecea; }
-    .badge { padding: 2px 6px; border-radius: 6px; font-size: 12px; }
-    .b-up { background: #0f9d58; color: #fff; }
-    .b-down { background: #d93025; color: #fff; }
-    .b-neutral { background: #999; color: #fff; }
-  </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TrendAgent Daily Radar</title>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; background: #f4f7f9; margin: 20px; color: #333; line-height: 1.5; }
+        h2 { margin-top: 0; color: #1a1a1a; }
+        table { width: 100%; border-collapse: collapse; background: white; font-size: 13px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden; margin-top: 15px; }
+        th, td { padding: 12px 10px; border-bottom: 1px solid #eee; text-align: left; }
+        th { background: #f8f9fa; color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; position: sticky; top: 0; }
+        
+        /* Rækker & Status */
+        .active-row { background: #fffde7; border-left: 5px solid #fbc02d; font-weight: 500; }
+        .bull { color: #28a745; font-weight: bold; }
+        .bear { color: #d93025; font-weight: bold; }
+        
+        /* Badges fra din gamle kode (robusthed) */
+        .badge { padding: 2px 6px; border-radius: 6px; font-size: 11px; font-weight: bold; color: white; }
+        .b-up { background: #28a745; }
+        .b-down { background: #d93025; }
+
+        .footer-note { margin-top: 20px; font-size: 12px; color: #666; font-style: italic; }
+    </style>
 </head>
 <body>
-  <h1>TrendAgent – Daglig rapport</h1>
-  <small>Kørselsdato: {{ run_date }}</small>
+    <div>
+        <h2>🚀 TrendAgent Daily Fokus</h2>
+        <small>Kørselsdato: {{ timestamp }}</small>
+    </div>
 
-  <h2>Events</h2>
-  <p>Fokuser på rækker med <b>trend_shift</b> eller <b>cross_20_50</b>, samt outliers (±3%).</p>
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>Fond</th>
+                <th>Signal</th>
+                <th>Egen %</th>
+                <th>Trend</th>
+                <th>MA200 %</th>
+                <th>Cross</th>
+                <th>1D %</th>
+                <th>DD</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for f in funds %}
+            <tr class="{{ 'active-row' if f.is_active else '' }}">
+                <td>{{ '⭐' if f.is_active else '🔍' }}</td>
+                <td>{{ f.name[:35] }}</td>
+                
+                <td style="font-weight:bold; color: {{ '#1a73e8' if 'KØB' in f.signal else '#d93025' if 'SALG' in f.signal else '#666' }}">
+                    {{ f.signal }}
+                </td>
 
-  <table>
-    <thead>
-    <tr>
-      <th>ISIN</th>
-      <th>NAV</th>
-      <th>NAVDato</th>
-      <th>1D ændring %</th>
-      <th>Event</th>
-      <th>trend_state</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for row in funds %}
-      {% set cp = row.change_pct if row.change_pct is not none else 0.0 %}
-      <tr class="">
-        <td>{{ row.isin }}</td>
-        <!-- (1) Dansk format på NAV -->
-        <td>{{ row.nav|dknum }}</td>
-        <td>{{ row.nav_date }}</td>
+                <td style="font-weight:bold; color: {{ '#28a745' if (f.total_return or 0) > 0 and f.day_chg >= 0 else '#d93025' if f.total_return is not none else '#666' }}">
+                    {{ '%+.1f'|format(f.total_return) if f.total_return is not none else '–' }}%
+                </td>
 
-        <!-- 1D ændring % -->
-        <td>{{ '%0.2f'|format(cp) }}%</td>
+                <td>
+                    <span class="badge {{ 'b-up' if f.t_state == 'BULL' else 'b-down' }}">
+                        {{ f.t_state }}
+                    </span>
+                </td>
 
-        <!-- Event -->
-        <td>{{ row.event }}</td>
+                <td style="font-weight:bold;">{{ '%+.1f'|format(f.dist_ma200) }}%</td>
+                <td>{{ f.cross_20_50 }}</td>
+                <td style="color: {{ '#28a745' if f.day_chg > 0 else '#d93025' }}">{{ '%+.2f'|format(f.day_chg) }}%</td>
+                <td style="color:#d93025">{{ '%.1f'|format(f.drawdown) }}%</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="9" style="text-align:center; padding: 30px; color: #666;">
+                    <em>Ingen data tilgængelig. Tjek om latest.json er opdateret.</em>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-        <!-- trend_state -->
-        <td>
-          {% if cp >= 3 %}<span class="badge b-up">UP</span>
-          {% elif cp <= -3 %}<span class="badge b-down">DOWN</span>
-          {% else %}<span class="badge b-neutral">NEUTRAL</span>
-          {% endif %}
-        </td>
-      </tr>
-    {% else %}
-      <tr><td colspan="6"><em>Ingen data tilgængelig</em></td></tr>
-    {% endfor %}
-    </tbody>
-  </table>
-
-  <p style="margin-top:16px;color:#666">
-    Note: Første milepæl bruger default‑felter for ændring/event; MA20/50/200 m.m. kommer fra modellen i næste trin.
-  </p>
+    <div class="footer-note">
+        <strong>Metodik:</strong> Rapporten bruger MA200 til trend-identifikation. 
+        Total % lyser <span style="color: #d93025;">rødt</span> hvis fonden taber terræn (negativ 1D ændring), selvom det samlede afkast er positivt.
+    </div>
 </body>
 </html>
