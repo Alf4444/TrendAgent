@@ -12,9 +12,14 @@ REPORT_FILE = ROOT / "build/daily.html"
 README_FILE = ROOT / "README.md"
 
 def get_ma(prices, window):
-    clean_prices = [p for p in prices if p is not None]
-    if not clean_prices or len(clean_prices) < window: return None
-    return sum(clean_prices[-window:]) / len(clean_prices[-window:])
+    # Sikrer vi kun arbejder med tal og har nok data
+    clean_prices = [p for p in prices if isinstance(p, (int, float))]
+    if not clean_prices or len(clean_prices) < 2: return None
+    
+    # Hvis vi har færre priser end vinduet (f.eks. 200), bruger vi det vi har
+    actual_window = min(len(clean_prices), window)
+    relevant_prices = clean_prices[-actual_window:]
+    return sum(relevant_prices) / len(relevant_prices)
 
 def build_report():
     if not DATA_FILE.exists(): return
@@ -34,15 +39,25 @@ def build_report():
         nav = item.get('nav')
         if nav is None: continue
         
-        price_dict = history.get(isin, {}).copy()
-        price_history = [v for k, v in sorted(price_dict.items())]
-        if not price_history: price_history = [nav]
+        # Hent historik og sortér efter dato (nøgle)
+        price_dict = history.get(isin, {})
+        # Vi sorterer nøglerne (datoerne) så vi er sikre på rækkefølgen
+        sorted_dates = sorted(price_dict.keys())
+        price_history = [price_dict[d] for d in sorted_dates]
+        
+        # Tilføj dagens NAV til historikken hvis den ikke allerede er der
+        if not price_history or price_history[-1] != nav:
+            price_history.append(nav)
 
-        # --- TEKNISKE INDIKATORER (Beholdt 1:1) ---
+        # --- TEKNISKE BEREGNINGER ---
         ma20 = get_ma(price_history, 20)
         ma50 = get_ma(price_history, 50)
         ma200 = get_ma(price_history, 200)
         
+        # Afstand til MA200 (Det her skal give andet end 0.0%)
+        dist_ma200 = ((nav - ma200) / ma200 * 100) if ma200 else 0
+        
+        # Cross-over (20 vs 50)
         cross_20_50 = "–"
         if ma20 and ma50 and len(price_history) > 1:
             prev_ma20 = get_ma(price_history[:-1], 20)
@@ -51,20 +66,17 @@ def build_report():
                 if prev_ma20 < prev_ma50 and ma20 > ma50: cross_20_50 = "🚀 GOLDEN"
                 elif prev_ma20 > prev_ma50 and ma20 < ma50: cross_20_50 = "💀 DEATH"
 
+        # Signal (MA200 krydsning)
         prev_nav = price_history[-2] if len(price_history) > 1 else nav
         day_chg = ((nav - prev_nav) / prev_nav * 100) if prev_nav else 0
-        dist_ma200 = ((nav - ma200) / ma200 * 100) if ma200 else 0
         
         signal, has_signal = "–", 0
-        if ma200 and len(price_history) > 1:
-            curr_bull = nav > ma200
+        if ma200:
             prev_ma200 = get_ma(price_history[:-1], 200) or ma200
-            if curr_bull and not (prev_nav > prev_ma200): 
-                signal, has_signal = "🚀 KØB", 1
-            elif not curr_bull and (prev_nav > prev_ma200): 
-                signal, has_signal = "⚠️ SALG", 1
+            if nav > ma200 and prev_nav <= prev_ma200: signal, has_signal = "🚀 KØB", 1
+            elif nav < ma200 and prev_nav >= prev_ma200: signal, has_signal = "⚠️ SALG", 1
 
-        # --- DRAWDOWN & PORTFOLIO ---
+        # Drawdown & Portfolio
         ath = max(price_history) if price_history else nav
         drawdown = ((nav - ath) / ath * 100) if ath > 0 else 0
         
@@ -82,10 +94,10 @@ def build_report():
             't_state': "BULL" if nav > (ma200 or 0) else "BEAR"
         })
 
-    # --- SORTERING (Præcis som din gamle kode) ---
-    processed_list.sort(key=lambda x: (not x['is_active'], not (x['has_signal'] and 'KØB' in x['signal']), -x['dist_ma200']))
+    # Sortering: Aktive først, så købssignaler, så dags performance
+    processed_list.sort(key=lambda x: (not x['is_active'], not (x['has_signal'] and 'KØB' in x['signal']), -x['day_chg']))
 
-    # --- README GENERERING (Vigtigt: Denne blev glemt i den korte version!) ---
+    # README Opdatering
     readme_content = f"# 📈 TrendAgent Fokus\n**Opdateret:** {timestamp}\n\n"
     readme_content += "| | Fond | Signal | Egen % | Trend | Afstand | Cross |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n"
     for d in processed_list:
@@ -94,13 +106,14 @@ def build_report():
             readme_content += f"| {'⭐' if d['is_active'] else '🔍'} | {d['name'][:20]} | {d['signal']} | {ret_str} | {d['t_state']} | {d['dist_ma200']:+.1f}% | {d['cross_20_50']} |\n"
     README_FILE.write_text(readme_content, encoding="utf-8")
 
-    # --- HTML GENERERING (Via Jinja2 Template) ---
-    template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
-    html_output = template.render(timestamp=timestamp, funds=processed_list)
-    REPORT_FILE.parent.mkdir(exist_ok=True)
-    REPORT_FILE.write_text(html_output, encoding="utf-8")
+    # HTML Render (Daily template skal modtage disse data)
+    if TEMPLATE_FILE.exists():
+        template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
+        html_output = template.render(timestamp=timestamp, funds=processed_list)
+        REPORT_FILE.parent.mkdir(exist_ok=True)
+        REPORT_FILE.write_text(html_output, encoding="utf-8")
     
-    print(f"Daily Rapport færdig: {len(processed_list)} fonde. README og HTML opdateret.")
+    print(f"Daily Rapport færdig: {len(processed_list)} fonde opdateret.")
 
 if __name__ == "__main__":
     build_report()
