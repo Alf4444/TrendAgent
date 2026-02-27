@@ -29,8 +29,12 @@
         .badge { padding: 3px 7px; border-radius: 4px; font-size: 11px; font-weight: bold; color: white; }
 
         .footer { margin-top: 40px; padding: 25px; background: white; border-radius: 12px; border: 1px solid #e0e0e0; font-size: 13px; line-height: 1.6; color: #555; }
-        .footer h3 { margin-top: 0; font-size: 16px; color: #333; }
-        .method-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .footer h3 { margin-top: 0; font-size: 18px; color: #333; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; margin-bottom: 20px; }
+        .method-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .method-section { margin-bottom: 20px; }
+        .method-section h4 { margin: 0 0 10px 0; color: #333; font-size: 15px; }
+        .method-section ul { padding-left: 20px; margin: 5px 0; }
+        .method-section li { margin-bottom: 5px; }
     </style>
 </head>
 <body>
@@ -111,18 +115,43 @@
         </div>
 
         <footer class="footer">
+            <h3>📖 Fuld Metodik & Definitioner</h3>
             <div class="method-grid">
                 <div>
-                    <h3>🔍 Daily Radar Metodik</h3>
-                    <p>Denne rapport overvåger tekniske signaler for at give tidlig advarsel om trendskift. Systemet prioriterer aktive fonde (⭐) og fonde med friske signaler.</p>
+                    <div class="method-section">
+                        <h4>📊 Tekniske Indikatorer</h4>
+                        <ul>
+                            <li><strong>MA (Moving Average):</strong> Glidende gennemsnit over hhv. 20, 50 og 200 dage. Anvendes til at identificere den overordnede trendretning.</li>
+                            <li><strong>MA200 %:</strong> Afstanden fra den nuværende kurs til MA200. En positiv værdi indikerer en langsigtet optrend (BULL).</li>
+                            <li><strong>Cross (Golden/Death):</strong> Sker når MA20 krydser MA50. <strong>🚀 GOLDEN</strong> er et positivt momentum-signal, mens <strong>💀 DEATH</strong> indikerer aftagende styrke.</li>
+                        </ul>
+                    </div>
+                    <div class="method-section">
+                        <h4>🔍 Signaler & Trend</h4>
+                        <ul>
+                            <li><strong>🚀 KØB:</strong> Aktiveres når prisen bryder op over MA200 fra en position under gennemsnittet.</li>
+                            <li><strong>⚠️ SALG:</strong> Aktiveres når prisen bryder ned under MA200 fra en position over gennemsnittet.</li>
+                            <li><strong>BULL/BEAR:</strong> En simpel tilstand baseret på om kursen er over (BULL) eller under (BEAR) MA200.</li>
+                        </ul>
+                    </div>
                 </div>
                 <div>
-                    <h3>🛡️ Risikostyring & Stop-Loss</h3>
-                    <p>Systemet markerer rækker med rød baggrund og et ⚠️ symbol som en <strong>Stop-Loss advarsel</strong> under følgende forhold:</p>
-                    <ul>
-                        <li><strong>Drawdown (DD):</strong> Hvis fonden er faldet mere end 10% fra sin seneste top.</li>
-                        <li><strong>Egen Retur:</strong> Hvis dit personlige tab på fonden overstiger 8%.</li>
-                    </ul>
+                    <div class="method-section">
+                        <h4>🛡️ Risikostyring (Stop-Loss)</h4>
+                        <p>Rækker markeres med <strong>rød baggrund</strong> og et <strong>⚠️ advarselssymbol</strong> når kritiske alarmgrænser overskrides:</p>
+                        <ul>
+                            <li><strong>Drawdown (DD):</strong> Måler faldet i procent fra fondens højeste registrerede værdi (ATH) i systemet. Alarmgrænse: <strong>≤ -10,0%</strong>.</li>
+                            <li><strong>Egen Retur:</strong> Gælder kun for aktive positioner (⭐). Måler det urealiserede tab baseret på din <code>buy_price</code>. Alarmgrænse: <strong>≤ -8,0%</strong>.</li>
+                        </ul>
+                    </div>
+                    <div class="method-section">
+                        <h4>⚙️ Rapportstruktur & Sortering</h4>
+                        <ul>
+                            <li><strong>⭐ Aktive:</strong> Dine nuværende investeringer prioriteres altid øverst i listen.</li>
+                            <li><strong>🔍 Overvågning:</strong> Fonde med friske signaler (KØB/SALG) placeres lige under de aktive fonde.</li>
+                            <li><strong>Outliers:</strong> Toppen af rapporten fremhæver de 3 største vindere og tabere inden for de sidste 24 timer.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </footer>
