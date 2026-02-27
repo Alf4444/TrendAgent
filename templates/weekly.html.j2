@@ -19,12 +19,15 @@
     .trend-bull { color: #22c55e; font-weight: bold; }
     .trend-bear { color: #ef4444; font-weight: bold; }
     
-    /* Footer Styling */
-    .footer { margin-top: 40px; padding: 25px; background: #f8f9fa; border-radius: 8px; border-top: 1px solid #eee; }
-    .footer h2, .footer h3 { margin-top: 0; color: #333; }
-    .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 15px; }
-    .footer-col p { font-size: 13px; line-height: 1.6; color: #555; margin-bottom: 10px; }
-    .strategy-box { margin-top: 20px; padding: 15px; background: #fff; border-radius: 6px; border-left: 5px solid #22c55e; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    /* Footer Styling - Udvidet metodik */
+    .footer { margin-top: 40px; padding: 30px; background: #f8f9fa; border-radius: 12px; border-top: 2px solid #eee; }
+    .footer h2 { margin-top: 0; color: #2c3e50; border-bottom: 1px solid #ddd; padding-bottom: 10px; font-size: 22px; }
+    .footer h3 { color: #333; font-size: 16px; margin-top: 20px; margin-bottom: 10px; }
+    .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 20px; }
+    .footer-col p { font-size: 13.5px; line-height: 1.6; color: #444; margin-bottom: 12px; }
+    .footer-col ul { padding-left: 20px; margin: 0; }
+    .footer-col li { font-size: 13px; color: #555; margin-bottom: 8px; }
+    .strategy-box { margin-top: 30px; padding: 20px; background: #fff; border-radius: 8px; border-left: 5px solid #22c55e; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
   </style>
 </head>
 <body>
@@ -117,26 +120,33 @@
     </table>
 
     <div class="footer">
-      <h2 style="border-bottom: 1px solid #ddd; padding-bottom: 10px;">Metodik & Strategi</h2>
+      <h2>📖 Fuld Metodik & Definitioner</h2>
       
       <div class="footer-grid">
         <div class="footer-col">
-          <h3>📈 Købs- & Salgssignaler</h3>
-          <p><strong>Nye BULL-muligheder (KØB):</strong> Vises når en fond bryder over sit 200-dages glidende gennemsnit (MA200). Dette indikerer starten på en positiv trend og en potentiel købsmulighed.</p>
-          <p><strong>Trend skiftet til BEAR (SÆLG):</strong> Dette signal triggers for dine aktive fonde (⭐), hvis kursen falder under MA200. Det er et teknisk tegn på, at trenden er brudt, og risikoen for større fald er øget.</p>
+          <h3>📈 Trend-analyse & Alarmer</h3>
+          <p>Ugerapporten opsummerer de tekniske bevægelser for at sikre, at vi altid er på den rigtige side af markedet.</p>
+          <ul>
+            <li><strong>Trend-skifte (Shift Detection):</strong> Systemet sammenligner dagens tilstand med gårsdagens. Hvis en fond krydser MA200-grænsen, genereres en automatisk alarm (🚀 KØB eller ⚠️ SÆLG).</li>
+            <li><strong>Nye BULL-muligheder:</strong> Fonde fra overvågningslisten, der netop er brudt op over deres MA200, hvilket indikerer en ny potentiel optrend.</li>
+            <li><strong>Trend-status:</strong> <strong>BULL</strong> (Kurs over MA200) indikerer styrke. <strong>BEAR</strong> (Kurs under MA200) indikerer svaghed og øget risiko.</li>
+          </ul>
         </div>
         
         <div class="footer-col">
-          <h3>📊 Definitioner</h3>
-          <p><strong>Total %:</strong> Dit personlige afkast siden køb. <br>
-             <span style="color: #dc2626; font-weight: bold;">Rød farve</span> indikerer advarsel: Enten er fonden i samlet minus, eller også har den haft en <strong>negativ uge</strong> (faldende kurs).</p>
-          <p><strong>MA200 Momentum:</strong> Den procentvise afstand fra den nuværende kurs til gennemsnittet for de sidste 200 handelsdage. Et positivt tal betyder BULL-marked (pris over gennemsnit).</p>
-          <p><strong>Drawdown (DD):</strong> Viser det aktuelle fald fra fondens højeste punkt (All-Time High) i den opsamlede historik.</p>
+          <h3>📊 Beregninger & Nøgletal</h3>
+          <p>Her er de præcise definitioner på de tal, du ser i rapporten:</p>
+          <ul>
+            <li><strong>Ugens Afkast (⭐):</strong> Det vægtede gennemsnit af alle aktive positioners kursændring i den forgangne uge.</li>
+            <li><strong>Total %:</strong> Dit urealiserede afkast siden køb. Markeret med <span style="color: #dc2626;">rød</span>, hvis ugen har været negativ, eller hvis den samlede position er i minus.</li>
+            <li><strong>MA200 Momentum:</strong> Den procentvise afstand fra den nuværende kurs til det 200-dages glidende gennemsnit.</li>
+            <li><strong>Drawdown (DD):</strong> Det aktuelle fald fra den højeste kurs (ATH) målt i systemets historik.</li>
+          </ul>
         </div>
       </div>
 
       <div class="strategy-box">
-        <strong>Vores Tilgang:</strong> Vi investerer systematisk i fonde med positivt momentum. Ved at kombinere teknisk trend-analyse (MA200) med officielle afkast-data fra faktaarkene, sikres et objektivt beslutningsgrundlag fri for mavefornemmelser.
+        <strong>Vores Systematiske Tilgang:</strong> Ved at kombinere teknisk analyse af de glidende gennemsnit (MA200) med realtidsdata for afkast, fjerner vi mavefornemmelser fra ligningen. Vi følger trenden: Vi køber styrke og sælger svaghed, styret af hårde data og objektive signaler.
       </div>
     </div>
   </div>
