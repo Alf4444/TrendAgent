@@ -3,7 +3,9 @@ from pathlib import Path
 from datetime import datetime
 from jinja2 import Template
 
-# Stier
+# ==========================================
+# KONFIGURATION & STIER
+# ==========================================
 ROOT = Path(__file__).resolve().parents[1]
 HISTORY_FILE = ROOT / "data/history.json"
 LATEST_FILE = ROOT / "data/latest.json"
@@ -19,6 +21,10 @@ def get_ma(prices, window):
 
 def build_weekly():
     # 1. Hent rådata
+    if not HISTORY_FILE.exists() or not LATEST_FILE.exists():
+        print("FEJL: Datafiler mangler.")
+        return
+
     with open(HISTORY_FILE, "r", encoding="utf-8") as f:
         history = json.load(f)
     with open(LATEST_FILE, "r", encoding="utf-8") as f:
@@ -54,7 +60,7 @@ def build_weekly():
         
         curr_state = "UP" if ma200 and curr_p > ma200 else "DOWN"
         
-        # Shift detection
+        # Shift detection (VIGTIG LOGIK GENOPRETTET)
         past_state = "DOWN"
         if len(all_prices) > 1:
             past_p = all_prices[-2]
@@ -88,7 +94,7 @@ def build_weekly():
             "name": fund_name, 
             "is_active": is_active, 
             "week_change_pct": week_chg,
-            "total_return": total_return,  # DENNE ER NY
+            "total_return": total_return,
             "trend_state": curr_state, 
             "momentum": momentum,
             "ytd_return": ytd_chg, 
@@ -110,7 +116,6 @@ def build_weekly():
         market_opportunities=market_opportunities[:8],
         top_up=sorted(rows, key=lambda x: x['week_change_pct'], reverse=True)[:5],
         top_down=sorted(rows, key=lambda x: x['week_change_pct'])[:5],
-        # Sortering: Aktive først, derefter momentum
         rows=sorted(rows, key=lambda x: (not x['is_active'], -x['momentum'])),
         chart_labels=chart_labels,
         chart_values=chart_values
@@ -118,7 +123,7 @@ def build_weekly():
 
     REPORT_FILE.parent.mkdir(exist_ok=True)
     REPORT_FILE.write_text(html_output, encoding="utf-8")
-    print(f"Weekly Rapport færdig med personlig gevinst. {len(rows)} fonde opdateret.")
+    print(f"Weekly Rapport færdig. {len(rows)} fonde opdateret.")
 
 if __name__ == "__main__":
     build_weekly()
