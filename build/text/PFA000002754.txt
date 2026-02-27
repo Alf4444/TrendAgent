@@ -4,9 +4,9 @@ Fonden investerer primært i globale aktier gennem ca. 80 selskaber, der er lede
 inden for ren, sikker og bæredygtig vandforsyning. Selskaberne udvælges på Valuta EUR
 Type Investeringsforening
 baggrund af fundamental selskabsanalyse og en internt udviklet model, der måler
-Indre værdi 106,59
+Indre værdi 107,50
 deres bidrag til FN’s 17 Verdensmål. Fonden er fuldt bæredygtig jf. Artikel 9 i EU’s
-Indre værdi dato 25-02-2026
+Indre værdi dato 26-02-2026
 Disclosureforordning. Der benyttes en aktiv investeringsstrategi til at opnå et afkast,
 Bæredygtighed Artikel 9
 der er bedre end afkastet af fondens benchmark, MSCI World Index. Benchmarket
@@ -16,11 +16,11 @@ med mellem til lang tidshorisont, som er bekendte med risikoen ved at investere 
 fonden og kan acceptere tab på investeringen. Fonden indeholder valutarisiko, da
 den er eksponeret over for værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -0,61% 0,39% 2,66% 3,61%
+Afdeling 0,02% 1,85% 3,30% 4,31%
 Robeco Sustainable Water Equities
 Afkast ÅTD 1 år 3 år 5 år
 150
-Afdeling 5,03% 2,15% 22,18% 41,77%
+Afdeling 5,92% 2,88% 23,22% 43,58%
 135
 Omkostninger %
 120 Andre løbende omkostninger 1,33
@@ -32,7 +32,7 @@ Udtrædelsesomkostninger 0,18
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,01 0,36 0,46
-Std. Afv. 14,60% 14,27% 15,24% 1 2 3 4 5 6 7
+Std. Afv. 14,20% 13,95% 14,72% 1 2 3 4 5 6 7
 Største beholdninger (31-12-2025) % Formuefordeling
 Agilent Technologies 4,77
 Xylem 3,67

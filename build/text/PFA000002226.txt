@@ -4,9 +4,9 @@ Der investeres i en portefølje af danske erhvervsejendomme, som udlejes til Ops
 offentlige og private virksomheder. Erhvervsejendommene er primært beliggende i Valuta DKK
 Type Investeringsprodukt
 Storkøbenhavn og repræsenterer ejendomme med relativ lav risiko og høj
-Indre værdi 195,76
+Indre værdi 195,78
 udlejningsgrad. Der investeres løbende i udviklingsprojekter for at opnå tilgang af
-Indre værdi dato 25-02-2026
+Indre værdi dato 26-02-2026
 nye ejendomme til porteføljen. Det er muligt at anvende gearing, men der er pt. kun
 Bæredygtighed Artikel 8
 i meget begrænset omfang optaget lån i ejendommene. Afkastet består af
@@ -17,11 +17,11 @@ erhvervsejendomme med højere risiko, hvorfor der kan accepteres tab på
 investeringen. Pensionskunder bør have en tidshorisont på minimum 3 år, og
 fonden bør indgå i en diversificeret portefølje af øvrige investeringer.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 0,05% 0,54% 0,86% 2,46%
+Afdeling 0,05% 0,53% 0,86% 2,46%
 PFA Danske Erhvervsejendomme Core
 Afkast ÅTD 1 år 3 år 5 år
 112
-Afdeling 0,71% 4,72% 4,62% 7,37%
+Afdeling 0,72% 4,72% 4,63% 7,31%
 108
 Omkostninger %
 104 Andre løbende omkostninger 0,60
@@ -33,7 +33,7 @@ Udtrædelsesomkostninger 1,50
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 2,79 -0,59 -0,07
-Std. Afv. 0,79% 3,53% 3,60% 1 2 3 4 5 6 7
+Std. Afv. 0,79% 3,51% 3,58% 1 2 3 4 5 6 7
 Formuefordeling
 Oplysninger om fondens porteføljefordeling kan ikke vises på dette faktaark.
 Danmark 99,99 %

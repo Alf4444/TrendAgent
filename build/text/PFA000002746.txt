@@ -4,9 +4,9 @@ Der investeres i en portefølje af globale aktier, dog fortrinsvis i selskaber, 
 forventes at udbetale et højt udbytte. Der kan dog være selskaber i porteføljen, der i Valuta DKK
 Type Investeringsforening
 perioder slet ikke eller kun i begrænset omfang udbetaler et udbytte. Der benyttes
-Indre værdi 183,47
+Indre værdi 184,43
 en aktiv investeringsstrategi til at opnå et afkast, der er bedre end afkastet af
-Indre værdi dato 25-02-2026
+Indre værdi dato 26-02-2026
 fondens benchmark, MSCI World High Dividend Yield, inkl. nettoudbytte.Fonden
 Bæredygtighed Artikel 8
 egner sig til informerede eller erfarne pensionskunder, som har indsigt i og erfaring
@@ -16,11 +16,11 @@ på investeringen. Pensionskunder bør have en tidshorisont på min. 3 år og fo
 bør indgå i en diversificeret portefølje af øvrige investeringer. Fonden indeholder
 valutarisiko, da den er eksponeret over for værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 0,30% 0,82% 3,16% 4,52%
+Afdeling 0,45% 1,98% 3,52% 5,28%
 BankInvest Højt Udbytte Aktier
 Afkast ÅTD 1 år 3 år 5 år
 160
-Afdeling 1,89% -3,21% 17,12% 51,20%
+Afdeling 2,42% -2,56% 17,73% 52,76%
 140
 Omkostninger %
 120 Andre løbende omkostninger 1,66
@@ -32,7 +32,7 @@ Udtrædelsesomkostninger 0,14
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe -0,20 0,20 0,75
-Std. Afv. 11,18% 9,06% 9,53% 1 2 3 4 5 6 7
+Std. Afv. 11,02% 8,72% 9,29% 1 2 3 4 5 6 7
 Største beholdninger (31-01-2026) % Formuefordeling
 Johnson & Johnson 2,56
 Procter & Gamble 2,54

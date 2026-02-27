@@ -4,9 +4,9 @@ Der investeres i en portefølje af aktier bestående af 30-50 selskaber med akti
 i Østeuropa (inkl. Tyrkiet). Kvalitetsselskaber med en stærk ledelse og attraktive Valuta DKK
 Type Investeringsforening
 vækstmuligheder foretrækkes i porteføljen. Der benyttes en aktiv
-Indre værdi 153,04
+Indre værdi 152,12
 investeringsstrategi til at opnå et afkast, der er bedre end afkastet af fondens
-Indre værdi dato 25-02-2026
+Indre værdi dato 26-02-2026
 benchmark, MSCI EM Europe 10/40 Index. Fonden kan anvende derivater til
 Bæredygtighed Artikel 8
 gearing (op til 100%). Fonden egner sig til informerede eller erfarne
@@ -17,11 +17,11 @@ en tidshorisont på min. 3 år, og fonden bør indgå i en diversificeret portef
 øvrige investeringer. Fonden indeholder valutarisiko, da den er eksponeret over for
 værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 0,02% 3,46% 18,44% 17,81%
+Afdeling 0,80% 1,38% 16,58% 16,92%
 Magna Eastern European Fund
 Afkast ÅTD 1 år 3 år 5 år
 150
-Afdeling 13,29% 37,29% 111,94% 38,56%
+Afdeling 12,61% 35,67% 110,67% 39,69%
 120
 Omkostninger %
 90 Andre løbende omkostninger 1,99
@@ -33,7 +33,7 @@ Udtrædelsesomkostninger 0,25
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 2,04 1,83 0,24
-Std. Afv. 12,33% 12,89% 24,90% 1 2 3 4 5 6 7
+Std. Afv. 13,02% 13,24% 25,90% 1 2 3 4 5 6 7
 Største beholdninger (30-01-2026) % Formuefordeling
 OTP Bank 9,56
 PIRAEUS BANK EUR NPV 8,91

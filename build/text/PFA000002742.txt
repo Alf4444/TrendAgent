@@ -4,9 +4,9 @@ Der investeres i en portefølje af råvarer opdelt i tre hovedkategorier: Energi
 metaller og ædelmetaller. Fonden repræsenterer en aktivklasse, som kan indeholde Valuta DKK
 Type Investeringsforening
 stor volatilitet. Der benyttes en indeksnær investeringsstrategi til at opnå et afkast
-Indre værdi 199,95
+Indre værdi 198,49
 svarende til fondens benchmark, Bloomberg ex-Agriculture & LS 15/30 Cap. 3M
-Indre værdi dato 25-02-2026
+Indre værdi dato 26-02-2026
 Forward Index. Benchmark er baseret på 3 måneders future-kontrakter, hvorfor
 Bæredygtighed Artikel 6
 afvigelser mellem nutidige råvarepriser og fondens performance kan forekomme.
@@ -17,11 +17,11 @@ en tidshorisont på min. 3 år, og fonden bør indgå i en diversificeret portef
 øvrige investeringer. Fonden indeholder valutarisiko, da den indeholder
 investeringer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 3,63% -0,07% 17,20% 31,33%
+Afdeling 1,84% -2,03% 15,14% 30,72%
 DWS Xtrackers, Råvarer
 Afkast ÅTD 1 år 3 år 5 år
 240
-Afdeling 10,99% 16,62% 32,42% 109,95%
+Afdeling 10,18% 15,56% 31,45% 111,55%
 200
 Omkostninger %
 160 Andre løbende omkostninger 0,49
@@ -33,7 +33,7 @@ Udtrædelsesomkostninger 0,25
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,42 -0,16 0,87
-Std. Afv. 19,22% 14,68% 17,14% 1 2 3 4 5 6 7
+Std. Afv. 20,36% 15,16% 17,01% 1 2 3 4 5 6 7
 Formuefordeling
 Oplysninger om fondens porteføljefordeling kan ikke vises på dette faktaark.
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
