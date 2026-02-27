@@ -4,7 +4,7 @@ from datetime import datetime
 from jinja2 import Template
 
 # ==========================================
-# KONFIGURATION & STIER
+# KONFIGURATION & ROBUSTE STIER
 # ==========================================
 ROOT = Path(__file__).resolve().parents[1]
 DATA_FILE = ROOT / "data/latest.json"
@@ -29,12 +29,16 @@ def build_report():
         return
 
     # 1. HENT DATA
-    with open(DATA_FILE, "r", encoding="utf-8") as f:
-        latest_data = json.load(f)
-    with open(HISTORY_FILE, "r", encoding="utf-8") as f:
-        history = json.load(f)
-    with open(PORTFOLIO_FILE, "r", encoding="utf-8") as f:
-        portfolio = json.load(f)
+    try:
+        with open(DATA_FILE, "r", encoding="utf-8") as f:
+            latest_data = json.load(f)
+        with open(HISTORY_FILE, "r", encoding="utf-8") as f:
+            history = json.load(f)
+        with open(PORTFOLIO_FILE, "r", encoding="utf-8") as f:
+            portfolio = json.load(f)
+    except Exception as e:
+        print(f"Fejl ved indlæsning af data: {e}")
+        return
 
     timestamp = datetime.now().strftime('%d-%m-%Y %H:%M')
     processed_list = []
@@ -80,7 +84,6 @@ def build_report():
         
         signal, has_signal = "–", 0
         if ma200:
-            # Vi sammenligner dagens lukkekurs og gårsdagens kurs mod MA200
             if nav > ma200 and prev_nav <= ma200:
                 signal, has_signal = "🚀 KØB", 1
             elif nav < ma200 and prev_nav >= ma200:
@@ -90,11 +93,17 @@ def build_report():
         ath = max(price_history) if price_history else nav
         drawdown = ((nav - ath) / ath * 100) if ath > 0 else 0
         
-        # Portfolio status
+        # Portfolio status & Stop-Loss Logik
         p_info = portfolio.get(isin, {})
         is_active = p_info.get('active', False)
         buy_p = p_info.get('buy_price')
         total_return = ((nav - buy_p) / buy_p * 100) if is_active and buy_p else None
+        
+        # Stop-loss flag: Gult flag hvis drawdown er under -10% eller egen retur under -8%
+        stop_alert = False
+        if is_active:
+            if drawdown < -10.0 or (total_return and total_return < -8.0):
+                stop_alert = True
 
         processed_list.append({
             'isin': isin, 
@@ -107,30 +116,36 @@ def build_report():
             'drawdown': drawdown,
             'cross_20_50': cross_20_50, 
             'total_return': total_return,
+            'stop_alert': stop_alert,
             't_state': "BULL" if nav > (ma200 or 0) else "BEAR"
         })
 
     # 3. SORTERING (Eksplicit og robust)
-    # Sorterer først på ejerstatus (True/False), så på signaler, så på navn
+    # Sorterer: Aktive (⭐) -> Signaler (KØB/SALG) -> Alfabetisk
     processed_list.sort(key=lambda x: (
-        not x['is_active'],    # Aktive (True) kommer før Inaktive (False)
-        x['signal'] == "–",     # Fonde med signaler kommer før dem uden
-        x['name']               # Alfabetisk orden til sidst
+        not x['is_active'],    
+        x['signal'] == "–",     
+        x['name']               
     ))
 
-    # Top/Bund Outliers (bruges til Cards)
+    # Top/Bund Outliers (bruges til Cards i HTML)
     outliers = sorted(processed_list, key=lambda x: x['day_chg'], reverse=True)
     top_3 = outliers[:3]
     bottom_3 = outliers[-3:][::-1]
 
-    # 4. OPDATER README.MD (Backup overblik)
+    # 4. OPDATER README.MD (Vigtig backup-logik)
     readme_content = f"# 📈 TrendAgent Fokus\n**Opdateret:** {timestamp}\n\n"
     readme_content += "| | Fond | Signal | Egen % | Trend | Afstand | Cross |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n"
     for d in processed_list:
         if d['is_active'] or d['has_signal']:
             ret = f"{d['total_return']:+.1f}%" if d['total_return'] is not None else "–"
-            readme_content += f"| {'⭐' if d['is_active'] else '🔍'} | {d['name'][:25]} | {d['signal']} | {ret} | {d['t_state']} | {d['dist_ma200']:+.1f}% | {d['cross_20_50']} |\n"
-    README_FILE.write_text(readme_content, encoding="utf-8")
+            alert_prefix = "⚠️ " if d.get('stop_alert') else ""
+            readme_content += f"| {'⭐' if d['is_active'] else '🔍'} | {alert_prefix}{d['name'][:25]} | {d['signal']} | {ret} | {d['t_state']} | {d['dist_ma200']:+.1f}% | {d['cross_20_50']} |\n"
+    
+    try:
+        README_FILE.write_text(readme_content, encoding="utf-8")
+    except Exception as e:
+        print(f"Kunne ikke skrive til README: {e}")
 
     # 5. RENDER HTML RAPPORT
     if TEMPLATE_FILE.exists():
