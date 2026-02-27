@@ -101,9 +101,8 @@ def build_report():
         
         # Stop-loss flag: Gult flag hvis drawdown er under -10% eller egen retur under -8%
         stop_alert = False
-        if is_active:
-            if drawdown < -10.0 or (total_return and total_return < -8.0):
-                stop_alert = True
+        if drawdown < -10.0 or (is_active and total_return and total_return < -8.0):
+            stop_alert = True
 
         processed_list.append({
             'isin': isin, 
@@ -121,19 +120,18 @@ def build_report():
         })
 
     # 3. SORTERING (Eksplicit og robust)
-    # Sorterer: Aktive (⭐) -> Signaler (KØB/SALG) -> Alfabetisk
     processed_list.sort(key=lambda x: (
         not x['is_active'],    
         x['signal'] == "–",     
         x['name']               
     ))
 
-    # Top/Bund Outliers (bruges til Cards i HTML)
+    # Top/Bund Outliers
     outliers = sorted(processed_list, key=lambda x: x['day_chg'], reverse=True)
     top_3 = outliers[:3]
     bottom_3 = outliers[-3:][::-1]
 
-    # 4. OPDATER README.MD (Vigtig backup-logik)
+    # 4. OPDATER README.MD
     readme_content = f"# 📈 TrendAgent Fokus\n**Opdateret:** {timestamp}\n\n"
     readme_content += "| | Fond | Signal | Egen % | Trend | Afstand | Cross |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n"
     for d in processed_list:
