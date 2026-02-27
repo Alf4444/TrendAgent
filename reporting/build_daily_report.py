@@ -3,6 +3,7 @@ from pathlib import Path
 from datetime import datetime
 from jinja2 import Template
 
+# Stier konfigureret til din arkitektur
 ROOT = Path(__file__).resolve().parents[1]
 DATA_FILE = ROOT / "data/latest.json"
 HISTORY_FILE = ROOT / "data/history.json"
@@ -12,24 +13,21 @@ REPORT_FILE = ROOT / "build/daily.html"
 README_FILE = ROOT / "README.md"
 
 def get_ma(prices, window):
-    # Sikrer vi kun arbejder med tal og har nok data
-    clean_prices = [p for p in prices if isinstance(p, (int, float))]
-    if not clean_prices or len(clean_prices) < 2: return None
-    
-    # Hvis vi har færre priser end vinduet (f.eks. 200), bruger vi det vi har
-    actual_window = min(len(clean_prices), window)
-    relevant_prices = clean_prices[-actual_window:]
-    return sum(relevant_prices) / len(relevant_prices)
+    """Beregner MA baseret på tilgængelig historik. Robust overfor manglende data."""
+    if not prices or len(prices) < 2: return None
+    actual_window = min(len(prices), window)
+    relevant = prices[-actual_window:]
+    return sum(relevant) / len(relevant)
 
 def build_report():
-    if not DATA_FILE.exists(): return
+    if not DATA_FILE.exists():
+        print("Fejl: latest.json ikke fundet.")
+        return
     
-    with open(DATA_FILE, "r", encoding="utf-8") as f:
-        latest_data = json.load(f)
-    with open(HISTORY_FILE, "r") as f:
-        history = json.load(f)
-    with open(PORTFOLIO_FILE, "r") as f:
-        portfolio = json.load(f)
+    # Load data
+    with open(DATA_FILE, "r", encoding="utf-8") as f: latest_data = json.load(f)
+    with open(HISTORY_FILE, "r") as f: history = json.load(f)
+    with open(PORTFOLIO_FILE, "r") as f: portfolio = json.load(f)
 
     timestamp = datetime.now().strftime('%d-%m-%Y %H:%M')
     processed_list = []
@@ -37,44 +35,43 @@ def build_report():
     for item in latest_data:
         isin = item.get('isin')
         nav = item.get('nav')
-        if nav is None: continue
+        if nav is None or isin is None: continue
         
-        # Hent historik og sortér efter dato (nøgle)
+        # Hent og sortér historik
         price_dict = history.get(isin, {})
-        # Vi sorterer nøglerne (datoerne) så vi er sikre på rækkefølgen
         sorted_dates = sorted(price_dict.keys())
         price_history = [price_dict[d] for d in sorted_dates]
         
-        # Tilføj dagens NAV til historikken hvis den ikke allerede er der
+        # Tilføj nyeste NAV hvis den mangler i historikken
         if not price_history or price_history[-1] != nav:
             price_history.append(nav)
 
-        # --- TEKNISKE BEREGNINGER ---
+        # --- BEREGNINGER (SIGNALER & TREND) ---
         ma20 = get_ma(price_history, 20)
         ma50 = get_ma(price_history, 50)
         ma200 = get_ma(price_history, 200)
         
-        # Afstand til MA200 (Det her skal give andet end 0.0%)
+        # Distance til MA200
         dist_ma200 = ((nav - ma200) / ma200 * 100) if ma200 else 0
         
-        # Cross-over (20 vs 50)
+        # CROSS logik (20/50)
         cross_20_50 = "–"
         if ma20 and ma50 and len(price_history) > 1:
-            prev_ma20 = get_ma(price_history[:-1], 20)
-            prev_ma50 = get_ma(price_history[:-1], 50)
-            if prev_ma20 and prev_ma50:
-                if prev_ma20 < prev_ma50 and ma20 > ma50: cross_20_50 = "🚀 GOLDEN"
-                elif prev_ma20 > prev_ma50 and ma20 < ma50: cross_20_50 = "💀 DEATH"
+            p_ma20 = get_ma(price_history[:-1], 20)
+            p_ma50 = get_ma(price_history[:-1], 50)
+            if p_ma20 and p_ma50:
+                if p_ma20 < p_ma50 and ma20 > ma50: cross_20_50 = "🚀 GOLDEN"
+                elif p_ma20 > p_ma50 and ma20 < ma50: cross_20_50 = "💀 DEATH"
 
-        # Signal (MA200 krydsning)
+        # Signaler (Pris vs MA200)
         prev_nav = price_history[-2] if len(price_history) > 1 else nav
         day_chg = ((nav - prev_nav) / prev_nav * 100) if prev_nav else 0
         
         signal, has_signal = "–", 0
         if ma200:
-            prev_ma200 = get_ma(price_history[:-1], 200) or ma200
-            if nav > ma200 and prev_nav <= prev_ma200: signal, has_signal = "🚀 KØB", 1
-            elif nav < ma200 and prev_nav >= prev_ma200: signal, has_signal = "⚠️ SALG", 1
+            p_ma200 = get_ma(price_history[:-1], 200) or ma200
+            if nav > ma200 and prev_nav <= p_ma200: signal, has_signal = "🚀 KØB", 1
+            elif nav < ma200 and prev_nav >= p_ma200: signal, has_signal = "⚠️ SALG", 1
 
         # Drawdown & Portfolio
         ath = max(price_history) if price_history else nav
@@ -86,7 +83,7 @@ def build_report():
         total_return = ((nav - buy_p) / buy_p * 100) if is_active and buy_p else None
 
         processed_list.append({
-            'isin': isin, 'name': item.get('name'), 'nav': nav,
+            'isin': isin, 'name': item.get('name'),
             'day_chg': day_chg, 'dist_ma200': dist_ma200,
             'signal': signal, 'has_signal': has_signal,
             'is_active': is_active, 'drawdown': drawdown,
@@ -94,26 +91,34 @@ def build_report():
             't_state': "BULL" if nav > (ma200 or 0) else "BEAR"
         })
 
-    # Sortering: Aktive først, så købssignaler, så dags performance
-    processed_list.sort(key=lambda x: (not x['is_active'], not (x['has_signal'] and 'KØB' in x['signal']), -x['day_chg']))
+    # --- SORTERING & OUTPUT ---
+    # Top 3 / Bund 3 baseret på dagens performance
+    outliers = sorted(processed_list, key=lambda x: x['day_chg'], reverse=True)
+    top_3 = outliers[:3]
+    bottom_3 = outliers[-3:][::-1]
 
-    # README Opdatering
+    # README Opdatering (beholdt for robusthed)
     readme_content = f"# 📈 TrendAgent Fokus\n**Opdateret:** {timestamp}\n\n"
     readme_content += "| | Fond | Signal | Egen % | Trend | Afstand | Cross |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n"
-    for d in processed_list:
-        if d['is_active'] or (d['has_signal'] and 'KØB' in d['signal']):
-            ret_str = f"{d['total_return']:+.1f}%" if d['total_return'] is not None else "–"
-            readme_content += f"| {'⭐' if d['is_active'] else '🔍'} | {d['name'][:20]} | {d['signal']} | {ret_str} | {d['t_state']} | {d['dist_ma200']:+.1f}% | {d['cross_20_50']} |\n"
+    for d in sorted(processed_list, key=lambda x: (not x['is_active'], x['signal'] == "–")):
+        if d['is_active'] or d['has_signal']:
+            ret = f"{d['total_return']:+.1f}%" if d['total_return'] is not None else "–"
+            readme_content += f"| {'⭐' if d['is_active'] else '🔍'} | {d['name'][:20]} | {d['signal']} | {ret} | {d['t_state']} | {d['dist_ma200']:+.1f}% | {d['cross_20_50']} |\n"
     README_FILE.write_text(readme_content, encoding="utf-8")
 
-    # HTML Render (Daily template skal modtage disse data)
+    # Render HTML
     if TEMPLATE_FILE.exists():
         template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
-        html_output = template.render(timestamp=timestamp, funds=processed_list)
+        html_output = template.render(
+            timestamp=timestamp, 
+            funds=processed_list,
+            top_3=top_3,
+            bottom_3=bottom_3
+        )
         REPORT_FILE.parent.mkdir(exist_ok=True)
         REPORT_FILE.write_text(html_output, encoding="utf-8")
     
-    print(f"Daily Rapport færdig: {len(processed_list)} fonde opdateret.")
+    print(f"Daily Rapport færdig: {len(processed_list)} fonde analyseret.")
 
 if __name__ == "__main__":
     build_report()
