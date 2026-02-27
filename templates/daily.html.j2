@@ -8,6 +8,9 @@
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f4f7f9; margin: 0; padding: 20px; color: #333; }
         .container { max-width: 1100px; margin: auto; }
         
+        /* Header */
+        header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; }
+        
         /* Outlier Cards */
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
         .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
@@ -28,13 +31,23 @@
         .signal-pulse { padding: 4px 8px; border-radius: 4px; font-weight: 800; animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
         .badge { padding: 3px 7px; border-radius: 4px; font-size: 11px; font-weight: bold; color: white; }
+
+        /* Footer / Metodik */
+        .footer { margin-top: 40px; padding: 25px; background: white; border-radius: 12px; border: 1px solid #e0e0e0; font-size: 13px; line-height: 1.6; color: #555; }
+        .footer h3 { margin-top: 0; font-size: 16px; color: #333; }
+        .method-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <header style="margin-bottom: 30px;">
-            <h1 style="margin:0; font-size: 28px;">☀️ TrendAgent Daily Radar</h1>
-            <p style="color: #666; margin: 5px 0;">Status og alarm-radar opdateret {{ timestamp }}</p>
+        <header>
+            <div>
+                <h1 style="margin:0; font-size: 28px;">☀️ TrendAgent Daily Radar</h1>
+                <p style="color: #666; margin: 5px 0;">Status og alarm-radar opdateret {{ timestamp }}</p>
+            </div>
+            <div style="text-align: right; color: #999; font-size: 12px;">
+                TrendAgent v3.0<br>Automated Daily Scan
+            </div>
         </header>
 
         <div class="stats-grid">
@@ -96,7 +109,9 @@
                             </span>
                         </td>
                         <td style="font-weight: bold;">{{ '%+.1f'|format(f.dist_ma200) }}%</td>
-                        <td style="font-size: 12px;">{{ f.cross_20_50 }}</td>
+                        <td style="font-size: 12px; color: {{ '#1a73e8' if 'GOLDEN' in f.cross_20_50 else '#d93025' if 'DEATH' in f.cross_20_50 else '#999' }}">
+                            {{ f.cross_20_50 }}
+                        </td>
                         <td class="{{ 'pos' if f.day_chg > 0 else 'neg' }}">{{ '%+.2f'|format(f.day_chg) }}%</td>
                         <td style="color: #d93025;">{{ '%.1f'|format(f.drawdown) }}%</td>
                     </tr>
@@ -104,6 +119,27 @@
                 </tbody>
             </table>
         </div>
+
+        <footer class="footer">
+            <div class="method-grid">
+                <div>
+                    <h3>🔍 Daily Radar Metodik</h3>
+                    <p>Den daglige rapport overvåger kortsigtede prisafvigelser og kritiske trendskift. Formålet er at give tidlig advarsel om potentielle købs- og salgsmuligheder før den ugentlige strategiske gennemgang.</p>
+                    <ul>
+                        <li><strong>MA200 %:</strong> Afstand til det 200-dages glidende gennemsnit. Værdier tæt på 0 indikerer et muligt trendskift.</li>
+                        <li><strong>Signalskift:</strong> Genereres når dagens lukkekurs krydser MA200-linjen.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>🛡️ Risikostyring</h3>
+                    <p>Trends bekræftes gennem samspillet mellem pris og glidende gennemsnit. En <strong>BEAR</strong> tilstand betyder, at prisen handler under MA200, hvilket historisk set øger risikoen for større fald.</p>
+                    <ul>
+                        <li><strong>Drawdown (DD):</strong> Det aktuelle fald fra den seneste top. Hjælper med at vurdere fondens nuværende volatilitet.</li>
+                        <li><strong>Cross (20/50):</strong> Golden Cross og Death Cross bruges som sekundære indikatorer for momentumskifte.</li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
     </div>
 </body>
 </html>
