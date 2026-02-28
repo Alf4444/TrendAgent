@@ -1,0 +1,41 @@
+name: Monthly Report
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    # Den 1. i hver måned kl. 07:00 (06:00 UTC)
+    - cron: "0 6 1 * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install requirements
+        run: |
+          python -m pip install --upgrade pip
+          # Vi installerer de nødvendige biblioteker til rapport-generering
+          pip install jinja2 requests
+
+      - name: Build Monthly Report
+        run: |
+          python reporting/build_monthly_report.py
+        
+      - name: Commit and Push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          # Vi tilføjer den nye rapport til build mappen
+          git add build/monthly.html
+          git commit -m "Månedlig Deep Dive rapport opdateret [skip ci]" || echo "Ingen ændringer"
+          git push
