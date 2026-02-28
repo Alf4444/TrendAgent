@@ -87,6 +87,28 @@
             </table>
         </div>
 
+        <div class="table-container" style="border-left: 5px solid #1a73e8;">
+            <h3>🎯 Top 5 Markedsmuligheder (Fonde du ikke ejer)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fond Navn</th>
+                        <th>Sidste 1M %</th>
+                        <th style="text-align: right;">ÅTD %</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for o in market_opps %}
+                    <tr>
+                        <td>🔍 {{ o.name }}</td>
+                        <td class="pos">{{ "%+.2f"|format(o.return_1m) }}%</td>
+                        <td style="text-align: right;">{{ "%+.2f"|format(o.return_ytd) }}%</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
         {% if sold_funds %}
         <div class="table-container">
             <h3>⚪ Inaktivitetshistorik (Solgte fonde)</h3>
@@ -119,14 +141,11 @@
             <h3>📖 Månedlig Metodik & Deep Dive Logik</h3>
             <div class="method-grid">
                 <div class="method-section">
-                    <h4>🎯 Formålet med Deep Dive</h4>
-                    <p>Hvor den daglige radar fanger støjen, fokuserer denne rapport på din overordnede evne til at slå markedet (PFA Aktier). Målet er at se om dine aktive valg skaber merværdi.</p>
+                    <h4>🎯 Benchmark & Alpha</h4>
+                    <p>Sammenligningen benytter <strong>PFA Aktier (ISIN: PFA000002735)</strong> som proxy for en 100% aktieeksponering (Profil Høj). Da porteføljen er dynamisk, beregnes Alpha som differencen mellem dit vægtede gennemsnit af aktive positioner og benchmarkens 1-måneds afkast.</p>
                     
-                    <h4>📊 Benchmark (Alpha)</h4>
-                    <ul>
-                        <li><strong>Alpha:</strong> Forskellen mellem dit afkast og benchmark. En positiv alpha betyder, at du har vundet over PFA's standard-profil.</li>
-                        <li><strong>Benchmark:</strong> Pt. anvendes PFA Aktier som stedfortræder for "Profil Høj".</li>
-                    </ul>
+                    <h4>🔍 Markedsmuligheder</h4>
+                    <p>Listen over markedsmuligheder viser de 5 fonde i PFA-universet med det stærkeste afkast over den seneste måned, som du pt. <u>ikke</u> har i din portefølje. Dette bruges til at vurdere om dine nuværende valg holder trit med markedets stærkeste trends.</p>
                 </div>
                 <div class="method-section">
                     <h4>🔄 Inaktivitetshistorik</h4>
