@@ -24,9 +24,12 @@
         .neg { color: #d93025; font-weight: bold; }
         
         .footer { margin-top: 40px; padding: 25px; background: white; border-radius: 12px; border: 1px solid #e0e0e0; font-size: 13px; line-height: 1.6; color: #555; }
-        .footer h3 { padding: 0; margin-bottom: 20px; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; }
+        .footer h3 { padding: 0; margin-bottom: 20px; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; color: #2c3e50; }
         .method-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-        .method-section h4 { margin: 15px 0 5px 0; color: #333; }
+        .method-section h4 { margin: 15px 0 5px 0; color: #333; border-left: 3px solid #1a73e8; padding-left: 10px; }
+        .method-section p { margin: 8px 0; }
+        .method-section ul { padding-left: 20px; margin: 10px 0; }
+        .method-section li { margin-bottom: 5px; }
     </style>
 </head>
 <body>
@@ -139,18 +142,18 @@
         {% endif %}
 
         <footer class="footer">
-            <h3>📖 Månedlig Metodik & Deep Dive Logik</h3>
+            <h3>📖 Detaljeret Metodik & Beregningsgrundlag</h3>
             <div class="method-grid">
                 <div class="method-section">
-                    <h4>🎯 Benchmark & Alpha</h4>
-                    <p>Sammenligningen benytter <strong>PFA Aktier (ISIN: PFA000002735)</strong> som proxy for en 100% aktieeksponering. Alpha beregnes som differencen mellem dit vægtede gennemsnit af aktive positioner og benchmarkens 1-måneds afkast.</p>
-                </div>
-                <div class="method-section">
-                    <h4>🔍 Sammenligningsgrundlag</h4>
-                    <p>Ved at inkludere <strong>Sidste 1M %</strong> på tværs af både dine egne fonde og markedsmuligheder, kan du vurdere om dine nuværende positioner stadig udviser relativ styrke, eller om det er tid til at rotere til fonde med højere momentum.</p>
-                </div>
-            </div>
-        </footer>
-    </div>
-</body>
-</html>
+                    <h4>🎯 Benchmark & Alpha-logik</h4>
+                    <p>Denne rapport anvender <strong>PFA Aktier (ISIN: PFA000002735)</strong> som det primære sammenligningsgrundlag. Dette benchmark repræsenterer en aggressiv vækstprofil (Profil Høj) med 100% aktieeksponering.</p>
+                    <ul>
+                        <li><strong>Alpha:</strong> Beregnes som den absolutte difference mellem porteføljens gennemsnitlige totalafkast og benchmarkens realiserede afkast over den seneste måned. En positiv Alpha indikerer succesfuld aktiv forvaltning og stock-picking.</li>
+                        <li><strong>Relevans:</strong> Månedlig monitorering mod benchmark sikrer, at dine aktive valg (f.eks. niche-fonde som Østeuropa eller Emerging Markets) faktisk skaber merværdi ift. en standard passiv løsning.</li>
+                    </ul>
+
+                    <h4>🔍 Markedsmuligheder (Oppurtunity Cost)</h4>
+                    <p>Sektionen for markedsmuligheder analyserer samtlige tilgængelige fonde i PFA-universet, som ikke er i din nuværende portefølje.</p>
+                    <ul>
+                        <li><strong>Filtrering:</strong> Kun fonde markeret som 'aktive' i <code>portfolio.json</code> udelades fra denne liste.</li>
+                        <li><strong>Strategi:</strong> Ved at holde øje med de 5 st
