@@ -27,7 +27,6 @@
         .footer h3 { padding: 0; margin-bottom: 20px; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; }
         .method-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
         .method-section h4 { margin: 15px 0 5px 0; color: #333; }
-        .method-section ul { padding-left: 20px; }
     </style>
 </head>
 <body>
@@ -39,14 +38,14 @@
             </div>
             <div style="text-align: right;">
                 <span style="background: #2c3e50; color: white; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">
-                    BENCHMARK: {{ benchmark_name }}
+                    BENCHMARK: {{ benchmark_name }} ({{ "%.2f"|format(benchmark_return) }}% sidste mdr)
                 </span>
             </div>
         </header>
 
         <div class="score-grid">
             <div class="score-box">
-                <small>DIN PORTEFØLJE (SNIT)</small>
+                <small>DIN PORTEFØLJE (TOTAL SNIT)</small>
                 <strong class="{{ 'pos' if avg_portfolio_return >= 0 else 'neg' }}">
                     {{ "%.2f"|format(avg_portfolio_return) }}%
                 </strong>
@@ -68,6 +67,7 @@
                         <th>Købsdato</th>
                         <th>Købskurs</th>
                         <th>Nuv. Kurs</th>
+                        <th>Sidste 1M %</th>
                         <th style="text-align: right;">Total Afkast %</th>
                     </tr>
                 </thead>
@@ -78,6 +78,9 @@
                         <td>{{ f.buy_date }}</td>
                         <td>{{ "%.2f"|format(f.buy_price) }}</td>
                         <td>{{ "%.2f"|format(f.curr_price) }}</td>
+                        <td class="{{ 'pos' if f.return_1m >= 0 else 'neg' }}">
+                            {{ "%+.2f"|format(f.return_1m) }}%
+                        </td>
                         <td style="text-align: right;" class="{{ 'pos' if f.total_return >= 0 else 'neg' }}">
                             {{ "%+.2f"|format(f.total_return) }}%
                         </td>
@@ -117,8 +120,7 @@
                     <tr>
                         <th>Fond Navn</th>
                         <th>Solgt dato</th>
-                        <th>Afkast v. salg</th>
-                        <th style="text-align: right;">Status</th>
+                        <th style="text-align: right;">Afkast v. salg</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -126,10 +128,9 @@
                     <tr>
                         <td>{{ f.name }}</td>
                         <td>{{ f.sell_date }}</td>
-                        <td class="{{ 'pos' if f.total_return >= 0 else 'neg' }}">
+                        <td style="text-align: right;" class="{{ 'pos' if f.total_return >= 0 else 'neg' }}">
                             {{ "%+.2f"|format(f.total_return) }}%
                         </td>
-                        <td style="text-align: right; font-style: italic; color: #666;">INAKTIV</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -142,19 +143,11 @@
             <div class="method-grid">
                 <div class="method-section">
                     <h4>🎯 Benchmark & Alpha</h4>
-                    <p>Sammenligningen benytter <strong>PFA Aktier (ISIN: PFA000002735)</strong> som proxy for en 100% aktieeksponering (Profil Høj). Da porteføljen er dynamisk, beregnes Alpha som differencen mellem dit vægtede gennemsnit af aktive positioner og benchmarkens 1-måneds afkast.</p>
-                    
-                    <h4>🔍 Markedsmuligheder</h4>
-                    <p>Listen over markedsmuligheder viser de 5 fonde i PFA-universet med det stærkeste afkast over den seneste måned, som du pt. <u>ikke</u> har i din portefølje. Dette bruges til at vurdere om dine nuværende valg holder trit med markedets stærkeste trends.</p>
+                    <p>Sammenligningen benytter <strong>PFA Aktier (ISIN: PFA000002735)</strong> som proxy for en 100% aktieeksponering. Alpha beregnes som differencen mellem dit vægtede gennemsnit af aktive positioner og benchmarkens 1-måneds afkast.</p>
                 </div>
                 <div class="method-section">
-                    <h4>🔄 Inaktivitetshistorik</h4>
-                    <p>Dette afsnit holder styr på de fonde, du har valgt at forlade. Det hjælper dig med at vurdere, om dine salgs-beslutninger var korrekte over tid.</p>
-                    
-                    <h4>⚙️ Beregning</h4>
-                    <ul>
-                        <li><strong>Total Afkast:</strong> Beregnes som den procentvise ændring fra din registrerede <code>buy_price</code> til den seneste lukkekurs.</li>
-                    </ul>
+                    <h4>🔍 Sammenligningsgrundlag</h4>
+                    <p>Ved at inkludere <strong>Sidste 1M %</strong> på tværs af både dine egne fonde og markedsmuligheder, kan du vurdere om dine nuværende positioner stadig udviser relativ styrke, eller om det er tid til at rotere til fonde med højere momentum.</p>
                 </div>
             </div>
         </footer>
