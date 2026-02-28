@@ -21,7 +21,7 @@ def build_monthly():
         print("FEJL: Datafiler mangler.")
         return
 
-    # 1. HENT DATA (Præcis som Daily/Weekly)
+    # 1. HENT DATA
     try:
         with open(DATA_FILE, "r", encoding="utf-8") as f:
             latest_list = json.load(f)
@@ -41,7 +41,7 @@ def build_monthly():
     sold_rows = []
     active_returns = []
 
-    # 2. BEHANDL FONDE
+    # 2. BEHANDL PORTEFØLJE-FONDE
     for isin, p_info in portfolio.items():
         if isin not in latest_map:
             continue
@@ -51,7 +51,7 @@ def build_monthly():
         fund_name = p_info.get('name', isin)
         buy_p = p_info.get('buy_price')
         
-        # Beregn afkast siden køb (Procentuelt)
+        # Beregn afkast siden køb
         total_return = ((curr_p - buy_p) / buy_p * 100) if buy_p else 0
         
         fund_data = {
@@ -71,13 +71,29 @@ def build_monthly():
             fund_data["sell_date"] = p_info.get('sell_date', 'Ukendt')
             sold_rows.append(fund_data)
 
-    # 3. BENCHMARK BEREGNING (PFA Aktier)
+    # 3. FIND TOP 5 MARKEDSMULIGHEDER (Fonde man ikke ejer aktivt)
+    all_market_funds = []
+    for item in latest_list:
+        isin = item['isin']
+        # Vi tjekker om fonden er i porteføljen og om den er aktiv
+        is_owned = isin in portfolio and portfolio[isin].get('active', False)
+        
+        if not is_owned:
+            all_market_funds.append({
+                "name": item.get('name', isin),
+                "return_1m": item.get('return_1m', 0),
+                "return_ytd": item.get('return_ytd', 0)
+            })
+    
+    # Sorter efter 1-måneds afkast og tag de 5 bedste
+    market_opps = sorted(all_market_funds, key=lambda x: x['return_1m'], reverse=True)[:5]
+
+    # 4. BENCHMARK BEREGNING
     benchmark_return = 0
     if BENCHMARK_ISIN in latest_map:
-        # Her henter vi 1-måneds afkastet direkte fra PFA's egne data
         benchmark_return = latest_map[BENCHMARK_ISIN].get('return_1m', 0)
 
-    # 4. RENDER HTML RAPPORT
+    # 5. RENDER HTML RAPPORT
     if TEMPLATE_FILE.exists():
         template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
         
@@ -87,6 +103,7 @@ def build_monthly():
             timestamp=timestamp,
             active_funds=sorted(active_rows, key=lambda x: x['total_return'], reverse=True),
             sold_funds=sorted(sold_rows, key=lambda x: x['total_return'], reverse=True),
+            market_opps=market_opps,
             benchmark_name="PFA Aktier (Profil Høj Proxy)",
             benchmark_return=benchmark_return,
             avg_portfolio_return=avg_port_return,
@@ -95,7 +112,7 @@ def build_monthly():
         
         REPORT_FILE.parent.mkdir(exist_ok=True)
         REPORT_FILE.write_text(html_output, encoding="utf-8")
-        print(f"Monthly Rapport færdig: {len(active_rows)} aktive og {len(sold_rows)} solgte analyseret.")
+        print(f"Monthly Rapport færdig: {len(active_rows)} aktive positioner.")
     else:
         print(f"FEJL: Template mangler på {TEMPLATE_FILE}")
 
