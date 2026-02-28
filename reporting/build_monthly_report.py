@@ -16,6 +16,7 @@ REPORT_FILE = ROOT / "build/monthly.html"
 BENCHMARK_ISIN = "PFA000002735" # PFA Aktier (Stedfortræder for Profil Høj)
 
 def build_monthly():
+    # Sikkerhedstjek
     if not DATA_FILE.exists() or not HISTORY_FILE.exists():
         print("FEJL: Datafiler mangler.")
         return
@@ -32,6 +33,7 @@ def build_monthly():
         print(f"Fejl ved indlæsning af data: {e}")
         return
 
+    # Skab opslagsværk fra latest
     latest_map = {item['isin']: item for item in latest_list}
     timestamp = datetime.now().strftime('%d-%m-%Y %H:%M')
     
@@ -48,6 +50,7 @@ def build_monthly():
         curr_p = official['nav']
         buy_p = p_info.get('buy_price')
         
+        # Beregn totalt afkast siden køb
         total_return = ((curr_p - buy_p) / buy_p * 100) if buy_p else 0
         
         fund_data = {
@@ -72,6 +75,7 @@ def build_monthly():
     all_market_funds = []
     for item in latest_list:
         isin = item['isin']
+        # Vi tjekker om fonden er i porteføljen og om den er aktiv
         is_owned = isin in portfolio and portfolio[isin].get('active', False)
         
         if not is_owned:
@@ -81,6 +85,7 @@ def build_monthly():
                 "return_ytd": item.get('return_ytd', 0)
             })
     
+    # Sorter efter 1-måneds afkast og tag de 5 bedste
     market_opps = sorted(all_market_funds, key=lambda x: x['return_1m'], reverse=True)[:5]
 
     # 4. BENCHMARK BEREGNING
@@ -107,9 +112,9 @@ def build_monthly():
         
         REPORT_FILE.parent.mkdir(exist_ok=True)
         REPORT_FILE.write_text(html_output, encoding="utf-8")
-        print(f"Monthly Rapport færdig med 'Sidste 1M %' sammenligning.")
+        print(f"Monthly Rapport færdig: {len(active_rows)} aktive positioner analyseret.")
     else:
-        print(f"FEJL: Template mangler.")
+        print(f"FEJL: Template mangler på {TEMPLATE_FILE}")
 
 if __name__ == "__main__":
     build_monthly()
