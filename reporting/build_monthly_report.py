@@ -12,7 +12,7 @@ PORTFOLIO_FILE = ROOT / "config/portfolio.json"
 TEMPLATE_FILE = ROOT / "templates/monthly.html.j2"
 REPORT_FILE = ROOT / "build/monthly.html"
 
-BENCHMARK_ISIN = "PFA000002735" # PFA Aktier
+BENCHMARK_ISIN = "PFA000002735" # PFA Aktier (Proxy for Profil Høj)
 
 def validate_data(latest_map, portfolio):
     """Tjekker om nødvendige data er tilstede for beregningerne."""
@@ -22,7 +22,7 @@ def validate_data(latest_map, portfolio):
     if BENCHMARK_ISIN not in latest_map:
         warnings.append(f"ADVARSEL: Benchmark ISIN {BENCHMARK_ISIN} mangler i data.")
 
-    # Tjek portefølje-data
+    # Tjek portefølje-data for aktive fonde
     for isin, p_info in portfolio.items():
         if p_info.get('active', True):
             if isin not in latest_map:
@@ -59,7 +59,7 @@ def build_monthly():
     sold_rows = []
     active_returns_total = []
 
-    # 3. BEHANDL FONDE
+    # 3. BEHANDL FONDE I PORTEFØLJEN
     for isin, p_info in portfolio.items():
         if isin not in latest_map:
             continue
@@ -68,6 +68,7 @@ def build_monthly():
         curr_p = official['nav']
         buy_p = p_info.get('buy_price', 0)
         
+        # Beregn totalt afkast siden køb
         total_return = ((curr_p - buy_p) / buy_p * 100) if buy_p > 0 else 0
         
         fund_data = {
@@ -84,21 +85,29 @@ def build_monthly():
             active_rows.append(fund_data)
             active_returns_total.append(total_return)
         else:
+            # Håndtering af historiske/solgte fonde
             fund_data["sell_date"] = p_info.get('sell_date', 'N/A')
             sold_rows.append(fund_data)
 
-    # 4. FIND TOP 5 MARKEDSMULIGHEDER
+    # 4. FIND TOP 5 MARKEDSMULIGHEDER (Fonde man ikke ejer)
     market_opps = sorted([
-        {"name": i.get('name'), "return_1m": i.get('return_1m', 0), "return_ytd": i.get('return_ytd', 0)}
-        for i in latest_list if i['isin'] not in portfolio or not portfolio[i['isin']].get('active', False)
+        {
+            "name": i.get('name', i['isin']), 
+            "return_1m": i.get('return_1m', 0), 
+            "return_ytd": i.get('return_ytd', 0)
+        }
+        for i in latest_list 
+        if i['isin'] not in portfolio or not portfolio[i['isin']].get('active', False)
     ], key=lambda x: x['return_1m'], reverse=True)[:5]
 
+    # 5. BENCHMARK OG STATISTIK
     benchmark_return = latest_map[BENCHMARK_ISIN].get('return_1m', 0) if BENCHMARK_ISIN in latest_map else 0
     avg_port_return = sum(active_returns_total) / len(active_returns_total) if active_returns_total else 0
 
-    # 5. GENERER RAPPORT
+    # 6. GENERER HTML RAPPORT
     if TEMPLATE_FILE.exists():
         template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
+        
         html_output = template.render(
             timestamp=timestamp,
             active_funds=sorted(active_rows, key=lambda x: x['total_return'], reverse=True),
@@ -108,13 +117,16 @@ def build_monthly():
             benchmark_return=benchmark_return,
             avg_portfolio_return=avg_port_return,
             diff_to_benchmark=avg_port_return - benchmark_return,
-            warnings=validation_warnings # Vi sender advarsler med til rapporten
+            warnings=validation_warnings
         )
+        
+        # Gem filen
         REPORT_FILE.parent.mkdir(exist_ok=True)
         REPORT_FILE.write_text(html_output, encoding="utf-8")
-        print(f"Monthly Rapport færdig. {len(validation_warnings)} advarsler fundet.")
+        print(f"✅ Månedsrapport færdig: build/monthly.html")
+        print(f"ℹ️ {len(active_rows)} aktive positioner, {len(validation_warnings)} advarsler.")
     else:
-        print("FEJL: Template mangler.")
+        print(f"❌ FEJL: Template fil ikke fundet på {TEMPLATE_FILE}")
 
 if __name__ == "__main__":
     build_monthly()
