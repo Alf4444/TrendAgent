@@ -16,13 +16,12 @@ BENCHMARK_ISIN = "PFA000002735" # PFA Aktier (Proxy for Profil Høj)
 
 def get_momentum_status(f):
     """
-    Beregner om fonden taber fart.
+    Beregner om fonden taber fart eller accelererer.
     Sammenligner sidste måneds afkast (1M) med gennemsnittet af de sidste 3 måneder.
     """
     r1m = f.get('return_1m', 0)
     r3m = f.get('return_3m', 0)
     
-    # Vi tjekker kun momentum, hvis der er et positivt 3-måneders afkast at måle mod
     if r3m and r3m > 0:
         avg_monthly_speed = r3m / 3
         
@@ -38,7 +37,6 @@ def get_momentum_status(f):
         if r1m > (avg_monthly_speed * 1.30):
             return "🚀 Accelererer", "momentum-fast"
             
-    # Standard status hvis alt følger normalen eller mangler 3M data
     if r1m > 0.5:
         return "✅ Stabil", "momentum-stable"
     
@@ -47,19 +45,15 @@ def get_momentum_status(f):
 def validate_data(latest_map, portfolio):
     """Tjekker om nødvendige data er tilstede for beregningerne."""
     warnings = []
-    
-    # Tjek om benchmark findes
     if BENCHMARK_ISIN not in latest_map:
         warnings.append(f"ADVARSEL: Benchmark ISIN {BENCHMARK_ISIN} mangler i data.")
 
-    # Tjek portefølje-data for aktive fonde
     for isin, p_info in portfolio.items():
         if p_info.get('active', True):
             if isin not in latest_map:
-                warnings.append(f"ADVARSEL: Aktiv fond {isin} mangler i PFA-data (latest.json).")
+                warnings.append(f"ADVARSEL: Aktiv fond {isin} mangler i PFA-data.")
             if 'buy_price' not in p_info or p_info['buy_price'] <= 0:
-                warnings.append(f"ADVARSEL: Købspris mangler eller er 0 for {p_info.get('name', isin)}.")
-    
+                warnings.append(f"ADVARSEL: Købspris mangler for {p_info.get('name', isin)}.")
     return warnings
 
 def build_monthly():
@@ -78,38 +72,30 @@ def build_monthly():
         return
 
     latest_map = {item['isin']: item for item in latest_list}
-    
-    # 2. VALIDERING
     validation_warnings = validate_data(latest_map, portfolio)
-    for w in validation_warnings:
-        print(w)
 
     timestamp = datetime.now().strftime('%d-%m-%Y %H:%M')
     active_rows = []
     sold_rows = []
     active_returns_total = []
 
-    # 3. BEHANDL FONDE I PORTEFØLJEN
+    # 2. BEHANDL PORTEFØLJE
     for isin, p_info in portfolio.items():
-        if isin not in latest_map:
-            continue
+        if isin not in latest_map: continue
         
         official = latest_map[isin]
         curr_p = official['nav']
         buy_p = p_info.get('buy_price', 0)
-        
-        # Beregn totalt afkast siden køb
         total_return = ((curr_p - buy_p) / buy_p * 100) if buy_p > 0 else 0
         
-        # Hent Momentum status (Trafiklys)
         m_label, m_class = get_momentum_status(official)
         
         fund_data = {
+            "isin": isin,
             "name": p_info.get('name', isin),
             "buy_date": p_info.get('buy_date', 'N/A'),
             "buy_price": buy_p,
             "curr_price": curr_p,
-            "return_1w": official.get('return_1w', 0),
             "return_1m": official.get('return_1m', 0),
             "momentum_label": m_label,
             "momentum_class": m_class,
@@ -121,11 +107,10 @@ def build_monthly():
             active_rows.append(fund_data)
             active_returns_total.append(total_return)
         else:
-            # Håndtering af historiske/solgte fonde
             fund_data["sell_date"] = p_info.get('sell_date', 'N/A')
             sold_rows.append(fund_data)
 
-    # 4. FIND TOP 5 MARKEDSMULIGHEDER (Fonde man ikke ejer)
+    # 3. TOP 5 MULIGHEDER (Ejer ikke selv)
     market_opps = sorted([
         {
             "name": i.get('name', i['isin']), 
@@ -136,33 +121,38 @@ def build_monthly():
         if i['isin'] not in portfolio or not portfolio[i['isin']].get('active', False)
     ], key=lambda x: x['return_1m'], reverse=True)[:5]
 
+    # 4. ACTION PLAN LOGIK
+    # Salgssignal: Hvis en aktiv fond i porteføljen er fladet ud (🛑)
+    sell_signals = [f for f in active_rows if f['momentum_class'] == 'momentum-flat']
+    
+    # Købssignal: Hvis en ekstern fond har over 4% afkast på 1 måned (Stærk trend)
+    buy_signals = [o for o in market_opps if o['return_1m'] > 4.0]
+
     # 5. BENCHMARK OG STATISTIK
     benchmark_return = latest_map[BENCHMARK_ISIN].get('return_1m', 0) if BENCHMARK_ISIN in latest_map else 0
     avg_port_return = sum(active_returns_total) / len(active_returns_total) if active_returns_total else 0
 
-    # 6. GENERER HTML RAPPORT
+    # 6. GENERER HTML
     if TEMPLATE_FILE.exists():
         template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
-        
         html_output = template.render(
             timestamp=timestamp,
             active_funds=sorted(active_rows, key=lambda x: x['total_return'], reverse=True),
             sold_funds=sold_rows,
             market_opps=market_opps,
+            sell_signals=sell_signals,
+            buy_signals=buy_signals,
             benchmark_name="PFA Aktier",
             benchmark_return=benchmark_return,
             avg_portfolio_return=avg_port_return,
             diff_to_benchmark=avg_port_return - benchmark_return,
             warnings=validation_warnings
         )
-        
-        # Gem filen
         REPORT_FILE.parent.mkdir(exist_ok=True)
         REPORT_FILE.write_text(html_output, encoding="utf-8")
-        print(f"✅ Månedsrapport færdig: build/monthly.html")
-        print(f"ℹ️ {len(active_rows)} aktive positioner med momentum-analyse.")
+        print(f"✅ Månedsrapport færdig.")
     else:
-        print(f"❌ FEJL: Template fil ikke fundet på {TEMPLATE_FILE}")
+        print(f"❌ FEJL: Template mangler.")
 
 if __name__ == "__main__":
     build_monthly()
