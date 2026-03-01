@@ -13,6 +13,12 @@
         .warning-box { background: #fff3cd; color: #856404; padding: 15px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #ffeeba; font-size: 13px; }
         .warning-box strong { display: block; margin-bottom: 5px; text-transform: uppercase; font-size: 11px; }
 
+        /* Action Plan Boks */
+        .action-plan { background: white; border-radius: 12px; padding: 20px; margin-bottom: 30px; border-left: 6px solid #1a73e8; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .action-plan h3 { padding: 0; margin-top: 0; color: #1a73e8; font-size: 18px; margin-bottom: 15px; }
+        .action-item { display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #f0f0f0; }
+        .action-item:last-child { border-bottom: none; }
+
         /* Momentum Tags / Trafiklys */
         .m-tag { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; white-space: nowrap; }
         .momentum-fast { background: #e6f4ea; color: #1e7e34; border: 1px solid #c3e6cb; } /* Grøn */
@@ -37,7 +43,7 @@
         .footer { margin-top: 40px; padding: 25px; background: white; border-radius: 12px; border: 1px solid #e0e0e0; font-size: 13px; line-height: 1.6; color: #555; }
         .footer h3 { padding: 0; margin-bottom: 20px; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; color: #2c3e50; }
         .method-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-        .method-section h4 { margin: 15px 0 5px 0; color: #333; border-left: 3px solid #1a73e8; padding-left: 10px; }
+        .method-section h4 { margin: 15px 0 5px 0; color: #333; border-left: 3px solid #1a73e8; padding-left: 10px; text-transform: uppercase; font-size: 12px; }
         .method-section p { margin: 8px 0; }
         .method-section ul { padding-left: 20px; margin: 10px 0; }
         .method-section li { margin-bottom: 5px; }
@@ -50,7 +56,7 @@
         <header class="header">
             <div>
                 <h1 style="margin:0; font-size: 28px;">📊 Monthly Deep Dive</h1>
-                <p style="color: #666; margin: 5px 0;">Strategisk status opdateret 01-03-2026 09:49</p>
+                <p style="color: #666; margin: 5px 0;">Strategisk status opdateret 01-03-2026 10:29</p>
             </div>
             <div style="text-align: right;">
                 <span style="background: #2c3e50; color: white; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">
@@ -58,6 +64,44 @@
                 </span>
             </div>
         </header>
+
+        
+        <div class="action-plan">
+            <h3>⚡ Strategiske Handlingssignaler</h3>
+            
+            <div class="action-item">
+                <span class="m-tag momentum-flat">SALGSOVERVEJELSE</span>
+                <span><strong>Magna Eastern European Fund</strong> er fladet ud (1M afkast: 1.38%). Trenden ser ud til at være knækket.</span>
+            </div>
+            
+            
+            <div class="action-item">
+                <span class="m-tag momentum-fast">KØBSMULIGHED</span>
+                <span><strong>C WorldWide Asien</strong> viser ekstremt stærkt momentum med <strong>12.25%</strong> den sidste måned.</span>
+            </div>
+            
+            <div class="action-item">
+                <span class="m-tag momentum-fast">KØBSMULIGHED</span>
+                <span><strong>Sydinvest Globale EM-aktier</strong> viser ekstremt stærkt momentum med <strong>9.42%</strong> den sidste måned.</span>
+            </div>
+            
+            <div class="action-item">
+                <span class="m-tag momentum-fast">KØBSMULIGHED</span>
+                <span><strong>iShares Core MSCI Japan IMI UCITS ETF</strong> viser ekstremt stærkt momentum med <strong>8.64%</strong> den sidste måned.</span>
+            </div>
+            
+            <div class="action-item">
+                <span class="m-tag momentum-fast">KØBSMULIGHED</span>
+                <span><strong>iShares MSCI Emerging Markets UCITS ETF</strong> viser ekstremt stærkt momentum med <strong>8.17%</strong> den sidste måned.</span>
+            </div>
+            
+            <div class="action-item">
+                <span class="m-tag momentum-fast">KØBSMULIGHED</span>
+                <span><strong>Robeco Circular Economy Equities</strong> viser ekstremt stærkt momentum med <strong>6.47%</strong> den sidste måned.</span>
+            </div>
+            
+        </div>
+        
 
         <div class="score-grid">
             <div class="score-box">
@@ -200,25 +244,28 @@
         
 
         <footer class="footer">
-            <h3>📖 Detaljeret Metodik & Beregningsgrundlag</h3>
+            <h3>📖 Detaljeret Metodik & Systematik</h3>
             <div class="method-grid">
                 <div class="method-section">
                     <h4>🚦 Momentum Trafiklys (Trend-analyse)</h4>
-                    <p>Status beregnes ved at sammenligne det seneste afkast (1M) med det gennemsnitlige månedlige afkast over de sidste 3 måneder:</p>
+                    <p>Status beregnes ved at sammenligne det seneste afkast (1M) med det gennemsnitlige månedlige afkast over de sidste 3 måneder (3M/3):</p>
                     <ul>
-                        <li><span class="pos">🚀 Accelererer:</span> Afkastet er >30% over 3M gennemsnittet.</li>
-                        <li><span style="color: #666;">✅ Stabil:</span> Afkastet følger den langsigtede trend.</li>
-                        <li><span style="color: #e65100;">⚠️ Slower:</span> Afkastet er faldet til under 80% af 3M snittet.</li>
+                        <li><span class="pos">🚀 Accelererer:</span> Afkastet er >30% over gennemsnittet.</li>
+                        <li><span style="color: #666;">✅ Stabil:</span> Afkastet følger trenden.</li>
+                        <li><span style="color: #e65100;">⚠️ Slower:</span> Afkastet er under 80% af snittet.</li>
                         <li><span class="neg">🛑 Fladet ud:</span> Afkastet er under 35% af snittet (kritisk tab af momentum).</li>
                     </ul>
+                    <h4>⚡ Action Plan Logik</h4>
+                    <p><strong>Salg:</strong> Udløses kun hvis en aktiv fond får status 🛑. <br><strong>Køb:</strong> Udløses hvis en ekstern fond har >4% afkast på en måned.</p>
                 </div>
                 <div class="method-section">
-                    <h4>⚙️ Beregningsmodeller</h4>
+                    <h4>⚙️ Beregningsmodeller & Data</h4>
                     <ul>
-                        <li><strong>Total Afkast %:</strong> Den procentvise ændring fra din manuelt indtastede <code>buy_price</code> til dags dato.</li>
-                        <li><strong>Alpha:</strong> Differencen mellem din porteføljes snit og <strong>PFA Aktier</strong>.</li>
-                        <li><strong>Data-vask:</strong> Rapporten bruger filtrerede data, hvor ekstreme dags-udsving (>5%) ignoreres for at sikre stabile trend-linjer.</li>
+                        <li><strong>Volatility Guard:</strong> Systemet ignorerer dagsudsving over 5% for at undgå fejl i PFA's datafeed.</li>
+                        <li><strong>Total Afkast %:</strong> Ændring fra din manuelle <code>buy_price</code> til dags dato.</li>
+                        <li><strong>Alpha (Merværdi):</strong> Differencen mellem din portefølje og <strong>PFA Aktier</strong>.</li>
                     </ul>
+                    <p>Rapporten er optimeret til at fjerne støj og fokusere på langsigtede trends fremfor daglige fluktuationer.</p>
                 </div>
             </div>
         </footer>
