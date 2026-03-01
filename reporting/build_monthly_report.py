@@ -25,15 +25,12 @@ def get_momentum_status(f):
     if r3m and r3m > 0:
         avg_monthly_speed = r3m / 3
         
-        # Hvis det nuværende afkast er under 35% af det normale snit = "Fladet ud"
         if r1m < (avg_monthly_speed * 0.35):
             return "🛑 Fladet ud", "momentum-flat"
         
-        # Hvis det er under 80% af det normale snit = "Slower"
         if r1m < (avg_monthly_speed * 0.80):
             return "⚠️ Slower", "momentum-slow"
         
-        # Hvis det er 30% højere end snittet = "Accelererer"
         if r1m > (avg_monthly_speed * 1.30):
             return "🚀 Accelererer", "momentum-fast"
             
@@ -43,7 +40,6 @@ def get_momentum_status(f):
     return "➖ Neutral", "momentum-stable"
 
 def validate_data(latest_map, portfolio):
-    """Tjekker om nødvendige data er tilstede for beregningerne."""
     warnings = []
     if BENCHMARK_ISIN not in latest_map:
         warnings.append(f"ADVARSEL: Benchmark ISIN {BENCHMARK_ISIN} mangler i data.")
@@ -61,7 +57,6 @@ def build_monthly():
         print("KRITISK FEJL: Data- eller porteføljefil mangler.")
         return
 
-    # 1. INDLÆS DATA
     try:
         with open(DATA_FILE, "r", encoding="utf-8") as f:
             latest_list = json.load(f)
@@ -74,12 +69,15 @@ def build_monthly():
     latest_map = {item['isin']: item for item in latest_list}
     validation_warnings = validate_data(latest_map, portfolio)
 
-    timestamp = datetime.now().strftime('%d-%m-%Y %H:%M')
+    # Tilføjet ugenummer til rapporten
+    now = datetime.now()
+    timestamp = now.strftime('%d-%m-%Y %H:%M')
+    week_number = now.strftime('%V')
+
     active_rows = []
     sold_rows = []
     active_returns_total = []
 
-    # 2. BEHANDL PORTEFØLJE
     for isin, p_info in portfolio.items():
         if isin not in latest_map: continue
         
@@ -110,7 +108,6 @@ def build_monthly():
             fund_data["sell_date"] = p_info.get('sell_date', 'N/A')
             sold_rows.append(fund_data)
 
-    # 3. TOP 5 MULIGHEDER (Ejer ikke selv)
     market_opps = sorted([
         {
             "name": i.get('name', i['isin']), 
@@ -121,22 +118,17 @@ def build_monthly():
         if i['isin'] not in portfolio or not portfolio[i['isin']].get('active', False)
     ], key=lambda x: x['return_1m'], reverse=True)[:5]
 
-    # 4. ACTION PLAN LOGIK
-    # Salgssignal: Hvis en aktiv fond i porteføljen er fladet ud (🛑)
     sell_signals = [f for f in active_rows if f['momentum_class'] == 'momentum-flat']
-    
-    # Købssignal: Hvis en ekstern fond har over 4% afkast på 1 måned (Stærk trend)
     buy_signals = [o for o in market_opps if o['return_1m'] > 4.0]
 
-    # 5. BENCHMARK OG STATISTIK
     benchmark_return = latest_map[BENCHMARK_ISIN].get('return_1m', 0) if BENCHMARK_ISIN in latest_map else 0
     avg_port_return = sum(active_returns_total) / len(active_returns_total) if active_returns_total else 0
 
-    # 6. GENERER HTML
     if TEMPLATE_FILE.exists():
         template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
         html_output = template.render(
             timestamp=timestamp,
+            week_number=week_number,
             active_funds=sorted(active_rows, key=lambda x: x['total_return'], reverse=True),
             sold_funds=sold_rows,
             market_opps=market_opps,
@@ -150,7 +142,7 @@ def build_monthly():
         )
         REPORT_FILE.parent.mkdir(exist_ok=True)
         REPORT_FILE.write_text(html_output, encoding="utf-8")
-        print(f"✅ Månedsrapport færdig.")
+        print(f"✅ Rapport færdig (Uge {week_number}).")
     else:
         print(f"❌ FEJL: Template mangler.")
 
