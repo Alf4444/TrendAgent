@@ -14,6 +14,36 @@ REPORT_FILE = ROOT / "build/monthly.html"
 
 BENCHMARK_ISIN = "PFA000002735" # PFA Aktier (Proxy for Profil Høj)
 
+def get_momentum_status(f):
+    """
+    Beregner om fonden taber fart.
+    Sammenligner sidste måneds afkast (1M) med gennemsnittet af de sidste 3 måneder.
+    """
+    r1m = f.get('return_1m', 0)
+    r3m = f.get('return_3m', 0)
+    
+    # Vi tjekker kun momentum, hvis der er et positivt 3-måneders afkast at måle mod
+    if r3m and r3m > 0:
+        avg_monthly_speed = r3m / 3
+        
+        # Hvis det nuværende afkast er under 35% af det normale snit = "Fladet ud"
+        if r1m < (avg_monthly_speed * 0.35):
+            return "🛑 Fladet ud", "momentum-flat"
+        
+        # Hvis det er under 80% af det normale snit = "Slower"
+        if r1m < (avg_monthly_speed * 0.80):
+            return "⚠️ Slower", "momentum-slow"
+        
+        # Hvis det er 30% højere end snittet = "Accelererer"
+        if r1m > (avg_monthly_speed * 1.30):
+            return "🚀 Accelererer", "momentum-fast"
+            
+    # Standard status hvis alt følger normalen eller mangler 3M data
+    if r1m > 0.5:
+        return "✅ Stabil", "momentum-stable"
+    
+    return "➖ Neutral", "momentum-stable"
+
 def validate_data(latest_map, portfolio):
     """Tjekker om nødvendige data er tilstede for beregningerne."""
     warnings = []
@@ -71,12 +101,18 @@ def build_monthly():
         # Beregn totalt afkast siden køb
         total_return = ((curr_p - buy_p) / buy_p * 100) if buy_p > 0 else 0
         
+        # Hent Momentum status (Trafiklys)
+        m_label, m_class = get_momentum_status(official)
+        
         fund_data = {
             "name": p_info.get('name', isin),
             "buy_date": p_info.get('buy_date', 'N/A'),
             "buy_price": buy_p,
             "curr_price": curr_p,
+            "return_1w": official.get('return_1w', 0),
             "return_1m": official.get('return_1m', 0),
+            "momentum_label": m_label,
+            "momentum_class": m_class,
             "total_return": total_return,
             "is_active": p_info.get('active', True)
         }
@@ -124,7 +160,7 @@ def build_monthly():
         REPORT_FILE.parent.mkdir(exist_ok=True)
         REPORT_FILE.write_text(html_output, encoding="utf-8")
         print(f"✅ Månedsrapport færdig: build/monthly.html")
-        print(f"ℹ️ {len(active_rows)} aktive positioner, {len(validation_warnings)} advarsler.")
+        print(f"ℹ️ {len(active_rows)} aktive positioner med momentum-analyse.")
     else:
         print(f"❌ FEJL: Template fil ikke fundet på {TEMPLATE_FILE}")
 
