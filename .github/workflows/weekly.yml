@@ -3,6 +3,7 @@ name: Weekly Report
 on:
   workflow_dispatch: {}
   schedule:
+      # Kører hver lørdag kl. 07:00 (06:00 UTC)
     - cron: "0 6 * * 6"
 
 jobs:
