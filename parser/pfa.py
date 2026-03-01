@@ -18,19 +18,20 @@ def parse_pfa_from_text(pfa_id, text):
 
     lines = text.split('\n')
     if lines:
+        # Finder navnet øverst i PFA PDF-teksten
         data["name"] = lines[0].replace("Investeringsprofil Stamdata", "").strip()
 
     # Find Valuta
     cur_m = re.search(r"Valuta\s*\n?\s*([A-Z]{3})", text)
     if cur_m: data["currency"] = cur_m.group(1).upper()
 
-    # Find Dato for indre værdi
+    # Find Dato for indre værdi (format: DD-MM-YYYY)
     date_m = re.search(r"Indre\s+værdi\s+dato\s*\n?\s*(\d{2}-\d{2}-\d{4})", text, re.IGNORECASE)
     if date_m:
         d = date_m.group(1).split("-")
         data["nav_date"] = f"{d[2]}-{d[1]}-{d[0]}"
 
-    # Find selve kursen (NAV)
+    # Find selve kursen (NAV) - håndterer både tusindtalsseparator og komma
     nav_m = re.search(r"Indre\s+værdi\s*\n?\s*([\d\.,]+)(?!\s*dato)", text, re.IGNORECASE)
     if nav_m:
         val_str = nav_m.group(1).rstrip('.,').replace(".", "").replace(",", ".")
@@ -39,8 +40,8 @@ def parse_pfa_from_text(pfa_id, text):
         except: 
             pass
 
-    # --- FORBEDRET AFKAST-PARSING ---
-    # Vi leder efter afkast-tabellen. PFA har typisk: 1 uge, 1 mdr, 3 mdr, 6 mdr, ÅTD, 1 år
+    # --- AFKAST-PARSING ---
+    # Finder alle procenttal i teksten
     pct_matches = re.findall(r"(-?\d+,\d+)\s*%", text)
     
     def to_float(val_str):
@@ -49,8 +50,7 @@ def parse_pfa_from_text(pfa_id, text):
         except:
             return None
 
-    # Hvis vi finder nok procenter, mapper vi dem til de rigtige nøgler
-    # PFA rækkefølge i tabellen: [1u, 1m, 3m, 6m, ÅTD, 1år]
+    # PFA standard rækkefølge i afkast-tabellen: [1u, 1m, 3m, 6m, ÅTD, 1år]
     if len(pct_matches) >= 6:
         data["return_1w"] = to_float(pct_matches[0])
         data["return_1m"] = to_float(pct_matches[1])
@@ -59,7 +59,7 @@ def parse_pfa_from_text(pfa_id, text):
         data["return_ytd"] = to_float(pct_matches[4])
         data["return_1y"] = to_float(pct_matches[5])
     elif len(pct_matches) == 5:
-        # Hvis 1 år mangler
+        # Hvis 1 år mangler i tabellen
         data["return_1w"] = to_float(pct_matches[0])
         data["return_1m"] = to_float(pct_matches[1])
         data["return_3m"] = to_float(pct_matches[2])
