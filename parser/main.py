@@ -17,7 +17,7 @@ def calculate_backfill(nav, nav_date_str, returns):
     except:
         current_date = datetime.now()
 
-    # Udvidet med 2m og 9m for bedre præcision i MA200
+    # Intervaller for at skabe historik til MA20, MA50 og MA200
     intervals = {
         '1w': 7, '1m': 30, '2m': 60, '3m': 91, 
         '6m': 182, '9m': 273, '1y': 365
@@ -26,13 +26,17 @@ def calculate_backfill(nav, nav_date_str, returns):
     for key, days in intervals.items():
         pct = returns.get(f'return_{key}')
         if pct is not None and isinstance(pct, (int, float)):
+            # Baglæns regning: Pris = Nu kurs / (1 + afkast_procent)
             hist_price = nav / (1 + (pct / 100))
             hist_date = (current_date - timedelta(days=days)).strftime('%Y-%m-%d')
             backfill[hist_date] = round(hist_price, 2)
     return backfill
 
 def main():
-    if not CONFIG_FILE.exists(): return
+    if not CONFIG_FILE.exists(): 
+        print(f"❌ Config fil mangler: {CONFIG_FILE}")
+        return
+        
     with open(CONFIG_FILE, "r") as f:
         isins = json.load(f)
 
@@ -44,7 +48,8 @@ def main():
         try:
             with open(HISTORY_FILE, "r") as f:
                 history = json.load(f)
-        except: history = {}
+        except: 
+            history = {}
 
     for isin in active_isins:
         txt_file = TEXT_DIR / f"{isin}.txt"
@@ -58,26 +63,26 @@ def main():
             if data["nav"] and data["nav_date"]:
                 if isin not in history: history[isin] = {}
                 
-                # --- FEJL-TJEKKER (Volatility Guard) ---
-                # Find seneste kurs i historikken
+                # --- ROBUST FEJL-TJEKKER (Volatility Guard) ---
+                # Sænket til 5% (0.05) for at fange "ghost data" som i Magna
                 dates = sorted(history[isin].keys())
                 if dates:
                     last_date = dates[-1]
                     last_nav = history[isin][last_date]
                     diff = abs((data["nav"] - last_nav) / last_nav)
                     
-                    if diff > 0.15: # 15% afvigelse er mistænkeligt for én dag
-                        print(f"⚠️ Spring i {isin}: {last_nav} -> {data['nav']} (Ignoreret)")
+                    if diff > 0.05: 
+                        print(f"⚠️ Mistænkeligt hop i {isin}: {last_nav} -> {data['nav']} (Ignoreret for at beskytte historik)")
                         continue 
 
-                # --- WEEKEND/DUPLIKAT TJEK ---
-                # Gem kun hvis kursen er ny, eller vi ikke har data for denne dato
+                # --- GEM KUN NYE DATA ---
                 if data["nav_date"] not in history[isin]:
                     history[isin][data["nav_date"]] = data["nav"]
                 
-                # Backfill (kun hvis datoen er tom)
+                # Backfill (Udfylder huller bagud i tid baseret på officielle afkast)
                 historical_points = calculate_backfill(data["nav"], data["nav_date"], data)
                 for h_date, h_nav in historical_points.items():
+                    # Vigtigt: Overskriv aldrig eksisterende data med backfill-estimater
                     if h_date not in history[isin]:
                         history[isin][h_date] = h_nav
         
@@ -93,7 +98,7 @@ def main():
     with open(HISTORY_FILE, "w", encoding="utf-8") as f:
         json.dump(history, f, indent=2)
 
-    print("Main færdig: Historik opdateret med Volatility Guard.")
+    print("✅ Main færdig: Historik opdateret og vasket for ekstreme udsving.")
 
 if __name__ == "__main__":
     main()
