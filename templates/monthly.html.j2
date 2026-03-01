@@ -9,22 +9,19 @@
         .container { max-width: 1100px; margin: auto; }
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
         
-        /* Valideringsboks */
         .warning-box { background: #fff3cd; color: #856404; padding: 15px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #ffeeba; font-size: 13px; }
         .warning-box strong { display: block; margin-bottom: 5px; text-transform: uppercase; font-size: 11px; }
 
-        /* Action Plan Boks */
         .action-plan { background: white; border-radius: 12px; padding: 20px; margin-bottom: 30px; border-left: 6px solid #1a73e8; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
         .action-plan h3 { padding: 0; margin-top: 0; color: #1a73e8; font-size: 18px; margin-bottom: 15px; }
         .action-item { display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #f0f0f0; }
         .action-item:last-child { border-bottom: none; }
 
-        /* Momentum Tags / Trafiklys */
         .m-tag { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; white-space: nowrap; }
-        .momentum-fast { background: #e6f4ea; color: #1e7e34; border: 1px solid #c3e6cb; } /* Grøn */
-        .momentum-slow { background: #fff3e0; color: #e65100; border: 1px solid #ffe0b2; } /* Gul/Orange */
-        .momentum-flat { background: #fce8e6; color: #c5221f; border: 1px solid #fad2cf; } /* Rød */
-        .momentum-stable { background: #f1f3f4; color: #5f6368; border: 1px solid #dadce0; } /* Grå */
+        .momentum-fast { background: #e6f4ea; color: #1e7e34; border: 1px solid #c3e6cb; } 
+        .momentum-slow { background: #fff3e0; color: #e65100; border: 1px solid #ffe0b2; } 
+        .momentum-flat { background: #fce8e6; color: #c5221f; border: 1px solid #fad2cf; } 
+        .momentum-stable { background: #f1f3f4; color: #5f6368; border: 1px solid #dadce0; }
 
         .score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
         .score-box { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center; border-top: 5px solid #1a73e8; }
@@ -37,6 +34,7 @@
         th { background: #f8f9fa; padding: 15px 10px; text-align: left; color: #666; font-weight: 600; border-bottom: 2px solid #eee; }
         td { padding: 15px 10px; border-bottom: 1px solid #f0f0f0; }
         
+        .rank-badge { background: #2c3e50; color: white; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-size: 12px; }
         .pos { color: #28a745; font-weight: bold; }
         .neg { color: #d93025; font-weight: bold; }
         
@@ -80,13 +78,13 @@
             {% for f in sell_signals %}
             <div class="action-item">
                 <span class="m-tag momentum-flat">SALGSOVERVEJELSE</span>
-                <span><strong>{{ f.name }}</strong> er fladet ud (1M afkast: {{ "%.2f"|format(f.return_1m) }}%). Trenden ser ud til at være knækket.</span>
+                <span>&nbsp;<strong>{{ f.name }}</strong> er overhalet af markedet (Rank #{{ f.rank }}). Opportunity cost er for høj.</span>
             </div>
             {% endfor %}
             {% for o in buy_signals %}
             <div class="action-item">
                 <span class="m-tag momentum-fast">KØBSMULIGHED</span>
-                <span><strong>{{ o.name }}</strong> viser ekstremt stærkt momentum med <strong>{{ "%.2f"|format(o.return_1m) }}%</strong> den sidste måned.</span>
+                <span>&nbsp;<strong>{{ o.name }}</strong> ligger i top 5 (Rank #{{ o.rank }}) med stærkt 1M afkast på {{ "%.2f"|format(o.return_1m) }}%.</span>
             </div>
             {% endfor %}
         </div>
@@ -108,14 +106,13 @@
         </div>
 
         <div class="table-container">
-            <h3>🟢 Aktive Positioner & Momentum</h3>
+            <h3>🟢 Aktive Positioner & Relativ Styrke</h3>
             <table>
                 <thead>
                     <tr>
+                        <th>Rank</th>
                         <th>Fond Navn</th>
                         <th>Momentum Status</th>
-                        <th>Købskurs</th>
-                        <th>Nuv. Kurs</th>
                         <th>Sidste 1M %</th>
                         <th style="text-align: right;">Total Afkast %</th>
                     </tr>
@@ -123,14 +120,13 @@
                 <tbody>
                     {% for f in active_funds %}
                     <tr>
-                        <td style="font-weight: bold;">⭐ {{ f.name }}</td>
+                        <td><span class="rank-badge">#{{ f.rank }}</span></td>
+                        <td style="font-weight: bold;">{{ f.name }}</td>
                         <td>
                             <span class="m-tag {{ f.momentum_class }}">
                                 {{ f.momentum_label }}
                             </span>
                         </td>
-                        <td>{{ "%.2f"|format(f.buy_price) }}</td>
-                        <td>{{ "%.2f"|format(f.curr_price) }}</td>
                         <td class="{{ 'pos' if f.return_1m >= 0 else 'neg' }}">
                             {{ "%+.2f"|format(f.return_1m) }}%
                         </td>
@@ -144,10 +140,11 @@
         </div>
 
         <div class="table-container" style="border-left: 5px solid #1a73e8;">
-            <h3>🎯 Top 5 Markedsmuligheder (Fonde du ikke ejer)</h3>
+            <h3>🎯 Top 5 Markedsmuligheder (Hele PFA universet)</h3>
             <table>
                 <thead>
                     <tr>
+                        <th>Rank</th>
                         <th>Fond Navn</th>
                         <th>Sidste 1M %</th>
                         <th style="text-align: right;">ÅTD %</th>
@@ -156,6 +153,7 @@
                 <tbody>
                     {% for o in market_opps %}
                     <tr>
+                        <td><span class="rank-badge">#{{ o.rank }}</span></td>
                         <td>🔍 {{ o.name }}</td>
                         <td class="pos">{{ "%+.2f"|format(o.return_1m) }}%</td>
                         <td style="text-align: right;">{{ "%+.2f"|format(o.return_ytd) }}%</td>
@@ -192,28 +190,28 @@
         {% endif %}
 
         <footer class="footer">
-            <h3>📖 Detaljeret Metodik & Systematik</h3>
+            <h3>📖 Detaljeret Metodik & Systematik (Ranking-model)</h3>
             <div class="method-grid">
                 <div class="method-section">
-                    <h4>🚦 Momentum Trafiklys (Trend-analyse)</h4>
-                    <p>Status beregnes ved at sammenligne det seneste afkast (1M) med det gennemsnitlige månedlige afkast over de sidste 3 måneder (3M/3):</p>
+                    <h4>🏆 Markeds-Ranking (Relativ Styrke)</h4>
+                    <p>I denne model sammenligner vi dine fonde med alle {{ total_market_count }} fonde i universet. Vi rangerer dem efter afkast den seneste måned (1M):</p>
                     <ul>
-                        <li><span class="pos">🚀 Accelererer:</span> Afkastet er >30% over gennemsnittet.</li>
-                        <li><span style="color: #666;">✅ Stabil:</span> Afkastet følger trenden.</li>
-                        <li><span style="color: #e65100;">⚠️ Slower:</span> Afkastet er under 80% af snittet.</li>
-                        <li><span class="neg">🛑 Fladet ud:</span> Afkastet er under 35% af snittet (kritisk tab af momentum).</li>
+                        <li><span class="pos">🚀 Top Performer:</span> Ligger i Top 5 på hele markedet.</li>
+                        <li><span style="color: #666;">✅ Stabil:</span> Ligger solidt i Top 7.</li>
+                        <li><span style="color: #e65100;">⚠️ Slower:</span> Er faldet ud af Top 7 eller har negativt afkast.</li>
+                        <li><span class="neg">🛑 Outperformed:</span> Uden for Top 10. Andre fonde løber markant hurtigere.</li>
                     </ul>
                     <h4>⚡ Action Plan Logik</h4>
-                    <p><strong>Salg:</strong> Udløses kun hvis en aktiv fond får status 🛑. <br><strong>Køb:</strong> Udløses hvis en ekstern fond har >4% afkast på en måned.</p>
+                    <p><strong>Salg:</strong> Udløses hvis en fond ikke længere kan forsvare sin plads i Top 10. <br><strong>Køb:</strong> Forslag til de 5 stærkeste fonde i universet lige nu.</p>
                 </div>
                 <div class="method-section">
                     <h4>⚙️ Beregningsmodeller & Data</h4>
                     <ul>
-                        <li><strong>Volatility Guard:</strong> Systemet ignorerer dagsudsving over 5% for at undgå fejl i PFA's datafeed.</li>
-                        <li><strong>Total Afkast %:</strong> Ændring fra din manuelle <code>buy_price</code> til dags dato.</li>
-                        <li><strong>Alpha (Merværdi):</strong> Differencen mellem din portefølje og <strong>{{ benchmark_name }}</strong>.</li>
+                        <li><strong>Opportunity Cost:</strong> Selvom en fond giver +1%, kan den få et salgssignal, hvis 10 andre fonde giver +4% i samme periode.</li>
+                        <li><strong>Total Afkast %:</strong> Beregnet fra din historiske <code>buy_price</code>.</li>
+                        <li><strong>Alpha (Merværdi):</strong> Differencen mellem din gennemsnitlige portefølje og <strong>{{ benchmark_name }}</strong>.</li>
                     </ul>
-                    <p>Rapporten er optimeret til at fjerne støj og fokusere på langsigtede trends fremfor daglige fluktuationer.</p>
+                    <p>Rapporten fokuserer på at eje det "hurtigste" i markedet fremfor blot at undgå tab.</p>
                 </div>
             </div>
         </footer>
