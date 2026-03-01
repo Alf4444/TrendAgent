@@ -21,6 +21,26 @@ def get_ranking_data(latest_list):
     rank_map = {item['isin']: index + 1 for index, item in enumerate(sorted_list)}
     return rank_map, len(sorted_list)
 
+def get_trend_velocity(f):
+    """
+    Sammenligner 1-uges afkast mod 1-måneds afkast for at se acceleration.
+    Returnerer et ikon og en beskrivelse.
+    """
+    r1w = f.get('return_1w', 0)
+    r1m = f.get('return_1m', 0)
+    
+    # Beregn hvad det gennemsnitlige ugentlige afkast har været over den sidste måned
+    avg_weekly_in_month = r1m / 4
+    
+    # Hvis den seneste uge er markant bedre end gennemsnittet for måneden
+    if r1w > avg_weekly_in_month and r1w > 0:
+        return "🚀 Accelererer", "trend-up"
+    # Hvis den seneste uge er markant dårligere (negativ trend i forhold til måneden)
+    elif r1w < avg_weekly_in_month:
+        return "📉 Bremser", "trend-down"
+    
+    return "➡️ Stabil", "trend-side"
+
 def get_momentum_status(f, rank):
     """
     Beregner status baseret på Ranking-modellen (Relativ styrke i markedet).
@@ -91,6 +111,7 @@ def build_monthly():
         total_return = ((curr_p - buy_p) / buy_p * 100) if buy_p > 0 else 0
         
         m_label, m_class = get_momentum_status(official, rank)
+        t_label, t_class = get_trend_velocity(official)
         
         fund_data = {
             "isin": isin,
@@ -99,7 +120,10 @@ def build_monthly():
             "buy_date": p_info.get('buy_date', 'N/A'),
             "buy_price": buy_p,
             "curr_price": curr_p,
+            "return_1w": official.get('return_1w', 0),
             "return_1m": official.get('return_1m', 0),
+            "trend_label": t_label,
+            "trend_class": t_class,
             "momentum_label": m_label,
             "momentum_class": m_class,
             "total_return": total_return,
@@ -113,17 +137,20 @@ def build_monthly():
             fund_data["sell_date"] = p_info.get('sell_date', 'N/A')
             sold_rows.append(fund_data)
 
-    # Top 5 markedsmuligheder
-    market_opps = sorted([
-        {
-            "name": i.get('name', i['isin']), 
-            "return_1m": i.get('return_1m', 0), 
-            "return_ytd": i.get('return_ytd', 0),
-            "rank": rank_map.get(i['isin'])
-        }
-        for i in latest_list 
-        if i['isin'] not in portfolio or not portfolio[i['isin']].get('active', False)
-    ], key=lambda x: x['return_1m'], reverse=True)[:5]
+    # Top 5 markedsmuligheder inkl. trend-analyse
+    market_opps = []
+    unsorted_opps = [i for i in latest_list if i['isin'] not in portfolio or not portfolio[i['isin']].get('active', False)]
+    sorted_opps = sorted(unsorted_opps, key=lambda x: x.get('return_1m', 0), reverse=True)[:5]
+    
+    for o in sorted_opps:
+        t_label, t_class = get_trend_velocity(o)
+        market_opps.append({
+            "name": o.get('name', o['isin']), 
+            "return_1m": o.get('return_1m', 0), 
+            "return_ytd": o.get('return_ytd', 0),
+            "rank": rank_map.get(o['isin']),
+            "trend_label": t_label
+        })
 
     sell_signals = [f for f in active_rows if f['momentum_class'] == 'momentum-flat']
     buy_signals = [o for o in market_opps if o['return_1m'] > 4.0]
@@ -150,7 +177,7 @@ def build_monthly():
         )
         REPORT_FILE.parent.mkdir(exist_ok=True)
         REPORT_FILE.write_text(html_output, encoding="utf-8")
-        print(f"✅ Ranking Rapport færdig (Uge {week_number}).")
+        print(f"✅ Deep Dive Rapport med Trend Velocity færdig (Uge {week_number}).")
     else:
         print(f"❌ FEJL: Template mangler.")
 
