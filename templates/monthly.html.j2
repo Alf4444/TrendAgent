@@ -13,6 +13,13 @@
         .warning-box { background: #fff3cd; color: #856404; padding: 15px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #ffeeba; font-size: 13px; }
         .warning-box strong { display: block; margin-bottom: 5px; text-transform: uppercase; font-size: 11px; }
 
+        /* Momentum Tags / Trafiklys */
+        .m-tag { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; white-space: nowrap; }
+        .momentum-fast { background: #e6f4ea; color: #1e7e34; border: 1px solid #c3e6cb; } /* Grøn */
+        .momentum-slow { background: #fff3e0; color: #e65100; border: 1px solid #ffe0b2; } /* Gul/Orange */
+        .momentum-flat { background: #fce8e6; color: #c5221f; border: 1px solid #fad2cf; } /* Rød */
+        .momentum-stable { background: #f1f3f4; color: #5f6368; border: 1px solid #dadce0; } /* Grå */
+
         .score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
         .score-box { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center; border-top: 5px solid #1a73e8; }
         .score-box small { color: #666; text-transform: uppercase; letter-spacing: 1px; font-size: 11px; }
@@ -77,12 +84,12 @@
         </div>
 
         <div class="table-container">
-            <h3>🟢 Aktive Positioner</h3>
+            <h3>🟢 Aktive Positioner & Momentum</h3>
             <table>
                 <thead>
                     <tr>
                         <th>Fond Navn</th>
-                        <th>Købsdato</th>
+                        <th>Momentum Status</th>
                         <th>Købskurs</th>
                         <th>Nuv. Kurs</th>
                         <th>Sidste 1M %</th>
@@ -93,7 +100,11 @@
                     {% for f in active_funds %}
                     <tr>
                         <td style="font-weight: bold;">⭐ {{ f.name }}</td>
-                        <td>{{ f.buy_date }}</td>
+                        <td>
+                            <span class="m-tag {{ f.momentum_class }}">
+                                {{ f.momentum_label }}
+                            </span>
+                        </td>
                         <td>{{ "%.2f"|format(f.buy_price) }}</td>
                         <td>{{ "%.2f"|format(f.curr_price) }}</td>
                         <td class="{{ 'pos' if f.return_1m >= 0 else 'neg' }}">
@@ -160,19 +171,21 @@
             <h3>📖 Detaljeret Metodik & Beregningsgrundlag</h3>
             <div class="method-grid">
                 <div class="method-section">
-                    <h4>🎯 Benchmark & Alpha-logik</h4>
-                    <p>Denne rapport anvender <strong>PFA Aktier (ISIN: PFA000002735)</strong> som proxy for en Profil Høj-investor. Alpha beregnes som differencen mellem dit gennemsnitlige totalafkast og benchmarkens 1-måneds performance.</p>
+                    <h4>🚦 Momentum Trafiklys (Trend-analyse)</h4>
+                    <p>Status beregnes ved at sammenligne det seneste afkast (1M) med det gennemsnitlige månedlige afkast over de sidste 3 måneder:</p>
                     <ul>
-                        <li><strong>Alpha:</strong> Viser merværdien af dine aktive fondvalg i forhold til en passiv standardløsning.</li>
-                        <li><strong>Relevans:</strong> Bruges til at vurdere, om risikoen ved at vælge specifikke fonde (f.eks. Emerging Markets) betaler sig.</li>
+                        <li><span class="pos">🚀 Accelererer:</span> Afkastet er >30% over 3M gennemsnittet.</li>
+                        <li><span style="color: #666;">✅ Stabil:</span> Afkastet følger den langsigtede trend.</li>
+                        <li><span style="color: #e65100;">⚠️ Slower:</span> Afkastet er faldet til under 80% af 3M snittet.</li>
+                        <li><span class="neg">🛑 Fladet ud:</span> Afkastet er under 35% af snittet (kritisk tab af momentum).</li>
                     </ul>
                 </div>
                 <div class="method-section">
                     <h4>⚙️ Beregningsmodeller</h4>
                     <ul>
                         <li><strong>Total Afkast %:</strong> Den procentvise ændring fra din manuelt indtastede <code>buy_price</code> til dags dato.</li>
-                        <li><strong>Sidste 1M %:</strong> En momentum-indikator, der gør det muligt at sammenligne dine egne fonde direkte med de stærkeste alternativer i PFA-universet.</li>
-                        <li><strong>Validering:</strong> Koden tjekker automatisk for manglende købspriser eller ISIN-fejl for at sikre rapportens nøjagtighed.</li>
+                        <li><strong>Alpha:</strong> Differencen mellem din porteføljes snit og <strong>{{ benchmark_name }}</strong>.</li>
+                        <li><strong>Data-vask:</strong> Rapporten bruger filtrerede data, hvor ekstreme dags-udsving (>5%) ignoreres for at sikre stabile trend-linjer.</li>
                     </ul>
                 </div>
             </div>
