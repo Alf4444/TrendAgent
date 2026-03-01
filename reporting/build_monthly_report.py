@@ -15,26 +15,27 @@ REPORT_FILE = ROOT / "build/monthly.html"
 BENCHMARK_ISIN = "PFA000002735" # PFA Aktier (Proxy for Profil Høj)
 
 def get_ranking_data(latest_list):
-    """Sortér alle fonde efter 1M afkast og giv dem en plads (Rank)."""
+    """Sortér alle fonde efter 1M afkast og tildel dem en Markeds-Rank."""
+    # Vi sorterer efter return_1m. Hvis data mangler, sættes den til en meget lav værdi.
     sorted_list = sorted(latest_list, key=lambda x: x.get('return_1m', -999), reverse=True)
     rank_map = {item['isin']: index + 1 for index, item in enumerate(sorted_list)}
     return rank_map, len(sorted_list)
 
 def get_momentum_status(f, rank):
     """
-    Beregner status baseret på Ranking-modellen (Relativ styrke).
+    Beregner status baseret på Ranking-modellen (Relativ styrke i markedet).
     """
     r1m = f.get('return_1m', 0)
     
-    # SALG: Hvis den er uden for Top 10 (Opportunity Cost)
+    # SALG: Hvis den er uden for Top 10 (Høj opportunity cost)
     if rank > 10:
         return "🛑 Outperformed", "momentum-flat"
     
-    # ADVARSEL: Hvis afkastet er negativt eller den er ved at glide ud af Top 5
-    if r1m < 0 or rank > 5:
+    # ADVARSEL: Hvis afkastet er negativt eller den glider ned mod bunden af Top 10
+    if r1m < 0 or rank > 7:
         return "⚠️ Slower", "momentum-slow"
     
-    # KØB/HOLD: Top 5 og positivt afkast
+    # KØB/HOLD: Top 5 og positiv trend
     if rank <= 5 and r1m > 0:
         return "🚀 Top Performer", "momentum-fast"
     
@@ -44,9 +45,13 @@ def validate_data(latest_map, portfolio):
     warnings = []
     if BENCHMARK_ISIN not in latest_map:
         warnings.append(f"ADVARSEL: Benchmark ISIN {BENCHMARK_ISIN} mangler i data.")
+
     for isin, p_info in portfolio.items():
-        if p_info.get('active', True) and isin not in latest_map:
-            warnings.append(f"ADVARSEL: Aktiv fond {isin} mangler i PFA-data.")
+        if p_info.get('active', True):
+            if isin not in latest_map:
+                warnings.append(f"ADVARSEL: Aktiv fond {isin} mangler i PFA-data.")
+            if 'buy_price' not in p_info or p_info['buy_price'] <= 0:
+                warnings.append(f"ADVARSEL: Købspris mangler for {p_info.get('name', isin)}.")
     return warnings
 
 def build_monthly():
@@ -63,7 +68,7 @@ def build_monthly():
         print(f"Fejl ved indlæsning: {e}")
         return
 
-    # 1. Beregn Ranking for hele markedet
+    # Beregn ranking for hele markedet først
     rank_map, total_market_count = get_ranking_data(latest_list)
     latest_map = {item['isin']: item for item in latest_list}
     validation_warnings = validate_data(latest_map, portfolio)
@@ -76,7 +81,6 @@ def build_monthly():
     sold_rows = []
     active_returns_total = []
 
-    # 2. Behandl Portefølje med Ranking-logik
     for isin, p_info in portfolio.items():
         if isin not in latest_map: continue
         
@@ -92,6 +96,7 @@ def build_monthly():
             "isin": isin,
             "name": p_info.get('name', isin),
             "rank": rank,
+            "buy_date": p_info.get('buy_date', 'N/A'),
             "buy_price": buy_p,
             "curr_price": curr_p,
             "return_1m": official.get('return_1m', 0),
@@ -108,7 +113,7 @@ def build_monthly():
             fund_data["sell_date"] = p_info.get('sell_date', 'N/A')
             sold_rows.append(fund_data)
 
-    # 3. Top 5 Muligheder (Altid de 5 bedste på markedet)
+    # Top 5 markedsmuligheder
     market_opps = sorted([
         {
             "name": i.get('name', i['isin']), 
@@ -117,11 +122,11 @@ def build_monthly():
             "rank": rank_map.get(i['isin'])
         }
         for i in latest_list 
+        if i['isin'] not in portfolio or not portfolio[i['isin']].get('active', False)
     ], key=lambda x: x['return_1m'], reverse=True)[:5]
 
-    # 4. Action Plan baseret på Ranking
-    sell_signals = [f for f in active_rows if f['rank'] > 10]
-    buy_signals = [o for o in market_opps if o['rank'] <= 3]
+    sell_signals = [f for f in active_rows if f['momentum_class'] == 'momentum-flat']
+    buy_signals = [o for o in market_opps if o['return_1m'] > 4.0]
 
     benchmark_return = latest_map[BENCHMARK_ISIN].get('return_1m', 0) if BENCHMARK_ISIN in latest_map else 0
     avg_port_return = sum(active_returns_total) / len(active_returns_total) if active_returns_total else 0
@@ -146,6 +151,8 @@ def build_monthly():
         REPORT_FILE.parent.mkdir(exist_ok=True)
         REPORT_FILE.write_text(html_output, encoding="utf-8")
         print(f"✅ Ranking Rapport færdig (Uge {week_number}).")
+    else:
+        print(f"❌ FEJL: Template mangler.")
 
 if __name__ == "__main__":
     build_monthly()
