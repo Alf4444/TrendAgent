@@ -4,9 +4,9 @@ Der investeres primært i obligationer udstedt af lande, virksomheder og statsli
 samt overstatslige organisationer i Emerging Markets. Fonden er generelt Valuta USD
 Type Investeringsforening
 diversificeret efter land, valuta og udsteder, men kan til enhver tid have mere
-Indre værdi 313,62
+Indre værdi 313,11
 koncentrerede positioner. Den gennemsnitlige kreditkvalitet for selskaberne i
-Indre værdi dato 26-02-2026
+Indre værdi dato 28-02-2026
 porteføljen kan være lavere end Investment Grade. Der benyttes en aktiv
 Bæredygtighed Artikel 8
 investeringsstrategi til at opnå et afkast, der er bedre end afkastet af fondens
@@ -17,11 +17,11 @@ der kan accepteres lavere afkast på investeringen. Pensionskunder bør have en
 tidshorisont på min. 3 år. Fonden indeholder valutarisiko, da den indeholder
 investeringer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -0,15% 2,31% 1,59% 6,88%
+Afdeling -0,07% 1,94% 1,39% 6,88%
 WM Opportunistisk Emerging Markets Obligationer
 Afkast ÅTD 1 år 3 år 5 år
 120
-Afdeling 1,97% 0,64% 21,91% 18,34%
+Afdeling 1,81% -0,45% 22,46% 18,15%
 112
 Omkostninger %
 104 Andre løbende omkostninger 0,74
@@ -33,29 +33,29 @@ Udtrædelsesomkostninger 0,55
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,27 0,57 0,12
-Std. Afv. 8,61% 6,80% 7,80% 1 2 3 4 5 6 7
-Største beholdninger (30-09-2025) % Formuefordeling
-US DollarOn-Hand 3,20
-CDX-EMS43V1-5Y 0.0000 06-20-30 2,11
-0.125% ARGENTINA REPUBLIC US Dollar 80,70 %
-1,93
-2035/09/07 Euro 10,39 %
-6,75% Sultanate of Oman 17/01/2048 1,64 Peruvianske Nuevo Sol 1,65 %
-5.0% BULGARIA 5% 2037-03-05 1,60 Sydafrikanske Rand 1,48 %
-5.5% REPUBLIC OF PERU 5.5% 2036- 1,39 Andet 5,78 %
-03-30
-7.69% PETROLEOS MEXICA
-1,37
-2050/01/23
-10% BRAZIL NTN/F BNTNF 2031/02/01 1,17
-> 7 år 56,99 %
-REPUBLIC OF PARAGUAY 6.65% 2055-
-1,16 3-5 år 12,50 %
-03-04
-1-3 år 11,73 %
-6.0% REPUBLIC OF SERBIA 6% 2034-
-06-12 1,16 5-7 år 6,72 %
-Andet 12,06 %
+Std. Afv. 10,06% 7,19% 8,19% 1 2 3 4 5 6 7
+Største beholdninger (31-12-2025) % Formuefordeling
+CDX-EMS44V1-5Y 0.0000 12-20-30 3,22
+0.125% ARGENTINA REPUBLIC
+2035/09/07 3,05 US Dollar 78,65 %
+6,75% Sultanate of Oman 17/01/2048 1,45 Euro 11,97 %
+7.69% PETROLEOS MEXICA New Leu 2,13 %
+1,38
+2050/01/23 Sydafrikanske Rand 1,97 %
+6.0% REPUBLIC OF SERBIA 6% 2034- 1,30 Andet 5,28 %
+06-12
+5.0% BULGARIA 5% 2037-03-05 1,30
+3.6% REPUBLIC OF SRI LANKA 2038-
+1,23
+02-15
+> 7 år 59,60 %
+US DollarOn-Hand 1,22
+3-5 år 13,77 %
+10% BRAZIL NTN/F BNTNF 2031/02/01 1,10
+1-3 år 9,27 %
+4,4% UNITED MEXICAN MEX
+12/02/2052 1,09 5-7 år 6,05 %
+Andet 11,31 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

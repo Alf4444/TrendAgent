@@ -4,9 +4,9 @@ Der investeres i en portefølje af globale aktier bestående af større selskabe
 opfylder højere kriterier til ESG-forhold. Selskabernes udvælges på baggrund af Valuta USD
 Type Investeringsforening
 grundig screening af selskaber ud fra en række ESG-forhold (FN’s Verdensmål,
-Indre værdi 237,45
+Indre værdi 236,94
 eksklusioner mv.) i kombination med strukturelle temaer (energi, sundhed og
-Indre værdi dato 26-02-2026
+Indre værdi dato 28-02-2026
 demografi). Selvom målet ikke er at slå et specifikt benchmark, benyttes en aktiv
 Bæredygtighed Artikel 8
 investeringsstrategi til at skabe et langsigtet afkast, som er bedre end MSCI World.
@@ -17,11 +17,11 @@ en tidshorisont på min. 3 år, og fonden bør indgå i en diversificeret portef
 øvrige investeringer. Fonden indeholder valutarisiko, da den indeholder
 investeringer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 0,29% -0,65% 0,32% 7,62%
+Afdeling -0,31% 0,50% -0,32% 6,75%
 UBS Globale Bæredygtige Aktier
 Afkast ÅTD 1 år 3 år 5 år
 175
-Afdeling 0,19% 8,13% 44,61% 62,42%
+Afdeling -0,02% 7,31% 45,01% 62,07%
 150
 Omkostninger %
 125 Andre løbende omkostninger 1,32
@@ -33,22 +33,22 @@ Udtrædelsesomkostninger 0,25
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,82 0,77 0,82
-Std. Afv. 13,45% 10,94% 11,85% 1 2 3 4 5 6 7
-Største beholdninger (31-10-2025) % Formuefordeling
-Microsoft Corp 7,15
-Alphabet A 4,71
-Amazon.Com 4,07 Teknologi 33,38 %
-Broadcom Inc 3,77 Finans 11,46 %
-NVIDIA Corp 3,66 Industri 9,91 %
-Bank of Ireland Group PLC 2,77 Telekommunikation 8,19 %
-Eli Lilly & Co 2,63 Andet 37,05 %
-Banco Bilbao Vizcaya Argentaria 2,32
-Aecom Technology 2,13
-First Horizon National 2,08
-Nordamerika 75,83 %
-Europa 18,78 %
-Japan 4,35 %
-Andet 1,04 %
+Std. Afv. 13,94% 10,73% 13,16% 1 2 3 4 5 6 7
+Største beholdninger (28-11-2025) % Formuefordeling
+Microsoft Corp 6,82
+Alphabet A 5,04
+Amazon.Com 4,40 Teknologi 30,83 %
+NVIDIA Corp 3,87 Finans 12,26 %
+Broadcom Inc 3,55 Industri 9,79 %
+Eli Lilly & Co 3,29 Medicin & Sundhed 8,81 %
+Bank of Ireland Group PLC 3,15 Andet 38,32 %
+Banco Bilbao Vizcaya Argentaria 2,50
+First Horizon National 2,18
+Sony 2,02
+Nordamerika 74,19 %
+Europa 19,63 %
+Japan 5,79 %
+Andet 0,39 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

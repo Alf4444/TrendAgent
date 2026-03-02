@@ -4,9 +4,9 @@ Der investeres i en portefølje af aktier fra ca. 35-70 selskaber i Asien (ex. J
 eller selskaber med primærsalg i asiatiske markeder. Selskaberne udvælges ved at Valuta DKK
 Type Investeringsforening
 identificere langsigtede udviklingstendenser og kortvarige temaer, der understøtter
-Indre værdi 402,61
+Indre værdi 399,37
 væksten i disse markeder. Der benyttes en aktiv investeringsstrategi til at opnå et
-Indre værdi dato 26-02-2026
+Indre værdi dato 28-02-2026
 afkast, der er bedre end afkastet af fondens benchmark, MSCI Asien Indeks ex.
 Bæredygtighed Artikel 8
 Japan. Fonden egner sig til informerede eller erfarne pensionskunder, som har
@@ -17,11 +17,11 @@ fonden bør indgå i en diversificeret portefølje af øvrige investeringer. Fon
 indeholder valutarisiko, da den er eksponeret over for værdipapirer i udenlandsk
 valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 4,49% 12,25% 18,65% 27,45%
+Afdeling 3,71% 7,26% 17,96% 28,32%
 C WorldWide Asien
 Afkast ÅTD 1 år 3 år 5 år
 140
-Afdeling 17,20% 28,45% 54,88% 21,50%
+Afdeling 16,26% 30,66% 55,83% 20,53%
 120
 Omkostninger %
 100 Andre løbende omkostninger 1,51
@@ -33,7 +33,7 @@ Udtrædelsesomkostninger 0,55
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,89 0,75 0,21
-Std. Afv. 20,30% 14,48% 16,54% 1 2 3 4 5 6 7
+Std. Afv. 17,76% 13,90% 15,81% 1 2 3 4 5 6 7
 Største beholdninger (31-12-2025) % Formuefordeling
 Taiwan Semiconductor Manufacturing Co
 9,80

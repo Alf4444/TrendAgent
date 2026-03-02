@@ -4,9 +4,9 @@ Der investeres i en koncentreret portefølje af aktier af ca. 15 børsnoterede d
 selskaber i forskellige brancher. Selskaberne vælges ud fra deres langsigtede Valuta DKK
 Type Kapitalforening
 risikojusterede afkastpotentiale baseret på bl.a. vækstpotentialet i selskabernes
-Indre værdi 328,09
+Indre værdi 331,15
 forretningsmodel. Selvom målet ikke er at slå et specifikt benchmark, benyttes dog
-Indre værdi dato 26-02-2026
+Indre værdi dato 28-02-2026
 en aktiv investeringsstrategi til at skabe et langsigtet afkast, som er bedre end
 Bæredygtighed Artikel 8
 markedet. Fonden egner sig til informerede eller erfarne pensionskunder, som har
@@ -16,11 +16,11 @@ på investeringen. Pensionskunder bør have en tidshorisont på min. 3 år og fo
 bør indgå i en diversificeret portefølje af øvrige investeringer. Fonden indeholder
 valutarisiko, da den er eksponeret over for værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 0,58% -3,67% -4,13% -3,85%
+Afdeling 0,59% -1,62% -4,46% -1,63%
 BLS Invest Danske Aktier
 Afkast ÅTD 1 år 3 år 5 år
 132
-Afdeling -7,83% -10,95% -0,69% 4,68%
+Afdeling -6,97% -9,26% -0,36% 5,66%
 120
 Omkostninger %
 108 Andre løbende omkostninger 2,33
@@ -32,18 +32,18 @@ Udtrædelsesomkostninger 0,10
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe -0,55 0,21 0,19
-Std. Afv. 17,59% 13,11% 12,95% 1 2 3 4 5 6 7
-Største beholdninger (31-10-2025) % Formuefordeling
-Pandora 9,94
-NETCOMPANY GROUP AS 9,89
-DSV 9,81 Finans 19,59 %
-Sampo A 9,60 Medicin & Sundhed 17,64 %
-UIE PLC new 9,44 Forbrugsgoder 9,94 %
-William Demant Holding A/S 9,08 Teknologi 9,89 %
-Novo Nordisk B 8,56 Andet 42,95 %
-Boozt AB 8,53
-Jeudan A/S 8,29
-Better Collective 6,92
+Std. Afv. 13,62% 11,15% 12,81% 1 2 3 4 5 6 7
+Største beholdninger (30-11-2025) % Formuefordeling
+DSV 10,07
+NETCOMPANY GROUP AS 10,01
+William Demant Holding A/S 9,89 Finans 19,70 %
+Sampo A 9,83 Medicin & Sundhed 18,38 %
+Pandora 9,75 Industri 10,07 %
+UIE PLC new 9,35 Teknologi 10,01 %
+Novo Nordisk B 8,49 Andet 41,84 %
+Jeudan A/S 8,09
+Boozt AB 7,55
+Tryg 6,60
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om
 valg af fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående
 samtykke.
