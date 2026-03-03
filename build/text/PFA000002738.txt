@@ -4,9 +4,9 @@ Der investeres i en portefølje af aktier bestående af store og mellemstore sel
 beliggende i eller med primæraktiviteter i Kina. Der benyttes en indeksnær Valuta EUR
 Type Investeringsforening
 investeringsstrategi til at opnå et afkast svarende til fondens benchmark, MSCI
-Indre værdi 139,30
+Indre værdi 138,47
 China Index. Fonden kan investere i aktier, som ikke indgår i benchmarket, hvis
-Indre værdi dato 28-02-2026
+Indre værdi dato 02-03-2026
 disse har lignende risiko- og afkastprofil. Fonden er ikke ESG-screenet og egner sig
 Bæredygtighed Artikel 6
 til informerede og erfarne pensionskunder, som har indsigt i og erfaring med
@@ -16,11 +16,11 @@ Pensionskunder bør have en tidshorisont på min. 3 år, og fonden bør indgå i
 diversificeret portefølje af øvrige investeringer. Fonden indeholder valutarisiko, da
 den er eksponeret over for værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -0,95% -5,02% -4,27% -0,65%
+Afdeling -3,60% -4,16% -5,82% -3,44%
 iShares MSCI China UCITS ETF
 Afkast ÅTD 1 år 3 år 5 år
 105
-Afdeling -1,89% 1,42% 23,08% -19,25%
+Afdeling -2,48% 0,81% 17,79% -21,52%
 90
 Omkostninger %
 75 Andre løbende omkostninger 0,51
@@ -32,7 +32,7 @@ Udtrædelsesomkostninger 0,22
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 1,29 0,61 -0,11
-Std. Afv. 17,79% 20,96% 24,62% 1 2 3 4 5 6 7
+Std. Afv. 16,21% 23,68% 23,06% 1 2 3 4 5 6 7
 Største beholdninger (30-01-2026) % Formuefordeling
 Tencent Holdings 16,78
 HK 12,56

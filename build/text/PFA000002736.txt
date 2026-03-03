@@ -4,9 +4,9 @@ Der investeres i en koncentreret portefølje af virksomhedsobligationer med lav 
 kreditværdighed typisk udstedt af europæiske selskaber med High-Yield status. Valuta DKK
 Type Investeringsforening
 Selskaberne udvælges på baggrund af tilbagebetalingsevnen samt obligationernes
-Indre værdi 215,89
+Indre værdi 215,18
 konstruktion ift. kapitalstrukturen. Der benyttes en aktiv investeringsstrategi til at
-Indre værdi dato 28-02-2026
+Indre værdi dato 02-03-2026
 opnå et afkast, der er bedre end afkastet af fondens benchmark, ICE Bof AML
 Bæredygtighed Artikel 8
 European Currency High Yield Constrained Index. Fonden egner sig til informerede
@@ -17,11 +17,11 @@ lavere afkast på investeringen. Pensionskunder bør have en tidshorisont på mi
 indeholder valutarisiko, da den er eksponeret over for værdipapirer i udenlandsk
 valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -0,11% 0,07% 1,13% 1,99%
+Afdeling -0,46% -0,27% 0,74% 1,88%
 Nordea Invest European High Yield Bonds
 Afkast ÅTD 1 år 3 år 5 år
 120
-Afdeling 0,76% 4,89% 25,82% 18,13%
+Afdeling 0,42% 4,55% 25,75% 17,41%
 110
 Omkostninger %
 100 Andre løbende omkostninger 0,57
@@ -33,30 +33,30 @@ Udtrædelsesomkostninger 0,20
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 2,32 1,46 0,32
-Std. Afv. 2,36% 3,96% 6,80% 1 2 3 4 5 6 7
-Største beholdninger (31-12-2025) % Formuefordeling
-Net Cash 3,35
-IRON MOUNTAIN 4.75 Jan34 1,12
-5.25% VERISURE MIDHOLDING AB Euro 83,92 %
-1,10
-RegS 2029/02/15 Engelske Pund 9,77 %
-5,500000 Opal Bidco 31-03-2032 1,06 Danske Kroner 3,35 %
+Std. Afv. 2,40% 3,69% 6,87% 1 2 3 4 5 6 7
+Største beholdninger (30-01-2026) % Formuefordeling
+Net Cash 3,14
+IRON MOUNTAIN 4.75 Jan34 1,10
+5.25% VERISURE MIDHOLDING AB Euro 84,15 %
+1,09
+RegS 2029/02/15 Engelske Pund 9,76 %
+5,500000 Opal Bidco 31-03-2032 1,05 Danske Kroner 3,14 %
 MEHILAINEN YHTIOT OY 5.125% 2032- US Dollar 2,96 %
 0,94
 06-30
+7.0% DEUCE FINCO 7% 2031-11-20 0,89
 Q-PARK HOLDING I BV 5.125%
 0,89
 15/02/2030
-7.0% DEUCE FINCO 7% 2031-11-20 0,88
-TECHEM VERWALTUNGSGESELL 0,87
-3-5 år 24,15 %
 Var% PRIMO TRITON WATER HLD
-0,86 5-7 år 21,03 %
+0,87 3-5 år 23,62 %
 3.875% 2028-10-31
-1-3 år 20,22 %
-2.625% Electricite de France SA VAR
-PERP 0,84 > 7 år 15,69 %
-Andet 18,92 %
+5-7 år 21,33 %
+TECHEM VERWALTUNGSGESELL 0,86
+1-3 år 19,99 %
+AEGIS LUX 5.625% 2031-10-29 0,84
+> 7 år 15,14 %
+Andet 19,92 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke
