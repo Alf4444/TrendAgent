@@ -7,14 +7,28 @@
   },
   "PFA000002735": {
     "name": "Magna Eastern European Fund",
-    "active": true,
-    "buy_date": "2025-07-08",
-    "buy_price": 129.19
-  },
-  "PFA000002760": {
-    "name": "PFA Pension - High Yield Obligationer",
     "active": false,
-    "buy_date": "2026-01-01",
-    "sell_date": "2026-02-15"
+    "buy_date": "2025-07-08",
+    "buy_price": 129.19,
+    "sell_date": "2026-03-02",
+    "sell_price": 150.69
+  },
+  "PFA000002732": {
+    "name": "C WorldWide Asien",
+    "active": true,
+    "buy_date": "2026-03-02",
+    "buy_price": 393.41
+  },
+  "PFA000002761": {
+    "name": "Maj Invest Guld, Sølv & Miner UCITS ETF",
+    "active": true,
+    "buy_date": "2026-03-02",
+    "buy_price": 146.90
+  },
+  "PFA000002726": {
+    "name": "Sydinvest Globale EM-aktier",
+    "active": true,
+    "buy_date": "2026-03-02",
+    "buy_price": 210.48
   }
 }
