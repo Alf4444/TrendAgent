@@ -4,9 +4,9 @@ Der investeres i en portefølje af aktier fra Emerging og Frontier Markets, dvs.
 med stort vækstpotentiale. Porteføljen består af ca. 135 selskaber på tværs af Valuta DKK
 Type Investeringsforening
 forskellige brancher. Selskaberne vælges ud fra globale og lokale markedsanalyser,
-Indre værdi 210,79
+Indre værdi 203,39
 strukturelle temaer og selskabsanalyser med fokus på kvalitet og afkastpotentiale.
-Indre værdi dato 02-03-2026
+Indre værdi dato 03-03-2026
 Der benyttes en aktiv investeringsstrategi til at opnå et afkast, der er bedre end
 Bæredygtighed Artikel 8
 afkastet af fondens benchmark, MSCI Emerging+Frontier Markets. Fonden egner
@@ -17,11 +17,11 @@ på min. 3 år og fonden bør indgå i en diversificeret portefølje af øvrige 
 Fonden indeholder valutarisiko, da den indeholder investeringer i udenlandsk
 valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 1,86% 7,98% 16,79% 27,65%
+Afdeling -2,84% 1,43% 13,30% 22,55%
 Sydinvest Globale EM-aktier
 Afkast ÅTD 1 år 3 år 5 år
 140
-Afdeling 14,71% 32,41% 59,18% 25,17%
+Afdeling 10,69% 28,63% 53,59% 20,03%
 120
 Omkostninger %
 100 Andre løbende omkostninger 1,49
@@ -33,29 +33,25 @@ Udtrædelsesomkostninger 0,39
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 1,27 0,72 -
-Std. Afv. 13,97% 12,37% 13,21% 1 2 3 4 5 6 7
-Største beholdninger (30-01-2026) % Formuefordeling
+Std. Afv. 14,81% 12,12% 12,74% 1 2 3 4 5 6 7
+Største beholdninger (27-02-2026) % Formuefordeling
 Taiwan Semiconductor Manufacturing Co
-9,56
+9,70
 Ltd ADR
-SAMSUNG ELECTRONICS NON Teknologi 37,45 %
-7,83
-VOTING PRE Finans 21,76 %
-Tencent Holdings 5,13 Materialer 7,34 %
-SK hynix 4,44 Industri 6,26 %
-HK 3,81 Andet 27,19 %
-CTBC Financial 1,50
-Itau Unibanco 1,43
-Ping An Insurance (Group) Company of
-1,42
-China Ltd
-Asien (ex.Japan) 74,66 %
-MediaTek 1,29
-Latinamerika 12,85 %
-AIA Group 1,25
-Afrika 3,40 %
-Europa 2,75 %
-Andet 6,34 %
+SAMSUNG ELECTRONICS NON Teknologi 36,10 %
+8,29
+VOTING PRE Finans 19,94 %
+SK hynix 4,85 Materialer 6,64 %
+Tencent Holdings 3,90 Industri 6,53 %
+HK 2,85 Andet 30,79 %
+CTBC Financial 1,57
+Chroma Ate 1,48
+Itau Unibanco 1,39
+MediaTek 1,35 Asien (ex.Japan) 75,62 %
+Sun Hung Kai Properties 1,25 Latinamerika 12,36 %
+Afrika 3,27 %
+Europa 2,73 %
+Andet 6,02 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

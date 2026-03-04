@@ -4,9 +4,9 @@ Fonden investerer primært i globale aktier gennem ca. 100 selskaber fra udvikle
 lande og forskellige sektorer. Selskaberne udvælges på baggrund af fundamental Valuta DKK
 Type Investeringsforening
 selskabsanalyse og en bæredygtighedsmodel, hvor selskaber, der vurderes at være
-Indre værdi 131,70
+Indre værdi 130,16
 markedsledende ift. at fremme ESG-forhold, er bedst positioneret til overgangen
-Indre værdi dato 02-03-2026
+Indre værdi dato 03-03-2026
 mod en lav drivhusgasudledende økonomi og som overholder FN’s 17 Verdensmål,
 Bæredygtighed Artikel 9
 foretrækkes. Fonden er klassificeret som Artikel 9 jf. EU’s Disclosureforordning. Der
@@ -17,11 +17,11 @@ risikoen ved at investere i fonden og kan acceptere tab på investeringen. Fonde
 indeholder valutarisiko, da den er eksponeret over for værdipapirer i udenlandsk
 valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 0,44% 2,30% 3,57% 6,22%
+Afdeling -1,40% 1,72% 1,71% 4,45%
 Qblue Global Equities Responsible Transition Fund
 Afkast ÅTD 1 år 3 år 5 år
 135
-Afdeling 3,48% -1,84% 33,20% -
+Afdeling 2,27% -2,43% 29,98% -
 120
 Omkostninger %
 105 Andre løbende omkostninger 1,13
@@ -33,7 +33,7 @@ Udtrædelsesomkostninger 0,15
 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,10 0,58 -
-Std. Afv. 11,03% 10,31% - 1 2 3 4 5 6 7
+Std. Afv. 12,84% 11,19% - 1 2 3 4 5 6 7
 Største beholdninger (30-12-2025) % Formuefordeling
 NVIDIA Corp 6,15
 Broadcom Inc 3,88
