@@ -4,9 +4,9 @@ Der investeres i en veldiversificeret portefølje af Investment Grade obligation
 udstedere i globale markeder inklusive Emerging Markets. Der benyttes en Valuta EUR
 Type Investeringsforening
 indeksnær investeringsstrategi til at opnå et afkast svarende til fondens benchmark.
-Indre værdi 173,48
+Indre værdi 173,66
 Fonden er ikke ESG-screenet og egner sig til informerede eller erfarne
-Indre værdi dato 03-03-2026
+Indre værdi dato 04-03-2026
 pensionskunder, som har indsigt i og erfaring med værdipapirhandel, og som
 Bæredygtighed Artikel 6
 ønsker et opsparingsprodukt med eksponering til Investment Grade obligationer og
@@ -15,11 +15,11 @@ have en tidshorisont på min. 3 år. Fonden indeholder valutarisiko, da den har
 eksponering til investeringer i udenlandsk valuta. Valutaeksponeringen tilstræbes
 fuldt afdækket til EUR.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -0,47% 0,43% 0,46% 1,90%
+Afdeling -0,34% 0,61% 0,67% 1,86%
 iShares Global IG Corp Bond EUR Hedged UCITS ETF
 Afkast ÅTD 1 år 3 år 5 år
 104
-Afdeling 0,61% 3,64% 13,66% -3,54%
+Afdeling 0,71% 3,42% 13,78% -3,41%
 96
 Omkostninger %
 88 Andre løbende omkostninger 0,47
@@ -31,7 +31,7 @@ Udtrædelsesomkostninger 0,10
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 1,24 0,49 -0,36
-Std. Afv. 2,08% 4,31% 6,14% 1 2 3 4 5 6 7
+Std. Afv. 2,10% 4,24% 6,16% 1 2 3 4 5 6 7
 Største beholdninger (30-01-2026) % Formuefordeling
 USD/EUR (Future) 0,76
 0.1% JAPAN 10YEAR ISSUE 2028/12/20 0,30
