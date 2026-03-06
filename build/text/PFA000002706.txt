@@ -4,9 +4,9 @@ Der investeres i en koncentreret portefølje af aktier bestående af typisk op t
 globale selskaber. Selskaberne udvælges ved at identificere de mest holdbare og Valuta DKK
 Type Investeringsforening
 ansvarlige forretningsmodeller, der udnytter værdiskabelsen i langsigtede
-Indre værdi 534,66
+Indre værdi 535,90
 udviklingstendenser. Der benyttes en aktiv investeringsstrategi til at opnå et afkast,
-Indre værdi dato 04-03-2026
+Indre værdi dato 05-03-2026
 der er bedre end afkastet af fondens benchmark, MSCI All Countries World Free.
 Bæredygtighed Artikel 8
 Fonden egner sig til informerede eller erfarne pensionskunder, som har indsigt i og
@@ -16,23 +16,23 @@ investeringen. Pensionskunder bør have en tidshorisont på min. 3 år, og fonde
 indgå i en diversificeret portefølje af øvrige investeringer. Fonden indeholder
 valutarisiko, da den er eksponeret over for værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -1,27% -0,24% 0,64% 5,29%
+Afdeling -0,73% 0,66% 0,61% 6,29%
 C WorldWide Globale Aktier
 Afkast ÅTD 1 år 3 år 5 år
-150
-Afdeling 0,50% -0,94% 26,81% 37,66%
-135
+144
+Afdeling 0,73% -0,42% 27,11% 36,15%
+132
 Omkostninger %
 120 Andre løbende omkostninger 1,65
 Resultatgebyrer 0,00
-105 Transaktionsomkostninger (Direkte + indirekte) 0,05
+108 Transaktionsomkostninger (Direkte + indirekte) 0,05
 Oprettelsesomkostninger 0,35
 Udtrædelsesomkostninger 0,31
 ÅOP 1,80
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,06 0,54 0,48
-Std. Afv. 17,17% 13,13% 14,94% 1 2 3 4 5 6 7
+Std. Afv. 17,08% 13,88% 14,67% 1 2 3 4 5 6 7
 Største beholdninger (31-12-2025) % Formuefordeling
 Alphabet C 6,40
 Taiwan Semiconductor Manufacturing

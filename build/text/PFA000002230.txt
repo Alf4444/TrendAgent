@@ -4,9 +4,9 @@ Der investeres i en portefølje af europæiske aktier, hvor porteføljen som Ops
 udgangspunkt sammensættes ud fra de selskaber, der indgår i fondens benchmark, Valuta DKK
 Type Investeringsprodukt
 MSCI Europe Index. Der benyttes en indeksnær investeringsstrategi til at opnå et
-Indre værdi 250,10
+Indre værdi 246,66
 afkast lig fondens benchmark, dog kan fondens afkast afvige fra
-Indre værdi dato 04-03-2026
+Indre værdi dato 05-03-2026
 benchmarkafkastet, da PFA’s ’Politik for ansvarlige investeringer og aktivt ejerskab’
 Bæredygtighed Artikel 8
 samt anvendelsen af en optimeringsmodel mhp. at reducere
@@ -17,12 +17,12 @@ hvorfor der kan accepteres tab på investeringen. Pensionskunder bør have en
 tidshorisont på min. 3 år. Fonden indeholder valutarisiko, da den har eksponering til
 investeringer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -3,23% -0,17% 6,82% 12,62%
+Afdeling -4,47% -0,59% 5,35% 11,21%
 PFA Indeks Europa Aktier Benchmark
-Benchmark -3,20% -0,40% 6,08% 13,50%
+Benchmark -4,40% -0,61% 4,76% 10,74%
 210 Afkast ÅTD 1 år 3 år 5 år
-180 Afdeling 4,38% 14,74% 45,58% 74,91%
-Benchmark 3,80% 13,66% 42,80% 70,61%
+180 Afdeling 2,95% 12,30% 43,58% 73,52%
+Benchmark 2,47% 11,32% 40,97% 70,35%
 150
 Omkostninger %
 120 Andre løbende omkostninger 0,33
@@ -34,7 +34,7 @@ Udtrædelsesomkostninger 0,15
 ÅOP 0,44
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 1,38 1,13 0,91
-Std. Afv. 15,52% 10,95% 13,76% 1 2 3 4 5 6 7
+Std. Afv. 16,18% 11,84% 14,47% 1 2 3 4 5 6 7
 Største beholdninger (31-12-2025) % Formuefordeling
 ASML Holding NV 3,16
 Roche Holding AG 2,32
