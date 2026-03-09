@@ -45,11 +45,11 @@ PFIZER INVSTMNT PFE 4.75 05/19/33 0,06
 5,05% CVS HEALTH CORP 25/03/2048 0,05
 BANK OF AMER CRP BAC 5.288
 0,05
-04/25/34 > 7 år 32,20 %
-Meta Plat 4.875 15/11/35 0,05 1-3 år 17,31 %
-3-5 år 15,75 %
-5-7 år 11,50 %
-Andet 23,23 %
+04/25/34 > 7 år 32,15 %
+Meta Plat 4.875 15/11/35 0,05 1-3 år 17,36 %
+3-5 år 15,63 %
+5-7 år 11,52 %
+Andet 23,34 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

@@ -4,9 +4,9 @@ Der investeres i en portefølje af primært danske aktier fra ca. 40 selskaber. 
 80% af fondens formue investeres i danske aktier handlet på NASDAQ OMX Valuta DKK
 Type Investeringsforening
 Copenhagen A/S eller et andet reguleret marked i Danmark. Selskaberne udvælges
-Indre værdi 399,01
+Indre værdi 393,93
 på baggrund af individuelle selskabsanalyser samt makroanalyser. Der benyttes en
-Indre værdi dato 05-03-2026
+Indre værdi dato 06-03-2026
 aktiv investeringsstrategi til at opnå et afkast, der er bedre end afkastet af fondens
 Bæredygtighed Artikel 8
 benchmark, OMX Copenhagen CAP_GI. Fonden egner sig til informerede eller
@@ -17,11 +17,11 @@ bør indgå i en diversificeret portefølje af øvrige investeringer. Fonden ind
 valutarisiko, da den indeholder værdipapirer i udenlandsk valuta, som kun delvist er
 afdækket til EUR eller DKK.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -0,90% -4,20% -1,12% 4,65%
+Afdeling -2,36% -6,41% -2,37% 3,32%
 Kerne Invest Danske Aktier
 Afkast ÅTD 1 år 3 år 5 år
 175
-Afdeling -3,79% 1,99% 16,86% 47,91%
+Afdeling -5,02% 0,92% 15,31% 46,03%
 150
 Omkostninger %
 125 Andre løbende omkostninger 0,45
@@ -33,7 +33,7 @@ Udtrædelsesomkostninger 0,11
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe -0,05 0,62 0,54
-Std. Afv. 21,52% 14,96% 18,15% 1 2 3 4 5 6 7
+Std. Afv. 22,98% 15,48% 17,50% 1 2 3 4 5 6 7
 Største beholdninger (31-01-2026) % Formuefordeling
 DSV 8,55
 Novo Nordisk B 8,34
