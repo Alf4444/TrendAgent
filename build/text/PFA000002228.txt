@@ -4,9 +4,9 @@ Der investeres i en portefølje af primært danske aktier fra ca. 40 selskaber. 
 80% af fondens formue investeres i danske aktier handlet på NASDAQ OMX Valuta DKK
 Type Investeringsforening
 Copenhagen A/S eller et andet reguleret marked i Danmark. Selskaberne udvælges
-Indre værdi 393,93
+Indre værdi 390,42
 på baggrund af individuelle selskabsanalyser samt makroanalyser. Der benyttes en
-Indre værdi dato 06-03-2026
+Indre værdi dato 09-03-2026
 aktiv investeringsstrategi til at opnå et afkast, der er bedre end afkastet af fondens
 Bæredygtighed Artikel 8
 benchmark, OMX Copenhagen CAP_GI. Fonden egner sig til informerede eller
@@ -17,14 +17,14 @@ bør indgå i en diversificeret portefølje af øvrige investeringer. Fonden ind
 valutarisiko, da den indeholder værdipapirer i udenlandsk valuta, som kun delvist er
 afdækket til EUR eller DKK.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -2,36% -6,41% -2,37% 3,32%
+Afdeling -2,80% -7,68% -2,71% 2,91%
 Kerne Invest Danske Aktier
 Afkast ÅTD 1 år 3 år 5 år
-175
-Afdeling -5,02% 0,92% 15,31% 46,03%
-150
+160
+Afdeling -5,86% 0,25% 15,18% 39,03%
+140
 Omkostninger %
-125 Andre løbende omkostninger 0,45
+120 Andre løbende omkostninger 0,45
 Resultatgebyrer 0,00
 100 Transaktionsomkostninger (Direkte + indirekte) 0,15
 Oprettelsesomkostninger 0,11
@@ -33,22 +33,22 @@ Udtrædelsesomkostninger 0,11
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe -0,05 0,62 0,54
-Std. Afv. 22,98% 15,48% 17,50% 1 2 3 4 5 6 7
-Største beholdninger (31-01-2026) % Formuefordeling
-DSV 8,55
-Novo Nordisk B 8,34
-A.P. Møller - Mærsk 7,22 Danmark 92,85 %
-Danske Bank 6,92 Finland 5,71 %
-Vestas Wind Systems A/S 6,38 Andet 1,45 %
-Ørsted A/S 4,83
-NKT A/S 3,97
-Genmab A/S 3,84
-Nordea 3,82
-ISS 3,76
-Industri 34,16 %
-Medicin & Sundhed 22,84 %
-Finans 20,77 %
-Forbrugsgoder 7,24 %
+Std. Afv. 30,58% 19,17% 19,42% 1 2 3 4 5 6 7
+Største beholdninger (28-02-2026) % Formuefordeling
+DSV 8,76
+Danske Bank 7,41
+Novo Nordisk B 6,54 Danmark 93,43 %
+Vestas Wind Systems A/S 5,83 Finland 6,15 %
+Ørsted A/S 5,74 Andet 0,42 %
+A.P. Møller - Mærsk 4,92
+Nordea 4,07
+ISS 3,82
+ALK-Abello B ny 3,80
+Genmab A/S 3,72
+Industri 31,19 %
+Finans 23,42 %
+Medicin & Sundhed 22,34 %
+Forbrugsgoder 8,06 %
 Andet 15,00 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.

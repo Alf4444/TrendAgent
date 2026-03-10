@@ -1,15 +1,15 @@
 # 📈 TrendAgent Fokus
-**Opdateret:** 09-03-2026 18:58
+**Opdateret:** 10-03-2026 18:57
 
 | | Fond | Signal | Egen % | Trend | Afstand | Cross |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| ⭐ | C WorldWide Asien | – | -3.0% | BULL | +8.9% | – |
-| ⭐ | Lazard Emerging Markets E | – | -3.8% | BULL | +9.3% | – |
-| ⭐ | ⚠️ Sydinvest Globale EM-akti | – | -4.5% | BULL | +7.7% | – |
-| 🔍 | C WorldWide Globale Aktie | ⚠️ SALG | – | BEAR | -0.7% | – |
-| 🔍 | ⚠️ PFA Indeks Europa Aktier | ⚠️ SALG | – | BEAR | -0.9% | – |
-| 🔍 | ⚠️ PFA Indeks USA Aktier | ⚠️ SALG | – | BEAR | -0.2% | – |
-| 🔍 | Qblue Global Equities Res | ⚠️ SALG | – | BEAR | -0.4% | – |
-| 🔍 | Robeco Global SDG Equitie | ⚠️ SALG | – | BEAR | -0.9% | – |
-| 🔍 | ⚠️ iShares Global IG Corp Bo | ⚠️ SALG | – | BEAR | -0.3% | – |
-| 🔍 | iShares MSCI World Health | ⚠️ SALG | – | BEAR | -0.4% | – |
+| ⭐ | ⚠️ C WorldWide Asien | – | -7.4% | BULL | +4.2% | – |
+| ⭐ | Lazard Emerging Markets E | – | -4.3% | BULL | +9.0% | – |
+| ⭐ | ⚠️ Sydinvest Globale EM-akti | – | -7.9% | BULL | +4.2% | – |
+| 🔍 | ⚠️ PFA Indeks 75 | ⚠️ SALG | – | BEAR | -0.0% | – |
+| 🔍 | ⚠️ PFA Indeks USA Aktier | 🚀 KØB | – | BULL | +0.5% | – |
+| 🔍 | ⚠️ Sydinvest HøjrenteLande | ⚠️ SALG | – | BEAR | -0.0% | – |
+| 🔍 | ⚠️ Threadneedle Pan European | ⚠️ SALG | – | BEAR | -0.2% | – |
+| 🔍 | ⚠️ iShares Global High Yield | ⚠️ SALG | – | BEAR | -0.6% | – |
+| 🔍 | ⚠️ iShares Inflation Linked  | 🚀 KØB | – | BULL | +0.2% | – |
+| 🔍 | iShares MSCI World Health | 🚀 KØB | – | BULL | +0.2% | – |

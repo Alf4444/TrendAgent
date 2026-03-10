@@ -4,9 +4,9 @@ Der investeres udelukkende i en portefølje af danske obligationer og kontanter 
 henblik på at holde risikoen lav. Investeringsstrategien er aktiv, men med begrænset Valuta DKK
 Type Investeringsprodukt
 handelsaktivitet. Investeringerne i porteføljen har en varighed på maksimalt 1 år.
-Indre værdi 111,64
+Indre værdi 111,65
 Fonden egner sig til pensionskunder, som har indsigt i og erfaring med
-Indre værdi dato 06-03-2026
+Indre værdi dato 09-03-2026
 værdipapirhandel og som holder sig informerede om udviklingen i kapitalmarkedet.
 Bæredygtighed Artikel 6
 Den er desuden egnet til pensionskunder med en tidshorisont på minimum 3 år, og
@@ -15,11 +15,11 @@ kontanter med lavere risiko, hvorfor der kan accepteres et lavere afkast på fon
 Fonden har ingen valutarisiko, da den er dansk og udelukkende investerer i danske
 aktiver.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -0,01% 0,08% 0,41% 0,85%
+Afdeling -0,01% 0,08% 0,41% 0,84%
 PFA Pengemarked
 Afkast ÅTD 1 år 3 år 5 år
 112
-Afdeling 0,29% 1,87% 8,70% 8,25%
+Afdeling 0,30% 1,88% 8,70% 8,26%
 108
 Omkostninger %
 104 Andre løbende omkostninger 0,20
@@ -31,29 +31,29 @@ Udtrædelsesomkostninger 0,10
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 6,99 1,17 -0,55
-Std. Afv. 0,11% 0,24% 0,51% 1 2 3 4 5 6 7
-Største beholdninger (31-12-2025) % Formuefordeling
+Std. Afv. 0,12% 0,24% 0,52% 1 2 3 4 5 6 7
+Største beholdninger (31-01-2026) % Formuefordeling
 3.22% Realkredit Danmark A/S
-22,16
+22,02
 2026/07/01
-VAR RD T GREEN 2026 Jul 14,92 Danske Kroner 100,00 %
+VAR RD T GREEN 2026 Jul 14,83 Danske Kroner 100,00 %
 3.968% Nykredit Realkredit IO CITA-6M
-12,53
+12,45
 SDO
 1% NORDEA KREDIT NDASS
 12,03
 10/01/2026
-NYKREDIT REALKREDIT AS 8,10
+NYKREDIT REALKREDIT AS 8,09
 1% 1,00% Realkredit Danmark 2027
-7,56
+7,48
 2027/01/01
-1% Nykredit Realkredit A/S 01/01/2027 7,56
-< 1 år 92,94 %
+1% Nykredit Realkredit A/S 01/01/2027 7,48
+< 1 år 92,43 %
 3.9% Var. NORDEA KREDIT REALKR
-2027 2027-01-01 5,07 1-3 år 2,51 %
-4.089% NYKRE Float 2026-07-01 5,07 Andet 4,55 %
+2027 2027-01-01 5,05 1-3 år 2,51 %
+4.089% NYKRE Float 2026-07-01 5,04 Andet 5,06 %
 3.69% Nordea Kredit
-2,53
+2,52
 Realkreditaktieselskab 2027
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.

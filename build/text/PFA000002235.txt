@@ -4,9 +4,9 @@ Der investeres i danske realkreditobligationer samt EU og US stats-, indeks-, hi
 yield og investment grade obligationer, vha. en optimeringsmode med månedlig Valuta DKK
 Type Investeringsprodukt
 rebalancering. Der benyttes en indeksnær investeringsstrategi til at opnå et afkast
-Indre værdi 102,04
+Indre værdi 102,02
 svarende til fondens benchmark, dog kan fondens afkast afvige fra
-Indre værdi dato 06-03-2026
+Indre værdi dato 09-03-2026
 benchmarkafkastet, da en omfattende ESG-screening foretages. Fonden egner sig
 Bæredygtighed Artikel 8
 til informerede eller erfarne pensionskunder, som har indsigt i og erfaring med
@@ -17,12 +17,12 @@ investeringer. Fonden indeholder valutarisiko, da den har eksponering til
 investeringer i udenlandsk valuta. Valutaeksponeringen tilstræbes fuldt afdækket til
 DKK.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -0,90% -0,14% 0,41% 0,49%
+Afdeling -0,71% -0,21% 0,62% 0,39%
 PFA Indeks Globale Obligationer Benchmark
-Benchmark -0,66% 0,00% 0,54% 0,83%
+Benchmark -0,72% -0,26% 0,59% 0,54%
 105 Afkast ÅTD 1 år 3 år 5 år
-100 Afdeling 0,66% 2,79% 10,61% -
-Benchmark 0,64% 2,58% 11,87% -
+100 Afdeling 0,46% 2,68% 10,71% -
+Benchmark 0,44% 3,09% 11,72% -
 95
 Omkostninger %
 90 Andre løbende omkostninger 0,38
@@ -34,25 +34,25 @@ Udtrædelsesomkostninger 0,20
 ÅOP 0,44
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,58 0,19 -
-Std. Afv. 0,86% 3,45% - 1 2 3 4 5 6 7
-Største beholdninger (31-12-2025) % Formuefordeling
-Var% Germany 15/04/2030 3,01
-Cash DKK 2,29
-4 NYKRE 01-10-2056 (01E) 2,07 Obligationer 94,69 %
-1% RDKRE 10F 2031/01/01 1,73 Andet 3,04 %
-1% REALKREDIT DANMARK 10F JA Kontanter 2,29 %
-1,63
-2030/01/01 Aktier 0,01 %
-1 NYKRE 01-07-2030 13H 1,60
-Var% Germany 15/04/2046 1,52
+Std. Afv. 1,40% 3,42% - 1 2 3 4 5 6 7
+Største beholdninger (31-01-2026) % Formuefordeling
+Var% Germany 15/04/2030 3,10
+4 NYKRE 01-10-2056 (01E) 2,23
+1% RDKRE 10F 2031/01/01 1,73 Obligationer 96,81 %
+Var% Germany 15/04/2046 1,57 Andet 3,31 %
+1% REALKREDIT DANMARK 10F JA Aktier 0,01 %
+1,55
+2030/01/01
+1 NYKRE 01-07-2030 13H 1,51
 GERMANY (FEDERAL REPUBLIC OF)
-1,31
+1,35
 RegS
-Var% France 25/07/2027 1,28 Europa 73,74 %
-1 NYKRE 01-01-2030 (13HH) 1,25 Nordamerika 19,97 %
+Var% France 25/07/2027 1,29
+1 NYKRE 01-01-2030 (13HH) 1,25 Europa 75,44 %
+1% RDKRE 10F 2029/01/01 1,13 Nordamerika 20,33 %
 Japan 0,54 %
-Australien 0,30 %
-Andet 5,44 %
+Australien 0,31 %
+Andet 3,37 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

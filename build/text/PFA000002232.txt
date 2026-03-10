@@ -4,9 +4,9 @@ Der investeres i en portefølje amerikanske aktier, hvor porteføljen som Opstar
 udgangspunkt sammensættes ud fra de selskaber, der indgår i fondens benchmark, Valuta DKK
 Type Investeringsprodukt
 MSCI USA Index. Der benyttes en indeksnær investeringsstrategi til at opnå et
-Indre værdi 490,29
+Indre værdi 493,72
 afkast svarende til fondens benchmark, dog kan fondens afkast afvige fra
-Indre værdi dato 06-03-2026
+Indre værdi dato 09-03-2026
 benchmarkafkastet, da PFA’s ’Politik for ansvarlige investeringer og aktivt ejerskab’
 Bæredygtighed Artikel 8
 samt anvendelsen af en optimeringsmodel mhp. at reducere
@@ -17,12 +17,12 @@ hvorfor der kan accepteres tab på investeringen. Pensionskunder bør have en
 tidshorisont på min. 3 år. Fonden indeholder valutarisiko, da den har eksponering til
 investeringer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -0,12% -0,70% -1,63% 5,29%
+Afdeling -0,50% 0,25% -0,63% 5,41%
 PFA Indeks USA Aktier Benchmark
-Benchmark 0,74% 2,49% -0,13% 6,83%
+Benchmark -0,50% 0,34% -0,41% 5,61%
 210 Afkast ÅTD 1 år 3 år 5 år
-180 Afdeling 0,75% 10,43% 58,59% 86,64%
-Benchmark 1,12% 9,42% 59,73% 89,80%
+180 Afdeling 0,16% 11,12% 63,26% 85,72%
+Benchmark 0,55% 11,43% 63,70% 86,58%
 150
 Omkostninger %
 120 Andre løbende omkostninger 0,36
@@ -34,23 +34,23 @@ Udtrædelsesomkostninger 0,15
 ÅOP 0,40
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,64 0,90 0,93
-Std. Afv. 18,56% 15,91% 14,93% 1 2 3 4 5 6 7
-Største beholdninger (31-12-2025) % Formuefordeling
-NVIDIA Corp 7,60
-Apple 6,76
-Microsoft Corp 5,73 USA 98,78 %
-Amazon.Com 3,73 Irland 0,64 %
-Alphabet A 2,91 Holland 0,16 %
-Alphabet C 2,73 Liberia 0,13 %
-Broadcom Inc 2,61 Andet 0,29 %
-Meta Platforms 2,41
-Tesla Inc 2,14
-JPMorgan Chase 1,54
-Teknologi 36,34 %
-Finans 12,81 %
-Forbrugerservice 10,50 %
-Medicin & Sundhed 9,37 %
-Andet 30,96 %
+Std. Afv. 11,09% 12,08% 13,26% 1 2 3 4 5 6 7
+Største beholdninger (31-01-2026) % Formuefordeling
+NVIDIA Corp 7,69
+Apple 6,39
+Microsoft Corp 5,04 USA 98,60 %
+Amazon.Com 3,82 Irland 0,72 %
+Alphabet C 3,06 Holland 0,16 %
+Alphabet A 2,97 Liberia 0,14 %
+Meta Platforms 2,59 Andet 0,37 %
+Broadcom Inc 2,47
+Tesla Inc 2,03
+JPMorgan Chase 1,45
+Teknologi 34,99 %
+Finans 12,53 %
+Forbrugerservice 10,62 %
+Telekommunikation 9,81 %
+Andet 32,04 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

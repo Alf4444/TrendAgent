@@ -4,9 +4,9 @@ Der investeres i en portefølje af europæiske aktier, hvor porteføljen som Ops
 udgangspunkt sammensættes ud fra de selskaber, der indgår i fondens benchmark, Valuta DKK
 Type Investeringsprodukt
 MSCI Europe Index. Der benyttes en indeksnær investeringsstrategi til at opnå et
-Indre værdi 244,27
+Indre værdi 242,60
 afkast lig fondens benchmark, dog kan fondens afkast afvige fra
-Indre værdi dato 06-03-2026
+Indre værdi dato 09-03-2026
 benchmarkafkastet, da PFA’s ’Politik for ansvarlige investeringer og aktivt ejerskab’
 Bæredygtighed Artikel 8
 samt anvendelsen af en optimeringsmodel mhp. at reducere
@@ -17,12 +17,12 @@ hvorfor der kan accepteres tab på investeringen. Pensionskunder bør have en
 tidshorisont på min. 3 år. Fonden indeholder valutarisiko, da den har eksponering til
 investeringer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -5,53% -2,52% 4,32% 10,13%
+Afdeling -4,62% -3,83% 3,72% 8,83%
 PFA Indeks Europa Aktier Benchmark
-Benchmark -4,40% -0,61% 4,76% 10,74%
+Benchmark -4,49% -3,78% 3,24% 8,39%
 210 Afkast ÅTD 1 år 3 år 5 år
-180 Afdeling 2,95% 11,44% 42,19% 71,84%
-Benchmark 2,47% 11,32% 40,97% 70,35%
+180 Afdeling 1,25% 10,99% 42,27% 65,89%
+Benchmark 0,85% 10,18% 39,92% 63,12%
 150
 Omkostninger %
 120 Andre løbende omkostninger 0,33
@@ -34,23 +34,23 @@ Udtrædelsesomkostninger 0,15
 ÅOP 0,44
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 1,38 1,13 0,91
-Std. Afv. 16,66% 12,17% 14,04% 1 2 3 4 5 6 7
-Største beholdninger (31-12-2025) % Formuefordeling
-ASML Holding NV 3,16
-Roche Holding AG 2,32
-HSBC Holdings PLC 2,29 England 19,40 %
-AstraZeneca PLC 2,28 Frankrig 15,59 %
-Total 2,12 Schweiz 15,21 %
-Novartis 2,09 Tyskland 13,80 %
-SAP SE 1,98 Andet 36,00 %
-Nestle SA 1,89
-Siemens 1,79
-Allianz 1,70
-Finans 26,30 %
-Industri 16,87 %
-Medicin & Sundhed 11,96 %
-Forbrugsgoder 10,58 %
-Andet 34,29 %
+Std. Afv. 23,14% 14,67% 14,77% 1 2 3 4 5 6 7
+Største beholdninger (31-01-2026) % Formuefordeling
+ASML Holding NV 4,04
+Roche Holding AG 2,49
+HSBC Holdings PLC 2,43 England 19,30 %
+Total 2,39 Frankrig 15,35 %
+AstraZeneca PLC 2,22 Schweiz 14,90 %
+Novartis 2,14 Tyskland 13,30 %
+Siemens 1,86 Andet 37,16 %
+Nestle SA 1,76
+SAP SE 1,58
+UNILEVER ORD 1,56
+Finans 26,04 %
+Industri 17,74 %
+Medicin & Sundhed 12,11 %
+Forbrugsgoder 9,54 %
+Andet 34,58 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

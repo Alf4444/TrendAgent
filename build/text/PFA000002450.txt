@@ -4,9 +4,9 @@ Fonden er en balanceret fond, der investerer 50% i PFA Indeks Globale Aktier og 
 50% i PFA Indeks Globale Obligationer med månedlig rebalancering. Der benyttes Valuta DKK
 Type Investeringsprodukt
 en indeksnær investeringsstrategi til at opnå et afkast svarende til fondens
-Indre værdi 124,44
+Indre værdi 124,27
 benchmark, dog kan fondens afkast afvige fra benchmarkafkastet, da en
-Indre værdi dato 06-03-2026
+Indre værdi dato 09-03-2026
 omfattende ESG-screening foretages. Det betyder, at selskaber på PFA’s
 Bæredygtighed Artikel 8
 eksklusionsliste eller med en lav ESG-score samt visse lande/sektorer helt eller
@@ -17,12 +17,12 @@ investeringen. Pensionskunder bør have en tidshorisont på min. 3 år. Fonden
 indeholder valutarisiko, da den har eksponering til investeringer i udenlandsk valuta,
 som kun delvist afdækkes til EUR eller DKK.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -1,42% -0,32% 0,85% 4,05%
+Afdeling -1,64% -0,61% 1,01% 3,57%
 PFA Indeks 50 Benchmark
-Benchmark -0,89% 1,03% 1,55% 5,01%
+Benchmark -1,60% -0,54% 1,06% 3,92%
 132 Afkast ÅTD 1 år 3 år 5 år
-120 Afdeling 1,66% 7,54% 30,99% -
-Benchmark 1,78% 7,59% 32,92% -
+120 Afdeling 0,89% 7,45% 31,91% -
+Benchmark 1,04% 8,20% 33,43% -
 108
 Omkostninger %
 96 Andre løbende omkostninger 0,48
@@ -34,23 +34,23 @@ Udtrædelsesomkostninger 0,18
 ÅOP 0,54
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,81 0,87 -
-Std. Afv. 8,53% 7,26% - 1 2 3 4 5 6 7
-Største beholdninger (31-12-2025) % Formuefordeling
-NVIDIA Corp 2,39
-Apple 2,14
-Microsoft Corp 1,81 Aktier 49,38 %
-Cash DKK 1,62 Obligationer 47,41 %
-Var% Germany 15/04/2030 1,51 Kontanter 1,62 %
-Amazon.Com 1,16 Andet 1,60 %
-4 NYKRE 01-10-2056 (01E) 1,03
-Alphabet A 0,97
-1% RDKRE 10F 2031/01/01 0,87
-Broadcom Inc 0,82
-Europa 44,50 %
-Nordamerika 43,26 %
-Asien (ex.Japan) 4,51 %
-Japan 2,71 %
-Andet 5,02 %
+Std. Afv. 6,78% 6,09% - 1 2 3 4 5 6 7
+Største beholdninger (31-01-2026) % Formuefordeling
+NVIDIA Corp 2,42
+Apple 2,02
+Microsoft Corp 1,59 Aktier 49,86 %
+Var% Germany 15/04/2030 1,55 Obligationer 48,36 %
+Amazon.Com 1,19 Andet 1,80 %
+4 NYKRE 01-10-2056 (01E) 1,11 Fonde 0,00 %
+Alphabet A 1,03
+Alphabet C 0,87
+1% RDKRE 10F 2031/01/01 0,86
+Meta Platforms 0,79
+Europa 45,60 %
+Nordamerika 43,05 %
+Asien (ex.Japan) 4,75 %
+Japan 2,83 %
+Andet 3,78 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

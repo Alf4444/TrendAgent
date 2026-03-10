@@ -4,9 +4,9 @@ Der investeres i en portefølje af globale aktier inklusive Emerging Markets, hv
 porteføljen som udgangspunkt sammensættes ud fra de selskaber, der indgår i Valuta DKK
 Type Investeringsprodukt
 fondens benchmark, MSCI All Countries World Index Net. Der benyttes en
-Indre værdi 396,26
+Indre værdi 395,25
 indeksnær investeringsstrategi til at opnå et afkast lig fondens benchmark, dog kan
-Indre værdi dato 06-03-2026
+Indre værdi dato 09-03-2026
 fondens afkast afvige fra benchmarkafkastet, da PFA’s ’Politik for ansvarlige
 Bæredygtighed Artikel 8
 investeringer og aktivt ejerskab’ samt anvendelsen af en optimeringsmodel mhp. at
@@ -17,12 +17,12 @@ med højere risiko, hvorfor der kan accepteres tab på investeringen. Pensionsku
 bør have en tidshorisont på min. 3 år. Fonden indeholder valutarisiko, da den har
 eksponering til investeringer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -1,91% -0,47% 1,37% 7,81%
+Afdeling -2,53% -0,98% 1,46% 6,94%
 PFA Indeks Globale Aktier Benchmark
-Benchmark -1,10% 2,08% 2,56% 9,33%
+Benchmark -2,47% -0,83% 1,53% 7,34%
 210 Afkast ÅTD 1 år 3 år 5 år
-180 Afdeling 2,72% 12,51% 55,00% 82,10%
-Benchmark 2,94% 12,29% 56,39% 83,66%
+180 Afdeling 1,39% 12,44% 57,03% 78,93%
+Benchmark 1,64% 13,05% 57,75% 78,74%
 150
 Omkostninger %
 120 Andre løbende omkostninger 0,40
@@ -34,24 +34,24 @@ Udtrædelsesomkostninger 0,15
 ÅOP 0,44
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,79 1,00 0,98
-Std. Afv. 17,13% 13,72% 13,14% 1 2 3 4 5 6 7
-Største beholdninger (31-12-2025) % Formuefordeling
-NVIDIA Corp 4,83
-Apple 4,31
-Microsoft Corp 3,66 Teknologi 29,45 %
-Amazon.Com 2,35 Finans 17,67 %
-Alphabet A 1,95 Industri 9,77 %
-Broadcom Inc 1,65 Forbrugerservice 8,66 %
-Alphabet C 1,64 Andet 34,45 %
-Meta Platforms 1,49
-Tesla Inc 1,36
+Std. Afv. 12,63% 10,88% 11,88% 1 2 3 4 5 6 7
+Største beholdninger (31-01-2026) % Formuefordeling
+NVIDIA Corp 4,84
+Apple 4,03
+Microsoft Corp 3,18 Teknologi 28,91 %
+Amazon.Com 2,38 Finans 17,51 %
+Alphabet A 2,06 Industri 10,14 %
+Alphabet C 1,73 Forbrugerservice 8,56 %
+Meta Platforms 1,59 Andet 34,87 %
+Broadcom Inc 1,54
 Taiwan Semiconductor Manufacturing Co
-1,32
-Ltd ADR Nordamerika 67,10 %
-Europa 15,29 %
-Asien (ex.Japan) 9,05 %
-Japan 4,92 %
-Andet 3,64 %
+1,48
+Ltd ADR
+Tesla Inc 1,28 Nordamerika 65,70 %
+Europa 15,81 %
+Asien (ex.Japan) 9,42 %
+Japan 5,11 %
+Andet 3,96 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke
