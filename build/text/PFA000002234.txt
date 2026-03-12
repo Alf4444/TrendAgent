@@ -4,9 +4,9 @@ Der investeres i en portefølje af aktier bestående af store og mellemstore sel
 beliggende i eller med primæraktiviteter i Emerging Markets-lande. Der benyttes en Valuta DKK
 Type Investeringsforening
 indeksnær investeringsstrategi til at opnå et afkast svarende til fondens benchmark,
-Indre værdi 217,14
+Indre værdi 220,59
 MSCI Emerging Markets Index. Fonden kan investere i aktier, som ikke indgår i
-Indre værdi dato 10-03-2026
+Indre værdi dato 11-03-2026
 benchmarket, hvis disse har lignende risiko- og afkastprofil. Fonden er ESG-
 Bæredygtighed Artikel 8
 screenet og egner sig til informerede eller erfarne pensionskunder, som har indsigt i
@@ -17,40 +17,40 @@ accepteres tab på investeringen. Pensionskunder bør have en tidshorisont på m
 Fonden indeholder valutarisiko, da den er eksponeret over for værdipapirer i
 udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -2,15% -0,85% 8,54% 15,15%
+Afdeling 3,78% -0,61% 11,75% 16,80%
 iShares MSCI Emerging Markets UCITS ETF
 Afkast ÅTD 1 år 3 år 5 år
-150
-Afdeling 7,70% 27,26% 53,86% 31,19%
-125
+140
+Afdeling 9,41% 30,84% 56,30% 30,88%
+120
 Omkostninger %
 100 Andre løbende omkostninger 0,40
 Resultatgebyrer 0,00
-75 Transaktionsomkostninger (Direkte + indirekte) 0,05
+80 Transaktionsomkostninger (Direkte + indirekte) 0,05
 Oprettelsesomkostninger 0,20
 Udtrædelsesomkostninger 0,20
 ÅOP 0,51
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 1,23 0,86 0,46
-Std. Afv. 17,58% 13,45% 13,28% 1 2 3 4 5 6 7
-Største beholdninger (30-01-2026) % Formuefordeling
+Std. Afv. 17,07% 13,42% 13,24% 1 2 3 4 5 6 7
+Største beholdninger (27-02-2026) % Formuefordeling
 Taiwan Semiconductor Manufacturing Co
-11,42
+12,26
 Ltd ADR
-Samsung Electronic 4,34 Taiwan 21,68 %
-Tencent Holdings 4,09 Sydkorea 15,45 %
-HK 3,06 Kina 13,30 %
-SK hynix 2,83 Indien 13,12 %
-HDFC Bank Ltd 0,94 Andet 36,45 %
-China Construction Bank Corporation 0,80
-Reliance Industries 0,76
-Hon Hai Precision Industry 0,72
-MediaTek 0,70 Teknologi 33,86 %
-Finans 19,79 %
-Forbrugerservice 6,45 %
-Forbrugsgoder 5,97 %
-Andet 33,92 %
+Samsung Electronic 5,54 Taiwan 22,98 %
+Tencent Holdings 3,31 Sydkorea 17,70 %
+SK hynix 3,14 Indien 12,65 %
+HK 2,45 Kina 12,61 %
+HDFC Bank Ltd 0,86 Andet 34,07 %
+China Construction Bank Corporation 0,77
+Hon Hai Precision Industry 0,76
+MediaTek 0,74
+Reliance Industries 0,73 Teknologi 35,66 %
+Finans 19,22 %
+Forbrugsgoder 6,06 %
+Materialer 5,88 %
+Andet 33,19 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

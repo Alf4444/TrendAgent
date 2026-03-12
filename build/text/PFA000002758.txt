@@ -4,9 +4,9 @@ Der investeres i en portefølje af aktier fra udviklede lande via selskaber hør
 under GICS-sektoren inden for sundhedspleje. Selskaberne producerer og leverer Valuta EUR
 Type Investeringsforening
 sundhedsrelaterede produkter og ydelser. Der benyttes en indeksnær
-Indre værdi 110,48
+Indre værdi 110,55
 investeringsstrategi til at opnå et afkast svarende til fondens benchmark, MSCI
-Indre værdi dato 10-03-2026
+Indre værdi dato 11-03-2026
 World Health Care Advanced Select 20 35 Capped Index. Fonden er ESG-screenet
 Bæredygtighed Artikel 8
 og egner sig til informerede eller erfarne pensionskunder, som har indsigt i og
@@ -16,11 +16,11 @@ investeringen. Pensionskunder bør have en tidshorisont på min. 3 år, og fonde
 indgå i en diversificeret portefølje af øvrige investeringer. Fonden indeholder
 valutarisiko, da den er eksponeret over for værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -2,43% -0,61% 0,60% 10,42%
+Afdeling -2,36% -1,39% 0,13% 9,21%
 iShares MSCI World Health Care Sector Advanced UCITS ETF
 Afkast ÅTD 1 år 3 år 5 år
 150
-Afdeling -0,58% -0,68% 9,58% 33,83%
+Afdeling -0,52% 2,33% 9,64% 34,71%
 135
 Omkostninger %
 120 Andre løbende omkostninger 0,48
@@ -32,28 +32,28 @@ Udtrædelsesomkostninger 0,10
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe -0,49 -0,35 0,41
-Std. Afv. 18,07% 12,78% 14,01% 1 2 3 4 5 6 7
-Største beholdninger (30-01-2026) % Formuefordeling
-Eli Lilly & Co 9,95
-Novartis 5,35
-Johnson & Johnson 5,01 USA 67,79 %
-AbbVie 4,73 Schweiz 11,94 %
-AstraZeneca PLC 3,91 England 5,02 %
-Roche Holding AG 3,02 Japan 4,00 %
-Gilead Sciences 3,01 Andet 11,25 %
+Std. Afv. 15,69% 12,05% 12,88% 1 2 3 4 5 6 7
+Største beholdninger (27-02-2026) % Formuefordeling
+Eli Lilly & Co 9,87
+Novartis 5,75
+Johnson & Johnson 5,36 USA 67,78 %
+AbbVie 5,00 Schweiz 12,99 %
+AstraZeneca PLC 3,59 England 5,23 %
+Roche Holding AG 3,43 Japan 4,10 %
+Merck & Co 3,30 Andet 9,90 %
+Gilead Sciences 2,93
 Unitedhealth Group 2,87
-Merck & Co 2,80
-Novo Nordisk B 2,54
-US Dollar 68,87 %
-Schweizerfranc 11,96 %
-Engelske Pund 5,06 %
-Euro 4,40 %
-Andet 9,72 %
-Nordamerika 67,79 %
-Europa 25,34 %
-Japan 4,00 %
-Australien 1,53 %
-Andet 1,34 %
+Amgen 2,12
+US Dollar 68,89 %
+Schweizerfranc 12,67 %
+Engelske Pund 5,55 %
+Japanske Yen 4,45 %
+Andet 8,43 %
+Nordamerika 67,78 %
+Europa 25,40 %
+Japan 4,10 %
+Australien 1,46 %
+Andet 1,25 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

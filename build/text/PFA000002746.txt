@@ -6,7 +6,7 @@ Type Investeringsforening
 perioder slet ikke eller kun i begrænset omfang udbetaler et udbytte. Der benyttes
 Indre værdi 180,30
 en aktiv investeringsstrategi til at opnå et afkast, der er bedre end afkastet af
-Indre værdi dato 10-03-2026
+Indre værdi dato 11-03-2026
 fondens benchmark, MSCI World High Dividend Yield, inkl. nettoudbytte.Fonden
 Bæredygtighed Artikel 8
 egner sig til informerede eller erfarne pensionskunder, som har indsigt i og erfaring
@@ -16,11 +16,11 @@ på investeringen. Pensionskunder bør have en tidshorisont på min. 3 år og fo
 bør indgå i en diversificeret portefølje af øvrige investeringer. Fonden indeholder
 valutarisiko, da den er eksponeret over for værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -2,26% -0,44% 1,67% 4,16%
+Afdeling -2,06% -1,11% 1,09% 3,08%
 BankInvest Højt Udbytte Aktier
 Afkast ÅTD 1 år 3 år 5 år
 160
-Afdeling 0,13% -3,11% 18,31% 42,48%
+Afdeling 0,13% -0,54% 18,32% 42,34%
 140
 Omkostninger %
 120 Andre løbende omkostninger 1,66
@@ -32,7 +32,7 @@ Udtrædelsesomkostninger 0,14
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe -0,20 0,20 0,75
-Std. Afv. 12,29% 8,65% 9,53% 1 2 3 4 5 6 7
+Std. Afv. 9,84% 7,88% 8,87% 1 2 3 4 5 6 7
 Største beholdninger (28-02-2026) % Formuefordeling
 NEW LINDE PLC 2,58
 AstraZeneca PLC 2,52

@@ -4,9 +4,9 @@ Der investeres i en portefølje af aktier bestående af store og mellemstore sel
 beliggende i eller med primæraktiviteter i Kina. Der benyttes en indeksnær Valuta EUR
 Type Investeringsforening
 investeringsstrategi til at opnå et afkast svarende til fondens benchmark, MSCI
-Indre værdi 139,13
+Indre værdi 140,00
 China Index. Fonden kan investere i aktier, som ikke indgår i benchmarket, hvis
-Indre værdi dato 10-03-2026
+Indre værdi dato 11-03-2026
 disse har lignende risiko- og afkastprofil. Fonden er ikke ESG-screenet og egner sig
 Bæredygtighed Artikel 6
 til informerede og erfarne pensionskunder, som har indsigt i og erfaring med
@@ -16,11 +16,11 @@ Pensionskunder bør have en tidshorisont på min. 3 år, og fonden bør indgå i
 diversificeret portefølje af øvrige investeringer. Fonden indeholder valutarisiko, da
 den er eksponeret over for værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 1,03% -3,25% -3,63% -5,29%
+Afdeling 3,83% -3,31% -1,51% -4,59%
 iShares MSCI China UCITS ETF
 Afkast ÅTD 1 år 3 år 5 år
 105
-Afdeling -2,00% 0,98% 27,16% -17,83%
+Afdeling -1,40% 2,00% 27,95% -19,81%
 90
 Omkostninger %
 75 Andre løbende omkostninger 0,51
@@ -32,25 +32,25 @@ Udtrædelsesomkostninger 0,22
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 1,29 0,61 -0,11
-Std. Afv. 23,03% 24,14% 26,43% 1 2 3 4 5 6 7
-Største beholdninger (30-01-2026) % Formuefordeling
-Tencent Holdings 16,78
-HK 12,56
-China Construction Bank Corporation 3,29 Kina 55,61 %
-Xiaomi Corp Class B 2,64 Hong Kong 24,27 %
-PINDUODUO ADR 2,42 Cayman Øerne 17,10 %
+Std. Afv. 23,41% 23,56% 24,54% 1 2 3 4 5 6 7
+Største beholdninger (27-02-2026) % Formuefordeling
+Tencent Holdings 14,99
+HK 11,13
+China Construction Bank Corporation 3,48 Kina 58,35 %
+Xiaomi Corp Class B 2,73 Hong Kong 22,34 %
+PINDUODUO ADR 2,61 Cayman Øerne 15,66 %
 Ping An Insurance (Group) Company of USA 0,91 %
-2,11
-China Ltd Andet 2,11 %
-MEITUAN DIANPING CLASS 2,09
+2,07
+China Ltd Andet 2,75 %
 Industrial and Commercial Bank of China
-1,83
+1,90
 Stock
-BYD Co Ltd ADR 1,56 Teknologi 23,33 %
-NetEase Inc 1,54 Forbrugerservice 20,36 %
-Finans 17,88 %
-Forbrugsgoder 5,86 %
-Andet 32,56 %
+MEITUAN DIANPING CLASS 1,83
+BYD Co Ltd ADR 1,59 Teknologi 22,01 %
+Bank of China Ltd 1,49 Forbrugerservice 18,96 %
+Finans 18,32 %
+Forbrugsgoder 6,30 %
+Andet 34,41 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

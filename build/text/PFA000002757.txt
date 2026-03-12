@@ -4,9 +4,9 @@ Der investeres i en portefølje af globale aktier inklusive Emerging Markets, hv
 porteføljen som udgangspunkt sammensættes ud fra de selskaber, der indgår i Valuta EUR
 Type Investeringsforening
 fondens benchmark, MSCI All Countries World Index Net. Der benyttes en
-Indre værdi 106,42
+Indre værdi 107,01
 indeksnær investeringsstrategi til at opnå et afkast lig fondens benchmark. Fonden
-Indre værdi dato 10-03-2026
+Indre værdi dato 11-03-2026
 er ikke ESG-screenet og egner sig til informerede eller erfarne pensionskunder, som
 Bæredygtighed Artikel 6
 har indsigt i og erfaring med værdipapirhandel og som ønsker et opsparingsprodukt
@@ -14,11 +14,11 @@ med højere risiko, hvorfor der kan accepteres tab på investeringen. Pensionsku
 bør have en tidshorisont på min. 3 år. Fonden indeholder valutarisiko, da den har
 eksponering til investeringer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -1,15% -0,48% 1,55% 8,30%
+Afdeling -0,20% -0,46% 2,75% 8,18%
 iShares MSCI ACWI Global Equities UCITS ETF
 Afkast ÅTD 1 år 3 år 5 år
 180
-Afdeling 2,06% 17,17% 61,45% 72,62%
+Afdeling 2,63% 19,68% 62,35% 72,29%
 150
 Omkostninger %
 120 Andre løbende omkostninger 0,40
@@ -30,29 +30,29 @@ Udtrædelsesomkostninger 0,10
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,88 1,02 0,96
-Std. Afv. 14,18% 12,27% 12,71% 1 2 3 4 5 6 7
-Største beholdninger (30-01-2026) % Formuefordeling
-NVIDIA Corp 4,82
+Std. Afv. 12,83% 12,21% 12,93% 1 2 3 4 5 6 7
+Største beholdninger (27-02-2026) % Formuefordeling
+NVIDIA Corp 4,41
 Apple 3,99
-Microsoft Corp 3,15 USA 61,94 %
-Amazon.Com 2,38 Japan 4,99 %
-Alphabet A 2,04 England 3,19 %
-Alphabet C 1,72 Canada 3,02 %
-Meta Platforms 1,62 Andet 26,86 %
-Broadcom Inc 1,54
-ISHARES MSCI INDIA UCITS ETF 1,54
-Taiwan Semiconductor Manufacturing Co
-1,44
-Ltd ADR Teknologi 28,12 %
-Finans 16,57 %
-Industri 9,93 %
-Forbrugerservice 8,48 %
-Andet 36,90 %
-US Dollar 63,23 %
-Euro 7,93 %
-Japanske Yen 4,97 %
-Engelske Pund 3,36 %
-Andet 20,51 %
+Microsoft Corp 2,85 USA 60,59 %
+Amazon.Com 2,06 Japan 5,36 %
+Alphabet A 1,86 England 3,27 %
+Taiwan Semiconductor Manufacturing Co Canada 3,14 %
+1,62
+Ltd ADR Andet 27,65 %
+Alphabet C 1,56
+ISHARES MSCI INDIA UCITS ETF 1,53
+Broadcom Inc 1,47
+Meta Platforms 1,44 Teknologi 27,39 %
+Finans 16,33 %
+Industri 10,51 %
+Forbrugerservice 8,24 %
+Andet 37,53 %
+US Dollar 61,85 %
+Euro 8,07 %
+Japanske Yen 5,37 %
+Engelske Pund 3,48 %
+Andet 21,23 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke
