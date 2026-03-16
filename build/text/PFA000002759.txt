@@ -4,9 +4,9 @@ Der investeres i en portefølje af japanske aktier, hvor porteføljen som udgang
 sammensættes ud fra de selskaber, der indgår i fondens benchmark, MSCI Japan Valuta EUR
 Type Investeringsforening
 Investable Market Index (IMI). Der benyttes en indeksnær investeringsstrategi til at
-Indre værdi 110,54
+Indre værdi 110,38
 opnå et afkast svarende til fondens benchmark. Fonden er ikke ESG-screenet og
-Indre værdi dato 12-03-2026
+Indre værdi dato 13-03-2026
 egner sig til informerede eller erfarne pensionskunder, som har indsigt i og erfaring
 Bæredygtighed Artikel 6
 med værdipapirhandel, og som ønsker et opsparingsprodukt med højere risiko,
@@ -14,11 +14,11 @@ hvorfor der kan accepteres tab på investeringen. Pensionskunder bør have en
 tidshorisont på min. 3 år. Fonden indeholder valutarisiko, da den har eksponering til
 investeringer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -1,90% -6,92% 6,45% 10,29%
+Afdeling -2,44% -5,51% 6,31% 10,14%
 iShares Core MSCI Japan IMI UCITS ETF
 Afkast ÅTD 1 år 3 år 5 år
 160
-Afdeling 7,36% 22,46% 49,22% 45,56%
+Afdeling 7,21% 20,88% 50,51% 45,36%
 140
 Omkostninger %
 120 Andre løbende omkostninger 0,39
@@ -30,7 +30,7 @@ Udtrædelsesomkostninger 0,10
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 1,50 1,12 0,66
-Std. Afv. 19,65% 14,94% 14,00% 1 2 3 4 5 6 7
+Std. Afv. 20,72% 14,77% 14,45% 1 2 3 4 5 6 7
 Største beholdninger (27-02-2026) % Formuefordeling
 Toyota Motor 3,49
 Mitsubishi UFJ Financial Group 3,22
