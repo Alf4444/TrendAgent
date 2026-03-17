@@ -4,9 +4,9 @@ Der investeres i en portefølje af aktier bestående af danske samt øvrige sels
 noteret på Nasdaq OMX Copenhagen A/S. Selskaberne udvælges på baggrund af Valuta DKK
 Type Investeringsforening
 grundig fundamental selskabs- samt prisfastsættelsesanalyse og repræsenterer
-Indre værdi 537,95
+Indre værdi 542,12
 forskellige sektorer, selskabsstørrelser og -typer. Der benyttes en aktiv
-Indre værdi dato 13-03-2026
+Indre værdi dato 16-03-2026
 investeringsstrategi til at opnå et afkast, der er bedre end afkastet af fondens
 Bæredygtighed Artikel 8
 benchmark, OMX Copenhagen CAP_GI. Fonden egner sig til informerede eller
@@ -17,23 +17,23 @@ en tidshorisont på min. 3 år, og fonden bør indgå i en diversificeret portef
 øvrige investeringer. Fonden indeholder valutarisiko, da den er eksponeret over for
 værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -2,30% -5,65% -7,28% -0,22%
+Afdeling -0,52% -5,09% -5,73% 0,19%
 Maj Invest Danske Aktier
 Afkast ÅTD 1 år 3 år 5 år
-140
-Afdeling -9,51% 1,72% 17,77% 20,23%
+135
+Afdeling -8,81% 1,27% 18,79% 18,64%
 120
 Omkostninger %
-100 Andre løbende omkostninger 1,39
+105 Andre løbende omkostninger 1,39
 Resultatgebyrer 0,00
-80 Transaktionsomkostninger (Direkte + indirekte) 0,02
+90 Transaktionsomkostninger (Direkte + indirekte) 0,02
 Oprettelsesomkostninger 0,25
 Udtrædelsesomkostninger 0,25
 ÅOP 1,48
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,15 0,60 0,32
-Std. Afv. 21,07% 14,64% 17,12% 1 2 3 4 5 6 7
+Std. Afv. 18,70% 13,42% 15,60% 1 2 3 4 5 6 7
 Største beholdninger (31-01-2026) % Formuefordeling
 DSV 10,19
 Novo Nordisk B 9,00

@@ -4,9 +4,9 @@ Fonden er en balanceret fond, der investerer 75% i PFA Indeks Globale Aktier og 
 25% i PFA Indeks Globale Obligationer med månedlig rebalancering. Der benyttes Valuta DKK
 Type Investeringsprodukt
 en indeksnær investeringsstrategi til at opnå et afkast svarende til fondens
-Indre værdi 136,28
+Indre værdi 136,89
 benchmark, dog kan fondens afkast afvige fra benchmarkafkastet, da en
-Indre værdi dato 13-03-2026
+Indre værdi dato 16-03-2026
 omfattende ESG-screening foretages. Det betyder, at selskaber på PFA’s
 Bæredygtighed Artikel 8
 eksklusionsliste eller med en lav ESG-score samt visse lande/sektorer helt eller
@@ -17,11 +17,11 @@ investeringen. Pensionskunder bør have en tidshorisont på min. 3 år. Fonden
 indeholder valutarisiko, da den har eksponering til investeringer i udenlandsk valuta,
 som kun delvist afdækkes til EUR eller DKK.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -0,66% -0,92% 1,12% 4,05%
+Afdeling -0,02% -0,44% 2,14% 5,05%
 PFA Indeks 75 Benchmark
 Benchmark -0,55% -0,75% 1,45% 4,48%
 160 Afkast ÅTD 1 år 3 år 5 år
-140 Afdeling 0,67% 12,48% 46,27% -
+140 Afdeling 0,67% 11,57% 44,19% -
 Benchmark 0,98% 13,33% 47,74% -
 120
 Omkostninger %
@@ -34,7 +34,7 @@ Udtrædelsesomkostninger 0,16
 ÅOP 0,54
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,78 0,95 -
-Std. Afv. 11,42% 10,06% - 1 2 3 4 5 6 7
+Std. Afv. 13,56% 10,19% - 1 2 3 4 5 6 7
 Største beholdninger (31-01-2026) % Formuefordeling
 NVIDIA Corp 3,63
 Apple 3,02
