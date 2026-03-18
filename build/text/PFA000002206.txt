@@ -4,9 +4,9 @@ Der investeres i en portefølje af globale aktier af ca. 180 selskaber. Selskabe
 udvælges ud fra selskabsanalyser med fokus på operationelle- og strategiske Valuta DKK
 Type Investeringsforening
 forhold samt værdiansættelse. Mindst 70% af fondens formue investeres i aktier,
-Indre værdi 659,19
+Indre værdi 659,86
 der indgår i fondens benchmark. Der benyttes en aktiv investeringsstrategi til at
-Indre værdi dato 16-03-2026
+Indre værdi dato 17-03-2026
 opnå et afkast, der er bedre end afkastet af fondens benchmark, MSCI All Country
 Bæredygtighed Artikel 8
 World Index (incl. dividends). Fonden egner sig til informerede eller erfarne
@@ -17,11 +17,11 @@ indgå i en diversificeret portefølje af øvrige investeringer. Fonden indehold
 valutarisiko, da den indeholder værdipapirer i udenlandsk valuta, som kun delvist er
 afdækket til EUR eller DKK.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -0,35% -0,61% 3,71% 8,33%
+Afdeling -0,56% -0,97% 4,45% 8,41%
 Kerne Invest Globale Aktier
 Afkast ÅTD 1 år 3 år 5 år
 210
-Afdeling 1,72% 18,79% 63,18% 74,84%
+Afdeling 1,82% 18,39% 64,63% 75,22%
 180
 Omkostninger %
 150 Andre løbende omkostninger 0,58
@@ -33,7 +33,7 @@ Udtrædelsesomkostninger 0,07
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 1,04 1,25 0,98
-Std. Afv. 16,81% 12,69% 13,85% 1 2 3 4 5 6 7
+Std. Afv. 17,20% 12,96% 13,73% 1 2 3 4 5 6 7
 Største beholdninger (28-02-2026) % Formuefordeling
 NVIDIA Corp 5,14
 Apple 4,52
