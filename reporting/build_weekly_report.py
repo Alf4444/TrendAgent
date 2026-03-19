@@ -1,5 +1,4 @@
 import json
-import time
 import statistics
 from pathlib import Path
 from datetime import datetime
@@ -20,14 +19,14 @@ REPORT_FILE = ROOT / "build/weekly.html"
 # ==========================================
 
 def get_ma(prices, window):
-    """Beregner Moving Average kun hvis der er data nok (ingen warm-up)."""
+    """Beregner Moving Average."""
     if not prices or len(prices) < window:
         return None
     relevant = prices[-window:]
     return sum(relevant) / len(relevant)
 
 def get_rsi(prices, window=14):
-    """Beregner Relative Strength Index (RSI) baseret på hverdage."""
+    """Beregner Relative Strength Index (RSI)."""
     if len(prices) <= window:
         return None
     deltas = [prices[i] - prices[i-1] for i in range(1, len(prices))]
@@ -52,20 +51,7 @@ def is_trading_day(date_str):
 # ==========================================
 
 def build_weekly():
-    # 1. BUILD-BUFFER (Retry-logik)
-    max_retries = 3
-    retry_delay = 300
-    
-    for attempt in range(max_retries):
-        if LATEST_FILE.exists():
-            file_mod_time = datetime.fromtimestamp(LATEST_FILE.stat().st_mtime).date()
-            if file_mod_time == datetime.now().date():
-                break
-        if attempt < max_retries - 1:
-            print(f"Uge-build venter på friske data (Forsøg {attempt+1})...")
-            time.sleep(retry_delay)
-
-    # 2. DATAINDLÆSNING
+    # 1. DATAINDLÆSNING
     if not HISTORY_FILE.exists() or not PORTFOLIO_FILE.exists():
         print("FEJL: Kritiske filer mangler.")
         return
@@ -75,6 +61,13 @@ def build_weekly():
             history = json.load(f)
         with open(PORTFOLIO_FILE, "r", encoding="utf-8") as f:
             portfolio = json.load(f)
+        
+        # Latest er valgfri for ekstra robusthed
+        latest_map = {}
+        if LATEST_FILE.exists():
+            with open(LATEST_FILE, "r", encoding="utf-8") as f:
+                l_data = json.load(f)
+                latest_map = {i['isin']: i for i in l_data}
     except Exception as e:
         print(f"Fejl ved indlæsning: {e}")
         return
@@ -84,9 +77,9 @@ def build_weekly():
     date_str = datetime.now().strftime("%d-%m-%Y")
     week_num = datetime.now().isocalendar()[1]
 
-    # 3. ANALYSE AF HVER FOND
+    # 2. ANALYSE AF HVER FOND
     for isin, price_dict in history.items():
-        # Filtrér til kun hverdage
+        # Sorter hverdage
         sorted_dates = [d for d in sorted(price_dict.keys()) if is_trading_day(d)]
         if not sorted_dates:
             continue
@@ -94,13 +87,12 @@ def build_weekly():
         prices = [price_dict[d] for d in sorted_dates]
         current_nav = prices[-1]
         
-        # --- Ugentlig Momentum ---
+        # Beregn ændringer
         prev_week_nav = prices[-6] if len(prices) >= 6 else prices[0]
         prev_month_nav = prices[-21] if len(prices) >= 21 else prices[0]
         
         week_chg = ((current_nav - prev_week_nav) / prev_week_nav * 100)
         month_chg = ((current_nav - prev_month_nav) / prev_month_nav * 100)
-        
         momentum = week_chg - month_chg
         
         # Tekniske indikatorer
@@ -108,7 +100,7 @@ def build_weekly():
         ma200 = get_ma(prices, 200)
         rsi = get_rsi(prices, 14)
         
-        # Portefølje info
+        # Portefølje data
         p_info = portfolio.get(isin, {})
         is_active = p_info.get('active', False)
         buy_price = p_info.get('buy_price')
@@ -137,21 +129,21 @@ def build_weekly():
             'ma20_dist': ((current_nav - ma20) / ma20 * 100) if ma20 else 0
         })
 
-    # 4. ALERTS & OPSUMMERING
+    # 3. ALERTS & OPSUMMERING
     portfolio_alerts = [r for r in rows if r['is_active'] and r['week_change_pct'] < -3.0]
     market_opportunities = [r for r in rows if not r['is_active'] and r['momentum'] > 2.0 and r['t_state'] == "BULL"]
 
-    # 5. GRAF-DATA
+    # 4. GRAF-DATA
     sorted_momentum = sorted(rows, key=lambda x: x['momentum'], reverse=True)[:10]
     chart_labels = [r['name'][:20] for r in sorted_momentum]
     chart_values = [r['momentum'] for r in sorted_momentum]
 
-    # 6. RENDER TEMPLATE
+    # 5. RENDER TEMPLATE
     if not TEMPLATE_FILE.exists():
-        print(f"FEJL: Template mangler på {TEMPLATE_FILE}")
+        print(f"FEJL: Template mangler")
         return
 
-    # SIKKERHEDSNET: Beregn gennemsnit kun hvis der er aktive afkast
+    # SIKKERHEDSNET: Bruger statistics.mean hvis listen ikke er tom
     avg_port_return = statistics.mean(active_returns) if active_returns else 0
 
     template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
@@ -168,11 +160,11 @@ def build_weekly():
         chart_values=chart_values
     )
 
-    # 7. GEM RAPPORT
+    # 6. GEM FIL
     REPORT_FILE.parent.mkdir(exist_ok=True)
     REPORT_FILE.write_text(html_output, encoding="utf-8")
     
-    print(f"Weekly Rapport færdig for uge {week_num}.")
+    print(f"✅ Weekly Rapport færdig for uge {week_num}.")
 
 if __name__ == "__main__":
     build_weekly()
