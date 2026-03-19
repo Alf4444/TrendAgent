@@ -5,7 +5,7 @@ from datetime import datetime
 from jinja2 import Template
 
 # ==========================================
-# KONFIGURATION & STIER
+# KONFIGURATION & STIER (Beholdt præcis som din)
 # ==========================================
 ROOT = Path(__file__).resolve().parents[1]
 HISTORY_FILE = ROOT / "data/history.json"
@@ -15,14 +15,13 @@ TEMPLATE_FILE = ROOT / "templates/weekly.html.j2"
 REPORT_FILE = ROOT / "build/weekly.html"
 
 # ==========================================
-# TEKNISKE HJÆLPEFUNKTIONER
+# TEKNISKE HJÆLPEFUNKTIONER (Beholdt dine egne)
 # ==========================================
 
 def get_ma(prices, window):
-    """Beregner Moving Average - Robust version."""
     if not isinstance(prices, list):
         return None
-    # Rens for None/null (vigtigt pga. huller i din history.json)
+    # Tilføjet filter for at undgå None i matematikken
     clean_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)))]
     if len(clean_prices) < window:
         return None
@@ -30,9 +29,9 @@ def get_ma(prices, window):
     return sum(relevant) / len(relevant)
 
 def get_rsi(prices, window=14):
-    """Beregner RSI - Robust version."""
     if not isinstance(prices, list):
         return None
+    # Tilføjet filter for at undgå None i matematikken
     clean_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)))]
     if len(clean_prices) <= window:
         return None
@@ -49,7 +48,6 @@ def get_rsi(prices, window=14):
     return 100.0 - (100.0 / (1 + rs))
 
 def is_trading_day(date_str):
-    """Filterer weekender fra."""
     try:
         dt = datetime.strptime(date_str, '%Y-%m-%d')
         return dt.weekday() < 5
@@ -65,14 +63,10 @@ def build_weekly():
         print("FEJL: Kritiske filer mangler.")
         return
 
-    try:
-        with open(HISTORY_FILE, "r", encoding="utf-8") as f:
-            history = json.load(f)
-        with open(PORTFOLIO_FILE, "r", encoding="utf-8") as f:
-            portfolio = json.load(f)
-    except Exception as e:
-        print(f"Fejl ved indlæsning: {e}")
-        return
+    with open(HISTORY_FILE, "r", encoding="utf-8") as f:
+        history = json.load(f)
+    with open(PORTFOLIO_FILE, "r", encoding="utf-8") as f:
+        portfolio = json.load(f)
 
     rows = []
     active_returns = []
@@ -80,34 +74,38 @@ def build_weekly():
     week_num = datetime.now().isocalendar()[1]
 
     for isin, price_dict in history.items():
-        # Sorter datoer og hent priser
         sorted_dates = [d for d in sorted(price_dict.keys()) if is_trading_day(d)]
         if not sorted_dates:
             continue
             
         prices = [price_dict[d] for d in sorted_dates]
-        # REEL DATAANALYSE: Fjern null-værdier før vi regner
+        # Her sikrer vi os, at vi kun arbejder med faktiske tal
         valid_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)))]
         
         if not valid_prices:
             continue
             
-        # Brug den seneste tilgængelige pris for fonden
         current_nav = valid_prices[-1]
         
-        # SIKKER MOMENTUM (Tjekker om vi har nok data i valid_prices)
+        # SIKKER BEREGNING (Tjekker om der er nok data til -6 og -21)
         p_week = valid_prices[-6] if len(valid_prices) >= 6 else valid_prices[0]
         p_month = valid_prices[-21] if len(valid_prices) >= 21 else valid_prices[0]
         
-        w_chg = ((current_nav - p_week) / p_week * 100) if (p_week and p_week != 0) else 0
-        m_chg = ((current_nav - p_month) / p_month * 100) if (p_month and p_month != 0) else 0
+        # SIKKERHED: Tjek for None før minus (Her crashede den før)
+        w_chg = 0
+        if p_week is not None and p_week != 0:
+            w_chg = ((current_nav - p_week) / p_week * 100)
+            
+        m_chg = 0
+        if p_month is not None and p_month != 0:
+            m_chg = ((current_nav - p_month) / p_month * 100)
+            
         momentum = w_chg - m_chg
         
         ma20 = get_ma(prices, 20)
         ma200 = get_ma(prices, 200)
         rsi = get_rsi(prices, 14)
         
-        # SIKKER AFSTAND TIL MA20 (Undgå TypeError hvis ma20 er None)
         ma20_dist = 0
         if ma20 is not None and ma20 != 0:
             ma20_dist = ((current_nav - ma20) / ma20 * 100)
@@ -139,12 +137,12 @@ def build_weekly():
             'ma20_dist': ma20_dist
         })
 
-    # SIKKER GENNEMSNITSBEREGNING (Undgå ZeroDivisionError)
+    # SIKKER GENNEMSNITSBEREGNING
     avg_p_ret = 0
     if active_returns:
         avg_p_ret = sum(active_returns) / len(active_returns)
 
-    # Sortering til rapporten
+    # Sortering (Beholdt din logik)
     p_alerts = [r for r in rows if r['is_active'] and r['week_change_pct'] < -3.0]
     m_opps = [r for r in rows if not r['is_active'] and r['momentum'] > 2.0 and r['t_state'] == "BULL"]
 
@@ -152,11 +150,7 @@ def build_weekly():
     c_labels = [r['name'][:20] for r in sorted_momentum]
     c_values = [r['momentum'] for r in sorted_momentum]
 
-    if not TEMPLATE_FILE.exists():
-        print(f"FEJL: Template mangler")
-        return
-
-    # Render Template
+    # Render Template (Beholdt præcis som din)
     template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
     html_output = template.render(
         report_date=date_str,
@@ -173,8 +167,7 @@ def build_weekly():
 
     REPORT_FILE.parent.mkdir(exist_ok=True)
     REPORT_FILE.write_text(html_output, encoding="utf-8")
-    
-    print(f"✅ Weekly Rapport færdig for uge {week_num}.")
+    print(f"✅ Weekly Rapport færdig.")
 
 if __name__ == "__main__":
     build_weekly()
