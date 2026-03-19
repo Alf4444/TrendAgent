@@ -95,15 +95,12 @@ def build_weekly():
         current_nav = prices[-1]
         
         # --- Ugentlig Momentum ---
-        # Vi kigger præcis 5 handelsdage tilbage for en "uge"
         prev_week_nav = prices[-6] if len(prices) >= 6 else prices[0]
-        # Vi kigger 20 handelsdage tilbage for en "måned"
         prev_month_nav = prices[-21] if len(prices) >= 21 else prices[0]
         
         week_chg = ((current_nav - prev_week_nav) / prev_week_nav * 100)
         month_chg = ((current_nav - prev_month_nav) / prev_month_nav * 100)
         
-        # Momentum score (relativ styrke: uge vs måned)
         momentum = week_chg - month_chg
         
         # Tekniske indikatorer
@@ -115,7 +112,6 @@ def build_weekly():
         p_info = portfolio.get(isin, {})
         is_active = p_info.get('active', False)
         buy_price = p_info.get('buy_price')
-        sector = p_info.get('sector', 'Ukendt')
         
         total_return = None
         if is_active and buy_price:
@@ -130,7 +126,6 @@ def build_weekly():
         rows.append({
             'isin': isin,
             'name': p_info.get('name', isin),
-            'sector': sector,
             'nav': current_nav,
             'week_change_pct': week_chg,
             'month_change_pct': month_chg,
@@ -146,8 +141,7 @@ def build_weekly():
     portfolio_alerts = [r for r in rows if r['is_active'] and r['week_change_pct'] < -3.0]
     market_opportunities = [r for r in rows if not r['is_active'] and r['momentum'] > 2.0 and r['t_state'] == "BULL"]
 
-    # 5. SORTERING & GRAF-DATA
-    # Top 10 momentum til grafen
+    # 5. GRAF-DATA
     sorted_momentum = sorted(rows, key=lambda x: x['momentum'], reverse=True)[:10]
     chart_labels = [r['name'][:20] for r in sorted_momentum]
     chart_values = [r['momentum'] for r in sorted_momentum]
@@ -157,11 +151,14 @@ def build_weekly():
         print(f"FEJL: Template mangler på {TEMPLATE_FILE}")
         return
 
+    # SIKKERHEDSNET: Beregn gennemsnit kun hvis der er aktive afkast
+    avg_port_return = statistics.mean(active_returns) if active_returns else 0
+
     template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
     html_output = template.render(
         report_date=date_str,
         week_number=week_num,
-        avg_portfolio_return=statistics.mean(active_returns) if active_returns else 0,
+        avg_portfolio_return=avg_port_return,
         portfolio_alerts=portfolio_alerts,
         market_opportunities=market_opportunities,
         top_up=sorted(rows, key=lambda x: x['week_change_pct'], reverse=True)[:5],
