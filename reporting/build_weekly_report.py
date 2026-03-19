@@ -21,7 +21,8 @@ REPORT_FILE = ROOT / "build/weekly.html"
 def get_ma(prices, window):
     if not isinstance(prices, list):
         return None
-    clean_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)))]
+    # SIKKERHED: Filtrer None og 0 fra før matematik
+    clean_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)) and p > 0)]
     if len(clean_prices) < window:
         return None
     relevant = clean_prices[-window:]
@@ -30,7 +31,8 @@ def get_ma(prices, window):
 def get_rsi(prices, window=14):
     if not isinstance(prices, list):
         return None
-    clean_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)))]
+    # SIKKERHED: Filtrer None og 0 fra før matematik
+    clean_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)) and p > 0)]
     if len(clean_prices) <= window:
         return None
     deltas = []
@@ -77,17 +79,20 @@ def build_weekly():
             continue
             
         prices = [price_dict[d] for d in sorted_dates]
-        valid_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)))]
+        
+        # SIKKERHED: Find valide priser (ikke None, ikke 0)
+        valid_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)) and p > 0)]
         
         if not valid_prices:
             continue
             
         current_nav = valid_prices[-1]
         
-        # Momentum beregning
+        # Performance beregning
         p_week = valid_prices[-6] if len(valid_prices) >= 6 else valid_prices[0]
         p_month = valid_prices[-21] if len(valid_prices) >= 21 else valid_prices[0]
         
+        # SIKKERHED: Tjek for 0 før division (Fikser ZeroDivisionError)
         w_chg = 0
         if p_week and p_week > 0:
             w_chg = ((current_nav - p_week) / p_week * 100)
@@ -133,23 +138,35 @@ def build_weekly():
             'ma20_dist': ma20_dist
         })
 
-    avg_p_ret = sum(active_returns) / len(active_returns) if active_returns else 0
+    # SIKKERHED: Tjek om der er aktive afkast før gennemsnit
+    avg_p_ret = 0
+    if active_returns:
+        avg_p_ret = sum(active_returns) / len(active_returns)
+
+    # Data til template
+    p_alerts = [r for r in rows if r['is_active'] and r['week_change_pct'] < -3.0]
+    m_opps = [r for r in rows if not r['is_active'] and (r['momentum'] or 0) > 2.0 and r['t_state'] == "BULL"]
+
+    # SIKKERHED: Sortering der håndterer None (Fikser TypeError)
+    sorted_for_chart = sorted(rows, key=lambda x: x['momentum'] if x['momentum'] is not None else -999, reverse=True)[:10]
+    
+    c_labels = [r['name'][:20] for r in sorted_for_chart]
+    c_values = [r['momentum'] for r in sorted_for_chart]
 
     # Render Template
     template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
-    
-    # Her fixes TypeError ved sortering:
     html_output = template.render(
         report_date=date_str,
         week_number=week_num,
         avg_portfolio_return=avg_p_ret,
-        portfolio_alerts=[r for r in rows if r['is_active'] and r['week_change_pct'] < -3.0],
-        market_opportunities=[r for r in rows if not r['is_active'] and (r['momentum'] or 0) > 2.0 and r['t_state'] == "BULL"][:8],
+        portfolio_alerts=p_alerts,
+        market_opportunities=m_opps[:8],
         top_up=sorted(rows, key=lambda x: x['week_change_pct'], reverse=True)[:5],
         top_down=sorted(rows, key=lambda x: x['week_change_pct'])[:5],
+        # SIKKERHED: Sortering af rækker der håndterer None
         rows=sorted(rows, key=lambda x: (not x['is_active'], -((x['momentum'] if x['momentum'] is not None else -999)))),
-        chart_labels=[r['name'][:20] for r in sorted(rows, key=lambda x: x['momentum'] if x['momentum'] is not None else -999, reverse=True)[:10]],
-        chart_values=[r['momentum'] for r in sorted(rows, key=lambda x: x['momentum'] if x['momentum'] is not None else -999, reverse=True)[:10]]
+        chart_labels=c_labels,
+        chart_values=c_values
     )
 
     REPORT_FILE.parent.mkdir(exist_ok=True)
