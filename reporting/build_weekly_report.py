@@ -91,26 +91,17 @@ def build_weekly():
             
         current_nav = valid_prices[-1]
         
-        # --- RETTELSE: SIKKER MOMENTUM ---
-        # Vi sikrer, at vi aldrig kigger længere tilbage end vi har data til
-        idx_w = min(len(valid_prices), 6)
-        idx_m = min(len(valid_prices), 21)
+        # --- KORREKT DATAANALYSE AF MOMENTUM ---
+        # Vi tjekker længden før vi tilgår index for at undgå None/Error
+        p_week = valid_prices[-6] if len(valid_prices) >= 6 else valid_prices[0]
+        p_month = valid_prices[-21] if len(valid_prices) >= 21 else valid_prices[0]
         
-        p_week = valid_prices[-idx_w]
-        p_month = valid_prices[-idx_m]
-        
-        # Her tjekker vi nu eksplizit for None og 0 før vi regner
-        w_chg = 0
-        if p_week and p_week != 0:
-            w_chg = ((current_nav - p_week) / p_week * 100)
-            
-        m_chg = 0
-        if p_month and p_month != 0:
-            m_chg = ((current_nav - p_month) / p_month * 100)
-            
+        # Beregn ændringer kun hvis p_week/p_month er gyldige tal
+        w_chg = ((current_nav - p_week) / p_week * 100) if (p_week and p_week != 0) else 0
+        m_chg = ((current_nav - p_month) / p_month * 100) if (p_month and p_month != 0) else 0
         momentum = w_chg - m_chg
-        # --------------------------------
         
+        # --- TEKNISKE INDIKATORER ---
         ma20 = get_ma(prices, 20)
         ma200 = get_ma(prices, 200)
         rsi = get_rsi(prices, 14)
@@ -146,9 +137,11 @@ def build_weekly():
             'ma20_dist': ma20_dist
         })
 
+    # --- OPSUMMERING ---
     p_alerts = [r for r in rows if r['is_active'] and r['week_change_pct'] < -3.0]
     m_opps = [r for r in rows if not r['is_active'] and r['momentum'] > 2.0 and r['t_state'] == "BULL"]
 
+    # Sikker sortering til grafen
     sorted_momentum = sorted(rows, key=lambda x: x['momentum'] if x['momentum'] is not None else -999, reverse=True)[:10]
     chart_labels = [r['name'][:20] for r in sorted_momentum]
     chart_values = [r['momentum'] for r in sorted_momentum]
@@ -157,9 +150,8 @@ def build_weekly():
         print(f"FEJL: Template mangler")
         return
 
-    avg_p_ret = 0
-    if active_returns:
-        avg_p_ret = sum(active_returns) / len(active_returns)
+    # Sikker gennemsnit
+    avg_p_ret = sum(active_returns) / len(active_returns) if active_returns else 0
 
     template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
     html_output = template.render(
