@@ -23,6 +23,7 @@ def get_ma(prices, window):
     if not isinstance(prices, list):
         return None
     
+    # Renser for None/null værdier som vi så i din history.json
     clean_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)))]
     
     if len(clean_prices) < window:
@@ -90,12 +91,13 @@ def build_weekly():
     week_num = datetime.now().isocalendar()[1]
 
     for isin, price_dict in history.items():
-        # 1. Sorter datoer
+        # 1. Sorter datoer og rens priser
         sorted_dates = [d for d in sorted(price_dict.keys()) if is_trading_day(d)]
         if not sorted_dates:
             continue
             
         prices = [price_dict[d] for d in sorted_dates]
+        # Her sikrer vi at vi kun arbejder med rigtige tal
         valid_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)))]
         
         if not valid_prices:
@@ -103,25 +105,23 @@ def build_weekly():
             
         current_nav = valid_prices[-1]
         
-        # 2. Sikker Momentum-beregning
+        # 2. Momentum-beregning (Uge/Måned)
         idx_w = min(len(valid_prices), 6)
         idx_m = min(len(valid_prices), 21)
         
         p_week = valid_prices[-idx_w]
         p_month = valid_prices[-idx_m]
         
-        # Undgå division med nul
         w_chg = ((current_nav - p_week) / p_week * 100) if p_week and p_week != 0 else 0
         m_chg = ((current_nav - p_month) / p_month * 100) if p_month and p_month != 0 else 0
         momentum = w_chg - m_chg
         
-        # 3. Indikatorer
+        # 3. Beregn indikatorer
         ma20 = get_ma(prices, 20)
         ma200 = get_ma(prices, 200)
         rsi = get_rsi(prices, 14)
         
-        # 4. Afstand til MA20 (Her var fejlen før)
-        # Vi tjekker nu eksplizit at ma20 ikke er None og ikke er 0
+        # 4. Afstand til MA20 (Her var fejlen med NoneType)
         ma20_dist = 0
         if ma20 is not None and ma20 != 0:
             ma20_dist = ((current_nav - ma20) / ma20 * 100)
@@ -153,35 +153,40 @@ def build_weekly():
             'ma20_dist': ma20_dist
         })
 
-    # 5. Sortering til rapport
+    # 5. Forbered data til rapport
     p_alerts = [r for r in rows if r['is_active'] and r['week_change_pct'] < -3.0]
     m_opps = [r for r in rows if not r['is_active'] and r['momentum'] > 2.0 and r['t_state'] == "BULL"]
 
-    sorted_mom = sorted(rows, key=lambda x: x['momentum'] if x['momentum'] is not None else -999, reverse=True)[:10]
-    c_labels = [r['name'][:20] for r in sorted_mom]
-    c_values = [r['momentum'] for r in sorted_mom]
+    # Top 10 momentum til grafen
+    sorted_momentum = sorted(rows, key=lambda x: x['momentum'] if x['momentum'] is not None else -999, reverse=True)[:10]
+    chart_labels = [r['name'][:20] for r in sorted_momentum]
+    chart_values = [r['momentum'] for r in sorted_momentum]
 
     if not TEMPLATE_FILE.exists():
-        print(f"FEJL: Template mangler")
+        print(f"FEJL: Template mangler på {TEMPLATE_FILE}")
         return
 
-    avg_p_ret = statistics.mean(active_returns) if active_returns else 0
+    # 6. SIKKER beregning af gennemsnit (Løser ZeroDivisionError)
+    avg_p_ret = 0
+    if active_returns:
+        avg_p_ret = sum(active_returns) / len(active_returns)
 
-    # 6. Render
+    # 7. Render Template
     template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
     html_output = template.render(
         report_date=date_str,
         week_number=week_num,
         avg_portfolio_return=avg_p_ret,
         portfolio_alerts=p_alerts,
-        market_opportunities=m_opps,
+        market_opportunities=m_opps[:8],
         top_up=sorted(rows, key=lambda x: x['week_change_pct'], reverse=True)[:5],
         top_down=sorted(rows, key=lambda x: x['week_change_pct'])[:5],
         rows=sorted(rows, key=lambda x: (not x['is_active'], -(x['momentum'] or -999))),
-        chart_labels=c_labels,
-        chart_values=c_values
+        chart_labels=chart_labels,
+        chart_values=chart_values
     )
 
+    # 8. Gem rapport
     REPORT_FILE.parent.mkdir(exist_ok=True)
     REPORT_FILE.write_text(html_output, encoding="utf-8")
     
