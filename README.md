@@ -1,11 +1,8 @@
 # 📈 TrendAgent Fokus
-**Opdateret:** 18-03-2026 19:08
+**Opdateret:** 19-03-2026 19:03 (Handelsdage valideret)
 
-| | Fond | Signal | Egen % | Trend | Afstand | Cross |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| ⭐ | C WorldWide Asien | – | -2.6% | BULL | +10.1% | – |
-| ⭐ | Lazard Emerging Markets E | – | -3.3% | BULL | +10.7% | – |
-| ⭐ | ⚠️ Sydinvest Globale EM-akti | – | -3.8% | BULL | +9.5% | – |
-| 🔍 | PFA Indeks 25 | 🚀 KØB | – | BULL | +0.2% | – |
-| 🔍 | ⚠️ PFA Indeks Europa Aktier | 🚀 KØB | – | BULL | +0.4% | – |
-| 🔍 | ⚠️ PFA Pengemarked | 🚀 KØB | – | BULL | +0.0% | – |
+| | Fond | Signal | RSI | Egen % | Trend | Afstand | Cross |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| ⭐ | C WorldWide Asien | – | 46 | -0.1% | WARM-UP | +0.0% | – |
+| ⭐ | Lazard Emerging Markets E | – | 29 | -3.8% | WARM-UP | +0.0% | – |
+| ⭐ | ⚠️ Sydinvest Globale EM-akti | – | 44 | -1.8% | WARM-UP | +0.0% | – |
