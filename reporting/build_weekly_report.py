@@ -22,6 +22,7 @@ def get_ma(prices, window):
     """Beregner Moving Average - Robust version."""
     if not isinstance(prices, list):
         return None
+    # Rens for None/null (vigtigt pga. huller i din history.json)
     clean_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)))]
     if len(clean_prices) < window:
         return None
@@ -79,33 +80,34 @@ def build_weekly():
     week_num = datetime.now().isocalendar()[1]
 
     for isin, price_dict in history.items():
+        # Sorter datoer og hent priser
         sorted_dates = [d for d in sorted(price_dict.keys()) if is_trading_day(d)]
         if not sorted_dates:
             continue
             
         prices = [price_dict[d] for d in sorted_dates]
+        # REEL DATAANALYSE: Fjern null-værdier før vi regner
         valid_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)))]
         
         if not valid_prices:
             continue
             
+        # Brug den seneste tilgængelige pris for fonden
         current_nav = valid_prices[-1]
         
-        # --- KORREKT DATAANALYSE AF MOMENTUM ---
-        # Vi tjekker længden før vi tilgår index for at undgå None/Error
+        # SIKKER MOMENTUM (Tjekker om vi har nok data i valid_prices)
         p_week = valid_prices[-6] if len(valid_prices) >= 6 else valid_prices[0]
         p_month = valid_prices[-21] if len(valid_prices) >= 21 else valid_prices[0]
         
-        # Beregn ændringer kun hvis p_week/p_month er gyldige tal
         w_chg = ((current_nav - p_week) / p_week * 100) if (p_week and p_week != 0) else 0
         m_chg = ((current_nav - p_month) / p_month * 100) if (p_month and p_month != 0) else 0
         momentum = w_chg - m_chg
         
-        # --- TEKNISKE INDIKATORER ---
         ma20 = get_ma(prices, 20)
         ma200 = get_ma(prices, 200)
         rsi = get_rsi(prices, 14)
         
+        # SIKKER AFSTAND TIL MA20 (Undgå TypeError hvis ma20 er None)
         ma20_dist = 0
         if ma20 is not None and ma20 != 0:
             ma20_dist = ((current_nav - ma20) / ma20 * 100)
@@ -137,22 +139,24 @@ def build_weekly():
             'ma20_dist': ma20_dist
         })
 
-    # --- OPSUMMERING ---
+    # SIKKER GENNEMSNITSBEREGNING (Undgå ZeroDivisionError)
+    avg_p_ret = 0
+    if active_returns:
+        avg_p_ret = sum(active_returns) / len(active_returns)
+
+    # Sortering til rapporten
     p_alerts = [r for r in rows if r['is_active'] and r['week_change_pct'] < -3.0]
     m_opps = [r for r in rows if not r['is_active'] and r['momentum'] > 2.0 and r['t_state'] == "BULL"]
 
-    # Sikker sortering til grafen
     sorted_momentum = sorted(rows, key=lambda x: x['momentum'] if x['momentum'] is not None else -999, reverse=True)[:10]
-    chart_labels = [r['name'][:20] for r in sorted_momentum]
-    chart_values = [r['momentum'] for r in sorted_momentum]
+    c_labels = [r['name'][:20] for r in sorted_momentum]
+    c_values = [r['momentum'] for r in sorted_momentum]
 
     if not TEMPLATE_FILE.exists():
         print(f"FEJL: Template mangler")
         return
 
-    # Sikker gennemsnit
-    avg_p_ret = sum(active_returns) / len(active_returns) if active_returns else 0
-
+    # Render Template
     template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
     html_output = template.render(
         report_date=date_str,
@@ -163,8 +167,8 @@ def build_weekly():
         top_up=sorted(rows, key=lambda x: x['week_change_pct'], reverse=True)[:5],
         top_down=sorted(rows, key=lambda x: x['week_change_pct'])[:5],
         rows=sorted(rows, key=lambda x: (not x['is_active'], -(x['momentum'] or -999))),
-        chart_labels=chart_labels,
-        chart_values=chart_values
+        chart_labels=c_labels,
+        chart_values=c_values
     )
 
     REPORT_FILE.parent.mkdir(exist_ok=True)
