@@ -1,4 +1,6 @@
 import json
+import time
+import statistics
 from pathlib import Path
 from datetime import datetime
 from jinja2 import Template
@@ -13,19 +15,59 @@ PORTFOLIO_FILE = ROOT / "config/portfolio.json"
 TEMPLATE_FILE = ROOT / "templates/weekly.html.j2"
 REPORT_FILE = ROOT / "build/weekly.html"
 
+# ==========================================
+# TEKNISKE HJÆLPEFUNKTIONER
+# ==========================================
+
 def get_ma(prices, window):
-    """Beregner Moving Average. Håndterer vinduer mindre end historikken."""
-    if not prices:
+    """Beregner Moving Average kun hvis der er data nok (ingen warm-up)."""
+    if not prices or len(prices) < window:
         return None
-    actual_window = min(len(prices), window)
-    relevant = prices[-actual_window:]
+    relevant = prices[-window:]
     return sum(relevant) / len(relevant)
 
+def get_rsi(prices, window=14):
+    """Beregner Relative Strength Index (RSI) baseret på hverdage."""
+    if len(prices) <= window:
+        return None
+    deltas = [prices[i] - prices[i-1] for i in range(1, len(prices))]
+    gains = [d if d > 0 else 0 for d in deltas[-window:]]
+    losses = [abs(d) if d < 0 else 0 for d in deltas[-window:]]
+    avg_gain = sum(gains) / window
+    avg_loss = sum(losses) / window
+    if avg_loss == 0: return 100
+    rs = avg_gain / avg_loss
+    return 100 - (100 / (1 + rs))
+
+def is_trading_day(date_str):
+    """Filterer weekender fra."""
+    try:
+        dt = datetime.strptime(date_str, '%Y-%m-%d')
+        return dt.weekday() < 5
+    except:
+        return False
+
+# ==========================================
+# HOVEDFUNKTION
+# ==========================================
+
 def build_weekly():
-    # 1. Dataindlæsning med sikkerhedsnet
-    # Vi kræver history og portfolio. latest.json er valgfri for at øge robustheden.
+    # 1. BUILD-BUFFER (Retry-logik)
+    max_retries = 3
+    retry_delay = 300
+    
+    for attempt in range(max_retries):
+        if LATEST_FILE.exists():
+            file_mod_time = datetime.fromtimestamp(LATEST_FILE.stat().st_mtime).date()
+            if file_mod_time == datetime.now().date():
+                break
+        if attempt < max_retries - 1:
+            print(f"Uge-build venter på friske data (Forsøg {attempt+1})...")
+            time.sleep(retry_delay)
+
+    # 2. DATAINDLÆSNING
     if not HISTORY_FILE.exists() or not PORTFOLIO_FILE.exists():
-        print(f"FEJL: Kritiske filer mangler. Tjek {HISTORY_FILE} og {PORTFOLIO_FILE}")
+        print("FEJL: Kritiske filer mangler.")
         return
 
     try:
@@ -33,146 +75,107 @@ def build_weekly():
             history = json.load(f)
         with open(PORTFOLIO_FILE, "r", encoding="utf-8") as f:
             portfolio = json.load(f)
-        
-        latest_list = []
-        if LATEST_FILE.exists():
-            with open(LATEST_FILE, "r", encoding="utf-8") as f:
-                latest_list = json.load(f)
     except Exception as e:
-        print(f"FEJL ved læsning af JSON: {e}")
+        print(f"Fejl ved indlæsning: {e}")
         return
-
-    # 2. Forberedelse af opslagsværker
-    latest_map = {item['isin']: item for item in latest_list}
-    
-    # Find rapportens dato: Vi tager den nyeste dato fra seneste scraper-kørsel
-    # Hvis den mangler, bruger vi dags dato.
-    if latest_list:
-        date_str = latest_list[0].get('nav_date', datetime.now().strftime("%Y-%m-%d"))
-    else:
-        date_str = datetime.now().strftime("%Y-%m-%d")
-        
-    week_num = datetime.strptime(date_str, "%Y-%m-%d").isocalendar()[1]
 
     rows = []
     active_returns = []
-    portfolio_alerts = []
-    market_opportunities = []
+    date_str = datetime.now().strftime("%d-%m-%Y")
+    week_num = datetime.now().isocalendar()[1]
 
-    # 3. Iteration over alle fonde fundet i historikken
-    # Dette gør koden robust: Den ser alt hvad du har data på, uanset lister.
+    # 3. ANALYSE AF HVER FOND
     for isin, price_dict in history.items():
-        # Sorter datoer så vi er sikre på rækkefølgen
-        sorted_dates = sorted(price_dict.keys())
+        # Filtrér til kun hverdage
+        sorted_dates = [d for d in sorted(price_dict.keys()) if is_trading_day(d)]
         if not sorted_dates:
             continue
             
-        all_prices = [price_dict[d] for d in sorted_dates]
-        curr_p = all_prices[-1] # Den absolut nyeste pris i historikken
+        prices = [price_dict[d] for d in sorted_dates]
+        current_nav = prices[-1]
         
-        # Hent metadata (Navn, porteføljestatus)
-        # Vi tjekker porteføljen først, da det er her du navngiver dine handler
-        port_info = portfolio.get(isin, {})
-        official = latest_map.get(isin, {})
+        # --- Ugentlig Momentum ---
+        # Vi kigger præcis 5 handelsdage tilbage for en "uge"
+        prev_week_nav = prices[-6] if len(prices) >= 6 else prices[0]
+        # Vi kigger 20 handelsdage tilbage for en "måned"
+        prev_month_nav = prices[-21] if len(prices) >= 21 else prices[0]
         
-        fund_name = port_info.get('name') or official.get('name', isin)
-        is_active = port_info.get('active', False)
-        buy_p = port_info.get('buy_price')
-
-        # 4. Beregn nøgletal (Robust logik)
-        # Hvis return_1w mangler i latest.json, beregner vi det selv fra historikken
-        week_chg = official.get('return_1w')
-        if week_chg is None:
-            if len(all_prices) >= 5:
-                # Estimering: Sidste pris vs prisen for 5 datapunkter siden
-                prev_p = all_prices[-5]
-                week_chg = ((curr_p - prev_p) / prev_p) * 100 if prev_p else 0
-            else:
-                week_chg = 0.0
-
-        ytd_chg = official.get('return_ytd', 0)
-
-        # Trend & Momentum (MA200)
-        ma200 = get_ma(all_prices, 200)
-        curr_state = "UP" if ma200 and curr_p > ma200 else "DOWN"
+        week_chg = ((current_nav - prev_week_nav) / prev_week_nav * 100)
+        month_chg = ((current_nav - prev_month_nav) / prev_month_nav * 100)
         
-        # Shift detection (Sammenlign nyeste og næstnyeste datapunkt)
-        past_state = "DOWN"
-        if len(all_prices) > 1:
-            past_p = all_prices[-2]
-            # MA200 eksklusiv sidste punkt
-            past_ma200 = get_ma(all_prices[:-1], 200)
-            past_state = "UP" if past_ma200 and past_p > past_ma200 else "DOWN"
-
-        # 5. Portefølje Logik & Gevinst
+        # Momentum score (relativ styrke: uge vs måned)
+        momentum = week_chg - month_chg
+        
+        # Tekniske indikatorer
+        ma20 = get_ma(prices, 20)
+        ma200 = get_ma(prices, 200)
+        rsi = get_rsi(prices, 14)
+        
+        # Portefølje info
+        p_info = portfolio.get(isin, {})
+        is_active = p_info.get('active', False)
+        buy_price = p_info.get('buy_price')
+        sector = p_info.get('sector', 'Ukendt')
+        
         total_return = None
-        if is_active:
-            active_returns.append(week_chg)
-            if buy_p:
-                total_return = ((curr_p - buy_p) / buy_p) * 100
-            
-            # Alarmer ved trendskift for aktive fonde
-            if past_state == "DOWN" and curr_state == "UP":
-                portfolio_alerts.append({"name": fund_name, "msg": "🚀 Trend skiftet til BULL (KØB)"})
-            elif past_state == "UP" and curr_state == "DOWN":
-                portfolio_alerts.append({"name": fund_name, "msg": "⚠️ Trend skiftet til BEAR (SÆLG)"})
-        
-        # Markedsmulighed hvis ikke aktiv, men trend skifter op
-        elif past_state == "DOWN" and curr_state == "UP":
-            market_opportunities.append({"name": fund_name})
+        if is_active and buy_price:
+            total_return = ((current_nav - buy_price) / buy_price * 100)
+            active_returns.append(total_return)
 
-        # Momentum score & Drawdown
-        momentum = round(((curr_p - ma200) / ma200 * 100), 1) if ma200 else 0
-        ath = max(all_prices)
-        drawdown = ((curr_p - ath) / ath * 100) if ath > 0 else 0
+        # Trend status
+        t_state = "WARM-UP"
+        if ma200:
+            t_state = "BULL" if current_nav > ma200 else "BEAR"
 
         rows.append({
-            "isin": isin,
-            "name": fund_name, 
-            "is_active": is_active, 
-            "week_change_pct": week_chg,
-            "total_return": total_return,
-            "trend_state": curr_state, 
-            "momentum": momentum,
-            "ytd_return": ytd_chg, 
-            "drawdown": drawdown
+            'isin': isin,
+            'name': p_info.get('name', isin),
+            'sector': sector,
+            'nav': current_nav,
+            'week_change_pct': week_chg,
+            'month_change_pct': month_chg,
+            'momentum': momentum,
+            'rsi': rsi,
+            'is_active': is_active,
+            'total_return': total_return,
+            't_state': t_state,
+            'ma20_dist': ((current_nav - ma20) / ma20 * 100) if ma20 else 0
         })
 
-    # 6. Sortering og Top-lister
+    # 4. ALERTS & OPSUMMERING
+    portfolio_alerts = [r for r in rows if r['is_active'] and r['week_change_pct'] < -3.0]
+    market_opportunities = [r for r in rows if not r['is_active'] and r['momentum'] > 2.0 and r['t_state'] == "BULL"]
+
+    # 5. SORTERING & GRAF-DATA
     # Top 10 momentum til grafen
     sorted_momentum = sorted(rows, key=lambda x: x['momentum'], reverse=True)[:10]
     chart_labels = [r['name'][:20] for r in sorted_momentum]
     chart_values = [r['momentum'] for r in sorted_momentum]
 
-    # 7. Render Template
+    # 6. RENDER TEMPLATE
     if not TEMPLATE_FILE.exists():
-        print(f"FEJL: Template-filen mangler på {TEMPLATE_FILE}")
+        print(f"FEJL: Template mangler på {TEMPLATE_FILE}")
         return
 
     template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
     html_output = template.render(
         report_date=date_str,
         week_number=week_num,
-        avg_portfolio_return=sum(active_returns)/len(active_returns) if active_returns else 0,
+        avg_portfolio_return=statistics.mean(active_returns) if active_returns else 0,
         portfolio_alerts=portfolio_alerts,
-        market_opportunities=market_opportunities[:8],
+        market_opportunities=market_opportunities,
         top_up=sorted(rows, key=lambda x: x['week_change_pct'], reverse=True)[:5],
         top_down=sorted(rows, key=lambda x: x['week_change_pct'])[:5],
-        # Tabel sortering: Aktive først, derefter momentum
         rows=sorted(rows, key=lambda x: (not x['is_active'], -x['momentum'])),
         chart_labels=chart_labels,
         chart_values=chart_values
     )
 
-    # 8. Gem rapport
+    # 7. GEM RAPPORT
     REPORT_FILE.parent.mkdir(exist_ok=True)
     REPORT_FILE.write_text(html_output, encoding="utf-8")
     
-    print(f"--- Rapport Genereret ---")
-    print(f"Dato: {date_str} (Uge {week_num})")
-    print(f"Antal fonde i alt: {len(rows)}")
-    print(f"Aktive fonde fundet: {len(active_returns)}")
-    print(f"Gemt som: {REPORT_FILE}")
+    print(f"Weekly Rapport færdig for uge {week_num}.")
 
 if __name__ == "__main__":
     build_weekly()
