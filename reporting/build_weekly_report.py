@@ -5,7 +5,7 @@ from datetime import datetime
 from jinja2 import Template
 
 # ==========================================
-# KONFIGURATION & STIER (Beholdt præcis som din)
+# KONFIGURATION & STIER
 # ==========================================
 ROOT = Path(__file__).resolve().parents[1]
 HISTORY_FILE = ROOT / "data/history.json"
@@ -15,13 +15,13 @@ TEMPLATE_FILE = ROOT / "templates/weekly.html.j2"
 REPORT_FILE = ROOT / "build/weekly.html"
 
 # ==========================================
-# TEKNISKE HJÆLPEFUNKTIONER (Beholdt dine egne)
+# TEKNISKE HJÆLPEFUNKTIONER
 # ==========================================
 
 def get_ma(prices, window):
     if not isinstance(prices, list):
         return None
-    # Tilføjet filter for at undgå None i matematikken
+    # Rens for None/null så matematikken ikke fejler
     clean_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)))]
     if len(clean_prices) < window:
         return None
@@ -31,7 +31,6 @@ def get_ma(prices, window):
 def get_rsi(prices, window=14):
     if not isinstance(prices, list):
         return None
-    # Tilføjet filter for at undgå None i matematikken
     clean_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)))]
     if len(clean_prices) <= window:
         return None
@@ -80,7 +79,7 @@ def build_weekly():
             
         prices = [price_dict[d] for d in sorted_dates]
         
-        # Her sikrer vi os, at vi kun arbejder med faktiske tal (fjerner None/null)
+        # Rens for None-værdier i det aktuelle loop
         valid_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)))]
         
         if not valid_prices:
@@ -88,17 +87,17 @@ def build_weekly():
             
         current_nav = valid_prices[-1]
         
-        # --- BEREGN PERFORMANCE (Uge/Måned) ---
+        # Find historiske priser til momentum
         p_week = valid_prices[-6] if len(valid_prices) >= 6 else valid_prices[0]
         p_month = valid_prices[-21] if len(valid_prices) >= 21 else valid_prices[0]
         
-        # SIKKERHED: Tjek at priserne ikke er None eller 0 før division (Fikser ZeroDivisionError)
+        # --- ROBUST PERFORMANCE BEREGNING ---
         w_chg = 0
-        if p_week and p_week > 0:
+        if p_week and p_week > 0: # SIKRING MOD DIVISION MED NUL
             w_chg = ((current_nav - p_week) / p_week * 100)
             
         m_chg = 0
-        if p_month and p_month > 0:
+        if p_month and p_month > 0: # SIKRING MOD DIVISION MED NUL
             m_chg = ((current_nav - p_month) / p_month * 100)
             
         momentum = w_chg - m_chg
@@ -138,12 +137,12 @@ def build_weekly():
             'ma20_dist': ma20_dist
         })
 
-    # SIKKER GENNEMSNITSBEREGNING (Fikser division med nul hvis listen er tom)
+    # Sikker gennemsnitsberegning
     avg_p_ret = 0
     if active_returns:
         avg_p_ret = sum(active_returns) / len(active_returns)
 
-    # Sortering (Beholdt din logik)
+    # Sortering og filtering til template
     p_alerts = [r for r in rows if r['is_active'] and r['week_change_pct'] < -3.0]
     m_opps = [r for r in rows if not r['is_active'] and r['momentum'] > 2.0 and r['t_state'] == "BULL"]
 
@@ -151,7 +150,7 @@ def build_weekly():
     c_labels = [r['name'][:20] for r in sorted_momentum]
     c_values = [r['momentum'] for r in sorted_momentum]
 
-    # Render Template (Beholdt præcis som din)
+    # Render Template
     template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
     html_output = template.render(
         report_date=date_str,
