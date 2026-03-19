@@ -79,7 +79,8 @@ def build_weekly():
             continue
             
         prices = [price_dict[d] for d in sorted_dates]
-        # Her sikrer vi os, at vi kun arbejder med faktiske tal
+        
+        # Her sikrer vi os, at vi kun arbejder med faktiske tal (fjerner None/null)
         valid_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)))]
         
         if not valid_prices:
@@ -87,17 +88,17 @@ def build_weekly():
             
         current_nav = valid_prices[-1]
         
-        # SIKKER BEREGNING (Tjekker om der er nok data til -6 og -21)
+        # --- BEREGN PERFORMANCE (Uge/Måned) ---
         p_week = valid_prices[-6] if len(valid_prices) >= 6 else valid_prices[0]
         p_month = valid_prices[-21] if len(valid_prices) >= 21 else valid_prices[0]
         
-        # SIKKERHED: Tjek for None før minus (Her crashede den før)
+        # SIKKERHED: Tjek at priserne ikke er None eller 0 før division (Fikser ZeroDivisionError)
         w_chg = 0
-        if p_week is not None and p_week != 0:
+        if p_week and p_week > 0:
             w_chg = ((current_nav - p_week) / p_week * 100)
             
         m_chg = 0
-        if p_month is not None and p_month != 0:
+        if p_month and p_month > 0:
             m_chg = ((current_nav - p_month) / p_month * 100)
             
         momentum = w_chg - m_chg
@@ -107,7 +108,7 @@ def build_weekly():
         rsi = get_rsi(prices, 14)
         
         ma20_dist = 0
-        if ma20 is not None and ma20 != 0:
+        if ma20 and ma20 > 0:
             ma20_dist = ((current_nav - ma20) / ma20 * 100)
         
         p_info = portfolio.get(isin, {})
@@ -137,7 +138,7 @@ def build_weekly():
             'ma20_dist': ma20_dist
         })
 
-    # SIKKER GENNEMSNITSBEREGNING
+    # SIKKER GENNEMSNITSBEREGNING (Fikser division med nul hvis listen er tom)
     avg_p_ret = 0
     if active_returns:
         avg_p_ret = sum(active_returns) / len(active_returns)
