@@ -22,13 +22,9 @@ def get_ma(prices, window):
     """Beregner Moving Average - Robust version."""
     if not isinstance(prices, list):
         return None
-    
-    # Renser for None/null værdier som vi så i din history.json
     clean_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)))]
-    
     if len(clean_prices) < window:
         return None
-        
     relevant = clean_prices[-window:]
     return sum(relevant) / len(relevant)
 
@@ -36,26 +32,18 @@ def get_rsi(prices, window=14):
     """Beregner RSI - Robust version."""
     if not isinstance(prices, list):
         return None
-        
     clean_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)))]
-    
     if len(clean_prices) <= window:
         return None
-        
     deltas = []
     for i in range(1, len(clean_prices)):
         deltas.append(clean_prices[i] - clean_prices[i-1])
-        
     recent_deltas = deltas[-window:]
     gains = [d if d > 0 else 0 for d in recent_deltas]
     losses = [abs(d) if d < 0 else 0 for d in recent_deltas]
-    
     avg_gain = sum(gains) / window
     avg_loss = sum(losses) / window
-    
-    if avg_loss == 0: 
-        return 100.0
-        
+    if avg_loss == 0: return 100.0
     rs = avg_gain / avg_loss
     return 100.0 - (100.0 / (1 + rs))
 
@@ -91,13 +79,11 @@ def build_weekly():
     week_num = datetime.now().isocalendar()[1]
 
     for isin, price_dict in history.items():
-        # 1. Sorter datoer og rens priser
         sorted_dates = [d for d in sorted(price_dict.keys()) if is_trading_day(d)]
         if not sorted_dates:
             continue
             
         prices = [price_dict[d] for d in sorted_dates]
-        # Her sikrer vi at vi kun arbejder med rigtige tal
         valid_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)))]
         
         if not valid_prices:
@@ -105,23 +91,30 @@ def build_weekly():
             
         current_nav = valid_prices[-1]
         
-        # 2. Momentum-beregning (Uge/Måned)
+        # --- RETTELSE: SIKKER MOMENTUM ---
+        # Vi sikrer, at vi aldrig kigger længere tilbage end vi har data til
         idx_w = min(len(valid_prices), 6)
         idx_m = min(len(valid_prices), 21)
         
         p_week = valid_prices[-idx_w]
         p_month = valid_prices[-idx_m]
         
-        w_chg = ((current_nav - p_week) / p_week * 100) if p_week and p_week != 0 else 0
-        m_chg = ((current_nav - p_month) / p_month * 100) if p_month and p_month != 0 else 0
+        # Her tjekker vi nu eksplizit for None og 0 før vi regner
+        w_chg = 0
+        if p_week and p_week != 0:
+            w_chg = ((current_nav - p_week) / p_week * 100)
+            
+        m_chg = 0
+        if p_month and p_month != 0:
+            m_chg = ((current_nav - p_month) / p_month * 100)
+            
         momentum = w_chg - m_chg
+        # --------------------------------
         
-        # 3. Beregn indikatorer
         ma20 = get_ma(prices, 20)
         ma200 = get_ma(prices, 200)
         rsi = get_rsi(prices, 14)
         
-        # 4. Afstand til MA20 (Her var fejlen med NoneType)
         ma20_dist = 0
         if ma20 is not None and ma20 != 0:
             ma20_dist = ((current_nav - ma20) / ma20 * 100)
@@ -153,25 +146,21 @@ def build_weekly():
             'ma20_dist': ma20_dist
         })
 
-    # 5. Forbered data til rapport
     p_alerts = [r for r in rows if r['is_active'] and r['week_change_pct'] < -3.0]
     m_opps = [r for r in rows if not r['is_active'] and r['momentum'] > 2.0 and r['t_state'] == "BULL"]
 
-    # Top 10 momentum til grafen
     sorted_momentum = sorted(rows, key=lambda x: x['momentum'] if x['momentum'] is not None else -999, reverse=True)[:10]
     chart_labels = [r['name'][:20] for r in sorted_momentum]
     chart_values = [r['momentum'] for r in sorted_momentum]
 
     if not TEMPLATE_FILE.exists():
-        print(f"FEJL: Template mangler på {TEMPLATE_FILE}")
+        print(f"FEJL: Template mangler")
         return
 
-    # 6. SIKKER beregning af gennemsnit (Løser ZeroDivisionError)
     avg_p_ret = 0
     if active_returns:
         avg_p_ret = sum(active_returns) / len(active_returns)
 
-    # 7. Render Template
     template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
     html_output = template.render(
         report_date=date_str,
@@ -186,7 +175,6 @@ def build_weekly():
         chart_values=chart_values
     )
 
-    # 8. Gem rapport
     REPORT_FILE.parent.mkdir(exist_ok=True)
     REPORT_FILE.write_text(html_output, encoding="utf-8")
     
