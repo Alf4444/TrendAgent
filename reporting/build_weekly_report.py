@@ -21,7 +21,6 @@ REPORT_FILE = ROOT / "build/weekly.html"
 def get_ma(prices, window):
     if not isinstance(prices, list):
         return None
-    # Rens for None/null så matematikken ikke fejler
     clean_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)))]
     if len(clean_prices) < window:
         return None
@@ -78,8 +77,6 @@ def build_weekly():
             continue
             
         prices = [price_dict[d] for d in sorted_dates]
-        
-        # Rens for None-værdier i det aktuelle loop
         valid_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)))]
         
         if not valid_prices:
@@ -87,17 +84,16 @@ def build_weekly():
             
         current_nav = valid_prices[-1]
         
-        # Find historiske priser til momentum
+        # Momentum beregning
         p_week = valid_prices[-6] if len(valid_prices) >= 6 else valid_prices[0]
         p_month = valid_prices[-21] if len(valid_prices) >= 21 else valid_prices[0]
         
-        # --- ROBUST PERFORMANCE BEREGNING ---
         w_chg = 0
-        if p_week and p_week > 0: # SIKRING MOD DIVISION MED NUL
+        if p_week and p_week > 0:
             w_chg = ((current_nav - p_week) / p_week * 100)
             
         m_chg = 0
-        if p_month and p_month > 0: # SIKRING MOD DIVISION MED NUL
+        if p_month and p_month > 0:
             m_chg = ((current_nav - p_month) / p_month * 100)
             
         momentum = w_chg - m_chg
@@ -137,32 +133,23 @@ def build_weekly():
             'ma20_dist': ma20_dist
         })
 
-    # Sikker gennemsnitsberegning
-    avg_p_ret = 0
-    if active_returns:
-        avg_p_ret = sum(active_returns) / len(active_returns)
-
-    # Sortering og filtering til template
-    p_alerts = [r for r in rows if r['is_active'] and r['week_change_pct'] < -3.0]
-    m_opps = [r for r in rows if not r['is_active'] and r['momentum'] > 2.0 and r['t_state'] == "BULL"]
-
-    sorted_momentum = sorted(rows, key=lambda x: x['momentum'] if x['momentum'] is not None else -999, reverse=True)[:10]
-    c_labels = [r['name'][:20] for r in sorted_momentum]
-    c_values = [r['momentum'] for r in sorted_momentum]
+    avg_p_ret = sum(active_returns) / len(active_returns) if active_returns else 0
 
     # Render Template
     template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
+    
+    # Her fixes TypeError ved sortering:
     html_output = template.render(
         report_date=date_str,
         week_number=week_num,
         avg_portfolio_return=avg_p_ret,
-        portfolio_alerts=p_alerts,
-        market_opportunities=m_opps[:8],
+        portfolio_alerts=[r for r in rows if r['is_active'] and r['week_change_pct'] < -3.0],
+        market_opportunities=[r for r in rows if not r['is_active'] and (r['momentum'] or 0) > 2.0 and r['t_state'] == "BULL"][:8],
         top_up=sorted(rows, key=lambda x: x['week_change_pct'], reverse=True)[:5],
         top_down=sorted(rows, key=lambda x: x['week_change_pct'])[:5],
-        rows=sorted(rows, key=lambda x: (not x['is_active'], -(x['momentum'] or -999))),
-        chart_labels=c_labels,
-        chart_values=c_values
+        rows=sorted(rows, key=lambda x: (not x['is_active'], -((x['momentum'] if x['momentum'] is not None else -999)))),
+        chart_labels=[r['name'][:20] for r in sorted(rows, key=lambda x: x['momentum'] if x['momentum'] is not None else -999, reverse=True)[:10]],
+        chart_values=[r['momentum'] for r in sorted(rows, key=lambda x: x['momentum'] if x['momentum'] is not None else -999, reverse=True)[:10]]
     )
 
     REPORT_FILE.parent.mkdir(exist_ok=True)
