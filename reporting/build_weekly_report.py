@@ -21,7 +21,7 @@ REPORT_FILE = ROOT / "build/weekly.html"
 def get_ma(prices, window):
     if not isinstance(prices, list) or not prices:
         return None
-    # SIKKERHED: Vi filtrerer nu eksplicit 0.0 fra (ligesom i Monthly/Daily)
+    # SIKKERHED: Filtrerer alt fra der ikke er tal over 0
     clean_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)) and p > 0)]
     if len(clean_prices) < window:
         return None
@@ -71,13 +71,13 @@ def build_weekly():
     week_num = datetime.now().isocalendar()[1]
 
     for isin, price_dict in history.items():
+        # Sorter datoer og tjek om der er data
         sorted_dates = [d for d in sorted(price_dict.keys()) if is_trading_day(d)]
         if not sorted_dates:
             continue
             
+        # Hent priser og rens dem (Fjerner None, strenge og 0.0)
         prices = [price_dict[d] for d in sorted_dates]
-        
-        # SIKKERHED: valid_prices må KUN indeholde tal over 0
         valid_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)) and p > 0)]
         
         if not valid_prices:
@@ -85,11 +85,12 @@ def build_weekly():
             
         current_nav = valid_prices[-1]
         
+        # Find historiske priser (Sikret mod for kort historik)
         count = len(valid_prices)
         p_week = valid_prices[-min(6, count)]
         p_month = valid_prices[-min(21, count)]
         
-        # SIKKERHEDS-RETTELSE (Ligesom i din Monthly kode)
+        # --- SIKKER BEREGNING (Sikret mod ZeroDivisionError) ---
         w_chg = 0
         if p_week and p_week > 0:
             w_chg = ((current_nav - p_week) / p_week * 100)
@@ -100,10 +101,12 @@ def build_weekly():
             
         momentum = w_chg - m_chg
         
+        # Tekniske indikatorer
         ma20 = get_ma(valid_prices, 20)
         ma200 = get_ma(valid_prices, 200)
         rsi = get_rsi(valid_prices, 14)
         
+        # Sikker MA-afstand
         ma20_dist = 0
         if ma20 and ma20 > 0:
             ma20_dist = ((current_nav - ma20) / ma20 * 100)
@@ -135,23 +138,20 @@ def build_weekly():
             'ma20_dist': ma20_dist
         })
 
-    # SIKKERHEDS-RETTELSE (Fra Monthly)
+    # Sikker gennemsnitsberegning (Fikser division med nul her også)
     avg_p_ret = sum(active_returns) / len(active_returns) if active_returns else 0
 
-    # Forbered data til template
-    p_alerts = [r for r in rows if r['is_active'] and r['week_change_pct'] < -3.0]
-    m_opps = [r for r in rows if not r['is_active'] and (r['momentum'] or 0) > 2.0 and r['t_state'] == "BULL"]
-
-    # SIKKERHED: Håndter None i momentum-sortering
+    # Sortering der er robust over for None
     sorted_momentum = sorted(rows, key=lambda x: x['momentum'] if x['momentum'] is not None else -999, reverse=True)[:10]
 
+    # Render Template
     template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
     html_output = template.render(
         report_date=date_str,
         week_number=week_num,
         avg_portfolio_return=avg_p_ret,
-        portfolio_alerts=p_alerts,
-        market_opportunities=m_opps[:8],
+        portfolio_alerts=[r for r in rows if r['is_active'] and r['week_change_pct'] < -3.0],
+        market_opportunities=[r for r in rows if not r['is_active'] and (r['momentum'] or 0) > 2.0 and r['t_state'] == "BULL"][:8],
         top_up=sorted(rows, key=lambda x: x['week_change_pct'], reverse=True)[:5],
         top_down=sorted(rows, key=lambda x: x['week_change_pct'])[:5],
         rows=sorted(rows, key=lambda x: (not x['is_active'], -((x['momentum'] if x['momentum'] is not None else -999)))),
