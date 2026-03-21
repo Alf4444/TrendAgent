@@ -5,7 +5,7 @@ from datetime import datetime
 from jinja2 import Template
 
 # ==========================================
-# KONFIGURATION & STIER (Beholdt præcis som din)
+# KONFIGURATION & STIER
 # ==========================================
 ROOT = Path(__file__).resolve().parents[1]
 HISTORY_FILE = ROOT / "data/history.json"
@@ -15,13 +15,13 @@ TEMPLATE_FILE = ROOT / "templates/weekly.html.j2"
 REPORT_FILE = ROOT / "build/weekly.html"
 
 # ==========================================
-# TEKNISKE HJÆLPEFUNKTIONER (Robust logik fra Monthly)
+# TEKNISKE HJÆLPEFUNKTIONER
 # ==========================================
 
 def get_ma(prices, window):
     if not isinstance(prices, list) or not prices:
         return None
-    # Rens for None og 0 (vigtigt pga. din history.json)
+    # SIKKERHED: Kun positive tal tæller
     clean_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)) and p > 0)]
     if len(clean_prices) < window:
         return None
@@ -71,13 +71,12 @@ def build_weekly():
     week_num = datetime.now().isocalendar()[1]
 
     for isin, price_dict in history.items():
-        # Sorter datoer og hent priser
         sorted_dates = [d for d in sorted(price_dict.keys()) if is_trading_day(d)]
         if not sorted_dates:
             continue
             
-        # Filtrer priser (Ligesom i Daily/Monthly)
         prices = [price_dict[d] for d in sorted_dates]
+        # ROBUST FILTRERING: Fjerner 0.0 værdier her
         valid_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)) and p > 0)]
         
         if not valid_prices:
@@ -85,22 +84,29 @@ def build_weekly():
             
         current_nav = valid_prices[-1]
         
-        # --- ROBUST HISTORIK-FINDER ---
-        # Sikrer at vi aldrig kigger længere tilbage end vi har data til
+        # SIKKER FINDING AF HISTORISKE PRISER
         count = len(valid_prices)
         p_week = valid_prices[-min(6, count)]
         p_month = valid_prices[-min(21, count)]
         
-        # Beregn ændringer (Sikret mod division med 0)
-        w_chg = ((current_nav - p_week) / p_week * 100) if p_week > 0 else 0
-        m_chg = ((current_nav - p_month) / p_month * 100) if p_month > 0 else 0
+        # SIKKER BEREGNING (Ligesom i din Monthly kode)
+        w_chg = 0
+        if p_week and p_week > 0:
+            w_chg = ((current_nav - p_week) / p_week * 100)
+            
+        m_chg = 0
+        if p_month and p_month > 0:
+            m_chg = ((current_nav - p_month) / p_month * 100)
+            
         momentum = w_chg - m_chg
         
         ma20 = get_ma(valid_prices, 20)
         ma200 = get_ma(valid_prices, 200)
         rsi = get_rsi(valid_prices, 14)
         
-        ma20_dist = ((current_nav - ma20) / ma20 * 100) if (ma20 and ma20 > 0) else 0
+        ma20_dist = 0
+        if ma20 and ma20 > 0:
+            ma20_dist = ((current_nav - ma20) / ma20 * 100)
         
         p_info = portfolio.get(isin, {})
         is_active = p_info.get('active', False)
@@ -132,11 +138,7 @@ def build_weekly():
     # SIKKERHEDS-RETTELSE (Fra Monthly)
     avg_p_ret = sum(active_returns) / len(active_returns) if active_returns else 0
 
-    # Forbered data til template
-    p_alerts = [r for r in rows if r['is_active'] and r['week_change_pct'] < -3.0]
-    m_opps = [r for r in rows if not r['is_active'] and (r['momentum'] or 0) > 2.0 and r['t_state'] == "BULL"]
-
-    # Sortering der håndterer None (Fikser TypeError)
+    # Sortering der håndterer None
     sorted_momentum = sorted(rows, key=lambda x: x['momentum'] if x['momentum'] is not None else -999, reverse=True)[:10]
 
     # Render Template
@@ -145,8 +147,8 @@ def build_weekly():
         report_date=date_str,
         week_number=week_num,
         avg_portfolio_return=avg_p_ret,
-        portfolio_alerts=p_alerts,
-        market_opportunities=m_opps[:8],
+        portfolio_alerts=[r for r in rows if r['is_active'] and r['week_change_pct'] < -3.0],
+        market_opportunities=[r for r in rows if not r['is_active'] and (r['momentum'] or 0) > 2.0 and r['t_state'] == "BULL"][:8],
         top_up=sorted(rows, key=lambda x: x['week_change_pct'], reverse=True)[:5],
         top_down=sorted(rows, key=lambda x: x['week_change_pct'])[:5],
         rows=sorted(rows, key=lambda x: (not x['is_active'], -((x['momentum'] if x['momentum'] is not None else -999)))),
