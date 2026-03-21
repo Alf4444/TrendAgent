@@ -21,7 +21,7 @@ REPORT_FILE = ROOT / "build/weekly.html"
 def get_ma(prices, window):
     if not isinstance(prices, list) or not prices:
         return None
-    # SIKKERHED: Filtrerer alt fra der ikke er tal over 0
+    # SIKKERHED: Filtrerer alt fra der ikke er positive tal
     clean_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)) and p > 0)]
     if len(clean_prices) < window:
         return None
@@ -71,26 +71,24 @@ def build_weekly():
     week_num = datetime.now().isocalendar()[1]
 
     for isin, price_dict in history.items():
-        # Sorter datoer og tjek om der er data
         sorted_dates = [d for d in sorted(price_dict.keys()) if is_trading_day(d)]
         if not sorted_dates:
             continue
             
-        # Hent priser og rens dem (Fjerner None, strenge og 0.0)
         prices = [price_dict[d] for d in sorted_dates]
+        # RESTERENDE RENS: Fjern 0 og None
         valid_prices = [p for p in prices if (p is not None and isinstance(p, (int, float)) and p > 0)]
         
         if not valid_prices:
             continue
             
         current_nav = valid_prices[-1]
-        
-        # Find historiske priser (Sikret mod for kort historik)
         count = len(valid_prices)
+        
         p_week = valid_prices[-min(6, count)]
         p_month = valid_prices[-min(21, count)]
         
-        # --- SIKKER BEREGNING (Sikret mod ZeroDivisionError) ---
+        # --- SIKKER BEREGNING 1 (Uge/Måned) ---
         w_chg = 0
         if p_week and p_week > 0:
             w_chg = ((current_nav - p_week) / p_week * 100)
@@ -101,12 +99,13 @@ def build_weekly():
             
         momentum = w_chg - m_chg
         
-        # Tekniske indikatorer
+        # --- TEKNISKE INDIKATORER ---
         ma20 = get_ma(valid_prices, 20)
         ma200 = get_ma(valid_prices, 200)
         rsi = get_rsi(valid_prices, 14)
         
-        # Sikker MA-afstand
+        # --- SIKKER BEREGNING 2 (MA20 distance) ---
+        # Det var her den fejlede sidst!
         ma20_dist = 0
         if ma20 and ma20 > 0:
             ma20_dist = ((current_nav - ma20) / ma20 * 100)
@@ -138,13 +137,12 @@ def build_weekly():
             'ma20_dist': ma20_dist
         })
 
-    # Sikker gennemsnitsberegning (Fikser division med nul her også)
+    # SIKKER BEREGNING 3 (Gennemsnit)
     avg_p_ret = sum(active_returns) / len(active_returns) if active_returns else 0
 
-    # Sortering der er robust over for None
+    # Sortering med None-håndtering
     sorted_momentum = sorted(rows, key=lambda x: x['momentum'] if x['momentum'] is not None else -999, reverse=True)[:10]
 
-    # Render Template
     template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
     html_output = template.render(
         report_date=date_str,
@@ -161,7 +159,7 @@ def build_weekly():
 
     REPORT_FILE.parent.mkdir(exist_ok=True)
     REPORT_FILE.write_text(html_output, encoding="utf-8")
-    print(f"✅ Weekly Rapport færdig.")
+    print(f"✅ Weekly Rapport færdig (Build #65 - The Bulletproof One).")
 
 if __name__ == "__main__":
     build_weekly()
