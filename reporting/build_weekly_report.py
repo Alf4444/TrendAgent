@@ -1,173 +1,198 @@
 import json
-import os
 from pathlib import Path
 from datetime import datetime
 from jinja2 import Template
 
 # ==========================================
-# KONFIGURATION AF STIER
+# KONFIGURATION & STIER
 # ==========================================
-# Vi finder rodmappen for projektet ud fra denne fils placering
-BASE_DIR = Path(__file__).resolve().parents[1]
-
-HISTORY_FILE_PATH = BASE_DIR / "data/history.json"
-PORTFOLIO_FILE_PATH = BASE_DIR / "config/portfolio.json"
-TEMPLATE_FILE_PATH = BASE_DIR / "templates/weekly.html.j2"
-REPORT_OUTPUT_PATH = BASE_DIR / "build/weekly.html"
+ROOT = Path(__file__).resolve().parents[1]
+HISTORY_FILE = ROOT / "data/history.json"
+LATEST_FILE = ROOT / "data/latest.json"
+PORTFOLIO_FILE = ROOT / "config/portfolio.json"
+TEMPLATE_FILE = ROOT / "templates/weekly.html.j2"
+REPORT_FILE = ROOT / "build/weekly.html"
 
 # ==========================================
-# HJÆLPEFUNKTIONER (ROBUSTE)
+# TEKNISKE HJÆLPEFUNKTIONER
 # ==========================================
 
-def beregn_sikker_division(tæller, nævner):
-    """Sikrer at vi aldrig dividerer med nul."""
-    if nævner == 0 or nævner is None:
-        return 0.0
-    return tæller / nævner
-
-def beregn_afkast_procent(nuværende, tidligere):
-    """Beregner procentvis ændring med sikkerhedstjek."""
-    if tidligere is None or tidligere <= 0:
-        return 0.0
-    forskel = nuværende - tidligere
-    resultat = (forskel / tidligere) * 100
-    return resultat
-
-def hent_ma_gennemsnit(pris_liste, periode):
-    """Beregner gennemsnit for de sidste X dage."""
-    if len(pris_liste) < periode:
+def get_ma(prices, window):
+    """Beregner Simple Moving Average (SMA)."""
+    if not isinstance(prices, list) or len(prices) < window:
         return None
-    udsnit = pris_liste[-periode:]
-    gennemsnit = sum(udsnit) / len(udsnit)
-    return gennemsnit
+    # Tag de sidste 'window' priser og fjern None-værdier
+    relevant = [p for p in prices[-window:] if p is not None]
+    if len(relevant) < window:
+        return None
+    return sum(relevant) / window
+
+def get_rsi(prices, window=14):
+    """Beregner Relative Strength Index (RSI)."""
+    if not isinstance(prices, list) or len(prices) <= window:
+        return None
+    
+    deltas = [prices[i] - prices[i-1] for i in range(1, len(prices))]
+    recent_deltas = deltas[-window:]
+    
+    gains = [d if d > 0 else 0 for d in recent_deltas]
+    losses = [abs(d) if d < 0 else 0 for d in recent_deltas]
+    
+    avg_gain = sum(gains) / window
+    avg_loss = sum(losses) / window
+    
+    if avg_loss == 0:
+        return 100
+    
+    rs = avg_gain / avg_loss
+    return 100 - (100 / (1 + rs))
+
+def calculate_ytd(prices_dict):
+    """Beregner afkast siden årets start (Year-To-Date)."""
+    if not prices_dict:
+        return 0.0
+    
+    dates = sorted(prices_dict.keys())
+    cur_year = datetime.now().year
+    start_price = None
+    
+    # Find slut-kursen fra sidste år (31. dec eller tætteste før)
+    for d in reversed(dates):
+        if d < f"{cur_year}-01-01":
+            start_price = prices_dict[d]
+            break
+            
+    # Backup: Hvis vi ikke har data fra sidste år, brug første kurs i år
+    if start_price is None:
+        for d in dates:
+            if d.startswith(str(cur_year)):
+                start_price = prices_dict[d]
+                break
+                
+    if not start_price or start_price == 0:
+        return 0.0
+        
+    current_price = prices_dict[dates[-1]]
+    return ((current_price / start_price) - 1) * 100
+
+def calculate_drawdown(prices_list):
+    """Beregner aktuel drawdown fra All-Time High i historikken."""
+    if not prices_list:
+        return 0.0
+    
+    ath = max(prices_list)
+    if ath == 0:
+        return 0.0
+        
+    current = prices_list[-1]
+    return ((current / ath) - 1) * 100
 
 # ==========================================
 # HOVEDFUNKTION
 # ==========================================
 
 def build_weekly():
-    # 1. Validering af at alle filer eksisterer før vi starter
-    if not HISTORY_FILE_PATH.exists():
-        print(f"FEJL: Historik-fil mangler på {HISTORY_FILE_PATH}")
-        return
-    if not PORTFOLIO_FILE_PATH.exists():
-        print(f"FEJL: Portfolio-fil mangler på {PORTFOLIO_FILE_PATH}")
-        return
-    if not TEMPLATE_FILE_PATH.exists():
-        print(f"FEJL: Template-fil mangler på {TEMPLATE_FILE_PATH}")
-        return
+    print("🔄 Starter generering af ugerapport...")
+    
+    # Validering af filer
+    for f in [HISTORY_FILE, LATEST_FILE, PORTFOLIO_FILE, TEMPLATE_FILE]:
+        if not f.exists():
+            print(f"❌ FEJL: Mangler fil: {f}")
+            return
 
-    # 2. Indlæsning af data
-    with open(HISTORY_FILE_PATH, "r", encoding="utf-8") as f:
-        alle_historik_data = json.load(f)
-    with open(PORTFOLIO_FILE_PATH, "r", encoding="utf-8") as f:
-        portfolio_indstillinger = json.load(f)
+    # Indlæs data
+    with open(HISTORY_FILE, 'r', encoding='utf-8') as f:
+        history = json.load(f)
+    with open(LATEST_FILE, 'r', encoding='utf-8') as f:
+        latest = json.load(f)
+    with open(PORTFOLIO_FILE, 'r', encoding='utf-8') as f:
+        p_data = json.load(f)
+        # Vi antager 'active_holdings' indeholder ISIN koder
+        portfolio_isins = p_data.get("active_holdings", [])
 
-    resultat_liste = []
-    aktive_afkast_til_gennemsnit = []
-
-    # 3. Behandling af hver enkelt fond
-    for isin, historiske_kurser in alle_historik_data.items():
-        # Sorter datoer kronologisk
-        sorterede_datoer = sorted(historiske_kurser.keys())
+    rows = []
+    active_returns = []
+    
+    for item in latest:
+        isin = item['isin']
+        p_dict = history.get(isin, {})
+        s_dates = sorted(p_dict.keys())
+        p_list = [p_dict[d] for d in s_dates]
         
-        # Rens priser (fjern None, 0 og ugyldige typer)
-        rensede_priser = []
-        for dato in sorterede_datoer:
-            pris = historiske_kurser[dato]
-            if isinstance(pris, (int, float)) and pris > 0:
-                rensede_priser.append(pris)
-        
-        # Vi skal bruge mindst 2 priser for at kunne sammenligne
-        if len(rensede_priser) < 2:
+        if not p_list:
             continue
 
-        nuværende_nav = rensede_priser[-1]
-        antal_datapunkter = len(rensede_priser)
+        # Tekniske beregninger
+        ma200 = get_ma(p_list, 200)
+        cur_nav = item.get('nav', 0)
         
-        # Find historiske priser (uge = 6 handelsdage, måned = 21 handelsdage)
-        pris_uge_siden = rensede_priser[-min(6, antal_datapunkter)]
-        pris_måned_siden = rensede_priser[-min(21, antal_datapunkter)]
-
-        # Beregn statistikker
-        uge_afkast = beregn_afkast_procent(nuværende_nav, pris_uge_siden)
-        måned_afkast = beregn_afkast_procent(nuværende_nav, pris_måned_siden)
-        momentum_score = uge_afkast - måned_afkast
-
-        # Glidende gennemsnit (MA)
-        ma20_værdi = hent_ma_gennemsnit(rensede_priser, 20)
-        ma20_afstand = 0.0
-        if ma20_værdi is not None and ma20_værdi > 0:
-            ma20_afstand = ((nuværende_nav - ma20_værdi) / ma20_værdi) * 100
-
-        ma200_værdi = hent_ma_gennemsnit(rensede_priser, 200)
-        trend_status = "WARM-UP"
-        if ma200_værdi is not None:
-            if nuværende_nav > ma200_værdi:
-                trend_status = "BULL"
-            else:
-                trend_status = "BEAR"
-
-        # Hent info fra portfolio.json
-        fond_info = portfolio_indstillinger.get(isin, {})
-        er_aktiv = fond_info.get('active', False)
-        købspris = fond_info.get('buy_price', 0)
+        # Momentum (Afstand til MA200 i %)
+        # Vi bruger 0.0 som default hvis MA200 ikke kan beregnes endnu
+        momentum = ((cur_nav / ma200) - 1) * 100 if ma200 else 0.0
         
-        total_afkast = None
-        if er_aktiv and købspris is not None and købspris > 0:
-            total_afkast = beregn_afkast_procent(nuværende_nav, købspris)
-            aktive_afkast_til_gennemsnit.append(total_afkast)
+        # Trend State (Skal være 'UP' eller 'DOWN' til templaten)
+        trend_state = "UP" if momentum > 0 else "DOWN"
+        
+        # Nøgletal til ugerapporten
+        ytd = calculate_ytd(p_dict)
+        dd = calculate_drawdown(p_list)
+        rsi = get_rsi(p_list, 14)
+        
+        # Total afkast (Proxy: Fra start af den tilgængelige historik)
+        total_ret = ((cur_nav / p_list[0]) - 1) * 100 if p_list else 0.0
+        
+        is_active = isin in portfolio_isins
+        week_change = item.get('return_1w', 0) or 0.0
+        
+        if is_active:
+            active_returns.append(week_change)
 
-        # Gem data for rækken
-        resultat_liste.append({
+        rows.append({
             'isin': isin,
-            'name': fond_info.get('name', isin),
-            'nav': round(nuværende_nav, 2),
-            'week_change_pct': round(uge_afkast, 2),
-            'momentum': round(momentum_score, 2),
-            'is_active': er_aktiv,
-            'total_return': round(total_afkast, 2) if total_afkast is not None else None,
-            't_state': trend_status,
-            'ma20_dist': round(ma20_afstand, 2)
+            'name': item['name'],
+            'week_change_pct': float(week_change),
+            'total_return': float(total_ret),
+            'trend_state': trend_state,
+            'momentum': round(momentum, 2),
+            'ytd_return': float(ytd),
+            'drawdown': float(dd),
+            'is_active': is_active,
+            'rsi': rsi
         })
 
-    # 4. Beregn samlet porteføljeafkast
-    samlet_gennemsnit = 0.0
-    if len(aktive_afkast_til_gennemsnit) > 0:
-        samlet_gennemsnit = sum(aktive_afkast_til_gennemsnit) / len(aktive_afkast_til_gennemsnit)
-
-    # 5. Forbered data til graferne (Top 10 Momentum)
-    top_10_momentum = sorted(resultat_liste, key=lambda x: x['momentum'], reverse=True)[:10]
+    # Aggregerede data
+    # Sikkerhed mod DivisionByZero
+    avg_portfolio_return = sum(active_returns) / len(active_returns) if active_returns else 0.0
     
-    # SIKKERHED: Find den største momentum værdi til skalering i HTML
-    # Dette sikrer at vi ikke dividerer med 0 inde i selve templaten
-    max_skala_værdi = 1.0
-    for r in resultat_liste:
-        if abs(r['momentum']) > max_skala_værdi:
-            max_skala_værdi = abs(r['momentum'])
-
-    # 6. Rendering af HTML via Jinja2
-    raw_template_text = TEMPLATE_FILE_PATH.read_text(encoding="utf-8")
-    jinja_template = Template(raw_template_text)
+    # Data til momentum-grafen (Top 10)
+    chart_data = sorted(rows, key=lambda x: x['momentum'], reverse=True)[:10]
     
+    # Template Rendering
+    template_text = TEMPLATE_FILE.read_text(encoding="utf-8")
+    jinja_template = Template(template_text)
+    
+    # Vi bruger 'færdig_html' for at matche log-filerne
     færdig_html = jinja_template.render(
-        report_date=datetime.now().strftime("%d-%m-%Y"),
         week_number=datetime.now().isocalendar()[1],
-        avg_portfolio_return=round(samlet_gennemsnit, 2),
-        rows=resultat_liste,
-        # Her sender vi de sorterede lister og sikkerhedsvariabler til templaten
-        chart_labels=[r['name'][:15] for r in top_10_momentum],
-        chart_values=[r['momentum'] for r in top_10_momentum],
-        max_momentum=max_skala_værdi, # Bruges til at undgå division med 0 i HTML
-        portfolio_alerts=[r for r in resultat_liste if r['is_active'] and r['week_change_pct'] < -3.0],
-        market_opportunities=[r for r in resultat_liste if not r['is_active'] and r['momentum'] > 2.0 and r['t_state'] == "BULL"][:8]
+        report_date=datetime.now().strftime("%d. %B %Y"),
+        avg_portfolio_return=avg_portfolio_return,
+        # Alarmer hvis en aktiv fond falder mere end 3%
+        portfolio_alerts=[{'msg': '⚠️ Kraftigt fald i', 'name': r['name']} for r in rows if r['is_active'] and r['week_change_pct'] < -3.0],
+        # Muligheder: Ikke ejet, positiv momentum og BULL trend
+        market_opportunities=[r for r in rows if not r['is_active'] and r['momentum'] > 2.0 and r['trend_state'] == "UP"][:8],
+        top_up=sorted(rows, key=lambda x: x['week_change_pct'], reverse=True)[:5],
+        top_down=sorted(rows, key=lambda x: x['week_change_pct'])[:5],
+        # Sorter tabel: Aktive først, derefter momentum
+        rows=sorted(rows, key=lambda x: (not x['is_active'], -x['momentum'])),
+        chart_labels=[r['name'][:20] for r in chart_data],
+        chart_values=[r['momentum'] for r in chart_data]
     )
 
-    # 7. Skriv den færdige rapport til fil
-    REPORT_OUTPUT_PATH.parent.mkdir(exist_ok=True)
-    REPORT_OUTPUT_PATH.write_text(færdig_html, encoding="utf-8")
+    # Gem den færdige rapport
+    REPORT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    REPORT_FILE.write_text(færdig_html, encoding="utf-8")
     
-    print(f"✅ Build gennemført succesfuldt. Rapport gemt i {REPORT_OUTPUT_PATH}")
+    print(f"✅ Succes! Ugerapport genereret: {REPORT_FILE}")
 
 if __name__ == "__main__":
     build_weekly()
