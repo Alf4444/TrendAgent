@@ -4,9 +4,9 @@ Der investeres i en diversificeret portefølje af globale aktier med både geogr
 sektormæssig spredning. De valgte selskaber er kvalitetsselskaber, som skønnes Valuta DKK
 Type Investeringsforening
 undervurderede. Selskaberne udvælges således på baggrund af deres
-Indre værdi 331,88
+Indre værdi 328,29
 fundamentale værdi og indtjening mere end på kortsigtede markedstemaer. Der
-Indre værdi dato 19-03-2026
+Indre værdi dato 20-03-2026
 benyttes en aktiv investeringsstrategi til at opnå et afkast, der er bedre end afkastet
 Bæredygtighed Artikel 8
 af fondens benchmark, MSCI All Country World Index. Fonden egner sig til
@@ -17,11 +17,11 @@ på min. 3 år, og fonden bør indgå i en diversificeret portefølje af øvrige
 investeringer. Fonden indeholder valutarisiko, da den indeholder investeringer i
 udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -1,10% -0,36% -7,03% -8,15%
+Afdeling -2,50% -2,01% -8,04% -9,15%
 SKAGEN Global
 Afkast ÅTD 1 år 3 år 5 år
 160
-Afdeling -7,71% -8,51% 17,44% 32,58%
+Afdeling -8,71% -9,66% 16,37% 31,15%
 140
 Omkostninger %
 120 Andre løbende omkostninger 1,00
@@ -33,21 +33,21 @@ Udtrædelsesomkostninger 0,25
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,17 0,41 0,53
-Std. Afv. 15,72% 12,58% 16,58% 1 2 3 4 5 6 7
-Største beholdninger (31-01-2026) % Formuefordeling
-Canadian Pacific Railway (CAD) 8,04
-TMX Group 5,97
-Amazon.Com 5,53 Finans 33,04 %
-Microsoft Corp 5,51 Teknologi 15,28 %
-Aegon 5,39 Forbrugerservice 11,48 %
-MSCI A 4,92 Industri 10,95 %
-Alphabet C 4,77 Andet 29,25 %
-Moody's 4,75
-MasterCard A 4,52
-Waste Management 4,50
-Nordamerika 71,23 %
-Europa 26,43 %
-Andet 2,34 %
+Std. Afv. 15,19% 12,11% 16,25% 1 2 3 4 5 6 7
+Største beholdninger (28-02-2026) % Formuefordeling
+Reed Elsevier 7,19
+Canadian Pacific Railway (CAD) 7,00
+Aegon 5,59 Finans 33,61 %
+TMX Group 5,59 Forbrugerservice 13,55 %
+Abbott Laboratories 5,51 Industri 11,22 %
+Waste Management 4,78 Teknologi 9,91 %
+MSCI A 4,76 Andet 31,71 %
+Munich Reinsurance Company 4,72
+Moody's 4,53
+MasterCard A 4,47
+Nordamerika 64,27 %
+Europa 33,11 %
+Andet 2,62 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

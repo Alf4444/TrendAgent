@@ -4,9 +4,9 @@ Fonden er en aktivt forvaltet fond, der investerer globalt i virksomheder, der t
 skridt til at fremme FN's verdensmål for bæredygtig udvikling. Udvælgelsen af disse Valuta EUR
 Type Investeringsforening
 aktier er baseret på fundamental analyse. Fondens mål er at opnå et bedre afkast
-Indre værdi 106,36
+Indre værdi 104,95
 end indekset. Strategien integrerer bæredygtighed i hele investeringsprocessen.
-Indre værdi dato 19-03-2026
+Indre værdi dato 20-03-2026
 Den bruger en internt udviklet ramme til at identificere virksomheder, hvis produkter
 Bæredygtighed Artikel 9
 og tjenester skaber en væsentlig positiv indvirkning på verdensmålene. Fonden
@@ -15,11 +15,11 @@ tidshorisont, som er bekendte med risikoen ved at investere i fonden og kan
 acceptere tab på investeringen. Fonden indeholder valutarisiko, da den er
 eksponeret over for værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -1,89% -4,55% -3,55% -1,49%
+Afdeling -3,21% -5,97% -4,83% -2,80%
 Robeco Global SDG Equities
 Afkast ÅTD 1 år 3 år 5 år
 160
-Afdeling -3,51% -0,61% 31,82% 40,58%
+Afdeling -4,78% -2,05% 29,68% 38,71%
 140
 Omkostninger %
 120 Andre løbende omkostninger 1,22
@@ -31,23 +31,23 @@ Udtrædelsesomkostninger 0,12
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,27 0,75 0,76
-Std. Afv. 14,70% 11,19% 12,55% 1 2 3 4 5 6 7
-Største beholdninger (31-12-2025) % Formuefordeling
-Microsoft Corp 6,80
-NVIDIA Corp 6,42
-AstraZeneca PLC 3,37 USA 68,29 %
-Thermo Fisher Scientific 3,05 England 11,16 %
-Eli Lilly & Co 3,02 Japan 4,13 %
-Visa A 2,97 Tyskland 3,52 %
-Broadcom Inc 2,86 Andet 12,90 %
-Bank of America 2,70
-MasterCard A 2,55
-NEW LINDE PLC 2,51
-Teknologi 36,00 %
-Medicin & Sundhed 13,17 %
-Finans 12,74 %
-Industri 10,66 %
-Andet 27,43 %
+Std. Afv. 15,92% 11,73% 12,82% 1 2 3 4 5 6 7
+Største beholdninger (30-01-2026) % Formuefordeling
+NVIDIA Corp 6,63
+Microsoft Corp 6,09
+AstraZeneca PLC 3,42 USA 65,29 %
+Thermo Fisher Scientific 3,07 England 10,90 %
+Cash EUR 2,95 Japan 5,42 %
+Eli Lilly & Co 2,94 Tyskland 3,33 %
+Colgate-Palmolive 2,80 Andet 15,07 %
+Broadcom Inc 2,76
+Visa A 2,74
+NEW LINDE PLC 2,71
+Teknologi 35,40 %
+Medicin & Sundhed 13,06 %
+Finans 11,67 %
+Industri 10,34 %
+Andet 29,53 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

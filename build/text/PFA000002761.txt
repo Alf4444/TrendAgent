@@ -4,9 +4,9 @@ Fonden er semi-aktivt forvaltet med målet om at opnå et højere afkast som afs
 udviklingen i prisen på ædelmetaller (eksempelvis guld og sølv) samt mineselskaber Valuta DKK
 Type Investeringsforening
 inden for ædelmetaller.
-Indre værdi 113,08
+Indre værdi 110,47
 Der investeres indirekte i fysiske ædelmetaller via finansielle produkter samt i
-Indre værdi dato 19-03-2026
+Indre værdi dato 20-03-2026
 børsnoterede mineselskaber. De primære risikofaktorer er markedsrisiko (udsving
 Bæredygtighed Artikel 8
 på de globale aktiemarkeder), sektorrisiko (risikoen for at mineaktier klarer sig
@@ -17,11 +17,11 @@ er velegnet til pensionskunder med en høj risiko profil og/eller pensionskunder
 ønsker et bidrag til en diversificeret portefølje. Fonden bør kun udgøre en mindre
 del af den samlede investering (under 20 %).
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -14,29% -13,19% 2,18% 31,22%
+Afdeling -12,61% -16,85% -0,17% 28,20%
 Maj Invest Guld, Sølv & Miner UCITS ETF
 Afkast ÅTD 1 år 3 år 5 år
 210
-Afdeling 0,99% - - -
+Afdeling -1,34% - - -
 180
 Omkostninger %
 150 Andre løbende omkostninger 0,80

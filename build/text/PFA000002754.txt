@@ -4,9 +4,9 @@ Fonden investerer primært i globale aktier gennem ca. 80 selskaber, der er lede
 inden for ren, sikker og bæredygtig vandforsyning. Selskaberne udvælges på Valuta EUR
 Type Investeringsforening
 baggrund af fundamental selskabsanalyse og en internt udviklet model, der måler
-Indre værdi 97,64
+Indre værdi 96,55
 deres bidrag til FN’s 17 Verdensmål. Fonden er fuldt bæredygtig jf. Artikel 9 i EU’s
-Indre værdi dato 19-03-2026
+Indre værdi dato 20-03-2026
 Disclosureforordning. Der benyttes en aktiv investeringsstrategi til at opnå et afkast,
 Bæredygtighed Artikel 9
 der er bedre end afkastet af fondens benchmark, MSCI World Index. Benchmarket
@@ -16,11 +16,11 @@ med mellem til lang tidshorisont, som er bekendte med risikoen ved at investere 
 fonden og kan acceptere tab på investeringen. Fonden indeholder valutarisiko, da
 den er eksponeret over for værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -2,51% -9,15% -4,38% -3,78%
+Afdeling -3,15% -9,86% -5,45% -4,85%
 Robeco Sustainable Water Equities
 Afkast ÅTD 1 år 3 år 5 år
 144
-Afdeling -3,79% -2,85% 18,02% 22,67%
+Afdeling -4,86% -3,44% 16,16% 21,31%
 132
 Omkostninger %
 120 Andre løbende omkostninger 1,33
@@ -32,23 +32,23 @@ Udtrædelsesomkostninger 0,18
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,01 0,36 0,46
-Std. Afv. 19,94% 15,36% 16,83% 1 2 3 4 5 6 7
-Største beholdninger (31-12-2025) % Formuefordeling
-Agilent Technologies 4,77
-Xylem 3,67
-Avantor Inc 2,95 Industri 47,95 %
-Kurita Water Industries 2,92 Medicin & Sundhed 13,30 %
-Tetra Tech 2,78 Energiforsyning 6,46 %
-IDEX Corp 2,59 Materialer 6,28 %
-VERALTO CORP-W/I 2,58 Andet 26,02 %
-IMI 2,46
-Waste Management 2,40
-Veolia Environnement 2,23
-Nordamerika 57,40 %
-Europa 28,60 %
-Japan 6,32 %
-Asien (ex.Japan) 5,49 %
-Andet 2,18 %
+Std. Afv. 20,17% 15,48% 17,17% 1 2 3 4 5 6 7
+Største beholdninger (30-01-2026) % Formuefordeling
+Agilent Technologies 4,78
+Xylem 3,56
+Kurita Water Industries 3,50 Industri 47,73 %
+IDEX Corp 2,82 Medicin & Sundhed 12,01 %
+Tetra Tech 2,73 Energiforsyning 6,44 %
+IMI 2,73 Teknologi 6,30 %
+Avantor Inc 2,72 Andet 27,52 %
+VERALTO CORP-W/I 2,48
+Weir Group 2,29
+Veolia Environnement 2,21
+Nordamerika 54,08 %
+Europa 29,34 %
+Japan 7,52 %
+Asien (ex.Japan) 6,42 %
+Andet 2,64 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke
