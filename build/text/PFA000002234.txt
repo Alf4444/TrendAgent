@@ -4,9 +4,9 @@ Der investeres i en portefølje af aktier bestående af store og mellemstore sel
 beliggende i eller med primæraktiviteter i Emerging Markets-lande. Der benyttes en Valuta DKK
 Type Investeringsforening
 indeksnær investeringsstrategi til at opnå et afkast svarende til fondens benchmark,
-Indre værdi 214,04
+Indre værdi 206,94
 MSCI Emerging Markets Index. Fonden kan investere i aktier, som ikke indgår i
-Indre værdi dato 20-03-2026
+Indre værdi dato 23-03-2026
 benchmarket, hvis disse har lignende risiko- og afkastprofil. Fonden er ESG-
 Bæredygtighed Artikel 8
 screenet og egner sig til informerede eller erfarne pensionskunder, som har indsigt i
@@ -17,23 +17,23 @@ accepteres tab på investeringen. Pensionskunder bør have en tidshorisont på m
 Fonden indeholder valutarisiko, da den er eksponeret over for værdipapirer i
 udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -1,01% -4,31% 8,55% 11,01%
+Afdeling -4,58% -8,32% 4,16% 7,34%
 iShares MSCI Emerging Markets UCITS ETF
 Afkast ÅTD 1 år 3 år 5 år
-140
-Afdeling 6,16% 22,53% 54,16% 28,09%
-120
+150
+Afdeling 2,64% 18,92% 45,96% 24,54%
+125
 Omkostninger %
 100 Andre løbende omkostninger 0,40
 Resultatgebyrer 0,00
-80 Transaktionsomkostninger (Direkte + indirekte) 0,05
+75 Transaktionsomkostninger (Direkte + indirekte) 0,05
 Oprettelsesomkostninger 0,20
 Udtrædelsesomkostninger 0,20
 ÅOP 0,51
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 1,23 0,86 0,46
-Std. Afv. 20,66% 14,25% 14,71% 1 2 3 4 5 6 7
+Std. Afv. 18,78% 13,35% 12,89% 1 2 3 4 5 6 7
 Største beholdninger (27-02-2026) % Formuefordeling
 Taiwan Semiconductor Manufacturing Co
 12,26

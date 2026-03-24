@@ -4,9 +4,9 @@ Der investeres i en portefølje (mindst 80% af formuen) af mellemlange, danske O
 stats- og realkreditobligationer. Den samlede korrigerede varighed skal være +/- 1 Valuta DKK
 Type Investeringsforening
 år ift. benchmark, og over 35% af formuen kan investeres i danske statsobligationer.
-Indre værdi 140,95
+Indre værdi 141,10
 Der benyttes en delvis aktiv investeringsstrategi til at opnå et afkast, der er bedre
-Indre værdi dato 20-03-2026
+Indre værdi dato 23-03-2026
 end fondens benchmark. Fonden egner sig til informerede eller erfarne
 Bæredygtighed Artikel 8
 pensionskunder, som har indsigt i og erfaring med værdipapirhandel, og som
@@ -15,15 +15,15 @@ afkast på investeringen. Pensionskunder bør have en tidshorisont på min. 3 å
 Fonden indeholder valutarisiko, da den har eksponering til investeringer i
 udenlandsk valuta, som kun delvist afdækkes til EUR eller DKK.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -0,37% -1,18% -0,41% -0,28%
+Afdeling -0,35% -1,13% -0,31% -0,18%
 Kerne Invest Indeks Mellemlange Obligationer
 Benchmark -0,45% -0,03% 0,11% 2,71%
-105 Afkast ÅTD 1 år 3 år 5 år
-100 Afdeling -0,28% 1,64% 9,22% -3,35%
+102 Afkast ÅTD 1 år 3 år 5 år
+96 Afdeling -0,28% 1,65% 9,56% -3,34%
 Benchmark -0,46% 4,27% -7,23% -8,61%
-95
+90
 Omkostninger %
-90 Andre løbende omkostninger 0,33
+84 Andre løbende omkostninger 0,33
 Resultatgebyrer 0,00
 Transaktionsomkostninger (Direkte + indirekte) 0,00
 Oprettelsesomkostninger 0,10
@@ -32,7 +32,7 @@ Udtrædelsesomkostninger 0,10
 ÅOP 0,36
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 1,08 0,35 -0,56
-Std. Afv. 1,70% 2,46% 4,45% 1 2 3 4 5 6 7
+Std. Afv. 1,72% 2,56% 4,22% 1 2 3 4 5 6 7
 Største beholdninger (28-02-2026) % Formuefordeling
 0,50% DANSK STATSLN ST LN(INK)
 27,84
