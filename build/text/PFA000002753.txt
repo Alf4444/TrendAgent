@@ -6,7 +6,7 @@ Type Investeringsforening
 udvælges på baggrund af fundamental selskabsanalyse og en internt udviklet
 Indre værdi 125,14
 model, der måler deres bidrag til FN’s 17 Verdensmål. Fonden er fuldt bæredygtig jf.
-Indre værdi dato 23-03-2026
+Indre værdi dato 24-03-2026
 Artikel 9 i EU’s Disclosureforordning. Der benyttes en aktiv investeringsstrategi til at
 Bæredygtighed Artikel 9
 opnå et afkast, der er bedre end afkastet af fondens benchmark, MSCI World Index.
@@ -16,11 +16,11 @@ pensionskunder med mellem til lang tidshorisont, som er bekendte med risikoen ve
 at investere i fonden og kan acceptere tab på investeringen. Fonden indeholder
 valutarisiko, da den er eksponeret over for værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -2,28% -2,33% 2,15% 5,90%
+Afdeling -2,12% -5,27% 2,15% 6,79%
 Robeco Circular Economy Equities
 Afkast ÅTD 1 år 3 år 5 år
 175
-Afdeling 2,72% 16,35% 51,72% 50,01%
+Afdeling 2,72% 14,80% 51,22% 51,08%
 150
 Omkostninger %
 125 Andre løbende omkostninger 1,33
@@ -32,7 +32,7 @@ Udtrædelsesomkostninger 0,19
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,85 0,84 0,73
-Std. Afv. 12,08% 12,85% 14,34% 1 2 3 4 5 6 7
+Std. Afv. 13,47% 13,11% 14,12% 1 2 3 4 5 6 7
 Største beholdninger (30-01-2026) % Formuefordeling
 NVIDIA Corp 3,95
 Taiwan Semiconductor Manufacturing Co
