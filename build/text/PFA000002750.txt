@@ -4,9 +4,9 @@ Fonden investerer primært i globale aktier gennem ca. 100 selskaber fra udvikle
 lande og forskellige sektorer. Selskaberne udvælges på baggrund af fundamental Valuta DKK
 Type Investeringsforening
 selskabsanalyse og en bæredygtighedsmodel, hvor selskaber, der vurderes at være
-Indre værdi 125,68
+Indre værdi 126,94
 markedsledende ift. at fremme ESG-forhold, er bedst positioneret til overgangen
-Indre værdi dato 24-03-2026
+Indre værdi dato 25-03-2026
 mod en lav drivhusgasudledende økonomi og som overholder FN’s 17 Verdensmål,
 Bæredygtighed Artikel 9
 foretrækkes. Fonden er klassificeret som Artikel 9 jf. EU’s Disclosureforordning. Der
@@ -17,11 +17,11 @@ risikoen ved at investere i fonden og kan acceptere tab på investeringen. Fonde
 indeholder valutarisiko, da den er eksponeret over for værdipapirer i udenlandsk
 valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -2,37% -4,80% -1,29% 0,29%
+Afdeling -0,47% -4,67% -0,29% 1,29%
 Qblue Global Equities Responsible Transition Fund
 Afkast ÅTD 1 år 3 år 5 år
 135
-Afdeling -1,25% 0,47% 29,85% -
+Afdeling -0,26% 1,03% 31,16% -
 120
 Omkostninger %
 105 Andre løbende omkostninger 1,13
@@ -33,23 +33,23 @@ Udtrædelsesomkostninger 0,15
 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,10 0,58 -
-Std. Afv. 13,05% 11,69% - 1 2 3 4 5 6 7
-Største beholdninger (30-12-2025) % Formuefordeling
-NVIDIA Corp 6,15
-Broadcom Inc 3,88
-Visa A 2,64 Teknologi 30,46 %
-Novartis 2,48 Finans 16,47 %
-Booking Holdings 2,38 Industri 11,48 %
-IBM 2,30 Medicin & Sundhed 9,37 %
-Tapestry Inc 2,25 Andet 32,21 %
-Applied Materials 2,25
-Intel 2,20
-Verizon Communications 2,17
-Nordamerika 70,28 %
-Europa 21,31 %
-Japan 6,23 %
-Australien 1,32 %
-Andet 0,87 %
+Std. Afv. 13,13% 12,58% - 1 2 3 4 5 6 7
+Største beholdninger (30-01-2026) % Formuefordeling
+NVIDIA Corp 6,12
+Broadcom Inc 3,59
+Verizon Communications 2,92 Teknologi 30,65 %
+Visa A 2,35 Finans 16,43 %
+Novartis 2,31 Industri 11,25 %
+Applied Materials 2,27 Medicin & Sundhed 8,91 %
+Analog Devices 2,25 Andet 32,77 %
+Intel 2,23
+News Corp A 2,18
+IBM 2,17
+Nordamerika 71,45 %
+Europa 20,45 %
+Japan 6,18 %
+Australien 1,42 %
+Andet 0,49 %
 Alle oplysninger er leveret af FundCollect. FundCollect og PFA påtager sig intet ansvar for investeringsbeslutninger truffet på baggrund af dette informationsmateriale.
 Oplysningerne på denne hjemmeside er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge investeringsbeviser. Indholdet på hjemmesiden er
 ikke et tilbud om at yde finansiel rådgivning eller andre services, og PFA anbefaler, at der søges professionel rådgivning, før der træffes beslutning om en eventuel investering.
