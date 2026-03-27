@@ -4,9 +4,9 @@ Fonden investerer primært i globale aktier gennem ca. 70 selskaber, der er lede
 inden for løsninger mod paradigmeskiftet til en cirkulær økonomi. Selskaberne Valuta EUR
 Type Investeringsforening
 udvælges på baggrund af fundamental selskabsanalyse og en internt udviklet
-Indre værdi 126,91
+Indre værdi 124,52
 model, der måler deres bidrag til FN’s 17 Verdensmål. Fonden er fuldt bæredygtig jf.
-Indre værdi dato 25-03-2026
+Indre værdi dato 26-03-2026
 Artikel 9 i EU’s Disclosureforordning. Der benyttes en aktiv investeringsstrategi til at
 Bæredygtighed Artikel 9
 opnå et afkast, der er bedre end afkastet af fondens benchmark, MSCI World Index.
@@ -16,14 +16,14 @@ pensionskunder med mellem til lang tidshorisont, som er bekendte med risikoen ve
 at investere i fonden og kan acceptere tab på investeringen. Fonden indeholder
 valutarisiko, da den er eksponeret over for værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -0,24% -4,43% 3,60% 8,75%
+Afdeling -2,56% -6,68% 1,65% 6,17%
 Robeco Circular Economy Equities
 Afkast ÅTD 1 år 3 år 5 år
-175
-Afdeling 4,17% 15,98% 53,35% 52,22%
-150
+160
+Afdeling 2,21% 15,02% 50,46% 47,20%
+140
 Omkostninger %
-125 Andre løbende omkostninger 1,33
+120 Andre løbende omkostninger 1,33
 Resultatgebyrer 0,00
 100 Transaktionsomkostninger (Direkte + indirekte) 0,23
 Oprettelsesomkostninger 0,13
@@ -32,7 +32,7 @@ Udtrædelsesomkostninger 0,19
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,85 0,84 0,73
-Std. Afv. 12,90% 12,95% 14,27% 1 2 3 4 5 6 7
+Std. Afv. 13,88% 12,66% 13,48% 1 2 3 4 5 6 7
 Største beholdninger (30-01-2026) % Formuefordeling
 NVIDIA Corp 3,95
 Taiwan Semiconductor Manufacturing Co

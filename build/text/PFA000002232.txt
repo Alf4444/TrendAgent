@@ -4,9 +4,9 @@ Der investeres i en portefølje amerikanske aktier, hvor porteføljen som Opstar
 udgangspunkt sammensættes ud fra de selskaber, der indgår i fondens benchmark, Valuta DKK
 Type Investeringsprodukt
 MSCI USA Index. Der benyttes en indeksnær investeringsstrategi til at opnå et
-Indre værdi 479,25
+Indre værdi 471,91
 afkast svarende til fondens benchmark, dog kan fondens afkast afvige fra
-Indre værdi dato 25-03-2026
+Indre værdi dato 26-03-2026
 benchmarkafkastet, da PFA’s ’Politik for ansvarlige investeringer og aktivt ejerskab’
 Bæredygtighed Artikel 8
 samt anvendelsen af en optimeringsmodel mhp. at reducere
@@ -17,12 +17,12 @@ hvorfor der kan accepteres tab på investeringen. Pensionskunder bør have en
 tidshorisont på min. 3 år. Fonden indeholder valutarisiko, da den har eksponering til
 investeringer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -0,97% -3,37% -3,47% 0,51%
+Afdeling -2,20% -4,35% -4,95% -1,48%
 PFA Indeks USA Aktier Benchmark
-Benchmark -0,94% -3,03% -2,87% 0,80%
+Benchmark -2,17% -4,01% -4,32% -1,17%
 210 Afkast ÅTD 1 år 3 år 5 år
-180 Afdeling -2,77% 6,92% 59,15% 76,92%
-Benchmark -2,19% 7,38% 59,91% 78,47%
+180 Afdeling -4,26% 6,41% 56,71% 71,66%
+Benchmark -3,65% 6,86% 57,52% 73,21%
 150
 Omkostninger %
 120 Andre løbende omkostninger 0,36
@@ -34,7 +34,7 @@ Udtrædelsesomkostninger 0,15
 ÅOP 0,40
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,64 0,90 0,93
-Std. Afv. 13,63% 12,08% 14,16% 1 2 3 4 5 6 7
+Std. Afv. 13,04% 12,28% 13,15% 1 2 3 4 5 6 7
 Største beholdninger (31-01-2026) % Formuefordeling
 NVIDIA Corp 7,69
 Apple 6,39
