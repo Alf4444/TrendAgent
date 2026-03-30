@@ -4,9 +4,9 @@ Der investeres i en portefølje af aktier fra NATO-landeselskaber med en stærk 
 markedsposition indenfor forsvarsmateriel og databeskyttelse. Der kan ikke Valuta DKK
 Type Investeringsforening
 investeres i selskaber involverede i konventionsomfattede våben (f.eks. kemiske
-Indre værdi 116,04
+Indre værdi 113,19
 våben), men der kan investeres i selskaber involveret i atomvåben i lande, som har
-Indre værdi dato 26-03-2026
+Indre værdi dato 27-03-2026
 tiltrådt Nuclear Non-Proliferation Treaty-traktaten. Der benyttes en aktiv
 Bæredygtighed Artikel 8
 investeringsstrategi, men fonden har ikke noget benchmark. Fonden egner sig til
@@ -17,11 +17,11 @@ investeringen. Pensionskunder bør have en tidshorisont på min. 3 år og fonden
 indgå i en diversificeret portefølje af øvrige investeringer. Fonden indeholder
 valutarisiko, da den er eksponeret over for værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -4,64% -4,17% 4,90% 1,69%
+Afdeling -4,29% -6,57% 3,14% -0,80%
 Maj Invest UCITS ETF Defence & Cybersecurity Fund
 Afkast ÅTD 1 år 3 år 5 år
 175
-Afdeling 5,39% 17,12% - -
+Afdeling 2,81% 14,78% - -
 150
 Omkostninger %
 125 Andre løbende omkostninger 0,81
@@ -33,23 +33,23 @@ Udtrædelsesomkostninger 0,18
 Sep '24 Jan '25 Maj '25 Sep '25 Jan '26
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 2,38 - -
-Std. Afv. 17,16% - - 1 2 3 4 5 6 7
-Største beholdninger (31-01-2026) % Formuefordeling
-Lockheed Martin 5,07
-Northrop Grumman 4,77
-Cisco Systems 4,74 Industri 71,96 %
-RAYTHEON TECHNOLOGIES CORP 4,67 Teknologi 21,03 %
-HRS UN 4,61 Andet 7,01 %
-BAE Systems 4,54
-Thales 4,54
-Rheinmetall 4,48
-GENERAL DYNAMICS 4,31
-Saab AB 3,69
-US Dollar 63,22 %
-Euro 17,94 %
-Engelske Pund 12,62 %
-Svenske Kroner 3,69 %
-Andet 2,53 %
+Std. Afv. 19,64% - - 1 2 3 4 5 6 7
+Største beholdninger (28-02-2026) % Formuefordeling
+Lockheed Martin 5,19
+Northrop Grumman 4,92
+HRS UN 4,83 Industri 72,91 %
+Cisco Systems 4,74 Teknologi 20,12 %
+BAE Systems 4,69 Andet 6,97 %
+RAYTHEON TECHNOLOGIES CORP 4,64
+Rheinmetall 4,59
+GENERAL DYNAMICS 4,50
+Thales 4,42
+Saab AB 3,37
+US Dollar 63,01 %
+Euro 18,19 %
+Engelske Pund 12,71 %
+Svenske Kroner 3,37 %
+Andet 2,72 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

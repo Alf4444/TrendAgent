@@ -4,9 +4,9 @@ Der investeres i en portefølje af globale aktier eksklusive Emerging Markets, h
 porteføljen som udgangspunkt sammensættes ud fra de selskaber, der indgår i Valuta EUR
 Type Investeringsforening
 fondens benchmark, MSCI World 100% Hedged to EUR Index. Der benyttes en
-Indre værdi 97,11
+Indre værdi 95,79
 indeksnær investeringsstrategi til at opnå et afkast lig fondens benchmark. Fonden
-Indre værdi dato 26-03-2026
+Indre værdi dato 27-03-2026
 er ikke ESG-screenet og egner sig til informerede eller erfarne pensionskunder, som
 Bæredygtighed Artikel 6
 har indsigt i og erfaring med værdipapirhandel og som ønsker et opsparingsprodukt
@@ -15,11 +15,11 @@ bør have en tidshorisont på min. 3 år. Fonden indeholder valutarisiko, da den
 eksponering til investeringer i udenlandsk valuta. Valutaeksponeringen tilstræbes
 fuldt afdækket til EUR.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -1,44% -6,64% -4,71% -0,88%
+Afdeling -1,36% -7,71% -6,20% -2,23%
 Xtrackers MSCI World EUR Hedged UCITS ETF
 Afkast ÅTD 1 år 3 år 5 år
 160
-Afdeling -4,38% 12,47% - -
+Afdeling -5,69% 11,31% - -
 140
 Omkostninger %
 120 Andre løbende omkostninger 0,37
@@ -31,23 +31,23 @@ Udtrædelsesomkostninger 0,10
 Jan '24 Jul '24 Jan '25 Jul '25 Jan '26
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 1,51 - -
-Std. Afv. 11,45% - - 1 2 3 4 5 6 7
+Std. Afv. 12,91% - - 1 2 3 4 5 6 7
 Største beholdninger (27-02-2026) % Formuefordeling
 NVIDIA Corp 5,02
 Apple 4,57
-Microsoft Corp 3,24 USA 69,98 %
-Amazon.Com 2,35 Japan 5,63 %
-Alphabet A 2,12 England 3,66 %
-Alphabet C 1,78 Canada 3,39 %
-Broadcom Inc 1,67 Andet 17,34 %
+Microsoft Corp 3,24 USA 68,76 %
+Amazon.Com 2,35 Japan 6,07 %
+Alphabet A 2,12 England 3,78 %
+Alphabet C 1,78 Canada 3,57 %
+Broadcom Inc 1,67 Andet 17,81 %
 Meta Platforms 1,64
 Tesla Inc 1,33
 Eli Lilly & Co 0,99
-Teknologi 27,32 %
-Finans 16,10 %
-Industri 10,55 %
-Medicin & Sundhed 8,83 %
-Andet 37,21 %
+Teknologi 26,10 %
+Finans 16,00 %
+Industri 11,15 %
+Medicin & Sundhed 8,99 %
+Andet 37,75 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

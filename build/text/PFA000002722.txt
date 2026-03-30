@@ -4,9 +4,9 @@ Der investeres i en portefølje af aktier bestående af danske samt øvrige sels
 noteret på Nasdaq OMX Copenhagen A/S. Selskaberne udvælges på baggrund af Valuta DKK
 Type Investeringsforening
 grundig fundamental selskabs- samt prisfastsættelsesanalyse og repræsenterer
-Indre værdi 533,82
+Indre værdi 532,18
 forskellige sektorer, selskabsstørrelser og -typer. Der benyttes en aktiv
-Indre værdi dato 26-03-2026
+Indre værdi dato 27-03-2026
 investeringsstrategi til at opnå et afkast, der er bedre end afkastet af fondens
 Bæredygtighed Artikel 8
 benchmark, OMX Copenhagen CAP_GI. Fonden egner sig til informerede eller
@@ -17,11 +17,11 @@ en tidshorisont på min. 3 år, og fonden bør indgå i en diversificeret portef
 øvrige investeringer. Fonden indeholder valutarisiko, da den er eksponeret over for
 værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 0,80% -4,37% -9,57% 0,22%
+Afdeling 1,31% -4,73% -10,17% -0,09%
 Maj Invest Danske Aktier
 Afkast ÅTD 1 år 3 år 5 år
 135
-Afdeling -10,21% 0,50% 16,98% 15,66%
+Afdeling -10,48% 1,33% 14,91% 15,30%
 120
 Omkostninger %
 105 Andre løbende omkostninger 1,39
@@ -33,23 +33,23 @@ Udtrædelsesomkostninger 0,25
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,15 0,60 0,32
-Std. Afv. 19,23% 14,44% 15,35% 1 2 3 4 5 6 7
-Største beholdninger (31-01-2026) % Formuefordeling
-DSV 10,19
-Novo Nordisk B 9,00
-Sydbank 8,15 Danmark 93,34 %
-Danske Bank 6,16 Finland 4,16 %
-Novonesis (Novozymes) B 5,87 Island 1,98 %
-Per Aarsleff B 5,04 Andet 0,53 %
-Ringkjøbing Landbobank 4,66
-NKT A/S 4,55
-Aftalekonto 4,42
-Sampo A 4,16
-Industri 28,95 %
-Finans 27,89 %
-Medicin & Sundhed 26,07 %
-Forbrugsgoder 7,44 %
-Andet 9,64 %
+Std. Afv. 18,97% 14,24% 15,33% 1 2 3 4 5 6 7
+Største beholdninger (28-02-2026) % Formuefordeling
+DSV 9,04
+Sydbank 8,57
+Danske Bank 6,72 Danmark 92,48 %
+Novo Nordisk B 6,15 Finland 4,40 %
+Novonesis (Novozymes) B 6,06 Island 1,97 %
+Ikke hÃ¯Â¿Â½vet udlodning 4,88 Andet 1,15 %
+Ringkjøbing Landbobank 4,87
+Per Aarsleff B 4,81
+NKT A/S 4,80
+ALK-Abello B ny 4,59
+Finans 29,42 %
+Industri 27,65 %
+Medicin & Sundhed 23,49 %
+Forbrugsgoder 8,06 %
+Andet 11,38 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

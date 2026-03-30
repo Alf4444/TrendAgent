@@ -4,9 +4,9 @@ Der investeres i danske realkreditobligationer samt EU og US stats-, indeks-, hi
 yield og investment grade obligationer, vha. en optimeringsmode med månedlig Valuta DKK
 Type Investeringsprodukt
 rebalancering. Der benyttes en indeksnær investeringsstrategi til at opnå et afkast
-Indre værdi 100,89
+Indre værdi 100,62
 svarende til fondens benchmark, dog kan fondens afkast afvige fra
-Indre værdi dato 26-03-2026
+Indre værdi dato 27-03-2026
 benchmarkafkastet, da en omfattende ESG-screening foretages. Fonden egner sig
 Bæredygtighed Artikel 8
 til informerede eller erfarne pensionskunder, som har indsigt i og erfaring med
@@ -17,12 +17,12 @@ investeringer. Fonden indeholder valutarisiko, da den har eksponering til
 investeringer i udenlandsk valuta. Valutaeksponeringen tilstræbes fuldt afdækket til
 DKK.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -0,68% -1,92% -0,48% -0,57%
+Afdeling -0,43% -2,28% -0,96% -0,84%
 PFA Indeks Globale Obligationer Benchmark
-Benchmark -0,71% -1,99% -0,54% -0,44%
+Benchmark -0,44% -2,34% -0,88% -0,68%
 105 Afkast ÅTD 1 år 3 år 5 år
-100 Afdeling -0,65% 1,48% 7,28% -
-Benchmark -0,70% 1,82% 8,13% -
+100 Afdeling -0,92% 1,20% 7,48% -
+Benchmark -0,94% 1,56% 8,18% -
 95
 Omkostninger %
 90 Andre løbende omkostninger 0,38
@@ -34,7 +34,7 @@ Udtrædelsesomkostninger 0,20
 ÅOP 0,44
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,58 0,19 -
-Std. Afv. 2,75% 3,80% - 1 2 3 4 5 6 7
+Std. Afv. 3,02% 4,00% - 1 2 3 4 5 6 7
 Største beholdninger (31-01-2026) % Formuefordeling
 Var% Germany 15/04/2030 3,10
 4 NYKRE 01-10-2056 (01E) 2,23

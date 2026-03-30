@@ -4,9 +4,9 @@ Der investeres i en portefølje af danske og globale obligationer. En stor del a
 porteføljen består af nordeuropæiske stats- og realkreditobligationer, som normalt Valuta DKK
 Type Investeringsforening
 klarer sig godt, når der er uro på de finansielle markeder. Der kan investeres i
-Indre værdi 100,27
+Indre værdi 99,67
 emerging markets-obligationer og op til 35% af formuen kan placeres i
-Indre værdi dato 26-03-2026
+Indre værdi dato 27-03-2026
 kreditobligationer. Den korrigerede varighed er mellem 0 og 9 år. Fonden egner sig
 Bæredygtighed Artikel 8
 til informerede eller erfarne pensionskunder, som har indsigt i og erfaring med
@@ -16,11 +16,11 @@ investeringen. Pensionskunder bør have en tidshorisont på min. 3 år, og fonde
 indgå i en diversificeret portefølje af øvrige investeringer. Fonden indeholder
 valutarisiko, da den er eksponeret over for værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -0,63% -2,74% 0,52% 1,57%
+Afdeling -0,64% -3,46% -0,74% 0,96%
 Maj Invest Globale Obligationer Akkumulerende
 Afkast ÅTD 1 år 3 år 5 år
 120
-Afdeling -0,14% 4,70% 17,09% 13,38%
+Afdeling -0,73% 4,15% 16,57% 12,71%
 112
 Omkostninger %
 104 Andre løbende omkostninger 0,65
@@ -32,29 +32,30 @@ Udtrædelsesomkostninger 0,15
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,81 0,76 0,18
-Std. Afv. 4,26% 4,75% 5,05% 1 2 3 4 5 6 7
-Største beholdninger (31-01-2026) % Formuefordeling
-lÃ¯Â¿Â½bende konto 23,43
-Valutakonto USD-Deposit 16,84
-2% NDASS 2 01/10/2043 5,28 Obligationer 93,08 %
-1% NYKRE 13/H 2031/01/01 5,28 Andet 6,93 %
-BUONI POLIENNALI DEL TES 3.150%
-3,50
-15/03/33
+Std. Afv. 4,98% 4,99% 5,13% 1 2 3 4 5 6 7
+Største beholdninger (28-02-2026) % Formuefordeling
+2% NDASS 2 01/10/2043 5,00
+1% NYKRE 13/H 2031/01/01 4,99
+lÃ¯Â¿Â½bende konto 3,93 Obligationer 89,86 %
+BUONI POLIENNALI DEL TES 3.150% Andet 10,05 %
+3,32
+15/03/33 Derivater 0,09 %
 0.5% REALKREDIT DANMARK 23S SA
-3,18
+3,02
 2053 2053/01/10
 REALKREDIT DANMARK A/S-REG-S
-3,17
+3,00
 4.00000% 23-01.10.56
-1.00% Nykredit Realkredit AS 2034 2,65
-Europa 79,33 %
-0,13% TREASURY (CPI) NOTE 2,49
-Latinamerika 4,46 %
-Valutakonto MXN-Deposit 2,39
-Afrika 2,35 %
-Nordamerika 2,35 %
-Andet 11,51 %
+1.00% Nykredit Realkredit AS 2034 2,52
+0,13% TREASURY (CPI) NOTE 2,35
+Europa 73,86 %
+BONOS Y OBLIG DEL ESTADO 3.95%
+2,25 Latinamerika 4,34 %
+31/10/56
+EU 3,24 %
+0.4% JAPAN GOVERNMENT OF 20YR
+#174 2040/09/20 2,11 Nordamerika 3,01 %
+Andet 15,56 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

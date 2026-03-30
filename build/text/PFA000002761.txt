@@ -4,9 +4,9 @@ Fonden er semi-aktivt forvaltet med målet om at opnå et højere afkast som afs
 udviklingen i prisen på ædelmetaller (eksempelvis guld og sølv) samt mineselskaber Valuta DKK
 Type Investeringsforening
 inden for ædelmetaller.
-Indre værdi 110,34
+Indre værdi 113,98
 Der investeres indirekte i fysiske ædelmetaller via finansielle produkter samt i
-Indre værdi dato 26-03-2026
+Indre værdi dato 27-03-2026
 børsnoterede mineselskaber. De primære risikofaktorer er markedsrisiko (udsving
 Bæredygtighed Artikel 8
 på de globale aktiemarkeder), sektorrisiko (risikoen for at mineaktier klarer sig
@@ -17,11 +17,11 @@ er velegnet til pensionskunder med en høj risiko profil og/eller pensionskunder
 ønsker et bidrag til en diversificeret portefølje. Fonden bør kun udgøre en mindre
 del af den samlede investering (under 20 %).
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -2,42% -21,32% -3,05% 22,18%
+Afdeling 3,18% -20,28% 3,34% 26,21%
 Maj Invest Guld, Sølv & Miner UCITS ETF
 Afkast ÅTD 1 år 3 år 5 år
 210
-Afdeling -1,46% - - -
+Afdeling 1,79% - - -
 180
 Omkostninger %
 150 Andre løbende omkostninger 0,80
@@ -34,24 +34,24 @@ Sep '25 Nov '25 Jan '26 Mar '26
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe - - -
 Std. Afv. - - - 1 2 3 4 5 6 7
-Største beholdninger (31-01-2026) % Formuefordeling
-AMUNDI ETFS FRANCE 10,20
-XTRACKRS PHY GLD ETC 9,48
-Barrick Mining 4,61 Canada 27,95 %
-Wheaton Precious Metals Corp 4,44 England 20,89 %
-Agnico Eagle Mines 4,44 Irland 20,81 %
-Newmont Mining 4,43 USA 13,43 %
-Wisdomtree Core - Physical Gold 4,42 Andet 16,93 %
-Certificate Silver Source on Commodity
-4,14
-Silver
+Største beholdninger (28-02-2026) % Formuefordeling
+AMUNDI ETFS FRANCE 8,81
+XTRACKRS PHY GLD ETC 8,14
+Certificate Silver Source on Commodity Canada 28,86 %
+5,22
+Silver England 19,49 %
+Agnico Eagle Mines 4,59 Irland 19,14 %
+Wheaton Precious Metals Corp 4,49 USA 13,16 %
+Newmont Mining 4,43 Andet 19,35 %
+Barrick Mining 4,16
+Wisdomtree Core - Physical Gold 3,88
 WisdomTree Metal Securiti.Ltd. O.END Z
-3,96
-24 unl. US Dollar 59,59 %
-Source Physical Markets 3,55 Canadiske Dollar 27,95 %
-Euro 3,96 %
-Australske Dollar 3,40 %
-Andet 5,10 %
+3,56
+24 unl. US Dollar 55,51 %
+Alamos Gold 3,24 Canadiske Dollar 28,89 %
+Euro 3,56 %
+Sydafrikanske Rand 3,17 %
+Andet 8,87 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

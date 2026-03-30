@@ -4,9 +4,9 @@ Der investeres i en portefølje af globale aktier på tværs af forskellige sekt
 segmenter og geografiske områder. Selskaberne udvælges ud fra Valuta DKK
 Type Investeringsforening
 investeringsfilosofien ’value-investing’, der identificerer selskaber, hvis
-Indre værdi 327,37
+Indre værdi 324,54
 forretningsmæssige værdi er højere end selskabernes markedskurs. Dvs.
-Indre værdi dato 26-03-2026
+Indre værdi dato 27-03-2026
 investeringer gøres, hvor aktierne er billige. Der benyttes en aktiv
 Bæredygtighed Artikel 8
 investeringsstrategi til at opnå et afkast, der er bedre end afkastet af fondens
@@ -17,11 +17,11 @@ investeringen. Pensionskunder bør have en tidshorisont på min. 3 år, og fonde
 indgå i en diversificeret portefølje af øvrige investeringer. Fonden indeholder
 valutarisiko, da den indeholder investeringer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 1,16% -4,34% 3,40% 10,86%
+Afdeling 1,72% -5,05% 2,15% 9,90%
 Sparinvest Value Aktier
 Afkast ÅTD 1 år 3 år 5 år
 180
-Afdeling 3,02% 13,66% 51,18% 64,81%
+Afdeling 2,12% 13,32% 48,76% 63,38%
 150
 Omkostninger %
 120 Andre løbende omkostninger 1,86
@@ -33,22 +33,22 @@ Udtrædelsesomkostninger 0,17
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,63 0,52 0,90
-Std. Afv. 14,29% 11,68% 12,28% 1 2 3 4 5 6 7
-Største beholdninger (31-01-2026) % Formuefordeling
-Citigroup 2,79
-Wells Fargo & Co 2,68
-Travelers Companies 2,68 Finans 25,31 %
-AT&T 2,48 Teknologi 12,21 %
-Regions Financial 2,22 Materialer 12,07 %
-Metlife 2,02 Forbrugsgoder 11,19 %
-eBay 1,99 Andet 39,22 %
-ArcelorMittal SA 1,92
-Albemarle 1,92
-Hewlett Packard Enterprise 1,89
-Nordamerika 60,80 %
-Europa 28,91 %
-Japan 8,62 %
-Andet 1,66 %
+Std. Afv. 14,78% 12,62% 12,80% 1 2 3 4 5 6 7
+Største beholdninger (28-02-2026) % Formuefordeling
+Travelers Companies 2,75
+AT&T 2,70
+Citigroup 2,44 Finans 23,56 %
+Wells Fargo & Co 2,29 Materialer 12,52 %
+International Flavors & Fragrances 2,15 Forbrugsgoder 11,90 %
+ArcelorMittal SA 2,12 Teknologi 11,66 %
+DKK cash 2,04 Andet 40,36 %
+Regions Financial 2,02
+Pfizer 1,94
+Hewlett Packard Enterprise 1,93
+Nordamerika 59,79 %
+Europa 30,03 %
+Japan 8,14 %
+Andet 2,04 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke
