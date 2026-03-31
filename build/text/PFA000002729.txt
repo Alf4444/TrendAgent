@@ -4,9 +4,9 @@ Der investeres i en portefølje af globale aktier på tværs af forskellige sekt
 segmenter og geografiske områder. Selskaberne udvælges ud fra Valuta DKK
 Type Investeringsforening
 investeringsfilosofien ’value-investing’, der identificerer selskaber, hvis
-Indre værdi 324,54
+Indre værdi 325,58
 forretningsmæssige værdi er højere end selskabernes markedskurs. Dvs.
-Indre værdi dato 27-03-2026
+Indre værdi dato 30-03-2026
 investeringer gøres, hvor aktierne er billige. Der benyttes en aktiv
 Bæredygtighed Artikel 8
 investeringsstrategi til at opnå et afkast, der er bedre end afkastet af fondens
@@ -17,23 +17,23 @@ investeringen. Pensionskunder bør have en tidshorisont på min. 3 år, og fonde
 indgå i en diversificeret portefølje af øvrige investeringer. Fonden indeholder
 valutarisiko, da den indeholder investeringer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 1,72% -5,05% 2,15% 9,90%
+Afdeling 1,47% -4,75% 2,45% 9,98%
 Sparinvest Value Aktier
 Afkast ÅTD 1 år 3 år 5 år
-180
-Afdeling 2,12% 13,32% 48,76% 63,38%
+175
+Afdeling 2,45% 15,27% 47,31% 62,35%
 150
 Omkostninger %
-120 Andre løbende omkostninger 1,86
+125 Andre løbende omkostninger 1,86
 Resultatgebyrer 0,00
-90 Transaktionsomkostninger (Direkte + indirekte) 0,02
+100 Transaktionsomkostninger (Direkte + indirekte) 0,02
 Oprettelsesomkostninger 0,21
 Udtrædelsesomkostninger 0,17
 ÅOP 1,94
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,63 0,52 0,90
-Std. Afv. 14,78% 12,62% 12,80% 1 2 3 4 5 6 7
+Std. Afv. 11,20% 11,92% 13,32% 1 2 3 4 5 6 7
 Største beholdninger (28-02-2026) % Formuefordeling
 Travelers Companies 2,75
 AT&T 2,70

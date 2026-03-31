@@ -4,9 +4,9 @@ Der investeres i en diversificeret portefølje af globale aktier med både geogr
 sektormæssig spredning. De valgte selskaber er kvalitetsselskaber, som skønnes Valuta DKK
 Type Investeringsforening
 undervurderede. Selskaberne udvælges således på baggrund af deres
-Indre værdi 320,57
+Indre værdi 325,94
 fundamentale værdi og indtjening mere end på kortsigtede markedstemaer. Der
-Indre værdi dato 27-03-2026
+Indre værdi dato 30-03-2026
 benyttes en aktiv investeringsstrategi til at opnå et afkast, der er bedre end afkastet
 Bæredygtighed Artikel 8
 af fondens benchmark, MSCI All Country World Index. Fonden egner sig til
@@ -17,11 +17,11 @@ på min. 3 år, og fonden bør indgå i en diversificeret portefølje af øvrige
 investeringer. Fonden indeholder valutarisiko, da den indeholder investeringer i
 udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -2,35% -6,48% -10,95% -9,98%
+Afdeling -0,54% -4,91% -9,37% -9,01%
 SKAGEN Global
 Afkast ÅTD 1 år 3 år 5 år
 160
-Afdeling -10,86% -12,94% 13,04% 25,51%
+Afdeling -9,36% -9,98% 14,06% 25,81%
 140
 Omkostninger %
 120 Andre løbende omkostninger 1,00
@@ -33,7 +33,7 @@ Udtrædelsesomkostninger 0,25
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,17 0,41 0,53
-Std. Afv. 12,97% 11,77% 14,11% 1 2 3 4 5 6 7
+Std. Afv. 9,76% 11,26% 15,18% 1 2 3 4 5 6 7
 Største beholdninger (28-02-2026) % Formuefordeling
 Reed Elsevier 7,19
 Canadian Pacific Railway (CAD) 7,00
