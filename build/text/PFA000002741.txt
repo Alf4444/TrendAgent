@@ -4,9 +4,9 @@ Der investeres i en portefølje af europæiske aktier (inkl. Storbritannien) gen
 selskaber, der er hjemhørende eller har sine primæraktiviteter i Europa og Valuta DKK
 Type Investeringsforening
 Storbritannien. Selskaberne udvælges ved at identificere selskaber med stærke
-Indre værdi 262,78
+Indre værdi 264,23
 ESG-profiler, der bl.a. fokuserer på aktivt ejerskab, fravælgelse af visse selskaber
-Indre værdi dato 30-03-2026
+Indre værdi dato 31-03-2026
 mv. Der benyttes en aktiv investeringsstrategi til at opnå et afkast, der er bedre end
 Bæredygtighed Artikel 8
 afkastet af fondens benchmark, MSCI AC China 10/40 Index NR. Fonden egner sig
@@ -17,11 +17,11 @@ på min. 3 år, og fonden bør indgå i en diversificeret portefølje af øvrige
 investeringer. Fonden indeholder valutarisiko, da den indeholder investeringer i
 udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -0,51% -11,18% -3,14% 0,78%
+Afdeling -0,54% -10,69% -2,51% 1,34%
 Threadneedle Pan European ESG Equities
 Afkast ÅTD 1 år 3 år 5 år
 160
-Afdeling -3,05% 5,48% 28,96% 37,77%
+Afdeling -2,51% 7,56% 28,76% 38,46%
 140
 Omkostninger %
 120 Andre løbende omkostninger 1,24
@@ -33,23 +33,23 @@ Udtrædelsesomkostninger 0,50
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,94 0,96 0,67
-Std. Afv. 15,64% 12,62% 14,96% 1 2 3 4 5 6 7
-Største beholdninger (31-10-2025) % Formuefordeling
-ASML Holding NV 4,58
-Novartis 3,82
-SAP SE 3,57 England 25,88 %
-Siemens 3,56 Frankrig 17,77 %
-Rolls-Royce 3,50 Tyskland 15,90 %
-Schneider Electric SE 3,24 Holland 12,12 %
-Safran 3,02 Andet 28,33 %
-Airbus Group 2,86
-3i Group 2,75
-NatWest Group PLC Reg sh NEW 2,65
-Industri 28,48 %
-Finans 21,11 %
-Teknologi 12,54 %
-Medicin & Sundhed 9,12 %
-Andet 28,76 %
+Std. Afv. 15,16% 12,44% 14,87% 1 2 3 4 5 6 7
+Største beholdninger (30-11-2025) % Formuefordeling
+ASML Holding NV 5,17
+Novartis 4,05
+SAP SE 3,37 England 22,38 %
+Siemens 3,19 Frankrig 17,76 %
+Rolls-Royce 3,17 Tyskland 13,90 %
+Schneider Electric SE 3,08 Holland 12,89 %
+AstraZeneca PLC 3,00 Andet 33,07 %
+NatWest Group PLC Reg sh NEW 2,91
+Safran 2,89
+Airbus Group 2,78
+Industri 26,56 %
+Finans 21,05 %
+Teknologi 11,39 %
+Medicin & Sundhed 10,07 %
+Andet 30,92 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysning-erne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke
