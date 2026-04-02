@@ -49,11 +49,11 @@ NYKREDIT REALKREDIT AS 4%
 5,14
 01.10.2056
 1% 1,00% Realkredit Danmark 2027
-4,14 1-3 år 46,35 %
+4,14 1-3 år 43,32 %
 2027/01/01
 4 NYKRE 01-10-2056 (01E) 4,06 > 7 år 25,86 %
 4.00% Jyske Realkredit 10/2056 3,87 3-5 år 16,44 %
-1% REALKREDIT DNMRK RDKRE < 1 år 11,13 %
+1% REALKREDIT DNMRK RDKRE < 1 år 14,16 %
 2,88
 2050/01/10 Andet 0,22 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af

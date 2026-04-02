@@ -1,5 +1,5 @@
 # 📈 TrendAgent Fokus
-**Opdateret:** 01-04-2026 20:01 (Handelsdage valideret)
+**Opdateret:** 02-04-2026 20:00 (Handelsdage valideret)
 
 | | Fond | Signal | RSI | Egen % | Trend | Afstand | Cross |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
