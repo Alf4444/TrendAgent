@@ -34,24 +34,24 @@ Udtrædelsesomkostninger 0,39
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 1,27 0,72 -
 Std. Afv. 20,07% 14,65% - 1 2 3 4 5 6 7
-Største beholdninger (27-02-2026) % Formuefordeling
+Største beholdninger (31-03-2026) % Formuefordeling
 Taiwan Semiconductor Manufacturing Co
-9,70
+9,35
 Ltd ADR
-SAMSUNG ELECTRONICS NON Teknologi 36,10 %
-8,29
-VOTING PRE Finans 19,94 %
-SK hynix 4,85 Materialer 6,64 %
-Tencent Holdings 3,90 Industri 6,53 %
-HK 2,85 Andet 30,79 %
-CTBC Financial 1,57
-Chroma Ate 1,48
-Itau Unibanco 1,39
-MediaTek 1,35 Asien (ex.Japan) 75,62 %
-Sun Hung Kai Properties 1,25 Latinamerika 12,36 %
-Afrika 3,27 %
-Europa 2,73 %
-Andet 6,02 %
+SAMSUNG ELECTRONICS NON Teknologi 33,74 %
+6,87
+VOTING PRE Finans 20,26 %
+Tencent Holdings 4,20 Materialer 6,91 %
+SK hynix 3,98 Industri 6,26 %
+HK 2,73 Andet 32,84 %
+ASE Industrial Holdings Co Ltd 1,80
+Chroma Ate 1,57
+Itau Unibanco 1,46
+PTT Exploration & Production F 1,41 Asien (ex.Japan) 72,31 %
+Delta Electronics 1,29 Latinamerika 13,08 %
+Afrika 3,93 %
+Europa 3,30 %
+Andet 7,38 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

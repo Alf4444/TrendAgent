@@ -34,22 +34,22 @@ Udtrædelsesomkostninger 0,50
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,94 0,96 0,67
 Std. Afv. 15,16% 12,44% 14,87% 1 2 3 4 5 6 7
-Største beholdninger (30-11-2025) % Formuefordeling
-ASML Holding NV 5,17
-Novartis 4,05
-SAP SE 3,37 England 22,38 %
-Siemens 3,19 Frankrig 17,76 %
-Rolls-Royce 3,17 Tyskland 13,90 %
-Schneider Electric SE 3,08 Holland 12,89 %
-AstraZeneca PLC 3,00 Andet 33,07 %
+Største beholdninger (31-12-2025) % Formuefordeling
+ASML Holding NV 5,09
+Novartis 4,11
+Rolls-Royce 3,31 England 22,43 %
+SAP SE 3,24 Frankrig 17,27 %
+Siemens 3,22 Tyskland 13,78 %
+Schneider Electric SE 3,02 Holland 12,94 %
+AstraZeneca PLC 3,02 Andet 33,58 %
 NatWest Group PLC Reg sh NEW 2,91
-Safran 2,89
-Airbus Group 2,78
-Industri 26,56 %
-Finans 21,05 %
-Teknologi 11,39 %
-Medicin & Sundhed 10,07 %
-Andet 30,92 %
+Safran 2,85
+Airbus Group 2,60
+Industri 26,46 %
+Finans 23,00 %
+Teknologi 11,30 %
+Medicin & Sundhed 9,78 %
+Andet 29,46 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysning-erne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

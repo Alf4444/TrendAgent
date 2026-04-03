@@ -34,29 +34,29 @@ Udtrædelsesomkostninger 0,20
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 2,32 1,46 0,32
 Std. Afv. 3,37% 3,92% 6,91% 1 2 3 4 5 6 7
-Største beholdninger (30-01-2026) % Formuefordeling
-Net Cash 3,14
-IRON MOUNTAIN 4.75 Jan34 1,10
-5.25% VERISURE MIDHOLDING AB Euro 84,15 %
+Største beholdninger (27-02-2026) % Formuefordeling
+Net Cash 3,42
+IRON MOUNTAIN 4.75 Jan34 1,15
+5.25% VERISURE MIDHOLDING AB Euro 84,23 %
 1,09
-RegS 2029/02/15 Engelske Pund 9,76 %
-5,500000 Opal Bidco 31-03-2032 1,05 Danske Kroner 3,14 %
-MEHILAINEN YHTIOT OY 5.125% 2032- US Dollar 2,96 %
-0,94
+RegS 2029/02/15 Engelske Pund 9,40 %
+5,500000 Opal Bidco 31-03-2032 1,08 Danske Kroner 3,42 %
+MEHILAINEN YHTIOT OY 5.125% 2032- US Dollar 2,95 %
+0,97
 06-30
-7.0% DEUCE FINCO 7% 2031-11-20 0,89
 Q-PARK HOLDING I BV 5.125%
-0,89
+0,91
 15/02/2030
+7.0% DEUCE FINCO 7% 2031-11-20 0,91
 Var% PRIMO TRITON WATER HLD
-0,87 3-5 år 23,78 %
+0,90 3-5 år 24,53 %
 3.875% 2028-10-31
-5-7 år 20,92 %
-TECHEM VERWALTUNGSGESELL 0,86
-1-3 år 19,94 %
-AEGIS LUX 5.625% 2031-10-29 0,84
-> 7 år 15,14 %
-Andet 20,22 %
+5-7 år 20,76 %
+TECHEM VERWALTUNGSGESELL 0,88
+1-3 år 18,28 %
+AEGIS LUX 5.625% 2031-10-29 0,86
+> 7 år 15,56 %
+Andet 20,87 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke
