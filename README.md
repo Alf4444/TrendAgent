@@ -1,8 +1,8 @@
 # 📈 TrendAgent Fokus
-**Opdateret:** 06-04-2026 19:58 (Handelsdage valideret)
+**Opdateret:** 07-04-2026 20:07 (Handelsdage valideret)
 
 | | Fond | Signal | RSI | Egen % | Trend | Afstand | Cross |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| ⭐ | ⚠️ C WorldWide Asien | – | 30 | -10.9% | WARM-UP | +0.0% | – |
-| ⭐ | Lazard Emerging Markets E | – | 39 | -5.2% | WARM-UP | +0.0% | – |
-| ⭐ | ⚠️ Sydinvest Globale EM-akti | – | 32 | -10.7% | WARM-UP | +0.0% | 💀 DEATH |
+| ⭐ | C WorldWide Asien | – | 41 | -7.4% | WARM-UP | +0.0% | – |
+| ⭐ | Lazard Emerging Markets E | – | 48 | -4.6% | WARM-UP | +0.0% | – |
+| ⭐ | ⚠️ Sydinvest Globale EM-akti | – | 44 | -7.0% | WARM-UP | +0.0% | – |
