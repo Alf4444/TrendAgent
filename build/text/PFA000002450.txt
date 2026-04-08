@@ -4,9 +4,9 @@ Fonden er en balanceret fond, der investerer 50% i PFA Indeks Globale Aktier og 
 50% i PFA Indeks Globale Obligationer med månedlig rebalancering. Der benyttes Valuta DKK
 Type Investeringsprodukt
 en indeksnær investeringsstrategi til at opnå et afkast svarende til fondens
-Indre værdi 122,64
+Indre værdi 122,82
 benchmark, dog kan fondens afkast afvige fra benchmarkafkastet, da en
-Indre værdi dato 01-04-2026
+Indre værdi dato 07-04-2026
 omfattende ESG-screening foretages. Det betyder, at selskaber på PFA’s
 Bæredygtighed Artikel 8
 eksklusionsliste eller med en lav ESG-score samt visse lande/sektorer helt eller
@@ -17,12 +17,12 @@ investeringen. Pensionskunder bør have en tidshorisont på min. 3 år. Fonden
 indeholder valutarisiko, da den har eksponering til investeringer i udenlandsk valuta,
 som kun delvist afdækkes til EUR eller DKK.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 0,01% -2,85% -0,43% 0,98%
+Afdeling 0,83% -1,30% -1,55% 0,76%
 PFA Indeks 50 Benchmark
-Benchmark -0,06% -2,76% -0,24% 1,23%
+Benchmark 0,77% -1,22% -1,26% 0,91%
 132 Afkast ÅTD 1 år 3 år 5 år
-120 Afdeling -0,43% 6,74% 28,27% -
-Benchmark -0,24% 7,44% 29,67% -
+120 Afdeling -0,28% 13,83% 28,62% -
+Benchmark -0,06% 14,50% 29,94% -
 108
 Omkostninger %
 96 Andre løbende omkostninger 0,48
@@ -34,23 +34,24 @@ Udtrædelsesomkostninger 0,18
 ÅOP 0,54
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,81 0,87 -
-Std. Afv. 5,36% 6,11% - 1 2 3 4 5 6 7
-Største beholdninger (31-01-2026) % Formuefordeling
-NVIDIA Corp 2,42
+Std. Afv. 5,62% 7,73% - 1 2 3 4 5 6 7
+Største beholdninger (28-02-2026) % Formuefordeling
+NVIDIA Corp 2,22
 Apple 2,02
-Microsoft Corp 1,59 Aktier 49,86 %
-Var% Germany 15/04/2030 1,55 Obligationer 48,36 %
-Amazon.Com 1,19 Andet 1,80 %
-4 NYKRE 01-10-2056 (01E) 1,11 Fonde 0,00 %
-Alphabet A 1,03
-Alphabet C 0,87
-1% RDKRE 10F 2031/01/01 0,86
-Meta Platforms 0,79
-Europa 45,60 %
-Nordamerika 43,05 %
-Asien (ex.Japan) 4,75 %
-Japan 2,83 %
-Andet 3,78 %
+Var% Germany 15/04/2030 1,53 Aktier 50,14 %
+Microsoft Corp 1,43 Obligationer 47,77 %
+4 NYKRE 01-10-2056 (01E) 1,11 Kontanter 0,14 %
+Amazon.Com 1,03 Derivater 0,01 %
+Alphabet A 0,94 Andet 1,94 %
+1% RDKRE 10F 2031/01/01 0,85
+Taiwan Semiconductor Manufacturing Co
+0,83
+Ltd ADR
+Var% Germany 15/04/2046 0,79 Europa 45,43 %
+Nordamerika 42,37 %
+Asien (ex.Japan) 4,96 %
+Japan 3,05 %
+Andet 4,19 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

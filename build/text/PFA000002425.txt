@@ -4,9 +4,9 @@ Fonden er en balanceret fond, der investerer 25% i PFA Indeks Globale Aktier og 
 75% i PFA Indeks Globale Obligationer med månedlig rebalancering. Der benyttes Valuta DKK
 Type Investeringsprodukt
 en indeksnær investeringsstrategi til at opnå et afkast svarende til fondens
-Indre værdi 111,16
+Indre værdi 111,11
 benchmark, dog kan fondens afkast afvige fra benchmarkafkastet, da en
-Indre værdi dato 01-04-2026
+Indre værdi dato 07-04-2026
 omfattende ESG-screening foretages. Det betyder, at selskaber på PFA’s
 Bæredygtighed Artikel 8
 eksklusionsliste eller med en lav ESG-score samt visse lande/sektorer helt eller
@@ -17,12 +17,12 @@ investeringen. Pensionskunder bør have en tidshorisont på min. 3 år. Fonden
 indeholder valutarisiko, da den har eksponering til investeringer i udenlandsk valuta,
 som kun delvist afdækkes til EUR eller DKK.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 0,06% -2,20% -0,30% 0,32%
+Afdeling 0,42% -1,08% -1,11% 0,13%
 PFA Indeks 25 Benchmark
-Benchmark 0,03% -2,16% -0,18% 0,57%
+Benchmark 0,39% -1,01% -0,94% 0,32%
 120 Afkast ÅTD 1 år 3 år 5 år
-112 Afdeling -0,30% 4,09% 17,41% -
-Benchmark -0,18% 4,72% 19,04% -
+112 Afdeling -0,34% 7,78% 17,09% -
+Benchmark -0,20% 8,32% 18,64% -
 104
 Omkostninger %
 96 Andre løbende omkostninger 0,49
@@ -34,25 +34,24 @@ Udtrædelsesomkostninger 0,19
 ÅOP 0,54
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,81 0,64 -
-Std. Afv. 3,47% 4,49% - 1 2 3 4 5 6 7
-Største beholdninger (31-01-2026) % Formuefordeling
-Var% Germany 15/04/2030 2,32
-4 NYKRE 01-10-2056 (01E) 1,67
-1% RDKRE 10F 2031/01/01 1,29 Obligationer 72,35 %
-NVIDIA Corp 1,21 Aktier 24,87 %
-Var% Germany 15/04/2046 1,17 Andet 2,55 %
-1% REALKREDIT DANMARK 10F JA Kontanter 0,26 %
-1,16
-2030/01/01
-1 NYKRE 01-07-2030 13H 1,13
+Std. Afv. 3,51% 4,85% - 1 2 3 4 5 6 7
+Største beholdninger (28-02-2026) % Formuefordeling
+Var% Germany 15/04/2030 2,29
+4 NYKRE 01-10-2056 (01E) 1,66
+1% RDKRE 10F 2031/01/01 1,28 Obligationer 71,63 %
+Var% Germany 15/04/2046 1,19 Aktier 25,06 %
+NVIDIA Corp 1,11 Kontanter 0,54 %
+1 NYKRE 01-07-2030 13H 1,01 Derivater 0,02 %
+Apple 1,01 Andet 2,75 %
 GERMANY (FEDERAL REPUBLIC OF)
-1,01
+1,00
 RegS
-Apple 1,00 Europa 60,33 %
-Var% France 25/07/2027 0,97 Nordamerika 31,60 %
-Asien (ex.Japan) 2,40 %
-Japan 1,68 %
-Andet 3,99 %
+Var% France 25/07/2027 0,94
+1% REALKREDIT DANMARK 10F JA 0,94 Europa 59,95 %
+2030/01/01 Nordamerika 31,15 %
+Asien (ex.Japan) 2,51 %
+Japan 1,79 %
+Andet 4,60 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

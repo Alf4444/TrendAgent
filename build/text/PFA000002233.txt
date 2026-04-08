@@ -4,9 +4,9 @@ Der investeres i en portefølje af globale aktier inklusive Emerging Markets, hv
 porteføljen som udgangspunkt sammensættes ud fra de selskaber, der indgår i Valuta DKK
 Type Investeringsprodukt
 fondens benchmark, MSCI All Countries World Index Net. Der benyttes en
-Indre værdi 387,21
+Indre værdi 389,24
 indeksnær investeringsstrategi til at opnå et afkast lig fondens benchmark, dog kan
-Indre værdi dato 01-04-2026
+Indre værdi dato 07-04-2026
 fondens afkast afvige fra benchmarkafkastet, da PFA’s ’Politik for ansvarlige
 Bæredygtighed Artikel 8
 investeringer og aktivt ejerskab’ samt anvendelsen af en optimeringsmodel mhp. at
@@ -17,12 +17,12 @@ med højere risiko, hvorfor der kan accepteres tab på investeringen. Pensionsku
 bør have en tidshorisont på min. 3 år. Fonden indeholder valutarisiko, da den har
 eksponering til investeringer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -0,11% -4,15% -0,67% 2,34%
+Afdeling 1,64% -1,77% -2,41% 2,04%
 PFA Indeks Globale Aktier Benchmark
-Benchmark -0,27% -3,99% -0,37% 2,55%
+Benchmark 1,53% -1,64% -1,92% 2,08%
 180 Afkast ÅTD 1 år 3 år 5 år
-150 Afdeling -0,67% 12,11% 52,07% 69,92%
-Benchmark -0,37% 12,71% 52,82% 68,47%
+150 Afdeling -0,15% 26,91% 54,10% 68,77%
+Benchmark 0,23% 27,91% 54,76% 68,60%
 120
 Omkostninger %
 90 Andre løbende omkostninger 0,40
@@ -34,24 +34,24 @@ Udtrædelsesomkostninger 0,15
 ÅOP 0,44
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,79 1,00 0,98
-Std. Afv. 9,34% 10,10% 12,33% 1 2 3 4 5 6 7
-Største beholdninger (31-01-2026) % Formuefordeling
-NVIDIA Corp 4,84
-Apple 4,03
-Microsoft Corp 3,18 Teknologi 28,91 %
-Amazon.Com 2,38 Finans 17,51 %
-Alphabet A 2,06 Industri 10,14 %
-Alphabet C 1,73 Forbrugerservice 8,56 %
-Meta Platforms 1,59 Andet 34,87 %
-Broadcom Inc 1,54
-Taiwan Semiconductor Manufacturing Co
-1,48
-Ltd ADR
-Tesla Inc 1,28 Nordamerika 65,70 %
-Europa 15,81 %
-Asien (ex.Japan) 9,42 %
-Japan 5,11 %
-Andet 3,96 %
+Std. Afv. 10,02% 14,20% 13,53% 1 2 3 4 5 6 7
+Største beholdninger (28-02-2026) % Formuefordeling
+NVIDIA Corp 4,39
+Apple 4,00
+Microsoft Corp 2,84 Teknologi 27,93 %
+Amazon.Com 2,04 Finans 17,19 %
+Alphabet A 1,85 Industri 10,72 %
+Taiwan Semiconductor Manufacturing Co Forbrugerservice 8,22 %
+1,64
+Ltd ADR Andet 35,95 %
+Alphabet C 1,56
+Broadcom Inc 1,46
+Meta Platforms 1,40
+Tesla Inc 1,17 Nordamerika 64,01 %
+Europa 16,15 %
+Asien (ex.Japan) 9,75 %
+Japan 5,52 %
+Andet 4,57 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

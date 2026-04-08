@@ -4,9 +4,9 @@ Der investeres i en portefølje af aktier bestående af 30-50 selskaber med akti
 i Østeuropa (inkl. Tyrkiet). Kvalitetsselskaber med en stærk ledelse og attraktive Valuta DKK
 Type Investeringsforening
 vækstmuligheder foretrækkes i porteføljen. Der benyttes en aktiv
-Indre værdi 140,15
+Indre værdi 140,12
 investeringsstrategi til at opnå et afkast, der er bedre end afkastet af fondens
-Indre værdi dato 01-04-2026
+Indre værdi dato 07-04-2026
 benchmark, MSCI EM Europe 10/40 Index. Fonden kan anvende derivater til
 Bæredygtighed Artikel 8
 gearing (op til 100%). Fonden egner sig til informerede eller erfarne
@@ -17,11 +17,11 @@ en tidshorisont på min. 3 år, og fonden bør indgå i en diversificeret portef
 øvrige investeringer. Fonden indeholder valutarisiko, da den er eksponeret over for
 værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 1,72% -8,12% 3,75% 7,60%
+Afdeling 3,49% -0,47% -1,42% 9,16%
 Magna Eastern European Fund
 Afkast ÅTD 1 år 3 år 5 år
 150
-Afdeling 3,75% 25,40% 102,56% 23,54%
+Afdeling 3,73% 43,57% 100,97% 26,81%
 120
 Omkostninger %
 90 Andre løbende omkostninger 1,99
@@ -33,23 +33,23 @@ Udtrædelsesomkostninger 0,25
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 2,04 1,83 0,24
-Std. Afv. 18,35% 13,38% 35,30% 1 2 3 4 5 6 7
-Største beholdninger (27-02-2026) % Formuefordeling
-OTP Bank 9,23
-PIRAEUS BANK EUR NPV 8,12
-CSG N.V. 6,92 Polen 24,18 %
-PKO Bank Polski 5,59 Tyrkiet 13,31 %
-NAC Kazatomprom JSC 5,58 Ungarn 10,07 %
-KGHM Polska Miedz 4,61 Kasakhstan 7,17 %
-Bank of Cyprus Holdings PLC 3,61 Andet 45,27 %
-Bank Pekao 3,00
-Alpha Bank S.A. 2,96
-Benefit Systems S.A. 2,88
-Finans 27,05 %
-Materialer 9,17 %
-Industri 8,14 %
-Forbrugerservice 1,91 %
-Andet 53,73 %
+Std. Afv. 20,12% 18,61% 41,39% 1 2 3 4 5 6 7
+Største beholdninger (31-03-2026) % Formuefordeling
+OTP Bank 9,13
+PIRAEUS BANK EUR NPV 7,86
+NAC Kazatomprom JSC 6,12 Polen 28,66 %
+CSG N.V. 5,71 Ungarn 10,17 %
+PKO Bank Polski 5,61 Tyrkiet 9,79 %
+Bank Pekao 4,29 Kasakhstan 7,88 %
+Polski Koncern Naftowy Orlen 4,20 Andet 43,50 %
+KGHM Polska Miedz 4,07
+Bank of Cyprus Holdings PLC 3,51
+Alpha Bank S.A. 2,84
+Finans 28,18 %
+Energi 8,39 %
+Materialer 8,30 %
+Industri 6,26 %
+Andet 48,88 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke
