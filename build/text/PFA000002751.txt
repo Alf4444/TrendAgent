@@ -4,9 +4,9 @@ Fonden er en aktivt forvaltet fond, der investerer globalt i virksomheder, der t
 skridt til at fremme FN's verdensmål for bæredygtig udvikling. Udvælgelsen af disse Valuta EUR
 Type Investeringsforening
 aktier er baseret på fundamental analyse. Fondens mål er at opnå et bedre afkast
-Indre værdi 106,51
+Indre værdi 109,17
 end indekset. Strategien integrerer bæredygtighed i hele investeringsprocessen.
-Indre værdi dato 07-04-2026
+Indre værdi dato 08-04-2026
 Den bruger en internt udviklet ramme til at identificere virksomheder, hvis produkter
 Bæredygtighed Artikel 9
 og tjenester skaber en væsentlig positiv indvirkning på verdensmålene. Fonden
@@ -15,11 +15,11 @@ tidshorisont, som er bekendte med risikoen ved at investere i fonden og kan
 acceptere tab på investeringen. Fonden indeholder valutarisiko, da den er
 eksponeret over for værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 1,26% -3,04% -5,00% -4,34%
+Afdeling 3,02% -0,61% -2,63% -3,02%
 Robeco Global SDG Equities
 Afkast ÅTD 1 år 3 år 5 år
 150
-Afdeling -3,38% 9,76% 29,27% 36,97%
+Afdeling -0,96% 13,13% 32,51% 39,17%
 135
 Omkostninger %
 120 Andre løbende omkostninger 1,22
@@ -31,7 +31,7 @@ Udtrædelsesomkostninger 0,12
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,27 0,75 0,76
-Std. Afv. 9,33% 10,95% 10,99% 1 2 3 4 5 6 7
+Std. Afv. 9,72% 10,70% 11,07% 1 2 3 4 5 6 7
 Største beholdninger (30-01-2026) % Formuefordeling
 NVIDIA Corp 6,63
 Microsoft Corp 6,09

@@ -4,9 +4,9 @@ Der investeres i en portefølje af aktier fra udviklede lande via selskaber hør
 under GICS-industrien inden for rumfart og forsvar. Selskaberne producerer civil Valuta USD
 Type Investeringsforening
 eller militær rumfart og forsvar, udstyr, dele eller produkter, forsvarselektronik og
-Indre værdi 129,93
+Indre værdi 134,46
 rumudstyr. Der benyttes en indeksnær investeringsstrategi til at opnå et afkast
-Indre værdi dato 07-04-2026
+Indre værdi dato 08-04-2026
 svarende til fondens benchmark, S&P Developed BMI Select Aerospace & Defence
 Bæredygtighed Artikel 6
 35/20 Capped Index. Fonden er ikke ESG-screenet og egner sig til informerede
@@ -17,11 +17,11 @@ tidshorisont på min. 3 år, og fonden bør indgå i en diversificeret porteføl
 investeringer. Fonden indeholder valutarisiko, da den er eksponeret over for
 værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 2,57% -6,57% -1,05% 4,07%
+Afdeling 2,93% -3,31% 1,27% 6,28%
 iShares Global Aerospace & Defence UCITS ETF
 Afkast ÅTD 1 år 3 år 5 år
 180
-Afdeling 6,67% 54,27% - -
+Afdeling 10,39% 50,62% - -
 150
 Omkostninger %
 120 Andre løbende omkostninger 0,66
@@ -33,23 +33,23 @@ Udtrædelsesomkostninger 0,30
 Maj '24 Sep '24 Jan '25 Maj '25 Sep '25 Jan '26
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 2,30 - -
-Std. Afv. 24,79% - - 1 2 3 4 5 6 7
-Største beholdninger (27-02-2026) % Formuefordeling
-General Electric 7,63
-RAYTHEON TECHNOLOGIES CORP 7,33
-Boeing 7,23 Industri 91,47 %
-Rolls-Royce 6,56 Materialer 1,91 %
-Airbus Group 5,85 Teknologi 0,21 %
-Lockheed Martin 5,33 Forbrugsgoder 0,03 %
-HOWMET AEROSPACE INC 4,79 Andet 6,37 %
-Safran 4,45
-Northrop Grumman 4,41
-Rheinmetall 3,98
-US Dollar 62,59 %
-Euro 18,61 %
-Engelske Pund 11,49 %
-Sydkoreanske Won 2,21 %
-Andet 5,10 %
+Std. Afv. 21,01% - - 1 2 3 4 5 6 7
+Største beholdninger (31-03-2026) % Formuefordeling
+RAYTHEON TECHNOLOGIES CORP 7,61
+Boeing 7,56
+General Electric 7,13 Industri 91,25 %
+Rolls-Royce 6,09 Materialer 1,98 %
+Lockheed Martin 5,92 Teknologi 0,20 %
+Northrop Grumman 4,56 Forbrugsgoder 0,04 %
+HOWMET AEROSPACE INC 4,49 Andet 6,53 %
+Airbus Group 4,44
+GENERAL DYNAMICS 4,40
+BAE Systems 4,39
+US Dollar 63,87 %
+Euro 16,98 %
+Engelske Pund 11,40 %
+Sydkoreanske Won 2,32 %
+Andet 5,43 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

@@ -4,9 +4,9 @@ Der investeres i en portefølje af aktier fra udviklede lande via selskaber hør
 under GICS-sektoren inden for sundhedspleje. Selskaberne producerer og leverer Valuta EUR
 Type Investeringsforening
 sundhedsrelaterede produkter og ydelser. Der benyttes en indeksnær
-Indre værdi 107,10
+Indre værdi 108,42
 investeringsstrategi til at opnå et afkast svarende til fondens benchmark, MSCI
-Indre værdi dato 07-04-2026
+Indre værdi dato 08-04-2026
 World Health Care Advanced Select 20 35 Capped Index. Fonden er ESG-screenet
 Bæredygtighed Artikel 8
 og egner sig til informerede eller erfarne pensionskunder, som har indsigt i og
@@ -16,44 +16,44 @@ investeringen. Pensionskunder bør have en tidshorisont på min. 3 år, og fonde
 indgå i en diversificeret portefølje af øvrige investeringer. Fonden indeholder
 valutarisiko, da den er eksponeret over for værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -0,10% -3,19% -7,14% 1,10%
+Afdeling 0,47% -2,00% -5,54% 1,58%
 iShares MSCI World Health Care Sector Advanced UCITS ETF
 Afkast ÅTD 1 år 3 år 5 år
-150
-Afdeling -3,63% 6,90% 1,00% 27,77%
-135
+144
+Afdeling -2,44% 5,60% 2,24% 28,70%
+132
 Omkostninger %
 120 Andre løbende omkostninger 0,48
 Resultatgebyrer 0,00
-105 Transaktionsomkostninger (Direkte + indirekte) 0,02
+108 Transaktionsomkostninger (Direkte + indirekte) 0,02
 Oprettelsesomkostninger 0,10
 Udtrædelsesomkostninger 0,10
 ÅOP 0,53
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe -0,49 -0,35 0,41
-Std. Afv. 12,60% 11,93% 12,03% 1 2 3 4 5 6 7
-Største beholdninger (27-02-2026) % Formuefordeling
-Eli Lilly & Co 9,87
-Novartis 5,75
-Johnson & Johnson 5,36 USA 67,78 %
-AbbVie 5,00 Schweiz 12,99 %
-AstraZeneca PLC 3,59 England 5,23 %
-Roche Holding AG 3,43 Japan 4,10 %
-Merck & Co 3,30 Andet 9,90 %
-Gilead Sciences 2,93
-Unitedhealth Group 2,87
-Amgen 2,12
-US Dollar 68,89 %
-Schweizerfranc 12,67 %
-Engelske Pund 5,55 %
-Japanske Yen 4,45 %
-Andet 8,43 %
-Nordamerika 67,78 %
-Europa 25,40 %
-Japan 4,10 %
-Australien 1,46 %
-Andet 1,25 %
+Std. Afv. 12,48% 11,04% 12,35% 1 2 3 4 5 6 7
+Største beholdninger (31-03-2026) % Formuefordeling
+Eli Lilly & Co 9,47
+Johnson & Johnson 5,79
+Novartis 5,60 USA 68,31 %
+AbbVie 5,14 Schweiz 12,28 %
+AstraZeneca PLC 3,65 England 5,29 %
+Merck & Co 3,52 Japan 4,08 %
+ROCHE HOLDINGS AG CHF NPV 3,09 Andet 10,04 %
+Gilead Sciences 3,01
+Unitedhealth Group 2,91
+Amgen 2,11
+US Dollar 69,26 %
+Schweizerfranc 12,33 %
+Engelske Pund 5,34 %
+Euro 4,40 %
+Andet 8,67 %
+Nordamerika 68,31 %
+Europa 24,88 %
+Japan 4,08 %
+Australien 1,40 %
+Andet 1,33 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

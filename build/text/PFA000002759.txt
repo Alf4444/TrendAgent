@@ -4,9 +4,9 @@ Der investeres i en portefølje af japanske aktier, hvor porteføljen som udgang
 sammensættes ud fra de selskaber, der indgår i fondens benchmark, MSCI Japan Valuta EUR
 Type Investeringsforening
 Investable Market Index (IMI). Der benyttes en indeksnær investeringsstrategi til at
-Indre værdi 110,33
+Indre værdi 114,17
 opnå et afkast svarende til fondens benchmark. Fonden er ikke ESG-screenet og
-Indre værdi dato 07-04-2026
+Indre værdi dato 08-04-2026
 egner sig til informerede eller erfarne pensionskunder, som har indsigt i og erfaring
 Bæredygtighed Artikel 6
 med værdipapirhandel, og som ønsker et opsparingsprodukt med højere risiko,
@@ -14,11 +14,11 @@ hvorfor der kan accepteres tab på investeringen. Pensionskunder bør have en
 tidshorisont på min. 3 år. Fonden indeholder valutarisiko, da den har eksponering til
 investeringer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 3,46% -2,49% 3,62% 8,65%
+Afdeling 2,48% 0,91% 7,97% 12,75%
 iShares Core MSCI Japan IMI UCITS ETF
 Afkast ÅTD 1 år 3 år 5 år
 160
-Afdeling 7,16% 41,61% 52,90% 43,26%
+Afdeling 10,89% 37,61% 58,23% 48,70%
 140
 Omkostninger %
 120 Andre løbende omkostninger 0,39
@@ -30,18 +30,18 @@ Udtrædelsesomkostninger 0,10
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 1,50 1,12 0,66
-Std. Afv. 15,70% 16,89% 14,76% 1 2 3 4 5 6 7
-Største beholdninger (27-02-2026) % Formuefordeling
-Toyota Motor 3,49
-Mitsubishi UFJ Financial Group 3,22
-Hitachi 2,30 Industri 24,17 %
-Sony 2,16 Finans 18,99 %
-Sumitomo Mitsui Financial Group 2,12 Teknologi 18,03 %
-Advantest 1,98 Forbrugsgoder 14,87 %
-Tokyo Electron 1,90 Andet 23,93 %
-Mizuho Financial Group 1,71
-Mitsubishi 1,64
-Mitsubishi Heavy Industries 1,55
+Std. Afv. 9,87% 12,91% 12,05% 1 2 3 4 5 6 7
+Største beholdninger (31-03-2026) % Formuefordeling
+Toyota Motor 3,23
+Mitsubishi UFJ Financial Group 3,16
+Hitachi 2,20 Industri 23,85 %
+Sony 2,13 Finans 18,80 %
+Sumitomo Mitsui Financial Group 1,98 Teknologi 17,31 %
+Mitsubishi 1,84 Forbrugsgoder 14,25 %
+Tokyo Electron 1,79 Andet 25,78 %
+Advantest 1,68
+Mizuho Financial Group 1,63
+Mitsui & Co 1,59
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

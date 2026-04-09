@@ -4,9 +4,9 @@ Der investeres i en veldiversificeret portefølje af Investment Grade obligation
 udstedere i globale markeder inklusive Emerging Markets. Der benyttes en Valuta EUR
 Type Investeringsforening
 indeksnær investeringsstrategi til at opnå et afkast svarende til fondens benchmark.
-Indre værdi 171,08
+Indre værdi 172,03
 Fonden er ikke ESG-screenet og egner sig til informerede eller erfarne
-Indre værdi dato 07-04-2026
+Indre værdi dato 08-04-2026
 pensionskunder, som har indsigt i og erfaring med værdipapirhandel, og som
 Bæredygtighed Artikel 6
 ønsker et opsparingsprodukt med eksponering til Investment Grade obligationer og
@@ -15,11 +15,11 @@ have en tidshorisont på min. 3 år. Fonden indeholder valutarisiko, da den har
 eksponering til investeringer i udenlandsk valuta. Valutaeksponeringen tilstræbes
 fuldt afdækket til EUR.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 0,26% -0,92% -0,99% -0,54%
+Afdeling 0,59% -0,37% -0,28% -0,15%
 iShares Global IG Corp Bond EUR Hedged UCITS ETF
 Afkast ÅTD 1 år 3 år 5 år
 104
-Afdeling -0,79% 3,59% 8,76% -4,96%
+Afdeling -0,23% 4,00% 9,37% -4,33%
 96
 Omkostninger %
 88 Andre løbende omkostninger 0,47
@@ -31,24 +31,24 @@ Udtrædelsesomkostninger 0,10
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 1,24 0,49 -0,36
-Std. Afv. 1,98% 4,12% 6,09% 1 2 3 4 5 6 7
-Største beholdninger (27-02-2026) % Formuefordeling
-Cash USD 0,47
-Cash EUR 0,39
-0.1% JAPAN 10YEAR ISSUE 2028/12/20 0,30 US Dollar 66,45 %
-FORTREA HOLDINGS FTRE 7.5 Euro 24,73 %
-0,15
-07/01/30 Engelske Pund 3,76 %
-0,47% Panasonic Corp 18/09/2026 0,09 Canadiske Dollar 3,24 %
-1,3% Japan 20/06/2035 0,08 Andet 1,82 %
-PFIZER INVSTMNT PFE 4.75 05/19/33 0,07
+Std. Afv. 1,75% 4,11% 6,18% 1 2 3 4 5 6 7
+Største beholdninger (31-03-2026) % Formuefordeling
+Cash USD 1,24
+Cash EUR 0,80
+0.1% JAPAN 10YEAR ISSUE 2028/12/20 0,32 US Dollar 67,89 %
+FORTREA HOLDINGS FTRE 7.5 Euro 23,35 %
+0,16
+07/01/30 Engelske Pund 3,65 %
+0,47% Panasonic Corp 18/09/2026 0,10 Canadiske Dollar 3,27 %
+1,3% Japan 20/06/2035 0,08 Andet 1,84 %
+Cash CAD 0,08
+PFIZER INVSTMNT PFE 4.75 05/19/33 0,06
 5,05% CVS HEALTH CORP 25/03/2048 0,05
-Meta Plat 4.875 15/11/35 0,05
-Pfizer In 5.3% 19/05/53 0,05 > 7 år 32,44 %
-1-3 år 17,11 %
-3-5 år 15,59 %
-5-7 år 11,21 %
-Andet 23,64 %
+Meta Plat 4.875 15/11/35 0,05 > 7 år 32,66 %
+1-3 år 17,40 %
+3-5 år 15,77 %
+5-7 år 11,25 %
+Andet 22,92 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke
