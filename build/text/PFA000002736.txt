@@ -4,9 +4,9 @@ Der investeres i en koncentreret portefølje af virksomhedsobligationer med lav 
 kreditværdighed typisk udstedt af europæiske selskaber med High-Yield status. Valuta DKK
 Type Investeringsforening
 Selskaberne udvælges på baggrund af tilbagebetalingsevnen samt obligationernes
-Indre værdi 213,52
+Indre værdi 213,41
 konstruktion ift. kapitalstrukturen. Der benyttes en aktiv investeringsstrategi til at
-Indre værdi dato 08-04-2026
+Indre værdi dato 09-04-2026
 opnå et afkast, der er bedre end afkastet af fondens benchmark, ICE Bof AML
 Bæredygtighed Artikel 8
 European Currency High Yield Constrained Index. Fonden egner sig til informerede
@@ -17,11 +17,11 @@ lavere afkast på investeringen. Pensionskunder bør have en tidshorisont på mi
 indeholder valutarisiko, da den er eksponeret over for værdipapirer i udenlandsk
 valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 0,83% -0,34% -0,75% 0,67%
+Afdeling 0,77% 0,21% -0,89% 0,73%
 Nordea Invest European High Yield Bonds
 Afkast ÅTD 1 år 3 år 5 år
 120
-Afdeling -0,35% 6,77% 27,89% 15,77%
+Afdeling -0,41% 7,42% 27,82% 15,69%
 110
 Omkostninger %
 100 Andre løbende omkostninger 0,57
@@ -33,7 +33,7 @@ Udtrædelsesomkostninger 0,20
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 2,32 1,46 0,32
-Std. Afv. 2,76% 3,72% 7,04% 1 2 3 4 5 6 7
+Std. Afv. 3,53% 4,18% 7,19% 1 2 3 4 5 6 7
 Største beholdninger (27-02-2026) % Formuefordeling
 Net Cash 3,42
 IRON MOUNTAIN 4.75 Jan34 1,15
@@ -49,11 +49,11 @@ Q-PARK HOLDING I BV 5.125%
 15/02/2030
 7.0% DEUCE FINCO 7% 2031-11-20 0,91
 Var% PRIMO TRITON WATER HLD
-0,90 3-5 år 24,89 %
+0,90 3-5 år 24,81 %
 3.875% 2028-10-31
 5-7 år 20,41 %
 TECHEM VERWALTUNGSGESELL 0,88
-1-3 år 18,28 %
+1-3 år 18,36 %
 AEGIS LUX 5.625% 2031-10-29 0,86
 > 7 år 15,56 %
 Andet 20,87 %

@@ -4,9 +4,9 @@ Der investeres i en portefølje af globale aktier, dog fortrinsvis i selskaber, 
 forventes at udbetale et højt udbytte. Der kan dog være selskaber i porteføljen, der i Valuta DKK
 Type Investeringsforening
 perioder slet ikke eller kun i begrænset omfang udbetaler et udbytte. Der benyttes
-Indre værdi 180,42
+Indre værdi 180,55
 en aktiv investeringsstrategi til at opnå et afkast, der er bedre end afkastet af
-Indre værdi dato 08-04-2026
+Indre værdi dato 09-04-2026
 fondens benchmark, MSCI World High Dividend Yield, inkl. nettoudbytte.Fonden
 Bæredygtighed Artikel 8
 egner sig til informerede eller erfarne pensionskunder, som har indsigt i og erfaring
@@ -16,11 +16,11 @@ på investeringen. Pensionskunder bør have en tidshorisont på min. 3 år og fo
 bør indgå i en diversificeret portefølje af øvrige investeringer. Fonden indeholder
 valutarisiko, da den er eksponeret over for værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 2,20% -0,99% -1,10% 1,78%
+Afdeling 2,28% -0,38% -1,54% 2,00%
 BankInvest Højt Udbytte Aktier
 Afkast ÅTD 1 år 3 år 5 år
 150
-Afdeling 0,19% 7,21% 15,96% 36,77%
+Afdeling 0,27% 6,27% 16,04% 36,57%
 135
 Omkostninger %
 120 Andre løbende omkostninger 1,66
@@ -32,21 +32,22 @@ Udtrædelsesomkostninger 0,14
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe -0,20 0,20 0,75
-Std. Afv. 7,30% 8,62% 8,93% 1 2 3 4 5 6 7
-Største beholdninger (28-02-2026) % Formuefordeling
-NEW LINDE PLC 2,58
-AstraZeneca PLC 2,52
-NextEra Energy Inc 2,51 Medicin & Sundhed 19,45 %
-Service 2,49 Finans 16,60 %
-Procter & Gamble 2,49 Teknologi 12,97 %
-Nestle SA 2,48 Industri 12,59 %
-London Stock Exchange 2,47 Andet 38,40 %
-Johnson & Johnson 2,45
-American Tower 2,45
-Avery Dennison 2,43
-Nordamerika 64,81 %
-Europa 34,03 %
-Andet 1,16 %
+Std. Afv. 7,06% 8,32% 8,61% 1 2 3 4 5 6 7
+Største beholdninger (31-03-2026) % Formuefordeling
+London Stock Exchange 2,56
+AstraZeneca PLC 2,51
+NextEra Energy Inc 2,47 Medicin & Sundhed 17,69 %
+NEW LINDE PLC 2,45 Finans 16,82 %
+Service 2,43 Teknologi 13,33 %
+Nestle SA 2,43 Industri 12,76 %
+Home Depot 2,40 Andet 39,40 %
+AbbVie 2,38
+Sanofi 2,36
+Procter & Gamble 2,36
+Nordamerika 63,65 %
+Europa 34,59 %
+Japan 1,08 %
+Andet 0,68 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

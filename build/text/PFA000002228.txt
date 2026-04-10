@@ -4,9 +4,9 @@ Der investeres i en portefølje af primært danske aktier fra ca. 40 selskaber. 
 80% af fondens formue investeres i danske aktier handlet på NASDAQ OMX Valuta DKK
 Type Investeringsforening
 Copenhagen A/S eller et andet reguleret marked i Danmark. Selskaberne udvælges
-Indre værdi 406,99
+Indre værdi 406,07
 på baggrund af individuelle selskabsanalyser samt makroanalyser. Der benyttes en
-Indre værdi dato 08-04-2026
+Indre værdi dato 09-04-2026
 aktiv investeringsstrategi til at opnå et afkast, der er bedre end afkastet af fondens
 Bæredygtighed Artikel 8
 benchmark, OMX Copenhagen CAP_GI. Fonden egner sig til informerede eller
@@ -17,11 +17,11 @@ bør indgå i en diversificeret portefølje af øvrige investeringer. Fonden ind
 valutarisiko, da den indeholder værdipapirer i udenlandsk valuta, som kun delvist er
 afdækket til EUR eller DKK.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 1,12% 3,31% -4,09% 3,39%
+Afdeling 0,89% 4,01% -4,64% 3,61%
 Kerne Invest Danske Aktier
 Afkast ÅTD 1 år 3 år 5 år
 160
-Afdeling -1,87% 19,83% 21,72% 38,10%
+Afdeling -2,09% 27,75% 21,44% 37,17%
 140
 Omkostninger %
 120 Andre løbende omkostninger 0,45
@@ -33,23 +33,23 @@ Udtrædelsesomkostninger 0,11
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe -0,05 0,62 0,54
-Std. Afv. 16,01% 15,10% 17,06% 1 2 3 4 5 6 7
-Største beholdninger (28-02-2026) % Formuefordeling
-DSV 8,76
-Danske Bank 7,41
-Novo Nordisk B 6,54 Danmark 93,43 %
-Vestas Wind Systems A/S 5,83 Finland 6,15 %
-Ørsted A/S 5,74 Andet 0,42 %
-A.P. Møller - Mærsk 4,92
-Nordea 4,07
-ISS 3,82
-ALK-Abello B ny 3,80
-Genmab A/S 3,72
-Industri 31,19 %
-Finans 23,42 %
-Medicin & Sundhed 22,34 %
-Forbrugsgoder 8,06 %
-Andet 15,00 %
+Std. Afv. 21,16% 19,24% 19,36% 1 2 3 4 5 6 7
+Største beholdninger (31-03-2026) % Formuefordeling
+DSV 8,32
+Vestas Wind Systems A/S 7,16
+Danske Bank 7,11 Danmark 92,52 %
+Novo Nordisk B 6,44 Finland 5,55 %
+Ørsted A/S 5,15 Andet 1,94 %
+A.P. Møller - Mærsk 4,82
+Novonesis (Novozymes) B 4,60
+ISS 4,20
+NKT A/S 4,06
+ALK-Abello B ny 3,54
+Industri 32,31 %
+Medicin & Sundhed 23,69 %
+Finans 22,11 %
+Forbrugsgoder 6,88 %
+Andet 15,01 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke
