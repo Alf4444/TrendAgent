@@ -4,9 +4,9 @@ Der investeres i en portefølje af aktier fra ca. 35-70 selskaber i Asien (ex. J
 eller selskaber med primærsalg i asiatiske markeder. Selskaberne udvælges ved at Valuta DKK
 Type Investeringsforening
 identificere langsigtede udviklingstendenser og kortvarige temaer, der understøtter
-Indre værdi 382,52
+Indre værdi 387,63
 væksten i disse markeder. Der benyttes en aktiv investeringsstrategi til at opnå et
-Indre værdi dato 09-04-2026
+Indre værdi dato 10-04-2026
 afkast, der er bedre end afkastet af fondens benchmark, MSCI Asien Indeks ex.
 Bæredygtighed Artikel 8
 Japan. Fonden egner sig til informerede eller erfarne pensionskunder, som har
@@ -17,11 +17,11 @@ fonden bør indgå i en diversificeret portefølje af øvrige investeringer. Fon
 indeholder valutarisiko, da den er eksponeret over for værdipapirer i udenlandsk
 valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 5,02% 4,97% 5,79% 10,00%
+Afdeling 6,43% 2,07% 7,21% 12,28%
 C WorldWide Asien
 Afkast ÅTD 1 år 3 år 5 år
 140
-Afdeling 11,36% 49,53% 48,99% 17,19%
+Afdeling 12,84% 48,82% 50,98% 18,75%
 120
 Omkostninger %
 100 Andre løbende omkostninger 1,51
@@ -33,25 +33,25 @@ Udtrædelsesomkostninger 0,55
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,89 0,75 0,21
-Std. Afv. 14,20% 17,32% 16,80% 1 2 3 4 5 6 7
-Største beholdninger (31-12-2025) % Formuefordeling
+Std. Afv. 12,04% 15,99% 16,73% 1 2 3 4 5 6 7
+Største beholdninger (31-03-2026) % Formuefordeling
 Taiwan Semiconductor Manufacturing Co
-9,80
+9,90
 Ltd ADR
-SAMSUNG ELECTRONICS NON Taiwan 18,10 %
-7,90
-VOTING PRE Sydkorea 18,00 %
-Tencent Holdings 7,80 Kina 17,20 %
-SK hynix 7,00 Indien 13,20 %
-HK 6,00 Andet 33,50 %
-HDFC Bank Ltd 3,10
-DBS Group Holdings 2,80
-TRIP COM GROUP LTD ADR 2,80
-AIA Group 2,70 Teknologi 44,10 %
-Chroma Ate 2,70 Finans 21,00 %
-Forbrugerservice 11,60 %
-Industri 6,40 %
-Andet 16,90 %
+SAMSUNG ELECTRONICS NON Taiwan 23,30 %
+8,50
+VOTING PRE Sydkorea 17,50 %
+Tencent Holdings 6,20 Kina 16,90 %
+SK hynix 5,10 Hong Kong 12,30 %
+HK 4,10 Andet 30,00 %
+Chroma Ate 3,60
+DKK cash 3,10
+AIA Group 2,90
+DBS Group Holdings 2,90 Teknologi 46,60 %
+Delta Electronics 2,80 Finans 22,10 %
+Forbrugerservice 8,00 %
+Industri 7,60 %
+Andet 15,70 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

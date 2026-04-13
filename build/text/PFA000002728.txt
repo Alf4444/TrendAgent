@@ -4,9 +4,9 @@ Der investeres i en portefølje af statsobligationer udstedt i hård valuta (f.e
 og euro) eller lokal valuta fra højrentelande i Østeuropa, Asien, Latinamerika, Valuta DKK
 Type Investeringsforening
 Mellemøsten og Afrika. Der føres en aktiv valutapolitik og obligationerne udvælges
-Indre værdi 146,38
+Indre værdi 146,70
 baseret på forventninger til valutakurser og renter. Investeringsstrategien integrerer
-Indre værdi dato 09-04-2026
+Indre værdi dato 10-04-2026
 ESG gennem en screenings- og analyseproces for udstederne. Der benyttes en
 Bæredygtighed Artikel 8
 aktiv investeringsstrategi til at opnå et afkast, der er bedre end afkastet af fondens
@@ -16,11 +16,11 @@ pensionskunder, som har indsigt i og erfaring med værdipapirhandel, og som
 afkast. Pensionskunder bør have en tidshorisont på min. 3 år. Fonden indeholder
 valutarisiko, da den indeholder investeringer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 1,60% 0,25% 0,15% 2,82%
+Afdeling 1,83% -0,57% 0,37% 3,35%
 Sydinvest HøjrenteLande
 Afkast ÅTD 1 år 3 år 5 år
 112
-Afdeling 0,91% 11,49% 19,73% 6,58%
+Afdeling 1,13% 11,68% 20,00% 6,82%
 104
 Omkostninger %
 96 Andre løbende omkostninger 1,23
@@ -32,7 +32,7 @@ Udtrædelsesomkostninger 0,41
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 1,21 0,79 -0,04
-Std. Afv. 3,29% 5,03% 7,69% 1 2 3 4 5 6 7
+Std. Afv. 3,36% 5,13% 7,54% 1 2 3 4 5 6 7
 Største beholdninger (31-03-2026) % Formuefordeling
 INT BK RECON& 6.5% Apr30 EMTN 3,06
 3.828% MGS 2034/05/07 2,79

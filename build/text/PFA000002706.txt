@@ -4,9 +4,9 @@ Der investeres i en koncentreret portefølje af aktier bestående af typisk op t
 globale selskaber. Selskaberne udvælges ved at identificere de mest holdbare og Valuta DKK
 Type Investeringsforening
 ansvarlige forretningsmodeller, der udnytter værdiskabelsen i langsigtede
-Indre værdi 528,71
+Indre værdi 529,83
 udviklingstendenser. Der benyttes en aktiv investeringsstrategi til at opnå et afkast,
-Indre værdi dato 09-04-2026
+Indre værdi dato 10-04-2026
 der er bedre end afkastet af fondens benchmark, MSCI All Countries World Free.
 Bæredygtighed Artikel 8
 Fonden egner sig til informerede eller erfarne pensionskunder, som har indsigt i og
@@ -16,11 +16,11 @@ investeringen. Pensionskunder bør have en tidshorisont på min. 3 år, og fonde
 indgå i en diversificeret portefølje af øvrige investeringer. Fonden indeholder
 valutarisiko, da den er eksponeret over for værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 2,74% 0,19% -3,73% 0,27%
+Afdeling 2,96% -0,30% -3,52% 2,19%
 C WorldWide Globale Aktier
 Afkast ÅTD 1 år 3 år 5 år
 135
-Afdeling -0,62% 12,67% 25,81% 25,69%
+Afdeling -0,41% 14,48% 26,08% 25,95%
 120
 Omkostninger %
 105 Andre løbende omkostninger 1,65
@@ -32,23 +32,24 @@ Udtrædelsesomkostninger 0,31
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,06 0,54 0,48
-Std. Afv. 8,71% 11,74% 13,38% 1 2 3 4 5 6 7
-Største beholdninger (31-12-2025) % Formuefordeling
-Alphabet C 6,40
+Std. Afv. 9,66% 12,47% 13,79% 1 2 3 4 5 6 7
+Største beholdninger (31-03-2026) % Formuefordeling
 Taiwan Semiconductor Manufacturing
-ADR 5,50 Teknologi 24,00 %
-HDFC Bank Ltd 5,40 Finans 19,50 %
-Amazon.Com 5,30 Industri 17,70 %
-Microsoft Corp 5,30 Forbrugerservice 9,60 %
-Visa A 4,80 Andet 29,20 %
-Parker-Hannifin 4,70
-Siemens 4,60
-PROSUS NV 4,30
-Thermo Fisher Scientific 4,30 Nordamerika 56,30 %
-Europa 26,30 %
-Asien (ex.Japan) 12,40 %
-Japan 4,70 %
-Andet 0,30 %
+6,80
+ADR
+Alphabet C 6,10 Teknologi 27,80 %
+AstraZeneca PLC 4,60 Finans 17,90 %
+ASML Holding NV 4,60 Industri 16,60 %
+Visa A 4,40 Forbrugerservice 10,10 %
+Microsoft Corp 4,30 Andet 27,60 %
+HDFC Bank Ltd 4,00
+Amazon.Com 4,00
+Parker-Hannifin 4,00
+AIA Group 3,80 Nordamerika 53,70 %
+Europa 29,10 %
+Asien (ex.Japan) 11,70 %
+Japan 5,30 %
+Andet 0,20 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke
