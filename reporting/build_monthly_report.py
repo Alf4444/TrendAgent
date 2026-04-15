@@ -15,7 +15,7 @@ REPORT_FILE = ROOT / "build/monthly.html"
 
 BENCHMARK_ISIN = "PFA000002735" # PFA Aktier (Proxy for Profil Høj)
 
-# --- TEKNISKE FUNKTIONER (Original logik bevaret) ---
+# --- NYE TEKNISKE FUNKTIONER ---
 def get_ma(prices, window):
     if not prices or len(prices) < window:
         return None
@@ -33,112 +33,143 @@ def get_rsi(prices, window=14):
     rs = avg_gain / avg_loss
     return 100 - (100 / (1 + rs))
 
-def get_drawdown(prices):
-    if not prices: return 0
-    ath = max(prices)
-    current = prices[-1]
-    return ((current - ath) / ath) * 100
+# --- DINE ORIGINALE FUNKTIONER ---
+def get_ranking_data(latest_list):
+    sorted_list = sorted(latest_list, key=lambda x: x.get('return_1m', -999), reverse=True)
+    rank_map = {item['isin']: index + 1 for index, item in enumerate(sorted_list)}
+    return rank_map, len(sorted_list)
+
+def get_trend_velocity(f):
+    r1w = f.get('return_1w', 0)
+    r1m = f.get('return_1m', 0)
+    avg_weekly_in_month = r1m / 4
+    if r1w > avg_weekly_in_month and r1w > 0:
+        return "🚀 Accelererer", "trend-up"
+    elif r1w < avg_weekly_in_month:
+        return "📉 Bremser", "trend-down"
+    return "➡️ Stabil", "trend-side"
+
+def get_momentum_status(f, rank):
+    r1m = f.get('return_1m', 0)
+    if rank > 10:
+        return "🛑 Outperformed", "momentum-flat"
+    if r1m < 0 or rank > 7:
+        return "⚠️ Slower", "momentum-slow"
+    if rank <= 5 and r1m > 0:
+        return "🚀 Top Performer", "momentum-fast"
+    return "✅ Stabil", "momentum-stable"
+
+def validate_data(latest_map, portfolio):
+    warnings = []
+    if BENCHMARK_ISIN not in latest_map:
+        warnings.append(f"ADVARSEL: Benchmark ISIN {BENCHMARK_ISIN} mangler i data.")
+    for isin, p_info in portfolio.items():
+        if p_info.get('active', True):
+            if isin not in latest_map:
+                warnings.append(f"ADVARSEL: Aktiv fond {isin} mangler i PFA-data.")
+            if 'buy_price' not in p_info or p_info['buy_price'] <= 0:
+                warnings.append(f"ADVARSEL: Købspris mangler for {p_info.get('name', isin)}.")
+    return warnings
 
 def build_monthly():
-    # 1. INITIALISERING (Fixer UndefinedError i Jinja2)
-    timestamp = datetime.now().strftime("%d-%m-%Y %H:%M")
-    week_number = datetime.now().isocalendar()[1]
-    active_rows = []
-    sold_rows = []
-    market_opps = []
-    active_returns_total = []
-    validation_warnings = []
-    chart_labels = []   # SIKRING: Altid defineret
-    chart_values = []   # SIKRING: Altid defineret
-
-    # 2. Indlæs filer
-    try:
-        latest_data = json.loads(DATA_FILE.read_text(encoding="utf-8"))
-        history_data = json.loads(HISTORY_FILE.read_text(encoding="utf-8"))
-        portfolio = json.loads(PORTFOLIO_FILE.read_text(encoding="utf-8"))
-    except Exception as e:
-        print(f"Kritisk fejl ved indlæsning: {e}")
+    if not DATA_FILE.exists() or not PORTFOLIO_FILE.exists() or not HISTORY_FILE.exists():
+        print("KRITISK FEJL: Data- eller historikfil mangler.")
         return
 
-    my_isins = [p['isin'] for p in portfolio]
-    latest_map = {f['isin']: f for f in latest_data}
-    
-    # 3. Beregn rankings og trends (Skiftet til MA50 pga. historik)
-    temp_ranks = []
-    for isin, prices_dict in history_data.items():
+    try:
+        with open(DATA_FILE, "r", encoding="utf-8") as f:
+            latest_list = json.load(f)
+        with open(HISTORY_FILE, "r", encoding="utf-8") as f:
+            history = json.load(f)
+        with open(PORTFOLIO_FILE, "r", encoding="utf-8") as f:
+            portfolio = json.load(f)
+    except Exception as e:
+        print(f"Fejl ved indlæsning: {e}")
+        return
+
+    rank_map, total_market_count = get_ranking_data(latest_list)
+    latest_map = {item['isin']: item for item in latest_list}
+    validation_warnings = validate_data(latest_map, portfolio)
+
+    now = datetime.now()
+    timestamp = now.strftime('%d-%m-%Y %H:%M')
+    week_number = now.strftime('%V')
+
+    active_rows = []
+    sold_rows = []
+    active_returns_total = []
+
+    for isin, p_info in portfolio.items():
         if isin not in latest_map: continue
         
-        prices = list(prices_dict.values())
-        ma_val = get_ma(prices, 50) # Ændret fra 200 til 50
-        nav = latest_map[isin]['nav']
+        official = latest_map[isin]
+        rank = rank_map.get(isin, 99)
+        curr_p = official['nav']
+        buy_p = p_info.get('buy_price', 0)
+        total_return = ((curr_p - buy_p) / buy_p * 100) if buy_p > 0 else 0
         
-        if ma_val:
-            mom = ((nav - ma_val) / ma_val) * 100
-            temp_ranks.append({'isin': isin, 'mom': mom})
-
-    temp_ranks.sort(key=lambda x: x['mom'], reverse=True)
-    rank_map = {item['isin']: i+1 for i, item in enumerate(temp_ranks)}
-
-    # 4. Processér alle fonde
-    for isin, prices_dict in history_data.items():
-        if isin not in latest_map: continue
+        # --- BEREGN RSI & MA FRA HISTORIK ---
+        prices = []
+        if isin in history:
+            # Sorterer datoer for at få korrekt rækkefølge til RSI/MA
+            sorted_dates = sorted(history[isin].keys())
+            prices = [history[isin][d] for d in sorted_dates]
         
-        fund = latest_map[isin]
-        prices = list(prices_dict.values())
-        ma_val = get_ma(prices, 50) # Ændret fra 200 til 50
-        rsi = get_rsi(prices)
-        dd = get_drawdown(prices)
+        rsi_val = get_rsi(prices, 14) if prices else None
+        ma200_val = get_ma(prices, 200) if prices else None
         
-        momentum = 0
-        t_label = "Afventer data"
-        m_class = "momentum-flat"
-
-        if ma_val:
-            momentum = ((fund['nav'] - ma_val) / ma_val) * 100
-            if momentum > 0:
-                t_label = "Positiv"
-                m_class = "momentum-up"
-            else:
-                t_label = "Negativ"
-                m_class = "momentum-down"
-
-        row = {
+        m_label, m_class = get_momentum_status(official, rank)
+        t_label, t_class = get_trend_velocity(official)
+        
+        fund_data = {
             "isin": isin,
-            "name": fund['name'],
-            "nav": fund['nav'],
-            "rsi": round(rsi, 1) if rsi else 0,
-            "dd": round(dd, 2),
-            "momentum": round(momentum, 2),
+            "name": p_info.get('name', isin),
+            "rank": rank,
+            "buy_date": p_info.get('buy_date', 'N/A'),
+            "buy_price": buy_p,
+            "curr_price": curr_p,
+            "return_1w": official.get('return_1w', 0),
+            "return_1m": official.get('return_1m', 0),
+            "trend_label": t_label,
+            "trend_class": t_class,
+            "momentum_label": m_label,
             "momentum_class": m_class,
-            "return_1m": fund.get('return_1m', 0) or 0,
-            "return_ytd": fund.get('return_ytd', 0) or 0,
-            "rank": rank_map.get(isin, 999),
-            "trend_label": t_label
+            "total_return": total_return,
+            "rsi": rsi_val,
+            "ma200": ma200_val,
+            "t_state": "BULL" if ma200_val and curr_p > ma200_val else "BEAR" if ma200_val else "N/A",
+            "is_active": p_info.get('active', True)
         }
 
-        if isin in my_isins:
-            active_rows.append(row)
-            active_returns_total.append(row['return_1m'])
+        if fund_data['is_active']:
+            active_rows.append(fund_data)
+            active_returns_total.append(total_return)
         else:
-            market_opps.append(row)
+            fund_data["sell_date"] = p_info.get('sell_date', 'N/A')
+            sold_rows.append(fund_data)
 
-    # 5. Forbered graf (Top 10 momentum)
-    display_source = active_rows if active_rows else market_opps
-    if display_source:
-        display_trends = sorted(display_source, key=lambda x: x['momentum'], reverse=True)[:10]
-        chart_labels = [t['name'][:20] for t in display_trends]
-        chart_values = [t['momentum'] for t in display_trends]
+    # Top 5 markedsmuligheder
+    unsorted_opps = [i for i in latest_list if i['isin'] not in portfolio or not portfolio[i['isin']].get('active', False)]
+    sorted_opps = sorted(unsorted_opps, key=lambda x: x.get('return_1m', 0), reverse=True)[:5]
+    market_opps = []
+    for o in sorted_opps:
+        t_label, t_class = get_trend_velocity(o)
+        market_opps.append({
+            "name": o.get('name', o['isin']), 
+            "return_1m": o.get('return_1m', 0), 
+            "return_ytd": o.get('return_ytd', 0),
+            "rank": rank_map.get(o['isin']),
+            "trend_label": t_label
+        })
 
-    # 6. Salgs- og Købssignaler
-    sell_signals = [f for f in active_rows if f['momentum'] < 0]
-    buy_signals = [o for o in market_opps if o['momentum'] > 5.0 and o['rsi'] < 70]
+    sell_signals = [f for f in active_rows if f['momentum_class'] == 'momentum-flat']
+    buy_signals = [o for o in market_opps if o['return_1m'] > 4.0]
 
-    # 7. Benchmark og stats
     benchmark_return = latest_map[BENCHMARK_ISIN].get('return_1m', 0) if BENCHMARK_ISIN in latest_map else 0
-    # SIKRING: Undgå division med nul
+    
+    # SIKKERHEDS-RETTELSE MOD DIVISION BY ZERO
     avg_port_return = sum(active_returns_total) / len(active_returns_total) if active_returns_total else 0
 
-    # 8. Render og gem rapport
     if TEMPLATE_FILE.exists():
         template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
         html_output = template.render(
@@ -146,24 +177,19 @@ def build_monthly():
             week_number=week_number,
             active_funds=sorted(active_rows, key=lambda x: x['rank']),
             sold_funds=sold_rows,
-            market_opps=sorted(market_opps, key=lambda x: x['momentum'], reverse=True)[:15],
+            market_opps=market_opps,
             sell_signals=sell_signals,
             buy_signals=buy_signals,
-            chart_labels=chart_labels,
-            chart_values=chart_values,
             benchmark_name="PFA Aktier",
             benchmark_return=benchmark_return,
             avg_portfolio_return=avg_port_return,
             diff_to_benchmark=avg_port_return - benchmark_return,
             warnings=validation_warnings,
-            total_market_count=len(latest_data)
+            total_market_count=total_market_count
         )
-        
-        REPORT_FILE.parent.mkdir(parents=True, exist_ok=True)
+        REPORT_FILE.parent.mkdir(exist_ok=True)
         REPORT_FILE.write_text(html_output, encoding="utf-8")
-        print(f"Månedsrapport færdig: {REPORT_FILE}")
-    else:
-        print(f"Fejl: Kunne ikke finde template: {TEMPLATE_FILE}")
+        print(f"✅ Deep Dive Rapport færdig (Uge {week_number}).")
 
 if __name__ == "__main__":
     build_monthly()
