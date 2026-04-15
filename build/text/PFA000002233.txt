@@ -4,9 +4,9 @@ Der investeres i en portefølje af globale aktier inklusive Emerging Markets, hv
 porteføljen som udgangspunkt sammensættes ud fra de selskaber, der indgår i Valuta DKK
 Type Investeringsprodukt
 fondens benchmark, MSCI All Countries World Index Net. Der benyttes en
-Indre værdi 401,73
+Indre værdi 404,02
 indeksnær investeringsstrategi til at opnå et afkast lig fondens benchmark, dog kan
-Indre værdi dato 13-04-2026
+Indre værdi dato 14-04-2026
 fondens afkast afvige fra benchmarkafkastet, da PFA’s ’Politik for ansvarlige
 Bæredygtighed Artikel 8
 investeringer og aktivt ejerskab’ samt anvendelsen af en optimeringsmodel mhp. at
@@ -17,12 +17,12 @@ med højere risiko, hvorfor der kan accepteres tab på investeringen. Pensionsku
 bør have en tidshorisont på min. 3 år. Fonden indeholder valutarisiko, da den har
 eksponering til investeringer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 3,75% 2,11% -0,09% 5,48%
+Afdeling 3,80% 2,69% 0,76% 6,61%
 PFA Indeks Globale Aktier Benchmark
-Benchmark 3,62% 1,89% 0,04% 5,35%
+Benchmark 3,58% 2,46% 0,83% 6,54%
 180 Afkast ÅTD 1 år 3 år 5 år
-150 Afdeling 3,05% 27,66% 58,29% 72,45%
-Benchmark 3,24% 28,60% 58,73% 72,22%
+150 Afdeling 3,64% 27,20% 58,82% 74,34%
+Benchmark 3,81% 28,10% 59,24% 74,13%
 120
 Omkostninger %
 90 Andre løbende omkostninger 0,40
@@ -34,7 +34,7 @@ Udtrædelsesomkostninger 0,15
 ÅOP 0,44
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,79 1,00 0,98
-Std. Afv. 11,48% 12,86% 14,16% 1 2 3 4 5 6 7
+Std. Afv. 10,29% 12,13% 13,84% 1 2 3 4 5 6 7
 Største beholdninger (28-02-2026) % Formuefordeling
 NVIDIA Corp 4,39
 Apple 4,00
