@@ -4,9 +4,9 @@ Der investeres i en portefølje af aktier typisk bestående af store og mellemst
 selskaber beliggende i lande, der indgår i MSCI Emerging Markets Index, eller Valuta USD
 Type Investeringsforening
 selskaber med primæraktiviteter i Emerging Markets-landene. Der benyttes en aktiv
-Indre værdi 416,02
+Indre værdi 417,72
 investeringsstrategi til at opnå et afkast, der er bedre end afkastet af fondens
-Indre værdi dato 14-04-2026
+Indre værdi dato 15-04-2026
 benchmark, MSCI Emerging Markets Index. Fonden egner sig til informerede eller
 Bæredygtighed Artikel 8
 erfarne pensionskunder, som har indsigt i og erfaring med værdipapirhandel, og
@@ -16,11 +16,11 @@ have en tidshorisont på min. 3 år, og fonden bør indgå i en diversificeret p
 af øvrige investeringer. Fonden indeholder valutarisiko, da den er eksponeret over
 for værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 4,27% 5,32% 8,31% 24,41%
+Afdeling 1,78% 5,75% 7,69% 23,29%
 Lazard Emerging Markets Equity Fund
 Afkast ÅTD 1 år 3 år 5 år
 200
-Afdeling 14,47% 52,25% 83,03% 82,87%
+Afdeling 14,94% 51,92% 83,78% 82,61%
 160
 Omkostninger %
 120 Andre løbende omkostninger 1,07
@@ -32,25 +32,25 @@ Udtrædelsesomkostninger 0,60
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 1,74 1,61 0,94
-Std. Afv. 13,33% 13,98% 15,62% 1 2 3 4 5 6 7
-Største beholdninger (30-11-2025) % Formuefordeling
+Std. Afv. 13,86% 13,26% 15,91% 1 2 3 4 5 6 7
+Største beholdninger (31-12-2025) % Formuefordeling
 Taiwan Semiconductor Manufacturing Co
-4,59
+4,76
 Ltd ADR
-SK hynix 3,44 Finans 26,26 %
-ASE Industrial Holdings Co Ltd 2,65 Teknologi 24,22 %
-China Construction Bank Corporation 2,53 Forbrugsgoder 10,37 %
-STATE STREET BANK & TRUST CO Materialer 6,09 %
-2,31
-REPO 01DEC25 (Repo) Andet 33,07 %
-WIWYNN 2,02
-Shinhan Financial Group 1,84
+SK hynix 3,95 Finans 26,80 %
+STATE STREET BANK & TRUST CO Teknologi 24,40 %
+2,92
+REPO 02JAN26 (Repo) Forbrugsgoder 9,74 %
+ASE Industrial Holdings Co Ltd 2,78 Industri 5,88 %
+China Construction Bank Corporation 2,30 Andet 33,18 %
+WIWYNN 1,91
+Shinhan Financial Group 1,78
 Bharti Infratel 1,77
-MediaTek 1,76 Asien (ex.Japan) 57,46 %
-KB Financial Group Inc 1,73 Latinamerika 20,78 %
-Europa 9,74 %
-Afrika 8,50 %
-Andet 3,52 %
+MediaTek 1,74 Asien (ex.Japan) 57,98 %
+KB Financial Group Inc 1,70 Latinamerika 19,28 %
+Europa 9,49 %
+Afrika 9,09 %
+Andet 4,16 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

@@ -4,9 +4,9 @@ Der investeres i en koncentreret portefølje af aktier af ca. 15 børsnoterede d
 selskaber i forskellige brancher. Selskaberne vælges ud fra deres langsigtede Valuta DKK
 Type Kapitalforening
 risikojusterede afkastpotentiale baseret på bl.a. vækstpotentialet i selskabernes
-Indre værdi 341,88
+Indre værdi 344,37
 forretningsmodel. Selvom målet ikke er at slå et specifikt benchmark, benyttes dog
-Indre værdi dato 14-04-2026
+Indre værdi dato 15-04-2026
 en aktiv investeringsstrategi til at skabe et langsigtet afkast, som er bedre end
 Bæredygtighed Artikel 8
 markedet. Fonden egner sig til informerede eller erfarne pensionskunder, som har
@@ -16,11 +16,11 @@ på investeringen. Pensionskunder bør have en tidshorisont på min. 3 år og fo
 bør indgå i en diversificeret portefølje af øvrige investeringer. Fonden indeholder
 valutarisiko, da den er eksponeret over for værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 3,05% 5,29% -3,23% 2,97%
+Afdeling 2,41% 6,06% -2,60% 2,05%
 BLS Invest Danske Aktier
 Afkast ÅTD 1 år 3 år 5 år
 120
-Afdeling -3,96% 4,58% -1,53% 1,04%
+Afdeling -3,26% 3,80% -0,81% 1,26%
 110
 Omkostninger %
 100 Andre løbende omkostninger 2,33
@@ -32,7 +32,7 @@ Udtrædelsesomkostninger 0,10
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe -0,55 0,21 0,19
-Std. Afv. 15,85% 12,50% 13,75% 1 2 3 4 5 6 7
+Std. Afv. 15,87% 12,58% 14,11% 1 2 3 4 5 6 7
 Største beholdninger (31-12-2025) % Formuefordeling
 NETCOMPANY GROUP AS 10,13
 DSV 9,99
