@@ -4,17 +4,17 @@ Der investeres i globale aktier. Omtrent 70 selskaber analyseres og følges løb
 og af disse udvælges mellem 20 og 30 til porteføljen. Der anvendes en såkaldt Valuta EUR
 Type Investeringsforening
 value-baseret investeringstilgang, hvor fokus er på selskaber med lav gæld og en
-Indre værdi 104,27
+Indre værdi 104,24
 produktion, som er vanskelig at kopiere. Selskaber, som er modstandsdygtige over
-Indre værdi dato 16-04-2026
+Indre værdi dato 17-04-2026
 for teknologisk innovation, foretrækkes. PFA-fonden handles i EUR.
 Bæredygtighed Artikel 8
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 1,79% 0,43% -9,42% -6,22%
+Afdeling 1,22% 0,19% -9,44% -5,23%
 Fundsmith Equity Fund
 Afkast ÅTD 1 år 3 år 5 år
 135
-Afdeling -6,75% 2,81% 5,00% 10,93%
+Afdeling -6,77% 2,78% 4,42% 10,90%
 120
 Omkostninger %
 105 Andre løbende omkostninger 1,34
@@ -26,7 +26,7 @@ Udtrædelsesomkostninger 0,25
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe -0,14 0,37 0,39
-Std. Afv. 14,07% 13,32% 14,42% 1 2 3 4 5 6 7
+Std. Afv. 14,00% 13,10% 14,74% 1 2 3 4 5 6 7
 Største beholdninger (31-12-2025) % Formuefordeling
 Stryker 6,07
 Alphabet A 5,43

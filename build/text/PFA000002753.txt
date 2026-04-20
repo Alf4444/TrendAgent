@@ -4,9 +4,9 @@ Fonden investerer primært i globale aktier gennem ca. 70 selskaber, der er lede
 inden for løsninger mod paradigmeskiftet til en cirkulær økonomi. Selskaberne Valuta EUR
 Type Investeringsforening
 udvælges på baggrund af fundamental selskabsanalyse og en internt udviklet
-Indre værdi 135,98
+Indre værdi 137,20
 model, der måler deres bidrag til FN’s 17 Verdensmål. Fonden er fuldt bæredygtig jf.
-Indre værdi dato 16-04-2026
+Indre værdi dato 17-04-2026
 Artikel 9 i EU’s Disclosureforordning. Der benyttes en aktiv investeringsstrategi til at
 Bæredygtighed Artikel 9
 opnå et afkast, der er bedre end afkastet af fondens benchmark, MSCI World Index.
@@ -16,11 +16,11 @@ pensionskunder med mellem til lang tidshorisont, som er bekendte med risikoen ve
 at investere i fonden og kan acceptere tab på investeringen. Fonden indeholder
 valutarisiko, da den er eksponeret over for værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 3,57% 6,18% 5,60% 13,59%
+Afdeling 3,86% 7,31% 6,55% 14,47%
 Robeco Circular Economy Equities
 Afkast ÅTD 1 år 3 år 5 år
 160
-Afdeling 11,61% 35,05% 61,43% 54,26%
+Afdeling 12,62% 36,26% 60,76% 55,65%
 140
 Omkostninger %
 120 Andre løbende omkostninger 1,33
@@ -32,23 +32,23 @@ Udtrædelsesomkostninger 0,19
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,85 0,84 0,73
-Std. Afv. 14,14% 13,44% 14,61% 1 2 3 4 5 6 7
-Største beholdninger (30-01-2026) % Formuefordeling
-NVIDIA Corp 3,95
+Std. Afv. 15,69% 14,31% 15,03% 1 2 3 4 5 6 7
+Største beholdninger (27-02-2026) % Formuefordeling
+Cash EUR 5,54
 Taiwan Semiconductor Manufacturing Co
-Ltd ADR 3,65 USA 54,46 %
-Spie 3,33 Frankrig 7,98 %
-Cash EUR 3,22 Taiwan 7,15 %
-WESCO International 3,20 England 5,40 %
-Keysight Technologies 2,99 Andet 25,02 %
-Galenica Ltd. 2,68
-SK hynix 2,57
-NVENT ELECTRIC PLC 2,43
-Applied Industrial Technologies 2,39 Industri 32,38 %
-Teknologi 31,21 %
-Medicin & Sundhed 4,58 %
-Forbrugerservice 4,40 %
-Andet 27,43 %
+Ltd ADR 3,84 USA 53,28 %
+Spie 3,49 Japan 8,60 %
+Keysight Technologies 3,44 Taiwan 8,23 %
+NVIDIA Corp 3,40 Frankrig 6,66 %
+SK hynix 2,78 Andet 23,23 %
+Galenica Ltd. 2,60
+Comfort Systems USA 2,48
+VERTIV HOLDINGS CO 2,45
+WESCO International 2,45 Industri 34,00 %
+Teknologi 33,47 %
+Materialer 3,68 %
+Forbrugerservice 2,74 %
+Andet 26,11 %
 En del af oplysningerne på hjemmesiden er leveret af FundCollect, som PFA har et samarbejde med. FundCollect og PFA påtager sig intet ansvar for beslutninger om valg af
 fonde truffet på baggrund af det viste informationsmateriale. Enhver videredistribution eller gengivelse af hjemmesidens indhold kræver PFA's forudgående samtykke.
 Oplysningerne på hjemmesiden er alene til orientering og er hverken et tilbud eller en opfordring til at købe eller sælge de viste PFA-fonde. Indholdet på hjemmesiden er ikke

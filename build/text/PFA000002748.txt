@@ -4,9 +4,9 @@ Der investeres i en portefølje af globale aktier bestående af større selskabe
 opfylder højere kriterier til ESG-forhold. Selskabernes udvælges på baggrund af Valuta USD
 Type Investeringsforening
 grundig screening af selskaber ud fra en række ESG-forhold (FN’s Verdensmål,
-Indre værdi 237,66
+Indre værdi 240,91
 eksklusioner mv.) i kombination med strukturelle temaer (energi, sundhed og
-Indre værdi dato 16-04-2026
+Indre værdi dato 17-04-2026
 demografi). Selvom målet ikke er at slå et specifikt benchmark, benyttes en aktiv
 Bæredygtighed Artikel 8
 investeringsstrategi til at skabe et langsigtet afkast, som er bedre end MSCI World.
@@ -17,11 +17,11 @@ en tidshorisont på min. 3 år, og fonden bør indgå i en diversificeret portef
 øvrige investeringer. Fonden indeholder valutarisiko, da den indeholder
 investeringer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 2,88% 2,92% -2,49% 3,88%
+Afdeling 4,49% 4,33% -1,16% 5,07%
 UBS Globale Bæredygtige Aktier
 Afkast ÅTD 1 år 3 år 5 år
 160
-Afdeling 0,28% 28,37% 47,03% 51,14%
+Afdeling 1,65% 30,13% 47,77% 53,20%
 140
 Omkostninger %
 120 Andre løbende omkostninger 1,32
@@ -33,7 +33,7 @@ Udtrædelsesomkostninger 0,25
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,82 0,77 0,82
-Std. Afv. 14,31% 13,66% 15,12% 1 2 3 4 5 6 7
+Std. Afv. 14,63% 13,72% 14,79% 1 2 3 4 5 6 7
 Største beholdninger (31-12-2025) % Formuefordeling
 Microsoft Corp 6,55
 Alphabet A 4,81
