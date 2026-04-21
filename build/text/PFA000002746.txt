@@ -4,9 +4,9 @@ Der investeres i en portefølje af globale aktier, dog fortrinsvis i selskaber, 
 forventes at udbetale et højt udbytte. Der kan dog være selskaber i porteføljen, der i Valuta DKK
 Type Investeringsforening
 perioder slet ikke eller kun i begrænset omfang udbetaler et udbytte. Der benyttes
-Indre værdi 182,71
+Indre værdi 182,43
 en aktiv investeringsstrategi til at opnå et afkast, der er bedre end afkastet af
-Indre værdi dato 17-04-2026
+Indre værdi dato 20-04-2026
 fondens benchmark, MSCI World High Dividend Yield, inkl. nettoudbytte.Fonden
 Bæredygtighed Artikel 8
 egner sig til informerede eller erfarne pensionskunder, som har indsigt i og erfaring
@@ -16,23 +16,23 @@ på investeringen. Pensionskunder bør have en tidshorisont på min. 3 år og fo
 bør indgå i en diversificeret portefølje af øvrige investeringer. Fonden indeholder
 valutarisiko, da den er eksponeret over for værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 2,05% 1,23% -0,67% 3,29%
+Afdeling 1,39% 4,65% 1,55% 2,54%
 BankInvest Højt Udbytte Aktier
 Afkast ÅTD 1 år 3 år 5 år
-144
-Afdeling 1,47% 7,15% 15,74% 36,78%
-132
+150
+Afdeling 1,31% 6,98% 16,32% 37,04%
+135
 Omkostninger %
 120 Andre løbende omkostninger 1,66
 Resultatgebyrer 0,00
-108 Transaktionsomkostninger (Direkte + indirekte) 0,14
+105 Transaktionsomkostninger (Direkte + indirekte) 0,14
 Oprettelsesomkostninger 0,15
 Udtrædelsesomkostninger 0,14
 ÅOP 1,85
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe -0,20 0,20 0,75
-Std. Afv. 8,67% 8,52% 10,29% 1 2 3 4 5 6 7
+Std. Afv. 12,54% 10,07% 11,42% 1 2 3 4 5 6 7
 Største beholdninger (31-03-2026) % Formuefordeling
 London Stock Exchange 2,56
 AstraZeneca PLC 2,51
