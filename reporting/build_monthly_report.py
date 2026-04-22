@@ -35,13 +35,13 @@ def get_rsi(prices, window=14):
 
 # --- DINE ORIGINALE FUNKTIONER ---
 def get_ranking_data(latest_list):
-    sorted_list = sorted(latest_list, key=lambda x: x.get('return_1m', -999), reverse=True)
+    sorted_list = sorted(latest_list, key=lambda x: x.get('return_1m') or -999, reverse=True)
     rank_map = {item['isin']: index + 1 for index, item in enumerate(sorted_list)}
     return rank_map, len(sorted_list)
 
 def get_trend_velocity(f):
-    r1w = f.get('return_1w', 0)
-    r1m = f.get('return_1m', 0)
+    r1w = f.get('return_1w') or 0
+    r1m = f.get('return_1m') or 0
     avg_weekly_in_month = r1m / 4
     if r1w > avg_weekly_in_month and r1w > 0:
         return "🚀 Accelererer", "trend-up"
@@ -50,7 +50,7 @@ def get_trend_velocity(f):
     return "➡️ Stabil", "trend-side"
 
 def get_momentum_status(f, rank):
-    r1m = f.get('return_1m', 0)
+    r1m = f.get('return_1m') or 0
     if rank > 10:
         return "🛑 Outperformed", "momentum-flat"
     if r1m < 0 or rank > 7:
@@ -128,8 +128,8 @@ def build_monthly():
             "buy_date": p_info.get('buy_date', 'N/A'),
             "buy_price": buy_p,
             "curr_price": curr_p,
-            "return_1w": official.get('return_1w', 0),
-            "return_1m": official.get('return_1m', 0),
+            "return_1w": official.get('return_1w') or 0,
+            "return_1m": official.get('return_1m') or 0,
             "trend_label": t_label,
             "trend_class": t_class,
             "momentum_label": m_label,
@@ -150,14 +150,14 @@ def build_monthly():
 
     # Top 5 markedsmuligheder
     unsorted_opps = [i for i in latest_list if i['isin'] not in portfolio or not portfolio[i['isin']].get('active', False)]
-    sorted_opps = sorted(unsorted_opps, key=lambda x: x.get('return_1m', 0), reverse=True)[:5]
+    sorted_opps = sorted(unsorted_opps, key=lambda x: x.get('return_1m') or 0, reverse=True)[:5]
     market_opps = []
     for o in sorted_opps:
         t_label, t_class = get_trend_velocity(o)
         market_opps.append({
             "name": o.get('name', o['isin']), 
-            "return_1m": o.get('return_1m', 0), 
-            "return_ytd": o.get('return_ytd', 0),
+            "return_1m": o.get('return_1m') or 0,
+            "return_ytd": o.get('return_ytd') or 0,   # RETTET: None -> 0 så Jinja2 format() ikke crasher
             "rank": rank_map.get(o['isin']),
             "trend_label": t_label
         })
@@ -165,7 +165,7 @@ def build_monthly():
     sell_signals = [f for f in active_rows if f['momentum_class'] == 'momentum-flat']
     buy_signals = [o for o in market_opps if o['return_1m'] > 4.0]
 
-    benchmark_return = latest_map[BENCHMARK_ISIN].get('return_1m', 0) if BENCHMARK_ISIN in latest_map else 0
+    benchmark_return = latest_map[BENCHMARK_ISIN].get('return_1m') or 0 if BENCHMARK_ISIN in latest_map else 0
     
     # SIKKERHEDS-RETTELSE MOD DIVISION BY ZERO
     avg_port_return = sum(active_returns_total) / len(active_returns_total) if active_returns_total else 0
