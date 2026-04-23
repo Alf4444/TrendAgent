@@ -4,9 +4,9 @@ Der investeres i en portefølje af de højest ratede inflationssikrede statsobli
 euroområdet. Der benyttes en indeksbaseret investeringsstrategi til at opnå et Valuta DKK
 Type Investeringsforening
 afkast svarende til fondens benchmark, Bloomberg Euro Government Inflation
-Indre værdi 150,16
+Indre værdi 150,43
 Linked Bond Index. Fonden kan investere i obligationer, der ikke indgår i
-Indre værdi dato 21-04-2026
+Indre værdi dato 22-04-2026
 benchmark, hvis disse har en lignende risikoprofil og forventes at give tilsvarende
 Bæredygtighed Artikel 6
 afkast. Fonden er velegnet til informerede eller erfarne pensionskunder, der har
@@ -17,11 +17,11 @@ tidshorisont på min. 3 år, og fonden bør indgå i en diversificeret porteføl
 investeringer. Fonden indeholder valutarisiko, da den er eksponeret over for
 værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 0,21% 0,46% 1,02% 0,70%
+Afdeling 0,32% 0,64% 1,24% 0,84%
 iShares Inflation Linked Govt Bond UCITS ETF
 Afkast ÅTD 1 år 3 år 5 år
 110
-Afdeling 1,86% 2,92% 5,91% 2,60%
+Afdeling 2,05% 2,62% 6,10% 2,91%
 105
 Omkostninger %
 100 Andre løbende omkostninger 0,34
@@ -33,7 +33,7 @@ Udtrædelsesomkostninger 0,10
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,06 -0,16 -0,10
-Std. Afv. 3,01% 4,07% 6,98% 1 2 3 4 5 6 7
+Std. Afv. 3,08% 4,08% 6,88% 1 2 3 4 5 6 7
 Største beholdninger (31-03-2026) % Formuefordeling
 Var% France 25/07/2027 5,57
 Var% FRANCE REPUBLIC OF
