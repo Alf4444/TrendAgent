@@ -4,9 +4,9 @@ Der investeres i en portefølje af europæiske aktier (inkl. Storbritannien) gen
 selskaber, der er hjemhørende eller har sine primæraktiviteter i Europa og Valuta DKK
 Type Investeringsforening
 Storbritannien. Selskaberne udvælges ved at identificere selskaber med stærke
-Indre værdi 279,82
+Indre værdi 281,10
 ESG-profiler, der bl.a. fokuserer på aktivt ejerskab, fravælgelse af visse selskaber
-Indre værdi dato 22-04-2026
+Indre værdi dato 23-04-2026
 mv. Der benyttes en aktiv investeringsstrategi til at opnå et afkast, der er bedre end
 Bæredygtighed Artikel 8
 afkastet af fondens benchmark, MSCI AC China 10/40 Index NR. Fonden egner sig
@@ -17,11 +17,11 @@ på min. 3 år, og fonden bør indgå i en diversificeret portefølje af øvrige
 investeringer. Fonden indeholder valutarisiko, da den indeholder investeringer i
 udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -0,93% 6,76% -0,37% 5,20%
+Afdeling -0,28% 6,43% -0,12% 5,03%
 Threadneedle Pan European ESG Equities
 Afkast ÅTD 1 år 3 år 5 år
 160
-Afdeling 3,24% 20,13% 32,98% 42,81%
+Afdeling 3,71% 18,24% 33,59% 43,17%
 140
 Omkostninger %
 120 Andre løbende omkostninger 1,24
@@ -33,7 +33,7 @@ Udtrædelsesomkostninger 0,50
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,94 0,96 0,67
-Std. Afv. 18,91% 14,93% 15,11% 1 2 3 4 5 6 7
+Std. Afv. 16,83% 13,54% 14,79% 1 2 3 4 5 6 7
 Største beholdninger (31-12-2025) % Formuefordeling
 ASML Holding NV 5,09
 Novartis 4,11

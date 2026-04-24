@@ -4,9 +4,9 @@ Der investeres i en portefølje af aktier fra udviklede lande via selskaber hør
 under GICS-sektoren inden for sundhedspleje. Selskaberne producerer og leverer Valuta EUR
 Type Investeringsforening
 sundhedsrelaterede produkter og ydelser. Der benyttes en indeksnær
-Indre værdi 105,70
+Indre værdi 105,58
 investeringsstrategi til at opnå et afkast svarende til fondens benchmark, MSCI
-Indre værdi dato 22-04-2026
+Indre værdi dato 23-04-2026
 World Health Care Advanced Select 20 35 Capped Index. Fonden er ESG-screenet
 Bæredygtighed Artikel 8
 og egner sig til informerede eller erfarne pensionskunder, som har indsigt i og
@@ -16,11 +16,11 @@ investeringen. Pensionskunder bør have en tidshorisont på min. 3 år, og fonde
 indgå i en diversificeret portefølje af øvrige investeringer. Fonden indeholder
 valutarisiko, da den er eksponeret over for værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling -0,98% 0,48% -7,52% -1,24%
+Afdeling -0,70% 0,85% -7,24% -1,19%
 iShares MSCI World Health Care Sector Advanced UCITS ETF
 Afkast ÅTD 1 år 3 år 5 år
 144
-Afdeling -4,89% 7,23% -0,90% 20,57%
+Afdeling -4,99% 4,52% -1,01% 21,05%
 132
 Omkostninger %
 120 Andre løbende omkostninger 0,48
@@ -32,7 +32,7 @@ Udtrædelsesomkostninger 0,10
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe -0,49 -0,35 0,41
-Std. Afv. 12,81% 11,71% 13,21% 1 2 3 4 5 6 7
+Std. Afv. 12,61% 10,95% 12,35% 1 2 3 4 5 6 7
 Største beholdninger (31-03-2026) % Formuefordeling
 Eli Lilly & Co 9,47
 Johnson & Johnson 5,79

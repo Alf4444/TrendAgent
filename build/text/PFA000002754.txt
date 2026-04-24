@@ -4,9 +4,9 @@ Fonden investerer primært i globale aktier gennem ca. 80 selskaber, der er lede
 inden for ren, sikker og bæredygtig vandforsyning. Selskaberne udvælges på Valuta EUR
 Type Investeringsforening
 baggrund af fundamental selskabsanalyse og en internt udviklet model, der måler
-Indre værdi 102,50
+Indre værdi 101,56
 deres bidrag til FN’s 17 Verdensmål. Fonden er fuldt bæredygtig jf. Artikel 9 i EU’s
-Indre værdi dato 22-04-2026
+Indre værdi dato 23-04-2026
 Disclosureforordning. Der benyttes en aktiv investeringsstrategi til at opnå et afkast,
 Bæredygtighed Artikel 9
 der er bedre end afkastet af fondens benchmark, MSCI World Index. Benchmarket
@@ -16,23 +16,23 @@ med mellem til lang tidshorisont, som er bekendte med risikoen ved at investere 
 fonden og kan acceptere tab på investeringen. Fonden indeholder valutarisiko, da
 den er eksponeret over for værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 0,28% 6,16% -4,46% -2,53%
+Afdeling -0,64% 5,38% -4,35% -4,49%
 Robeco Sustainable Water Equities
 Afkast ÅTD 1 år 3 år 5 år
-135
-Afdeling 1,00% 13,44% 21,45% 21,33%
+132
+Afdeling 0,07% 10,04% 20,32% 19,46%
 120
 Omkostninger %
-105 Andre løbende omkostninger 1,33
+108 Andre løbende omkostninger 1,33
 Resultatgebyrer 0,00
-90 Transaktionsomkostninger (Direkte + indirekte) 0,05
+96 Transaktionsomkostninger (Direkte + indirekte) 0,05
 Oprettelsesomkostninger 0,13
 Udtrædelsesomkostninger 0,18
 ÅOP 1,42
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 0,01 0,36 0,46
-Std. Afv. 17,02% 15,57% 16,95% 1 2 3 4 5 6 7
+Std. Afv. 15,67% 14,34% 15,80% 1 2 3 4 5 6 7
 Største beholdninger (27-02-2026) % Formuefordeling
 Agilent Technologies 4,50
 Kurita Water Industries 3,88
