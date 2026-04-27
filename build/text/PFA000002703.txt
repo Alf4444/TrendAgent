@@ -4,9 +4,9 @@ Der investeres i en portefølje af aktier typisk bestående af store og mellemst
 selskaber beliggende i lande, der indgår i MSCI Emerging Markets Index, eller Valuta USD
 Type Investeringsforening
 selskaber med primæraktiviteter i Emerging Markets-landene. Der benyttes en aktiv
-Indre værdi 421,17
+Indre værdi 426,56
 investeringsstrategi til at opnå et afkast, der er bedre end afkastet af fondens
-Indre værdi dato 23-04-2026
+Indre værdi dato 24-04-2026
 benchmark, MSCI Emerging Markets Index. Fonden egner sig til informerede eller
 Bæredygtighed Artikel 8
 erfarne pensionskunder, som har indsigt i og erfaring med værdipapirhandel, og
@@ -16,11 +16,11 @@ have en tidshorisont på min. 3 år, og fonden bør indgå i en diversificeret p
 af øvrige investeringer. Fonden indeholder valutarisiko, da den er eksponeret over
 for værdipapirer i udenlandsk valuta.
 Afkast ved en opsparing på 100 DKK Afkast 1 uge 1 md. 3 md. 6 md.
-Afdeling 0,40% 7,89% 7,16% 20,87%
+Afdeling 1,71% 8,83% 8,53% 21,93%
 Lazard Emerging Markets Equity Fund
 Afkast ÅTD 1 år 3 år 5 år
 200
-Afdeling 15,89% 47,77% 86,77% 84,11%
+Afdeling 17,37% 51,59% 90,09% 86,47%
 160
 Omkostninger %
 120 Andre løbende omkostninger 1,07
@@ -32,7 +32,7 @@ Udtrædelsesomkostninger 0,60
 2022 2023 2024 2025 2026
 Afdelingens risiko 1 år 3 år 5 år Risikoindikator
 Sharpe 1,74 1,61 0,94
-Std. Afv. 13,34% 11,40% 11,90% 1 2 3 4 5 6 7
+Std. Afv. 14,99% 11,96% 12,36% 1 2 3 4 5 6 7
 Største beholdninger (31-12-2025) % Formuefordeling
 Taiwan Semiconductor Manufacturing Co
 4,76
