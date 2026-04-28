@@ -18,20 +18,41 @@
     .active { background: #fffde7; font-weight: bold; }
     .trend-bull { color: #22c55e; font-weight: bold; }
     .trend-bear { color: #ef4444; font-weight: bold; }
-    
-    /* Footer Styling - Udvidet metodik */
+    .pos { color: #16a34a; font-weight: bold; }
+    .neg { color: #dc2626; font-weight: bold; }
+
+    /* Trail Stop */
+    .trail-alert-box { background: #fce8e6; border-left: 5px solid #d93025; padding: 18px 20px;
+                       margin-bottom: 25px; border-radius: 8px; }
+    .trail-alert-box h3 { margin: 0 0 12px 0; color: #c5221f; font-size: 16px; }
+    .trail-alert-item { display: flex; justify-content: space-between; align-items: center;
+                        padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.07); font-size: 13px; }
+    .trail-alert-item:last-child { border-bottom: none; }
+    .trail-badge { background: #d93025; color: white; padding: 3px 9px; border-radius: 12px;
+                   font-size: 11px; font-weight: bold; white-space: nowrap; }
+    .trail-icon { color: #d93025; font-weight: bold; margin-right: 8px; }
+
+    /* Footer */
     .footer { margin-top: 40px; padding: 30px; background: #f8f9fa; border-radius: 12px; border-top: 2px solid #eee; }
     .footer h2 { margin-top: 0; color: #2c3e50; border-bottom: 1px solid #ddd; padding-bottom: 10px; font-size: 22px; }
-    .footer h3 { color: #333; font-size: 16px; margin-top: 20px; margin-bottom: 10px; }
+    .footer h3 { color: #333; font-size: 16px; margin-top: 25px; margin-bottom: 8px;
+                 border-left: 4px solid #22c55e; padding-left: 10px; }
     .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 20px; }
     .footer-col p { font-size: 13.5px; line-height: 1.6; color: #444; margin-bottom: 12px; }
     .footer-col ul { padding-left: 20px; margin: 0; }
-    .footer-col li { font-size: 13px; color: #555; margin-bottom: 8px; }
-    .strategy-box { margin-top: 30px; padding: 20px; background: #fff; border-radius: 8px; border-left: 5px solid #22c55e; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .footer-col li { font-size: 13px; color: #555; margin-bottom: 8px; line-height: 1.5; }
+    .def-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
+    .def-table td { padding: 8px 10px; border-bottom: 1px solid #e8e8e8; vertical-align: top; }
+    .def-table td:first-child { font-weight: bold; color: #2c3e50; white-space: nowrap;
+                                width: 180px; padding-right: 15px; }
+    .strategy-box { margin-top: 30px; padding: 20px; background: #fff; border-radius: 8px;
+                    border-left: 5px solid #22c55e; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
   </style>
 </head>
 <body>
   <div class="container">
+
+    <!-- HEADER -->
     <div class="header">
       <div>
         <h1>📈 TrendAgent Weekly</h1>
@@ -43,15 +64,47 @@
       </div>
     </div>
 
+    <!-- TRAIL STOP ADVARSLER -->
+    {% if trail_stop_alerts %}
+    <div class="trail-alert-box">
+      <h3>🔔 Trail Stop Advarsel — {{ trail_stop_alerts|length }} fond{{ 'e' if trail_stop_alerts|length > 1 else '' }} udløst (tærskel: {{ trail_stop_pct }}%)</h3>
+      {% for a in trail_stop_alerts %}
+      <div class="trail-alert-item">
+        <div>
+          <span class="trail-icon">⚠️</span>
+          <strong>{{ a.name }}</strong>
+          <span style="color:#666; font-size:12px; margin-left:8px;">{{ a.isin }}</span>
+        </div>
+        <div style="display:flex; gap:15px; align-items:center; flex-wrap:wrap;">
+          <span style="font-size:12px; color:#555;">
+            HWM: <strong>{{ a.hwm }}</strong> ({{ a.hwm_date }})
+          </span>
+          <span style="font-size:12px; color:#555;">
+            Nu: <strong>{{ a.curr }}</strong>
+          </span>
+          <span class="trail-badge">{{ a.fall_pct }}% fra top</span>
+          <span style="font-size:12px; color:{{ '#16a34a' if a.total_ret >= 0 else '#dc2626' }}; font-weight:bold;">
+            Afkast fra køb: {{ '%+.2f'|format(a.total_ret) }}%
+          </span>
+        </div>
+      </div>
+      {% endfor %}
+      <p style="margin:12px 0 0 0; font-size:12px; color:#888;">
+        Se definitioner i metodik-sektionen nedenfor. En advarsel er ikke automatisk et salgssignal —
+        tjek 1M afkast og rank i markedet før du handler.
+      </p>
+    </div>
+    {% endif %}
+
+    <!-- PORTEFØLJE ALARMER OG MULIGHEDER -->
     {% if portfolio_alerts or market_opportunities %}
     <div style="background: #fffde7; border-left: 5px solid #fbc02d; padding: 20px; margin-bottom: 25px; border-radius: 4px;">
       {% for a in portfolio_alerts %}
         <div style="margin-bottom: 8px; font-size: 16px;">{{ a.msg }} <strong>{{ a.name }}</strong></div>
       {% endfor %}
-      
       {% if market_opportunities %}
         <div style="margin-top:10px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.05);">
-          <strong>🎯 Nye BULL-muligheder:</strong> 
+          <strong>🎯 Nye BULL-muligheder:</strong>
           <span style="color: #444;">
           {% for o in market_opportunities %}{{ o.name }}{{ ", " if not loop.last }}{% endfor %}
           </span>
@@ -60,12 +113,14 @@
     </div>
     {% endif %}
 
+    <!-- TOP 5 / BUND 5 -->
     <div class="grid">
       <div class="box" style="border-top: 4px solid #22c55e;">
         <h4 style="margin-top:0;">🚀 Ugens Top 5</h4>
         {% for t in top_up %}
           <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
-            <span>{{ t.name[:35] }}</span> <strong style="color: #16a34a;">+{{ '%.2f'|format(t.week_change_pct) }}%</strong>
+            <span>{{ t.name[:35] }}</span>
+            <strong style="color: #16a34a;">+{{ '%.2f'|format(t.week_change_pct) }}%</strong>
           </div>
         {% endfor %}
       </div>
@@ -73,82 +128,183 @@
         <h4 style="margin-top:0;">⚠️ Ugens Bund 5</h4>
         {% for t in top_down %}
           <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
-            <span>{{ t.name[:35] }}</span> <strong style="color: #dc2626;">{{ '%.2f'|format(t.week_change_pct) }}%</strong>
+            <span>{{ t.name[:35] }}</span>
+            <strong style="color: #dc2626;">{{ '%.2f'|format(t.week_change_pct) }}%</strong>
           </div>
         {% endfor %}
       </div>
     </div>
 
+    <!-- MOMENTUM GRAF -->
     <div class="chart-container">
       <canvas id="momentumChart"></canvas>
     </div>
 
+    <!-- FONDSTABEL -->
     <table>
       <thead>
         <tr>
           <th>Fond</th>
           <th>Uge %</th>
           <th>Total %</th>
-          <th>Trend</th>
-          <th>Momentum</th>
-          <th>ÅTD</th>
+          <th>Trend ({{ rows[0].ma_label if rows else 'MA' }})</th>
+          <th>Momentum %</th>
+          <th>ÅTD %</th>
           <th>Drawdown</th>
+          <th>Trail Stop</th>
         </tr>
       </thead>
       <tbody>
         {% for row in rows %}
         <tr class="{{ 'active' if row.is_active else '' }}">
           <td>{{ '⭐' if row.is_active else '' }} {{ row.name[:45] }}</td>
-          
+
           <td style="color: {{ '#16a34a' if row.week_change_pct > 0 else '#dc2626' }}; font-weight: 500;">
-            {{ '%.2f'|format(row.week_change_pct) }}%
+            {{ '%+.2f'|format(row.week_change_pct) }}%
           </td>
 
-          <td style="font-weight: bold; color: {{ '#16a34a' if (row.total_return or 0) > 0 and row.week_change_pct >= 0 else '#dc2626' if row.total_return is not none else '#666' }}">
-            {{ '%.2f'|format(row.total_return) if row.total_return is not none else '-' }}%
+          <td style="font-weight: bold; color: {{ '#16a34a' if (row.total_return or 0) >= 0 else '#dc2626' }}">
+            {{ '%+.2f'|format(row.total_return) if row.total_return is not none else '-' }}%
           </td>
 
-          <td class="{{ 'trend-bull' if row.trend_state == 'UP' else 'trend-bear' }}">
-            {{ 'BULL' if row.trend_state == 'UP' else 'BEAR' }}
+          <td class="{{ 'trend-bull' if row.trend_state == 'BULL' else 'trend-bear' }}">
+            {{ row.trend_state }}
+            <small style="color:#999; font-weight:normal;">({{ row.ma_label }})</small>
           </td>
-          <td>{{ row.momentum }}%</td>
-          <td>{{ '%.2f'|format(row.ytd_return) }}%</td>
+
+          <td style="color: {{ '#16a34a' if row.momentum >= 0 else '#dc2626' }};">
+            {{ '%+.2f'|format(row.momentum) }}%
+          </td>
+
+          <td style="color: {{ '#16a34a' if row.ytd_return >= 0 else '#dc2626' }};">
+            {{ '%+.2f'|format(row.ytd_return) }}%
+          </td>
+
           <td style="color: #dc2626;">{{ '%.2f'|format(row.drawdown) }}%</td>
+
+          <td>
+            {% if row.is_active and row.hwm %}
+              {% if row.trail_alert %}
+                <span style="background:#d93025; color:white; padding:2px 7px; border-radius:10px;
+                             font-size:11px; font-weight:bold;">
+                  ⚠️ {{ row.trail_alert.fall_pct }}%
+                </span>
+              {% else %}
+                <span style="font-size:12px; color:#666;">
+                  HWM: {{ row.hwm }}
+                </span>
+              {% endif %}
+            {% else %}
+              <span style="color:#ccc;">—</span>
+            {% endif %}
+          </td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
 
+    <!-- METODIK & DEFINITIONER -->
     <div class="footer">
       <h2>📖 Fuld Metodik & Definitioner</h2>
-      
+
       <div class="footer-grid">
         <div class="footer-col">
-          <h3>📈 Trend-analyse & Alarmer</h3>
-          <p>Ugerapporten opsummerer de tekniske bevægelser for at sikre, at vi altid er på den rigtige side af markedet.</p>
+
+          <h3>📈 Trend & Momentum</h3>
+          <p>Trend-status afgøres ved at sammenligne fondens aktuelle kurs med dens glidende gennemsnit (MA).
+          Vi bruger det bedste tilgængelige MA afhængigt af hvor meget historik vi har opbygget:</p>
           <ul>
-            <li><strong>Trend-skifte (Shift Detection):</strong> Systemet sammenligner dagens tilstand med gårsdagens. Hvis en fond krydser MA200-grænsen, genereres en automatisk alarm (🚀 KØB eller ⚠️ SÆLG).</li>
-            <li><strong>Nye BULL-muligheder:</strong> Fonde fra overvågningslisten, der netop er brudt op over deres MA200, hvilket indikerer en ny potentiel optrend.</li>
-            <li><strong>Trend-status:</strong> <strong>BULL</strong> (Kurs over MA200) indikerer styrke. <strong>BEAR</strong> (Kurs under MA200) indikerer svaghed og øget risiko.</li>
+            <li><strong>MA200</strong> (200-dages): Primær indikator. Kræver ca. 9 måneders daglige data.
+                Giver det mest stabile signal og filtrerer kortsigtet støj fra.</li>
+            <li><strong>MA50</strong> (50-dages): Bruges som fallback indtil MA200 er tilgængeligt.
+                Mere følsom over for kortsigtede bevægelser.</li>
+            <li><strong>MA20</strong> (20-dages): Bruges som fallback hvis hverken MA200 eller MA50
+                er mulige endnu. Meget kortsigtet signal.</li>
+            <li><strong>1M proxy:</strong> Bruges de første uger, inden MA20 er mulig.
+                Her bruges det officielle 1M afkast fra PFA's faktaark som midlertidig indikator.</li>
           </ul>
+          <p><strong>BULL</strong> = kurs over MA → fonden har momentum og styrke.<br>
+             <strong>BEAR</strong> = kurs under MA → fonden er svagere end sit historiske gennemsnit.</p>
+
+          <h3>📊 Nøgletal</h3>
+          <table class="def-table">
+            <tr>
+              <td>Uge %</td>
+              <td>Officielt afkast fra PFA's faktaark for den seneste uge.</td>
+            </tr>
+            <tr>
+              <td>Total %</td>
+              <td>Dit urealiserede afkast siden købsdato, beregnet som (aktuel / købspris − 1) × 100.</td>
+            </tr>
+            <tr>
+              <td>Momentum %</td>
+              <td>Afstand fra aktuel kurs til bedste tilgængelige MA i procent.
+                  Positivt = fonden er over sit gennemsnit og har styrke.</td>
+            </tr>
+            <tr>
+              <td>ÅTD %</td>
+              <td>Afkast siden årets start, beregnet fra seneste kurs i historikken
+                  fra 31. december forrige år.</td>
+            </tr>
+            <tr>
+              <td>Drawdown</td>
+              <td>Aktuelt fald fra fondens højeste kurs (ATH) i den tilgængelige historik.
+                  Vises som negativ procent.</td>
+            </tr>
+          </table>
+
         </div>
-        
+
         <div class="footer-col">
-          <h3>📊 Beregninger & Nøgletal</h3>
-          <p>Her er de præcise definitioner på de tal, du ser i rapporten:</p>
+
+          <h3>🔔 Trail Stop (High Water Mark)</h3>
+          <p>Trail Stop beskytter dine gevinster ved automatisk at advare dig når en fond
+          falder for meget fra sit toppunkt — selv hvis den stadig er i plus fra din købspris.</p>
+          <table class="def-table">
+            <tr>
+              <td>High Water Mark</td>
+              <td>Den højeste kurs fonden har haft siden du købte den. Opdateres automatisk
+                  hver gang fonden sætter ny top. Initialiseres til din købspris.</td>
+            </tr>
+            <tr>
+              <td>Fald fra top</td>
+              <td>Beregnes som (aktuel kurs / HWM − 1) × 100. Advarsel sendes når
+                  faldet overstiger tærsklen ({{ trail_stop_pct }}%).</td>
+            </tr>
+            <tr>
+              <td>Tærskel</td>
+              <td>Aktuelt {{ trail_stop_pct }}%. Valgt til at fange reelle momentum-skift
+                  uden for mange falske alarmer ved normal daglig volatilitet.</td>
+            </tr>
+          </table>
+          <p style="margin-top:12px;"><strong>Sådan tolker du en Trail Stop advarsel:</strong></p>
           <ul>
-            <li><strong>Ugens Afkast (⭐):</strong> Det vægtede gennemsnit af alle aktive positioners kursændring i den forgangne uge.</li>
-            <li><strong>Total %:</strong> Dit urealiserede afkast siden køb. Markeret med <span style="color: #dc2626;">rød</span>, hvis ugen har været negativ, eller hvis den samlede position er i minus.</li>
-            <li><strong>MA200 Momentum:</strong> Den procentvise afstand fra den nuværende kurs til det 200-dages glidende gennemsnit.</li>
-            <li><strong>Drawdown (DD):</strong> Det aktuelle fald fra den højeste kurs (ATH) målt i systemets historik.</li>
+            <li>Er <strong>1M afkast</strong> stadig positivt? → Kan være en normal korrektion.</li>
+            <li>Er fondens <strong>Rank</strong> stadig i top 10? → Momentum er måske intakt.</li>
+            <li>Falder fonden mere end 5-7% fra top? → Overvej rotation til en stærkere fond.</li>
+            <li>En advarsel er aldrig automatisk et salgssignal — brug den som anledning til at handle aktivt.</li>
           </ul>
+
+          <h3>🎯 Markedsmuligheder</h3>
+          <p>Fonde fra det fulde PFA-univers (~{{ rows|length }} fonde) der ikke er i din portefølje,
+          men har positivt momentum (over 2%) og er i BULL-trend. Bruges til at identificere
+          potentielle rotationsmål.</p>
+
+          <h3>⭐ Ugens Afkast</h3>
+          <p>Det simple gennemsnit af alle aktive positioners uge-afkast. Bruges som et hurtigt
+          pejlemærke — ikke som et præcist vægtet porteføljeafkast, da vi ikke har positionsstørrelser.</p>
+
         </div>
       </div>
 
       <div class="strategy-box">
-        <strong>Vores Systematiske Tilgang:</strong> Ved at kombinere teknisk analyse af de glidende gennemsnit (MA200) med realtidsdata for afkast, fjerner vi mavefornemmelser fra ligningen. Vi følger trenden: Vi køber styrke og sælger svaghed, styret af hårde data og objektive signaler.
+        <strong>Vores Systematiske Tilgang:</strong> Vi følger momentum og relativ styrke.
+        Vi køber fonde der er stærkere end deres historiske gennemsnit (BULL-trend), og overvejer
+        at rotere ud af fonde der mister momentum (BEAR-trend eller Trail Stop). Mavefornemmelser
+        erstattes af hårde data — vi lader markedet fortælle os hvad der er stærkt.
       </div>
     </div>
+
   </div>
 
   <script>
@@ -158,23 +314,23 @@
       data: {
         labels: {{ chart_labels | tojson }},
         datasets: [{
-          label: 'Momentum % (Afstand til MA200)',
+          label: 'Momentum % (Afstand til MA)',
           data: {{ chart_values | tojson }},
-          backgroundColor: 'rgba(34, 197, 94, 0.6)',
-          borderColor: 'rgba(34, 197, 94, 1)',
+          backgroundColor: {{ chart_values | tojson }}.map(v => v >= 0
+            ? 'rgba(34, 197, 94, 0.6)' : 'rgba(239, 68, 68, 0.6)'),
+          borderColor: {{ chart_values | tojson }}.map(v => v >= 0
+            ? 'rgba(34, 197, 94, 1)' : 'rgba(239, 68, 68, 1)'),
           borderWidth: 1
         }]
       },
-      options: { 
-        responsive: true, 
-        maintainAspectRatio: false, 
-        plugins: { 
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
           legend: { display: false },
-          title: { display: true, text: 'Top 10 Stærkeste Trends (Momentum %)', font: { size: 14 } }
+          title: { display: true, text: 'Top 10 Stærkeste Trends (Momentum % fra MA)', font: { size: 14 } }
         },
-        scales: {
-          y: { beginAtZero: true }
-        }
+        scales: { y: { beginAtZero: false } }
       }
     });
   </script>
