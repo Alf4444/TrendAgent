@@ -29,11 +29,26 @@ jobs:
       - name: Build Monthly Report
         run: |
           python reporting/build_monthly_report.py
-        
+
+      # ------------------------------------------------
+      # TRAIL STOP NOTIFIKATION
+      # Produktionstærskel: 3.0%
+      # Skift til 0.1 midlertidigt hvis du vil teste mailen.
+      # ------------------------------------------------
+      - name: Send Trail Stop Alert (3.0%)
+        env:
+          MAIL_USERNAME:    ${{ secrets.MAIL_USERNAME }}
+          MAIL_PASSWORD:    ${{ secrets.MAIL_PASSWORD }}
+          MAIL_RECIPIENTS:  ${{ secrets.MAIL_RECIPIENTS }}
+        run: |
+          python reporting/send_alert.py \
+            --trail-pct 3.0 \
+            --report-type "Monthly Deep Dive"
+
       - name: Commit and Push changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add build/monthly.html
-          git commit -m "Ugentlig Deep Dive rapport opdateret (Uge) [skip ci]" || echo "Ingen ændringer"
+          git add build/monthly.html data/high_water_marks.json
+          git commit -m "Monthly Deep Dive + HWM opdateret [skip ci]" || echo "Ingen ændringer"
           git push
