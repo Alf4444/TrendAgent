@@ -25,8 +25,8 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          pip install jinja2  # Sikrer at jinja2 altid er der
-          
+          pip install jinja2
+
       - name: Reparer historik (Backfill)
         run: |
           python data/backfill_data.py
@@ -34,12 +34,27 @@ jobs:
       - name: Build Weekly Report
         run: |
           python reporting/build_weekly_report.py
-        
+
+      # ------------------------------------------------
+      # TRAIL STOP NOTIFIKATION
+      # Tærsklen er sat til 0.1% så du kan teste at
+      # mailen virker ved at køre workflow_dispatch manuelt.
+      # Skift til 3.0 når du har bekræftet at mailen lander.
+      # ------------------------------------------------
+      - name: Send Trail Stop Alert (TEST 0.1%)
+        env:
+          MAIL_USERNAME:    ${{ secrets.MAIL_USERNAME }}
+          MAIL_PASSWORD:    ${{ secrets.MAIL_PASSWORD }}
+          MAIL_RECIPIENTS:  ${{ secrets.MAIL_RECIPIENTS }}
+        run: |
+          python reporting/send_alert.py \
+            --trail-pct 0.1 \
+            --report-type "Weekly rapport"
+
       - name: Commit and Push changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          # Vi tilføjer alt relevant: Rapport, Historik og Latest data
-          git add build/weekly.html data/history.json data/latest.json
-          git commit -m "Manual build: Weekly report updated [skip ci]" || echo "Ingen ændringer at committe"
+          git add build/weekly.html data/history.json data/latest.json data/high_water_marks.json
+          git commit -m "Weekly report + HWM opdateret [skip ci]" || echo "Ingen ændringer at committe"
           git push
