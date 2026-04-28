@@ -262,6 +262,8 @@ def build_monthly():
             "curr_price":     curr_p,
             "return_1w":      official.get('return_1w') or 0,
             "return_1m":      official.get('return_1m') or 0,
+            "return_ytd":     official.get('return_ytd'),   # Fra PFA faktaark række 2
+            "return_1y":      official.get('return_1y'),    # Fra PFA faktaark række 2
             "trend_label":    t_label,
             "trend_class":    t_class,
             "momentum_label": m_label,
