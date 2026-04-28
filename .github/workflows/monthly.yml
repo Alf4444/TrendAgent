@@ -51,4 +51,7 @@ jobs:
           git config --local user.name "GitHub Action"
           git add build/monthly.html data/high_water_marks.json
           git commit -m "Monthly Deep Dive + HWM opdateret [skip ci]" || echo "Ingen ændringer"
+          # Pull med rebase inden push for at undgå rejected push hvis weekly
+          # har committet til main i mellemtiden (de kører begge lørdag morgen).
+          git pull --rebase origin main
           git push
