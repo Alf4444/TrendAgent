@@ -3,7 +3,7 @@ name: Daily Report
 on:
   workflow_dispatch:
   schedule:
-    # 18:00 Dansk tid svarer til 17:00 UTC
+    # Kører hverdage kl. 18:00 dansk tid (17:00 UTC)
     - cron: '0 17 * * 1-5'
 
 jobs:
@@ -11,46 +11,55 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    
+
     env:
       TZ: 'Europe/Copenhagen'
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.9'
+          python-version: '3.11'
 
       - name: Install dependencies
         run: |
-          # VIGTIGT: jinja2 er nødvendig for den nye skabelon
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install requests pdfplumber jinja2
 
-      - name: 1. Preparation
+      - name: Preparation
         run: |
-          mkdir -p build/text
-          mkdir -p data
+          mkdir -p build/text build/pdf data
 
-      - name: 2. Download and Convert PDF
-        run: python parser/pdf_to_text.py
+      - name: Download and Convert PDF
+        run: python reporting/pdf_to_text.py
 
-      - name: 3. Parse to JSON
-        run: python parser/main.py
+      - name: Parse to JSON
+        run: python reporting/main.py
 
-      - name: 4. Build HTML Report & README
-        # Her har vi rettet filnavnet til det fulde navn
+      - name: Build Daily Report
         run: python reporting/build_daily_report.py
+
+      - name: Send Daily Alert (ved aktive signaler)
+        env:
+          MAIL_USERNAME:   ${{ secrets.MAIL_USERNAME }}
+          MAIL_PASSWORD:   ${{ secrets.MAIL_PASSWORD }}
+          MAIL_RECIPIENTS: ${{ secrets.MAIL_RECIPIENTS }}
+        run: |
+          python reporting/send_alert.py \
+            --trail-pct 3.0 \
+            --report-type "Daily Radar"
 
       - name: Commit and Push changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git pull --rebase --autostash origin main
+          git add build/daily.html data/history.json data/latest.json data/high_water_marks.json README.md
           git commit -m "Robot: Daglig opdatering (kl. 18:00 tjek) [skip ci]" || echo "Ingen ændringer at gemme"
+          git pull --rebase origin main
           git push origin main
