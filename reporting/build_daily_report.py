@@ -1,10 +1,13 @@
 import json
+import sys
 import time
 from pathlib import Path
 from datetime import datetime
 from jinja2 import Template
 
-# Importér alle fælles formler fra utils.py
+# Tilføj reporting/ til Python-stien så utils.py kan importeres
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
 from utils import (
     get_ma, get_best_ma, get_rsi, get_volatility,
     calculate_drawdown, get_cross_signal, get_trend_state,
