@@ -1,8 +1,12 @@
 import json
+import sys
 from pathlib import Path
 from datetime import datetime, timedelta
 
-# pfa.py ligger i samme mappe (reporting/)
+# Tilføj reporting/ til Python-stien så pfa.py kan importeres
+# uanset hvorfra scriptet kaldes (repo-rod eller reporting/)
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
 from pfa import parse_pfa_from_text
 
 ROOT          = Path(__file__).resolve().parents[1]
