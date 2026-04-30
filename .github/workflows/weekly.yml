@@ -27,28 +27,18 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install jinja2
 
-      - name: Reparer historik (Backfill)
-        run: |
-          python data/backfill_data.py
-
       - name: Build Weekly Report
         run: |
           python reporting/build_weekly_report.py
 
-      # ------------------------------------------------
-      # TRAIL STOP NOTIFIKATION
-      # Tærsklen er sat til 0.1% så du kan teste at
-      # mailen virker ved at køre workflow_dispatch manuelt.
-      # Skift til 3.0 når du har bekræftet at mailen lander.
-      # ------------------------------------------------
-      - name: Send Trail Stop Alert (TEST 0.1%)
+      - name: Send Trail Stop Alert (3.0%)
         env:
           MAIL_USERNAME:    ${{ secrets.MAIL_USERNAME }}
           MAIL_PASSWORD:    ${{ secrets.MAIL_PASSWORD }}
           MAIL_RECIPIENTS:  ${{ secrets.MAIL_RECIPIENTS }}
         run: |
           python reporting/send_alert.py \
-            --trail-pct 0.1 \
+            --trail-pct 3.0 \
             --report-type "Weekly rapport"
 
       - name: Commit and Push changes
