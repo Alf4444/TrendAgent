@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+venv/
+
+# TrendAgent build-filer
+# PDF og tekst-filer genereres ved hver kørsel og skal ikke committes
+build/pdf/
+build/text/
+
+# macOS
+.DS_Store
