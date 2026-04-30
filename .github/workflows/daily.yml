@@ -59,7 +59,11 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          # Tilføj kun de ønskede filer — ikke PDF'er fra build/pdf/
           git add build/daily.html data/history.json data/latest.json data/high_water_marks.json README.md
           git commit -m "Robot: Daglig opdatering (kl. 18:00 tjek) [skip ci]" || echo "Ingen ændringer at gemme"
+          # Stash utrackede filer (PDF'er mv.) så rebase kan køre
+          git stash --include-untracked || true
           git pull --rebase origin main
+          git stash pop || true
           git push origin main
