@@ -149,6 +149,7 @@
           <th>Total %</th>
           <th>Trend ({{ rows[0].ma_label if rows else 'MA' }})</th>
           <th>Momentum %</th>
+          <th>Cross</th>
           <th>ÅTD %</th>
           <th>Drawdown</th>
           <th>Trail Stop</th>
@@ -157,7 +158,14 @@
       <tbody>
         {% for row in rows %}
         <tr class="{{ 'active' if row.is_active else '' }}">
-          <td>{{ '⭐' if row.is_active else '' }} {{ row.name[:45] }}</td>
+          <td>{{ '⭐' if row.is_active else '' }}
+            {{ row.name[:40] }}
+            {% if row.is_active and row.rsi_alert %}
+              <span style="font-size:11px; margin-left:4px;">
+                {{ '🔴' if row.rsi_alert == 'overkøbt' else '🔵' }}
+              </span>
+            {% endif %}
+          </td>
 
           <td style="color: {{ '#16a34a' if row.week_change_pct > 0 else '#dc2626' }}; font-weight: 500;">
             {{ '%+.2f'|format(row.week_change_pct) }}%
@@ -174,6 +182,10 @@
 
           <td style="color: {{ '#16a34a' if row.momentum >= 0 else '#dc2626' }};">
             {{ '%+.2f'|format(row.momentum) }}%
+          </td>
+
+          <td style="font-size: 12px; color: {{ '#1a73e8' if 'GOLDEN' in row.cross_20_50 else '#d93025' if 'DEATH' in row.cross_20_50 else '#ccc' }};">
+            {{ row.cross_20_50 }}
           </td>
 
           <td style="color: {{ '#16a34a' if row.ytd_return >= 0 else '#dc2626' }};">
@@ -245,6 +257,18 @@
               <td>ÅTD %</td>
               <td>Afkast siden årets start, beregnet fra seneste kurs i historikken
                   fra 31. december forrige år.</td>
+            </tr>
+            <tr>
+              <td>Cross</td>
+              <td>🚀 GOLDEN: MA20 krydser op over MA50 — positivt momentum-signal.
+                  💀 DEATH: MA20 krydser ned under MA50 — negativt signal.
+                  Kræver mindst 51 datapunkter.</td>
+            </tr>
+            <tr>
+              <td>RSI 🔴🔵</td>
+              <td>Relative Strength Index. Lille ikon vises kun på dine aktive positioner:
+                  🔴 overkøbt (≥70) — potentielt salgssignal.
+                  🔵 oversolgt (≤30) — potentielt købssignal.</td>
             </tr>
             <tr>
               <td>Drawdown</td>
