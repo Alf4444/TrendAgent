@@ -148,6 +148,21 @@ def main():
 
     print(f"✅ Main færdig: {len(results)} fonde behandlet, historik opdateret.")
 
+    # --- DATAVALIDERING ---
+    try:
+        from validate_data import validate
+        errors, warnings = validate(verbose=False)
+        if errors:
+            print(f"\n⚠️  DATAVALIDERING: {len(errors)} kritiske fejl fundet!")
+            for e in errors:
+                print(f"   {e}")
+        elif warnings:
+            print(f"✅ Datavalidering OK ({len(warnings)} advarsel(er)).")
+        else:
+            print(f"✅ Datavalidering OK — ingen fejl.")
+    except Exception as e:
+        print(f"⚠️  Validering kunne ikke køre: {e}")
+
 
 if __name__ == "__main__":
     main()
