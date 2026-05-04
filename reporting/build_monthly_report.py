@@ -10,6 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from utils import (
     get_ma, get_best_ma, get_rsi,
     get_trend_velocity, get_momentum_status,
+    get_cross_signal, get_trend_state, get_trend_shift,
     check_trail_stop, is_trading_day,
 )
 
@@ -130,8 +131,19 @@ def build_monthly():
         if not prices or prices[-1] != curr_p:
             prices.append(curr_p)
 
-        rsi_val        = get_rsi(prices, 14)
+        rsi_val          = get_rsi(prices, 14)
         ma_val, ma_label = get_best_ma(prices)
+
+        # Trend shift — sammenligner med gemt tilstand fra HWM-filen
+        prev_trend = hwm_data.get(isin, {}).get('trend_state')
+        t_state    = get_trend_state(prices)
+        trend_shift = get_trend_shift(prices, prev_trend)
+
+        # Gem nuværende trend_state til næste kørsel
+        if isin in hwm_data:
+            hwm_data[isin]['trend_state'] = t_state
+        else:
+            hwm_data[isin] = {'trend_state': t_state}
 
         # utils.py: get_trend_velocity og get_momentum_status tager værdier direkte
         t_label, t_class = get_trend_velocity(
@@ -165,6 +177,7 @@ def build_monthly():
             "ma":             ma_val,
             "ma_label":       ma_label,
             "t_state":        t_state,
+            "trend_shift":    trend_shift,   # fx "BULL→BEAR" eller None
             "is_active":      is_active,
         }
 
