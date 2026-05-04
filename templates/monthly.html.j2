@@ -208,7 +208,17 @@
                 {% for f in active_funds %}
                 <tr>
                     <td><span class="rank-badge">#{{ f.rank }}</span></td>
-                    <td style="font-weight: bold;">{{ f.name }}</td>
+                    <td style="font-weight: bold;">
+                        {{ f.name }}
+                        {% if f.trend_shift %}
+                            <span style="margin-left: 8px; padding: 2px 7px; border-radius: 10px;
+                                font-size: 11px; font-weight: bold;
+                                background: {{ '#fce8e6' if 'BULL→BEAR' in f.trend_shift else '#e6f4ea' }};
+                                color: {{ '#c5221f' if 'BULL→BEAR' in f.trend_shift else '#1e7e34' }};">
+                                {{ f.trend_shift }}
+                            </span>
+                        {% endif %}
+                    </td>
                     <td><span class="{{ f.trend_class }}">{{ f.trend_label }}</span></td>
                     <td><span class="m-tag {{ f.momentum_class }}">{{ f.momentum_label }}</span></td>
                     <td class="{{ 'pos' if f.return_1m >= 0 else 'neg' }}">
@@ -367,6 +377,13 @@
                     <li>Fald fra top over 5-7% + negativt 1M → stærkt salgssignal.</li>
                     <li>En advarsel er aldrig automatisk et salgssignal — brug den
                         som anledning til aktiv gennemgang.</li>
+                </ul>
+
+                <h4>🔄 Trend Shift</h4>
+                <p>Detekterer når en fond skifter trend siden forrige månedlige rapport:</p>
+                <ul>
+                    <li><strong style="color:#c5221f;">BULL→BEAR:</strong> Fonden er faldet under sit glidende gennemsnit siden sidst — momentum er vendt negativt. Overvej rotation.</li>
+                    <li><strong style="color:#1e7e34;">BEAR→BULL:</strong> Fonden er steget over sit glidende gennemsnit — positivt trendskift. Potentielt genindtrædelsessignal.</li>
                 </ul>
 
                 <h4>📈 Glidende Gennemsnit (MA)</h4>
