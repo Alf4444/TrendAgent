@@ -118,14 +118,14 @@ def build_report():
         cross      = get_cross_signal(prices)
         t_state    = get_trend_state(prices)
 
-        # Afstand til MA200
-        dist_ma200 = round(((nav - ma200) / ma200 * 100), 2) if ma200 else 0.0
+        # Afstand til bedste tilgængelige MA (MA200 > MA50 > MA20)
+        dist_ma200 = round(((nav - ma_val) / ma_val * 100), 2) if ma_val else 0.0
 
         # Daglig ændring
         prev_nav = prices[-2] if len(prices) > 1 else nav
         day_chg  = round(((nav - prev_nav) / prev_nav * 100), 2) if prev_nav else 0.0
 
-        # KØB/SALG signal (MA200-kryds)
+        # KØB/SALG signal — kun ved MA200-kryds (kræver nok historik)
         signal     = "–"
         has_signal = 0
         if ma200:
@@ -226,7 +226,7 @@ def build_report():
     readme_lines = [
         f"# 📈 TrendAgent Fokus",
         f"**Opdateret:** {timestamp}\n",
-        "| | Fond | Signal | RSI | Afkast % | Trend | MA200 % | Cross |",
+        "| | Fond | Signal | RSI | Afkast % | Trend | MA % | Cross |",
         "| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |",
     ]
     for d in processed_list:
