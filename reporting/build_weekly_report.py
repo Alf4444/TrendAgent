@@ -1,7 +1,17 @@
 import json
+import sys
 from pathlib import Path
 from datetime import datetime
 from jinja2 import Template
+
+# Tilføj reporting/ til Python-stien så utils.py kan importeres
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from utils import (
+    get_ma, get_best_ma, get_rsi,
+    calculate_drawdown, calculate_ytd,
+    check_trail_stop, is_trading_day,
+)
 
 # ==========================================
 # KONFIGURATION & STIER
@@ -14,123 +24,14 @@ TEMPLATE_FILE  = ROOT / "templates/weekly.html.j2"
 REPORT_FILE    = ROOT / "build/weekly.html"
 HWM_FILE       = ROOT / "data/high_water_marks.json"
 
-# Trailing Stop tærskel i % — samme værdi som i monthly for konsistens.
-# Ændres ét sted her, og begge rapporter er synkroniserede.
 TRAIL_STOP_PCT = 3.0
 
 
 # ==========================================
-# TEKNISKE HJÆLPEFUNKTIONER
-# ==========================================
-
-def get_ma(prices, window):
-    """
-    Beregner Simple Moving Average (SMA) for de seneste 'window' datapunkter.
-    Returnerer None hvis der ikke er nok data.
-    """
-    if not isinstance(prices, list) or len(prices) < window:
-        return None
-    relevant = [p for p in prices[-window:] if p is not None]
-    if len(relevant) < window:
-        return None
-    return sum(relevant) / window
-
-
-def get_best_ma(prices):
-    """
-    Returnerer det bedste tilgængelige glidende gennemsnit og label.
-    Prioritering: MA200 > MA50 > MA20 > None.
-
-    Baggrund: Vi opbygger historik gradvist. MA200 kræver 200 datapunkter
-    (ca. 9 måneder med daglige opdateringer). Indtil da bruger vi MA50 eller MA20
-    som proxy, så Trend-kolonnen ikke viser BEAR for alle fonde permanent.
-    """
-    for window, label in [(200, "MA200"), (50, "MA50"), (20, "MA20")]:
-        ma = get_ma(prices, window)
-        if ma is not None:
-            return ma, label
-    return None, None
-
-
-def get_rsi(prices, window=14):
-    """
-    Beregner Relative Strength Index (RSI).
-    Returnerer None hvis der ikke er nok data.
-    """
-    if not isinstance(prices, list) or len(prices) <= window:
-        return None
-
-    deltas = [prices[i] - prices[i-1] for i in range(1, len(prices))]
-    recent_deltas = deltas[-window:]
-
-    gains  = [d if d > 0 else 0 for d in recent_deltas]
-    losses = [abs(d) if d < 0 else 0 for d in recent_deltas]
-
-    avg_gain = sum(gains) / window
-    avg_loss = sum(losses) / window
-
-    if avg_loss == 0:
-        return 100.0
-
-    rs = avg_gain / avg_loss
-    return round(100 - (100 / (1 + rs)), 1)
-
-
-def calculate_ytd(prices_dict):
-    """
-    Beregner afkast siden årets start (Year-To-Date) fra historikken.
-    Finder seneste kurs fra forrige år som startpunkt.
-    """
-    if not prices_dict:
-        return 0.0
-
-    dates = sorted(prices_dict.keys())
-    cur_year = datetime.now().year
-    start_price = None
-
-    for d in reversed(dates):
-        if d < f"{cur_year}-01-01":
-            start_price = prices_dict[d]
-            break
-
-    if start_price is None:
-        for d in dates:
-            if d.startswith(str(cur_year)):
-                start_price = prices_dict[d]
-                break
-
-    if not start_price or start_price == 0:
-        return 0.0
-
-    current_price = prices_dict[dates[-1]]
-    return round(((current_price / start_price) - 1) * 100, 2)
-
-
-def calculate_drawdown(prices_list):
-    """
-    Beregner aktuelt fald fra All-Time High (ATH) i den tilgængelige historik.
-    Returneres som negativ procent (fx -12.5 = 12.5% under ATH).
-    """
-    if not prices_list:
-        return 0.0
-
-    ath = max(prices_list)
-    if ath == 0:
-        return 0.0
-
-    current = prices_list[-1]
-    return round(((current / ath) - 1) * 100, 2)
-
-
-# ==========================================
-# TRAILING STOP — HIGH WATER MARK
+# HWM — fil-håndtering (ikke i utils.py)
 # ==========================================
 
 def load_high_water_marks():
-    """
-    Indlæser High Water Marks fra fælles fil (deles med monthly).
-    Struktur: { "PFA000002703": { "hwm": 430.5, "hwm_date": "2026-04-10" }, ... }
-    """
     if HWM_FILE.exists():
         try:
             with open(HWM_FILE, "r", encoding="utf-8") as f:
@@ -141,50 +42,9 @@ def load_high_water_marks():
 
 
 def save_high_water_marks(hwm_data):
-    """Gemmer opdaterede High Water Marks til fælles fil."""
     HWM_FILE.parent.mkdir(exist_ok=True)
     with open(HWM_FILE, "w", encoding="utf-8") as f:
         json.dump(hwm_data, f, indent=2)
-
-
-def check_trail_stop(isin, curr_price, buy_price, hwm_data, today_str):
-    """
-    Opdaterer High Water Mark og returnerer en trail stop-advarsel hvis
-    fonden er faldet mere end TRAIL_STOP_PCT % fra sit hidtidige toppunkt.
-
-    Logik:
-    1. Hvis curr_price > hidtidig HWM → opdater HWM (ny top sat).
-    2. Beregn fald fra HWM: (curr / hwm - 1) * 100
-    3. Hvis fald > TRAIL_STOP_PCT → returner advarsel-dict.
-
-    HWM initialiseres til buy_price hvis ingen historik findes endnu.
-
-    Returnerer (opdateret hwm_entry, advarsel_dict_eller_None).
-    """
-    entry = hwm_data.get(isin, {})
-    hwm   = entry.get("hwm", buy_price)
-
-    # Ny top?
-    if curr_price > hwm:
-        hwm = curr_price
-        entry = {"hwm": round(hwm, 2), "hwm_date": today_str}
-        print(f"[HWM] {isin}: Ny top sat til {hwm} ({today_str})")
-
-    fall_pct = ((curr_price / hwm) - 1) * 100 if hwm > 0 else 0.0
-
-    alert = None
-    if fall_pct <= -TRAIL_STOP_PCT:
-        alert = {
-            "isin":      isin,
-            "hwm":       round(hwm, 2),
-            "hwm_date":  entry.get("hwm_date", "?"),
-            "curr":      round(curr_price, 2),
-            "fall_pct":  round(fall_pct, 2),
-            "buy_price": round(buy_price, 2),
-            "total_ret": round(((curr_price / buy_price) - 1) * 100, 2) if buy_price else 0,
-        }
-
-    return entry, alert
 
 
 # ==========================================
@@ -212,7 +72,6 @@ def build_weekly():
     }
     print(f"📋 Aktive positioner: {len(portfolio_isins)} fonde")
 
-    # Indlæs HWM — opdateres løbende nedenfor
     hwm_data          = load_high_water_marks()
     today_str         = datetime.now().strftime('%Y-%m-%d')
     trail_stop_alerts = []
@@ -223,14 +82,20 @@ def build_weekly():
     for item in latest:
         isin    = item['isin']
         p_dict  = history.get(isin, {})
-        s_dates = sorted(p_dict.keys())
-        p_list  = [p_dict[d] for d in s_dates]
+
+        # Kun handelsdage — samme filtrering som daily
+        sorted_dates = [d for d in sorted(p_dict.keys()) if is_trading_day(d)]
+        p_list       = [p_dict[d] for d in sorted_dates]
 
         if not p_list:
             continue
 
         cur_nav   = item.get('nav') or 0.0
         is_active = isin in portfolio_isins
+
+        # Sikr dagens NAV er med
+        if not p_list or p_list[-1] != cur_nav:
+            p_list.append(cur_nav)
 
         # --- MOMENTUM (Afstand til bedste tilgængelige MA) ---
         ma_val, ma_label = get_best_ma(p_list)
@@ -264,7 +129,7 @@ def build_weekly():
         trail_alert = None
         if is_active and buy_price and cur_nav:
             hwm_entry, trail_alert = check_trail_stop(
-                isin, cur_nav, buy_price, hwm_data, today_str
+                isin, cur_nav, buy_price, hwm_data, today_str, TRAIL_STOP_PCT
             )
             hwm_data[isin] = hwm_entry
             if trail_alert:
@@ -289,13 +154,12 @@ def build_weekly():
             'rsi':             rsi,
             'buy_price':       buy_price if is_active else None,
             'curr_price':      cur_nav,
-            # Trail stop info til tabellen (None hvis ingen advarsel)
             'trail_alert':     trail_alert,
             'hwm':             hwm_data.get(isin, {}).get('hwm') if is_active else None,
             'hwm_date':        hwm_data.get(isin, {}).get('hwm_date') if is_active else None,
         })
 
-    # Gem opdaterede HWM (deles med monthly)
+    # Gem opdaterede HWM (deles med daily og monthly)
     save_high_water_marks(hwm_data)
 
     # --- AGGREGEREDE DATA ---
@@ -306,14 +170,12 @@ def build_weekly():
 
     chart_data = sorted(rows, key=lambda x: x['momentum'], reverse=True)[:10]
 
-    # Ugentlige kursfald-alarmer (> 3% ned på ugen)
     portfolio_alerts = [
         {'msg': '⚠️ Kraftigt fald', 'name': r['name'], 'change': r['week_change_pct']}
         for r in rows
         if r['is_active'] and r['week_change_pct'] < -3.0
     ]
 
-    # Markedsmuligheder: ikke ejet, positivt momentum, BULL trend
     market_opportunities = [
         r for r in rows
         if not r['is_active'] and r['momentum'] > 2.0 and r['trend_state'] == "BULL"
