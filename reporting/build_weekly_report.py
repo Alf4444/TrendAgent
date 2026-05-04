@@ -10,6 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from utils import (
     get_ma, get_best_ma, get_rsi,
     calculate_drawdown, calculate_ytd,
+    get_cross_signal, get_trend_state,
     check_trail_stop, is_trading_day,
 )
 
@@ -108,9 +109,18 @@ def build_weekly():
 
         trend_state = "BULL" if momentum > 0 else "BEAR"
 
-        ytd = calculate_ytd(p_dict)
-        dd  = calculate_drawdown(p_list)
-        rsi = get_rsi(p_list, 14)
+        ytd   = calculate_ytd(p_dict)
+        dd    = calculate_drawdown(p_list)
+        rsi   = get_rsi(p_list, 14)
+        cross = get_cross_signal(p_list)
+
+        # RSI-alert — bruges kun som badge på aktive fonde i tabellen
+        rsi_alert = None
+        if rsi is not None:
+            if rsi >= 70:
+                rsi_alert = "overkøbt"
+            elif rsi <= 30:
+                rsi_alert = "oversolgt"
 
         # Total afkast fra køb (hvis aktiv) eller fra tidligste historik
         if is_active and isin in portfolio:
@@ -152,6 +162,8 @@ def build_weekly():
             'drawdown':        float(dd),
             'is_active':       is_active,
             'rsi':             rsi,
+            'rsi_alert':       rsi_alert,
+            'cross_20_50':     cross,
             'buy_price':       buy_price if is_active else None,
             'curr_price':      cur_nav,
             'trail_alert':     trail_alert,
