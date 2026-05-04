@@ -101,69 +101,47 @@ def parse_pfa_from_text(pfa_id, text):
         except Exception:
             return None
 
-    # Find afkast-sektionen: fra første "Afkast 1 uge" til "Sharpe" eller slutningen
-    # OBS: Tallene kommer EFTER "Omkostninger"-sektionen i PFA's PDF-layout,
-    # så vi må ikke stoppe ved "Omkostninger" — vi stopper ved "Sharpe" eller "Største"
-    afkast_section_m = re.search(
-        r"Afkast\s+1\s+uge.*?Afdeling.*?Afdeling(.*?)(?:Sharpe|Største\s+beholdninger|\Z)",
+    # STRATEGI: Find de to "Afdeling"-rækker direkte med MULTILINE regex.
+    # PDF-layout i txt-filen:
+    #   Afdeling  -0,28%  0,75%  -0,38%  -0,33%    ← RÆKKE 1: 1uge, 1md, 3md, 6md
+    #   Benchmark ...
+    #   Afdeling  -0,28%  0,99%  10,47%  -2,80%    ← RÆKKE 2: ÅTD, 1år, 3år, 5år
+    #
+    # Gammel regex fangede kun tekst EFTER anden "Afdeling" og fik derfor
+    # kun ÅTD-rækken — og tildelte den forkerte feltnavne.
+
+    # OBS: pdfplumber indsætter sommetider et sidetal foran "Afdeling"
+    # fx "100 Afdeling -0,28% ..." — regex tillader derfor valgfrit præfiks
+    afdeling_rows = re.findall(
+        r"^(?:\d+\s+)?Afdeling\s+([-\d,\s%]+)",
         text,
-        re.DOTALL | re.IGNORECASE
+        re.MULTILINE | re.IGNORECASE
     )
 
-    if afkast_section_m:
-        tail = afkast_section_m.group(1)
-        # Filtrer omkostningslinjer fra — de indeholder typisk meget lave tal (0-2)
-        # Afkasttal er enten negative eller positive og typisk ikke 0,00
-        # Vi finder kun tal der IKKE er på linjer med "omkostninger", "gebyr" eller "ÅOP"
-        clean_lines = []
-        for line in tail.split('\n'):
-            line_lower = line.lower()
-            if any(w in line_lower for w in ['omkostning', 'gebyr', 'åop', 'transaktions', 'oprettelses', 'udtrædelses']):
-                continue
-            clean_lines.append(line)
-        clean_tail = '\n'.join(clean_lines)
-        all_vals = re.findall(r"(-?\d+,\d+)", clean_tail)
+    if len(afdeling_rows) >= 2:
+        row1_vals = re.findall(r"(-?\d+,\d+)", afdeling_rows[0])
+        row2_vals = re.findall(r"(-?\d+,\d+)", afdeling_rows[1])
 
-        # Forventet rækkefølge: 1w, 1m, 3m, 6m, ytd, 1y, 3y, 5y
-        keys = [
-            "return_1w", "return_1m", "return_3m", "return_6m",
-            "return_ytd", "return_1y",
-            # 3y og 5y ignoreres (ikke brugt endnu)
-        ]
-        for i, key in enumerate(keys):
-            if i < len(all_vals):
-                data[key] = to_float(all_vals[i])
+        r1_keys = ["return_1w", "return_1m", "return_3m", "return_6m"]
+        for i, key in enumerate(r1_keys):
+            if i < len(row1_vals):
+                data[key] = to_float(row1_vals[i])
+
+        if len(row2_vals) >= 1:
+            data["return_ytd"] = to_float(row2_vals[0])
+        if len(row2_vals) >= 2:
+            data["return_1y"] = to_float(row2_vals[1])
+
+    elif len(afdeling_rows) == 1:
+        row1_vals = re.findall(r"(-?\d+,\d+)", afdeling_rows[0])
+        r1_keys = ["return_1w", "return_1m", "return_3m", "return_6m"]
+        for i, key in enumerate(r1_keys):
+            if i < len(row1_vals):
+                data[key] = to_float(row1_vals[i])
 
     else:
-        # --- FALLBACK STRATEGI ---
-        # Bruges hvis PDF-layoutet afviger (fx nyere fonde med færre data).
-        # Vi finder de to "Afdeling"-blokke separat og udtrækker tal fra dem.
-
-        # Find alle forekomster af "Afdeling" og hvad der følger
-        afdeling_matches = list(re.finditer(r"Afdeling\s+([-?\d\.,\s%]+)", text))
-
-        if len(afdeling_matches) >= 2:
-            row1_vals = re.findall(r"(-?\d+,\d+)", afdeling_matches[0].group(1))
-            row2_vals = re.findall(r"(-?\d+,\d+)", afdeling_matches[1].group(1))
-
-            # Række 1: 1 uge, 1 md., 3 md., 6 md.
-            r1_keys = ["return_1w", "return_1m", "return_3m", "return_6m"]
-            for i, key in enumerate(r1_keys):
-                if i < len(row1_vals):
-                    data[key] = to_float(row1_vals[i])
-
-            # Række 2: ÅTD, 1 år (3 år og 5 år ignoreres)
-            if len(row2_vals) >= 1:
-                data["return_ytd"] = to_float(row2_vals[0])
-            if len(row2_vals) >= 2:
-                data["return_1y"] = to_float(row2_vals[1])
-
-        elif len(afdeling_matches) == 1:
-            # Kun én blok — tag hvad vi kan (række 1 kun)
-            raw_vals = re.findall(r"(-?\d+,\d+)", afdeling_matches[0].group(1))
-            r1_keys = ["return_1w", "return_1m", "return_3m", "return_6m"]
-            for i, key in enumerate(r1_keys):
-                if i < len(raw_vals):
-                    data[key] = to_float(raw_vals[i])
+        # Ingen "Afdeling"-rækker fundet — fonden har sandsynligvis
+        # et anderledes PDF-layout. Data forbliver None.
+        print(f"[ADVARSEL] Ingen afkastdata fundet for {pfa_id}")
 
     return data
