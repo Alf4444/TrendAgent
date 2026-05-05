@@ -39,7 +39,27 @@ SPEJDER_FILE   = ROOT / "data/etf_spejder_hits.json"
 TEMPLATE_FILE  = ROOT / "templates/etf_weekly.html.j2"
 REPORT_FILE    = ROOT / "build/etf_weekly.html"
 
-TRAIL_STOP_PCT = 3.0
+TRAIL_STOP_PCT = 3.0  # Default — overrides af volatilitet per fond
+
+def get_trail_stop_pct(volatility):
+    """
+    Beregner variabelt Trail Stop baseret på fondens volatilitet.
+    Høj volatilitet = løsere stop (undgår falske alarmer).
+    Lav volatilitet = strammere stop (beskytter gevinster tæt).
+
+    Volatilitet er 20-dages standardafvigelse af daglige afkast i %.
+      < 1.0%  → 3% stop  (fx obligationer, lav-vol fonde)
+      1-2%    → 5% stop  (fx brede aktieindeks)
+      > 2.0%  → 7% stop  (fx Korea, Hydrogen, Halvledere)
+    """
+    if volatility is None:
+        return TRAIL_STOP_PCT
+    if volatility < 1.0:
+        return 3.0
+    elif volatility < 2.0:
+        return 5.0
+    else:
+        return 7.0
 
 # Spejder-filtre
 
@@ -180,8 +200,10 @@ def build_weekly():
         # --- TRAIL STOP (kun aktive) ---
         trail_alert = None
         if is_active and buy_price and cur_nav:
+            etf_vol    = item.get('volatility') if 'item' in dir() else None
+            trail_pct  = get_trail_stop_pct(etf_vol)
             hwm_entry, trail_alert = check_trail_stop(
-                isin, cur_nav, buy_price, hwm_data, today_str, TRAIL_STOP_PCT
+                isin, cur_nav, buy_price, hwm_data, today_str, trail_pct
             )
             hwm_data[isin] = hwm_entry
             if trail_alert:
