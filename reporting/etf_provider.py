@@ -282,6 +282,10 @@ def main():
         # Gem opdateret historik
         history[isin] = existing
 
+        # Beregn volatilitet (20-dages standardafvigelse af daglige afkast)
+        prices_list = [existing[d] for d in sorted(existing.keys())]
+        volatility  = get_volatility(prices_list, 20)
+
         # Beregn afkasttal fra historik
         return_1w  = calculate_return(existing, 7)
         return_1m  = calculate_return(existing, 30)
@@ -308,6 +312,7 @@ def main():
             "return_6m":   return_6m,
             "return_1y":   return_1y,
             "return_ytd":  return_ytd,
+            "volatility":  volatility,
             "data_points": len(existing),
         })
 
