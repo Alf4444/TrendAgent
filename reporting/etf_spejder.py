@@ -1,0 +1,396 @@
+"""
+etf_spejder.py — Automatisk ETF-screener for TrendAgent
+=========================================================
+Henter alle UCITS ETF'er fra justETF, filtrerer og scorer dem
+baseret på momentum-signaler. Gemmer top-kandidater til
+data/etf_spejder_hits.json som bruges af etf_weekly.html.
+
+Køres som del af etf_weekly workflow (lørdag).
+
+Krav til en kandidat:
+  - UCITS long-only ETF handlet på Xetra
+  - Akkumulerende (ingen løbende udbytteskat)
+  - Min. 50M EUR AUM (likviditet)
+  - Maks 1.0% TER
+  - BULL-trend (kurs over MA)
+  - Positiv momentum
+
+Scoring (0-6 point):
+  +2  Momentum > 5% over bedste MA
+  +2  Golden Cross (MA20 krydser MA50 opad)
+  +1  RSI under 70 (ikke overkøbt)
+  +1  1M afkast positiv
+"""
+
+import json
+import sys
+import time
+from pathlib import Path
+from datetime import datetime
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+try:
+    import justetf_scraping
+except ImportError:
+    print("❌ justetf_scraping ikke installeret.")
+    print("   Kør: pip install git+https://github.com/druzsan/justetf-scraping.git")
+    sys.exit(1)
+
+try:
+    import yfinance as yf
+except ImportError:
+    print("❌ yfinance ikke installeret. Kør: pip install yfinance")
+    sys.exit(1)
+
+from utils import get_ma, get_best_ma, get_rsi, get_cross_signal, get_trend_state
+
+# ==========================================
+# KONFIGURATION
+# ==========================================
+ROOT             = Path(__file__).resolve().parents[1]
+WATCHLIST_FILE   = ROOT / "config/etf_watchlist.json"
+PORTFOLIO_FILE   = ROOT / "config/etf_portfolio.json"
+HITS_FILE        = ROOT / "data/etf_spejder_hits.json"
+
+# Filtre
+MIN_AUM_EUR      = 50_000_000   # Min 50M EUR
+MAX_TER          = 1.0          # Maks 1% TER
+REQUIRE_ACC      = True         # Kun akkumulerende
+
+# Scoring
+MIN_SCORE        = 2            # Minimum score for at komme med
+MIN_MOMENTUM_PCT = 5.0          # Min % over MA
+MAX_RSI          = 70           # Ikke overkøbt
+MAX_CANDIDATES   = 15           # Max antal kandidater i output
+
+# Pause mellem yfinance-kald for at undgå rate limiting
+YFINANCE_DELAY   = 0.3
+
+
+# ==========================================
+# HJÆLPEFUNKTIONER
+# ==========================================
+
+def load_json(path, default):
+    if not path.exists():
+        return default
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            # Filtrer kommentar-felter
+            if isinstance(data, dict):
+                return {k: v for k, v in data.items() if not k.startswith('_')}
+            return data
+    except Exception as e:
+        print(f"⚠️  Kunne ikke læse {path}: {e}")
+        return default
+
+def save_json(path, data):
+    path.parent.mkdir(exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+
+def get_yfinance_ticker(isin, name):
+    """
+    Konverterer ISIN til yfinance ticker.
+    Forsøger først ISIN direkte, derefter navnesøgning.
+    Returnerer ticker-streng eller None.
+    """
+    # Strategi 1: Søg via yfinance search
+    try:
+        results = yf.Search(isin, max_results=3)
+        if hasattr(results, 'quotes') and results.quotes:
+            for q in results.quotes:
+                ticker = q.get('symbol', '')
+                # Foretræk .DE (Xetra) tickers
+                if ticker.endswith('.DE'):
+                    return ticker
+            # Tag første resultat hvis ingen .DE
+            return results.quotes[0].get('symbol')
+    except Exception:
+        pass
+
+    # Strategi 2: Konstruer ticker fra ISIN via justETF
+    # justETF ISIN-profil indeholder typisk ticker-info
+    return None
+
+
+def fetch_prices(ticker, months=12):
+    """
+    Henter historiske kurser via yfinance.
+    Returnerer liste af daglige lukningskurser (nyeste sidst).
+    """
+    try:
+        t = yf.Ticker(ticker)
+        hist = t.history(period=f"{months}mo", auto_adjust=True)
+        if hist.empty:
+            return []
+        return [round(float(p), 4) for p in hist['Close'].dropna().tolist()]
+    except Exception:
+        return []
+
+
+# ==========================================
+# HENT UNIVERSE FRA JUSTÉTF
+# ==========================================
+
+def fetch_universe():
+    """
+    Henter alle relevante ETF'er fra justETF.
+    Filtrerer på AUM, TER og type.
+    Returnerer DataFrame med ISIN, navn, afkast, TER osv.
+    """
+    print("📡 Henter ETF-univers fra justETF...")
+
+    try:
+        df = justetf_scraping.load_overview(strategy="epg-longOnly")
+        print(f"   Hentet {len(df)} ETF'er i alt")
+    except Exception as e:
+        print(f"❌ justETF fejlede: {e}")
+        return None
+
+    # Filtrer på tilgængelige kolonner
+    print(f"   Tilgængelige kolonner: {list(df.columns)}")
+
+    # AUM filter
+    if 'fundSize' in df.columns:
+        df = df[df['fundSize'] >= MIN_AUM_EUR]
+        print(f"   Efter AUM-filter (>{MIN_AUM_EUR/1e6:.0f}M EUR): {len(df)} ETF'er")
+    elif 'aum' in df.columns:
+        df = df[df['aum'] >= MIN_AUM_EUR]
+        print(f"   Efter AUM-filter: {len(df)} ETF'er")
+
+    # TER filter
+    ter_col = next((c for c in ['ter', 'totalExpenseRatio'] if c in df.columns), None)
+    if ter_col:
+        df = df[df[ter_col].notna() & (df[ter_col] <= MAX_TER)]
+        print(f"   Efter TER-filter (<={MAX_TER}%): {len(df)} ETF'er")
+
+    # Akkumulerende filter
+    if REQUIRE_ACC and 'distributionPolicy' in df.columns:
+        df = df[df['distributionPolicy'].str.lower().str.contains('acc|accumul', na=False)]
+        print(f"   Efter akkumulerende-filter: {len(df)} ETF'er")
+    elif REQUIRE_ACC and 'incomeType' in df.columns:
+        df = df[df['incomeType'].str.lower().str.contains('acc|accumul', na=False)]
+        print(f"   Efter akkumulerende-filter: {len(df)} ETF'er")
+
+    print(f"   Endeligt univers: {len(df)} ETF'er")
+    return df
+
+
+# ==========================================
+# SCORE EN ETF
+# ==========================================
+
+def score_etf(isin, name, row, prices, is_owned, is_watchlist):
+    """
+    Beregner Spejder-score baseret på tekniske signaler.
+    Returnerer score-dict eller None hvis ikke kvalificeret.
+    """
+    if len(prices) < 20:
+        return None
+
+    ma_val, ma_label = get_best_ma(prices)
+    if not ma_val:
+        return None
+
+    curr = prices[-1]
+    momentum = round(((curr / ma_val) - 1) * 100, 2)
+    trend    = get_trend_state(prices)
+    rsi      = get_rsi(prices, 14)
+    cross    = get_cross_signal(prices)
+
+    # Kræv BULL-trend og positiv momentum
+    if trend != "BULL" or momentum < MIN_MOMENTUM_PCT:
+        return None
+
+    # Beregn score
+    score   = 0
+    reasons = []
+
+    # Momentum
+    score += 2
+    reasons.append(f"Momentum +{momentum:.1f}% over {ma_label}")
+
+    # Golden Cross
+    if cross == "🚀 GOLDEN":
+        score += 2
+        reasons.append("Golden Cross — MA20 krydser MA50 opad")
+
+    # RSI ikke overkøbt
+    if rsi is not None and rsi < MAX_RSI:
+        score += 1
+        reasons.append(f"RSI {rsi:.0f} — ikke overkøbt")
+    elif rsi is None:
+        score += 1  # Ingen data er ikke diskvalificerende
+
+    # 1M afkast
+    return_1m = row.get('month1') or row.get('return1month') or row.get('1m')
+    if return_1m and float(return_1m) > 0:
+        score += 1
+        reasons.append(f"1M afkast: +{float(return_1m):.1f}%")
+
+    if score < MIN_SCORE:
+        return None
+
+    return {
+        "isin":        isin,
+        "name":        name,
+        "ticker":      row.get('_ticker', ''),
+        "score":       score,
+        "momentum":    momentum,
+        "ma_label":    ma_label,
+        "trend":       trend,
+        "rsi":         round(rsi, 1) if rsi else None,
+        "cross":       cross,
+        "return_1m":   round(float(return_1m), 2) if return_1m else None,
+        "return_1y":   round(float(row.get('year1', 0) or 0), 2),
+        "ter":         round(float(row.get('ter') or row.get('totalExpenseRatio') or 0), 2),
+        "is_owned":    is_owned,
+        "is_watchlist": is_watchlist,
+        "reasons":     reasons,
+        "scanned_at":  datetime.now().strftime('%Y-%m-%d %H:%M'),
+    }
+
+
+# ==========================================
+# HOVEDFUNKTION
+# ==========================================
+
+def main():
+    print("\n" + "="*55)
+    print("🛰️  ETF SPEJDER — Automatisk Screening")
+    print("="*55)
+
+    # Indlæs kendte fonde
+    watchlist = load_json(WATCHLIST_FILE, {})
+    portfolio = load_json(PORTFOLIO_FILE, {})
+
+    owned_isins     = {isin for isin, p in portfolio.items() if p.get('active', False)}
+    watchlist_isins = set(watchlist.keys())
+
+    print(f"📋 Kendte fonde: {len(watchlist_isins)} watchlist, {len(owned_isins)} ejede")
+
+    # Hent univers
+    df = fetch_universe()
+    if df is None or len(df) == 0:
+        print("❌ Ingen ETF'er at scanne")
+        return
+
+    # Konverter til liste af dicts
+    records = df.to_dict('records')
+
+    # Identificer ISIN-kolonne
+    isin_col = next((c for c in ['isin', 'ISIN', 'id'] if c in df.columns), None)
+    name_col = next((c for c in ['name', 'longName', 'shortName', 'title'] if c in df.columns), None)
+
+    if not isin_col:
+        print(f"❌ Ingen ISIN-kolonne fundet. Kolonner: {list(df.columns)}")
+        return
+
+    print(f"\n🔍 Scanner {len(records)} ETF'er for signaler...")
+    print(f"   Bruger ISIN-kolonne: '{isin_col}', Navn-kolonne: '{name_col}'")
+
+    candidates = []
+    processed  = 0
+    skipped    = 0
+    errors     = 0
+
+    # Sorter: ejede og watchlist-fonde scannes altid
+    # Resten sorteres på 1Y afkast så vi scanner de stærkeste først
+    year1_col = next((c for c in ['year1', 'return1year', '1y'] if c in df.columns), None)
+    if year1_col:
+        records = sorted(records, key=lambda x: float(x.get(year1_col) or 0), reverse=True)
+
+    for i, row in enumerate(records):
+        isin = str(row.get(isin_col, '')).strip()
+        name = str(row.get(name_col, isin)).strip() if name_col else isin
+
+        if not isin:
+            continue
+
+        is_owned     = isin in owned_isins
+        is_watchlist = isin in watchlist_isins
+
+        # Brug eksisterende ticker fra watchlist hvis tilgængelig
+        ticker = watchlist.get(isin, {}).get('ticker', '')
+
+        # Ellers forsøg at finde ticker
+        if not ticker:
+            ticker = get_yfinance_ticker(isin, name)
+            if not ticker:
+                skipped += 1
+                continue
+            time.sleep(YFINANCE_DELAY)
+
+        row['_ticker'] = ticker
+
+        # Hent kurser
+        prices = fetch_prices(ticker, months=12)
+        if len(prices) < 20:
+            skipped += 1
+            continue
+
+        time.sleep(YFINANCE_DELAY)
+
+        # Score
+        result = score_etf(isin, name, row, prices, is_owned, is_watchlist)
+        if result:
+            candidates.append(result)
+
+        processed += 1
+
+        # Status hvert 25. ETF
+        if (i + 1) % 25 == 0:
+            print(f"   [{i+1}/{len(records)}] Scannet: {processed}, Kandidater: {len(candidates)}")
+
+        # Stop tidligt hvis vi har nok kandidater og har scannet alle prioriterede
+        if len(candidates) >= MAX_CANDIDATES * 3 and i > 100:
+            print(f"   Nok kandidater fundet — stopper tidligt ved {i+1} ETF'er")
+            break
+
+    # Sortér på score + momentum
+    candidates.sort(key=lambda x: (x['score'], x['momentum']), reverse=True)
+
+    # Top kandidater
+    top = candidates[:MAX_CANDIDATES]
+
+    # Gem hits
+    output = {
+        "_scanned_at":   datetime.now().strftime('%Y-%m-%d %H:%M'),
+        "_total_scanned": processed,
+        "_total_hits":   len(candidates),
+        "_filters": {
+            "min_aum_eur":    MIN_AUM_EUR,
+            "max_ter":        MAX_TER,
+            "min_momentum":   MIN_MOMENTUM_PCT,
+            "max_rsi":        MAX_RSI,
+            "min_score":      MIN_SCORE,
+        },
+        "hits": top,
+    }
+
+    save_json(HITS_FILE, output)
+
+    print(f"\n{'='*55}")
+    print(f"✅ Spejder færdig")
+    print(f"   Scannet: {processed} ETF'er")
+    print(f"   Sprunget over: {skipped} (ingen ticker)")
+    print(f"   Kandidater: {len(candidates)}")
+    print(f"   Top {len(top)} gemt til {HITS_FILE.name}")
+    print()
+
+    if top:
+        print("🏆 Top kandidater:")
+        for h in top[:5]:
+            owned_tag = " ⭐" if h['is_owned'] else ""
+            watch_tag = " 👁" if h['is_watchlist'] else ""
+            print(f"  [{h['score']}pt] {h['name'][:40]}{owned_tag}{watch_tag}")
+            print(f"       Momentum: +{h['momentum']}%, RSI: {h['rsi']}, Cross: {h['cross']}")
+
+    print(f"{'='*55}\n")
+
+
+if __name__ == "__main__":
+    main()
