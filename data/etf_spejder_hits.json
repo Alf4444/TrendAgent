@@ -1,7 +1,7 @@
 {
-  "_scanned_at": "2026-05-05 13:56",
-  "_total_scanned": 0,
-  "_total_hits": 0,
+  "_scanned_at": "2026-05-05 14:05",
+  "_total_scanned": 97,
+  "_total_hits": 80,
   "_filters": {
     "min_aum_eur": 50000000,
     "max_ter": 1.0,
@@ -9,5 +9,336 @@
     "max_rsi": 70,
     "min_score": 2
   },
-  "hits": []
+  "hits": [
+    {
+      "isin": "IUSN.DE",
+      "name": "iShares MSCI World Small Cap UCITS ETF",
+      "ticker": "IUSN.DE",
+      "score": 4,
+      "momentum": 10.03,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 65.1,
+      "cross": "–",
+      "return_1m": 5.56,
+      "return_1y": 30.14,
+      "ter": 0.35,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +10.0% over MA200",
+        "RSI 65 — ikke overkøbt",
+        "1M afkast: +5.6%"
+      ],
+      "scanned_at": "2026-05-05 14:05"
+    },
+    {
+      "isin": "LCUJ.DE",
+      "name": "Amundi Core MSCI Japan UCITS ETF Acc",
+      "ticker": "LCUJ.DE",
+      "score": 4,
+      "momentum": 8.77,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 50.7,
+      "cross": "–",
+      "return_1m": 2.36,
+      "return_1y": 25.82,
+      "ter": 0.12,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +8.8% over MA200",
+        "RSI 51 — ikke overkøbt",
+        "1M afkast: +2.4%"
+      ],
+      "scanned_at": "2026-05-05 14:05"
+    },
+    {
+      "isin": "SPY4.DE",
+      "name": "State Street SPDR S&P 400 U.S. Mid Cap UCITS ETF USD Unhedged (Acc)",
+      "ticker": "SPY4.DE",
+      "score": 4,
+      "momentum": 8.64,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 65.2,
+      "cross": "–",
+      "return_1m": 5.02,
+      "return_1y": 20.92,
+      "ter": 0.3,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +8.6% over MA200",
+        "RSI 65 — ikke overkøbt",
+        "1M afkast: +5.0%"
+      ],
+      "scanned_at": "2026-05-05 14:05"
+    },
+    {
+      "isin": "VGWD.DE",
+      "name": "Vanguard FTSE All-World High Dividend Yield UCITS ETF Distributing",
+      "ticker": "VGWD.DE",
+      "score": 4,
+      "momentum": 8.61,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 53.2,
+      "cross": "–",
+      "return_1m": 1.6,
+      "return_1y": 23.79,
+      "ter": 0.29,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +8.6% over MA200",
+        "RSI 53 — ikke overkøbt",
+        "1M afkast: +1.6%"
+      ],
+      "scanned_at": "2026-05-05 14:05"
+    },
+    {
+      "isin": "DBXJ.DE",
+      "name": "Xtrackers MSCI Japan UCITS ETF 1C",
+      "ticker": "DBXJ.DE",
+      "score": 4,
+      "momentum": 8.6,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 50.8,
+      "cross": "–",
+      "return_1m": 2.39,
+      "return_1y": 25.28,
+      "ter": 0.12,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +8.6% over MA200",
+        "RSI 51 — ikke overkøbt",
+        "1M afkast: +2.4%"
+      ],
+      "scanned_at": "2026-05-05 14:05"
+    },
+    {
+      "isin": "EUNN.DE",
+      "name": "iShares Core MSCI Japan IMI UCITS ETF",
+      "ticker": "EUNN.DE",
+      "score": 4,
+      "momentum": 8.55,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 49.0,
+      "cross": "–",
+      "return_1m": 1.67,
+      "return_1y": 25.49,
+      "ter": 0.12,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +8.6% over MA200",
+        "RSI 49 — ikke overkøbt",
+        "1M afkast: +1.7%"
+      ],
+      "scanned_at": "2026-05-05 14:05"
+    },
+    {
+      "isin": "LYBK.DE",
+      "name": "Amundi Euro Stoxx Banks UCITS ETF Acc",
+      "ticker": "LYBK.DE",
+      "score": 4,
+      "momentum": 6.93,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 39.8,
+      "cross": "–",
+      "return_1m": 4.44,
+      "return_1y": 40.07,
+      "ter": 0.3,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +6.9% over MA200",
+        "RSI 40 — ikke overkøbt",
+        "1M afkast: +4.4%"
+      ],
+      "scanned_at": "2026-05-05 14:05"
+    },
+    {
+      "isin": "EXUS.DE",
+      "name": "Xtrackers MSCI World ex USA UCITS ETF 1C",
+      "ticker": "EXUS.DE",
+      "score": 4,
+      "momentum": 6.77,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 44.2,
+      "cross": "–",
+      "return_1m": 2.38,
+      "return_1y": 19.79,
+      "ter": 0.15,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +6.8% over MA200",
+        "RSI 44 — ikke overkøbt",
+        "1M afkast: +2.4%"
+      ],
+      "scanned_at": "2026-05-05 14:05"
+    },
+    {
+      "isin": "LYP6.DE",
+      "name": "Amundi Core Stoxx Europe 600 UCITS ETF Acc",
+      "ticker": "LYP6.DE",
+      "score": 4,
+      "momentum": 5.65,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 41.4,
+      "cross": "–",
+      "return_1m": 1.91,
+      "return_1y": 16.17,
+      "ter": 0.07,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +5.7% over MA200",
+        "RSI 41 — ikke overkøbt",
+        "1M afkast: +1.9%"
+      ],
+      "scanned_at": "2026-05-05 14:05"
+    },
+    {
+      "isin": "EXSA.DE",
+      "name": "iShares STOXX Europe 600 UCITS ETF (DE)",
+      "ticker": "EXSA.DE",
+      "score": 4,
+      "momentum": 5.56,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 42.1,
+      "cross": "–",
+      "return_1m": 1.99,
+      "return_1y": 15.96,
+      "ter": 0.2,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +5.6% over MA200",
+        "RSI 42 — ikke overkøbt",
+        "1M afkast: +2.0%"
+      ],
+      "scanned_at": "2026-05-05 14:05"
+    },
+    {
+      "isin": "SXR7.DE",
+      "name": "iShares Core MSCI EMU UCITS ETF EUR (Acc)",
+      "ticker": "SXR7.DE",
+      "score": 4,
+      "momentum": 5.33,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 43.0,
+      "cross": "–",
+      "return_1m": 2.45,
+      "return_1y": 15.49,
+      "ter": 0.12,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +5.3% over MA200",
+        "RSI 43 — ikke overkøbt",
+        "1M afkast: +2.5%"
+      ],
+      "scanned_at": "2026-05-05 14:05"
+    },
+    {
+      "isin": "XMEU.DE",
+      "name": "Xtrackers MSCI Europe UCITS ETF 1C",
+      "ticker": "XMEU.DE",
+      "score": 4,
+      "momentum": 5.29,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 40.8,
+      "cross": "–",
+      "return_1m": 1.91,
+      "return_1y": 15.31,
+      "ter": 0.12,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +5.3% over MA200",
+        "RSI 41 — ikke overkøbt",
+        "1M afkast: +1.9%"
+      ],
+      "scanned_at": "2026-05-05 14:05"
+    },
+    {
+      "isin": "EUNK.DE",
+      "name": "iShares Core MSCI Europe UCITS ETF EUR (Acc)",
+      "ticker": "EUNK.DE",
+      "score": 4,
+      "momentum": 5.23,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 41.1,
+      "cross": "–",
+      "return_1m": 1.77,
+      "return_1y": 15.5,
+      "ter": 0.12,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +5.2% over MA200",
+        "RSI 41 — ikke overkøbt",
+        "1M afkast: +1.8%"
+      ],
+      "scanned_at": "2026-05-05 14:05"
+    },
+    {
+      "isin": "IQQY.DE",
+      "name": "iShares Core MSCI Europe UCITS ETF EUR (Dist)",
+      "ticker": "IQQY.DE",
+      "score": 4,
+      "momentum": 5.23,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 39.9,
+      "cross": "–",
+      "return_1m": 1.75,
+      "return_1y": 15.37,
+      "ter": 0.12,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +5.2% over MA200",
+        "RSI 40 — ikke overkøbt",
+        "1M afkast: +1.8%"
+      ],
+      "scanned_at": "2026-05-05 14:05"
+    },
+    {
+      "isin": "XDEW.DE",
+      "name": "Xtrackers S&P 500 Equal Weight UCITS ETF 1C",
+      "ticker": "XDEW.DE",
+      "score": 4,
+      "momentum": 5.2,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 66.1,
+      "cross": "–",
+      "return_1m": 3.55,
+      "return_1y": 15.79,
+      "ter": 0.15,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +5.2% over MA200",
+        "RSI 66 — ikke overkøbt",
+        "1M afkast: +3.5%"
+      ],
+      "scanned_at": "2026-05-05 14:05"
+    }
+  ]
 }
