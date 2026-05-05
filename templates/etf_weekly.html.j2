@@ -136,44 +136,76 @@
   </div>
   {% endif %}
 
-  <!-- SPEJDEREN -->
-  {% if spejder_hits %}
-  <div class="spejder-box">
-    <div class="spejder-title">
-      🛰️ Spejderens Top-Kandidater
-      {% if spejder_meta %}
-        <span style="font-size:11px; font-weight:normal; color:#888; margin-left:10px;">
-          Scannet {{ spejder_meta.total_scanned }} ETF'er · {{ spejder_meta.total_hits }} hits · {{ spejder_meta.scanned_at }}
-        </span>
-      {% endif %}
-    </div>
-    <div style="font-size:11px; color:#888; margin-bottom:10px;">
-      ⭐ = du ejer allerede &nbsp;·&nbsp; 👁 = på din watchlist &nbsp;·&nbsp; Ny = ikke set før
+  <!-- SPEJDER META -->
+  {% if spejder_meta and spejder_meta.scanned_at %}
+  <div style="font-size:11px; color:#888; margin-bottom:8px; padding: 6px 0;">
+    🛰️ Spejder scannede {{ spejder_meta.total_scanned }} ETF'er · {{ spejder_meta.hurtige_hits }} hurtige · {{ spejder_meta.stabile_hits }} stabile · {{ spejder_meta.scanned_at }}
+    &nbsp;·&nbsp; ⭐ ejet &nbsp;·&nbsp; 👁 watchlist &nbsp;·&nbsp; 🆕 ny
+  </div>
+  {% endif %}
+
+  <!-- SPEJDER: HURTIGE HESTE -->
+  {% if spejder_hurtige %}
+  <div class="spejder-box" style="border-left-color: #e53935; background: white;">
+    <div class="spejder-title" style="color: #e53935;">
+      🚀 Hurtige Heste — Momentum &gt;20% eller 1Y &gt;50%
+      <span style="font-size:11px; font-weight:normal; color:#888; margin-left:8px;">Høj risiko · Kræver aktiv overvågning · HWM passer på dig</span>
     </div>
     <div class="spejder-grid">
-      {% for s in spejder_hits %}
-      <div class="spejder-card {{ 'golden' if s.cross == '🚀 GOLDEN' else '' }}"
-           style="{{ 'border-color: #f59c00; background: #fffdf0;' if s.is_owned else 'border-color: #4ecdc4; background: #f0fdfa;' if s.is_watchlist else '' }}">
+      {% for s in spejder_hurtige %}
+      <div class="spejder-card" style="border-color: #e53935; background: #fff5f5;">
         <div class="spejder-name">
           {{ '⭐ ' if s.is_owned else '👁 ' if s.is_watchlist else '🆕 ' }}
-          {{ '🚀 ' if s.cross == '🚀 GOLDEN' else '' }}
-          {{ s.name[:45] }}
+          {{ '🚀 ' if s.cross == '🚀 GOLDEN' else '' }}{{ s.name[:45] }}
         </div>
-        <div class="spejder-ticker">
-          {{ s.ticker }}
-          <span style="margin-left:6px; background:#e8f4fd; color:#1565c0; padding:1px 6px; border-radius:8px; font-size:10px;">
+        <div class="spejder-ticker">{{ s.ticker }}
+          <span style="margin-left:6px; background:#fce8e6; color:#c62828; padding:1px 6px; border-radius:8px; font-size:10px;">
+            Score: {{ s.score }}pt
+          </span>
+          {% if s.rsi and s.rsi >= 70 %}
+          <span style="margin-left:4px; background:#d93025; color:white; padding:1px 6px; border-radius:8px; font-size:10px;">RSI {{ '%.0f'|format(s.rsi) }} ⚠️</span>
+          {% endif %}
+        </div>
+        <div class="spejder-stats">
+          <div class="spejder-stat">Momentum: <span class="val" style="color:#e53935;">+{{ s.momentum }}%</span></div>
+          <div class="spejder-stat">1Y: <span class="val" style="color:#e53935;">{{ '%+.1f'|format(s.return_1y) if s.return_1y is not none else '–' }}%</span></div>
+          <div class="spejder-stat">1M: <span class="val">{{ '%+.1f'|format(s.return_1m) if s.return_1m is not none else '–' }}%</span></div>
+          {% if s.rsi %}<div class="spejder-stat">RSI: <span class="val" style="color: {{ '#d93025' if s.rsi >= 70 else '#555' }}">{{ '%.0f'|format(s.rsi) }}</span></div>{% endif %}
+        </div>
+        <div class="spejder-reasons">{% for r in s.reasons %}<span>✓ {{ r }}</span>{% endfor %}</div>
+        {% if s.ter %}<div style="font-size:10px; color:#aaa; margin-top:4px;">TER: {{ s.ter }}%</div>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- SPEJDER: STABILE TRENDERE -->
+  {% if spejder_stabile %}
+  <div class="spejder-box" style="border-left-color: #4ecdc4; background: white;">
+    <div class="spejder-title" style="color: #0d9488;">
+      📈 Stabile Trendere — Momentum 5-20%, RSI &lt;70
+      <span style="font-size:11px; font-weight:normal; color:#888; margin-left:8px;">Lavere risiko · Langsigtet momentum · HWM holder øje</span>
+    </div>
+    <div class="spejder-grid">
+      {% for s in spejder_stabile %}
+      <div class="spejder-card" style="border-color: #4ecdc4; background: #f0fdfa;">
+        <div class="spejder-name">
+          {{ '⭐ ' if s.is_owned else '👁 ' if s.is_watchlist else '🆕 ' }}
+          {{ '🚀 ' if s.cross == '🚀 GOLDEN' else '' }}{{ s.name[:45] }}
+        </div>
+        <div class="spejder-ticker">{{ s.ticker }}
+          <span style="margin-left:6px; background:#e0f2f1; color:#00695c; padding:1px 6px; border-radius:8px; font-size:10px;">
             Score: {{ s.score }}pt
           </span>
         </div>
         <div class="spejder-stats">
           <div class="spejder-stat">Momentum: <span class="val">+{{ s.momentum }}%</span></div>
           <div class="spejder-stat">1M: <span class="val">{{ '%+.1f'|format(s.return_1m) if s.return_1m is not none else '–' }}%</span></div>
-          {% if s.rsi %}<div class="spejder-stat">RSI: <span class="val" style="color: {{ '#d93025' if s.rsi >= 70 else '#1565c0' if s.rsi <= 30 else '#555' }}">{{ '%.0f'|format(s.rsi) }}</span></div>{% endif %}
-          {% if s.return_1y %}<div class="spejder-stat">1Y: <span class="val">{{ '%+.1f'|format(s.return_1y) }}%</span></div>{% endif %}
+          <div class="spejder-stat">1Y: <span class="val">{{ '%+.1f'|format(s.return_1y) if s.return_1y is not none else '–' }}%</span></div>
+          {% if s.rsi %}<div class="spejder-stat">RSI: <span class="val">{{ '%.0f'|format(s.rsi) }}</span></div>{% endif %}
         </div>
-        <div class="spejder-reasons">
-          {% for r in s.reasons %}<span>✓ {{ r }}</span>{% endfor %}
-        </div>
+        <div class="spejder-reasons">{% for r in s.reasons %}<span>✓ {{ r }}</span>{% endfor %}</div>
         {% if s.ter %}<div style="font-size:10px; color:#aaa; margin-top:4px;">TER: {{ s.ter }}%</div>{% endif %}
       </div>
       {% endfor %}
