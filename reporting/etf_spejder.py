@@ -52,6 +52,7 @@ ROOT             = Path(__file__).resolve().parents[1]
 WATCHLIST_FILE   = ROOT / "config/etf_watchlist.json"
 PORTFOLIO_FILE   = ROOT / "config/etf_portfolio.json"
 HITS_FILE        = ROOT / "data/etf_spejder_hits.json"
+PREV_HITS_FILE   = ROOT / "data/etf_spejder_prev.json"  # Forrige uges hits
 
 # Filtre
 MIN_AUM_EUR      = 50_000_000   # Min 50M EUR
@@ -395,6 +396,17 @@ def main():
             print(f"   Nok kandidater fundet — stopper tidligt ved {i+1} ETF'er")
             break
 
+    # Indlaes forrige uges hits for at finde NYE fund
+    prev_data    = load_json(PREV_HITS_FILE, {})
+    prev_tickers = {h.get('ticker', '') for h in prev_data.get('hits_hurtige', [])}
+
+    # Marker nye hurtige heste (ikke set forrige uge)
+    for c in candidates:
+        c['is_new_this_week'] = (
+            c['kategori'] == 'hurtig' and
+            c.get('ticker', '') not in prev_tickers
+        )
+
     # Del i to kategorier
     stabile = [c for c in candidates if c['kategori'] == 'stabil']
     hurtige  = [c for c in candidates if c['kategori'] == 'hurtig']
@@ -426,7 +438,13 @@ def main():
         "hits":         top_alle,
         "hits_stabile": top_stabile,
         "hits_hurtige": top_hurtige,
+        "hits_nye":     [h for h in top_hurtige if h.get('is_new_this_week', False)],
     }
+
+    # Gem nuvaerende hits som "forrige uge" til naeste kørsel
+    if HITS_FILE.exists():
+        import shutil
+        shutil.copy(HITS_FILE, PREV_HITS_FILE)
 
     save_json(HITS_FILE, output)
 
