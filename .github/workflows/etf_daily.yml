@@ -1,0 +1,38 @@
+name: ETF Daily Update
+
+on:
+  schedule:
+    # Hverdage kl. 18:30 DK (16:30 UTC) — efter børslukning i Europa
+    - cron: '30 16 * * 1-5'
+  workflow_dispatch:
+    # Tillader manuel kørsel fra GitHub Actions UI
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install requirements
+        run: |
+          pip install yfinance
+          pip install jinja2
+
+      - name: Fetch ETF Data
+        run: python reporting/etf_provider.py
+
+      - name: Commit and Push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/etf_latest.json data/etf_history.json
+          git commit -m "ETF data opdateret $(date +'%Y-%m-%d %H:%M') [skip ci]" || echo "Ingen ændringer at committe"
+          git pull --rebase origin main
+          git push
