@@ -226,10 +226,19 @@ def score_etf(isin, name, row, prices, is_owned, is_watchlist):
         score += 1  # Ingen data er ikke diskvalificerende
 
     # 1M afkast
-    return_1m = row.get('month1') or row.get('return1month') or row.get('1m')
-    if return_1m and float(return_1m) > 0:
+    # Afkast fra justETF kolonner
+    return_1m_raw = row.get('last_month') or row.get('month1') or row.get('return1month') or row.get('1m')
+    return_1y_raw = row.get('last_year')  or row.get('year1')  or row.get('return1year')  or row.get('1y')
+    ter_raw       = row.get('ter') or row.get('totalExpenseRatio') or 0
+
+    try:
+        return_1m = float(return_1m_raw) if return_1m_raw is not None else None
+    except Exception:
+        return_1m = None
+
+    if return_1m and return_1m > 0:
         score += 1
-        reasons.append(f"1M afkast: +{float(return_1m):.1f}%")
+        reasons.append(f"1M afkast: +{return_1m:.1f}%")
 
     if score < MIN_SCORE:
         return None
@@ -244,9 +253,9 @@ def score_etf(isin, name, row, prices, is_owned, is_watchlist):
         "trend":       trend,
         "rsi":         round(rsi, 1) if rsi else None,
         "cross":       cross,
-        "return_1m":   round(float(return_1m), 2) if return_1m else None,
-        "return_1y":   round(float(row.get('year1', 0) or 0), 2),
-        "ter":         round(float(row.get('ter') or row.get('totalExpenseRatio') or 0), 2),
+        "return_1m":   round(return_1m, 2) if return_1m is not None else None,
+        "return_1y":   round(float(return_1y_raw), 2) if return_1y_raw is not None else None,
+        "ter":         round(float(ter_raw), 2) if ter_raw else None,
         "is_owned":    is_owned,
         "is_watchlist": is_watchlist,
         "reasons":     reasons,
@@ -281,12 +290,18 @@ def main():
     # Konverter til liste af dicts
     records = df.to_dict('records')
 
-    # Identificer ISIN-kolonne
-    isin_col = next((c for c in ['isin', 'ISIN', 'id'] if c in df.columns), None)
-    name_col = next((c for c in ['name', 'longName', 'shortName', 'title'] if c in df.columns), None)
+    # Kolonnenavne fra justETF
+    # justETF bruger 'ticker' og 'name' — ikke 'isin'
+    isin_col   = next((c for c in ['isin', 'ISIN'] if c in df.columns), None)
+    ticker_col = next((c for c in ['ticker', 'Ticker'] if c in df.columns), None)
+    name_col   = next((c for c in ['name', 'longName', 'shortName', 'title'] if c in df.columns), None)
+    year1_col  = next((c for c in ['last_year', 'year1', 'return1year', '1y', 'last_year'] if c in df.columns), None)
+    month1_col = next((c for c in ['last_month', 'month1', 'return1month', '1m'] if c in df.columns), None)
 
-    if not isin_col:
-        print(f"❌ Ingen ISIN-kolonne fundet. Kolonner: {list(df.columns)}")
+    print(f"   Kolonner: isin={isin_col}, ticker={ticker_col}, name={name_col}, 1y={year1_col}, 1m={month1_col}")
+
+    if not ticker_col and not isin_col:
+        print(f"❌ Ingen ticker eller ISIN kolonne fundet. Kolonner: {list(df.columns)}")
         return
 
     print(f"\n🔍 Scanner {len(records)} ETF'er for signaler...")
@@ -301,7 +316,10 @@ def main():
     # Resten sorteres på 1Y afkast så vi scanner de stærkeste først
     year1_col = next((c for c in ['year1', 'return1year', '1y'] if c in df.columns), None)
     if year1_col:
-        records = sorted(records, key=lambda x: float(x.get(year1_col) or 0), reverse=True)
+        try:
+            records = sorted(records, key=lambda x: float(x.get(year1_col) or 0), reverse=True)
+        except Exception:
+            pass
 
     for i, row in enumerate(records):
         isin = str(row.get(isin_col, '')).strip()
@@ -310,21 +328,26 @@ def main():
         if not isin:
             continue
 
-        is_owned     = isin in owned_isins
-        is_watchlist = isin in watchlist_isins
+        # Hent ticker direkte fra justETF
+        ticker = str(row.get(ticker_col, '')).strip() if ticker_col else ''
 
-        # Brug eksisterende ticker fra watchlist hvis tilgængelig
-        ticker = watchlist.get(isin, {}).get('ticker', '')
+        # Konverter til Xetra format hvis nødvendigt
+        if ticker and not '.' in ticker:
+            ticker = ticker + '.DE'
 
-        # Ellers forsøg at finde ticker
+        # Brug watchlist ticker som override hvis tilgængelig
+        if isin and isin in watchlist:
+            ticker = watchlist[isin].get('ticker', ticker)
+
+        is_owned     = (isin in owned_isins) if isin else False
+        is_watchlist = (isin in watchlist_isins) if isin else (ticker.replace('.DE','') in {w.get('ticker','').replace('.DE','') for w in watchlist.values()})
+
         if not ticker:
-            ticker = get_yfinance_ticker(isin, name)
-            if not ticker:
-                skipped += 1
-                continue
-            time.sleep(YFINANCE_DELAY)
+            skipped += 1
+            continue
 
         row['_ticker'] = ticker
+        row['_isin']   = isin or ticker
 
         # Hent kurser
         prices = fetch_prices(ticker, months=12)
@@ -335,7 +358,8 @@ def main():
         time.sleep(YFINANCE_DELAY)
 
         # Score
-        result = score_etf(isin, name, row, prices, is_owned, is_watchlist)
+        effective_isin = isin or row.get('_isin', ticker)
+        result = score_etf(effective_isin, name, row, prices, is_owned, is_watchlist)
         if result:
             candidates.append(result)
 
