@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrendAgent ETF Monthly — Uge 19</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f6f9; color: #2c3e50; font-size: 14px; }
+    .header { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%); color: white; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; }
+    .header h1 { font-size: 22px; font-weight: 700; }
+    .header h1 span { color: #4ecdc4; }
+    .header-meta { font-size: 12px; color: #aaa; margin-top: 4px; }
+    .badge { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 8px; text-align: right; }
+    .badge .val { font-size: 18px; font-weight: 800; }
+    .badge .lbl { font-size: 10px; color: #aaa; }
+    .container { max-width: 1300px; margin: 0 auto; padding: 20px; }
+
+    /* ALERTS */
+    .alert-box { border-radius: 8px; padding: 14px 18px; margin-bottom: 16px; }
+    .alert-trail { background: #fef3cd; border-left: 4px solid #f59c00; }
+    .alert-title { font-weight: 700; font-size: 13px; margin-bottom: 8px; }
+    .alert-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid rgba(0,0,0,0.06); font-size: 12px; }
+    .alert-row:last-child { border-bottom: none; }
+    .tag-red { background: #d93025; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; }
+
+    /* SIGNALER */
+    .signal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .signal-box { background: white; border-radius: 10px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .signal-title { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
+    .signal-item { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid #f5f5f5; font-size: 12px; }
+    .signal-item:last-child { border-bottom: none; }
+    .tag-sell { background: #fce8e6; color: #d93025; padding: 2px 8px; border-radius: 8px; font-size: 11px; font-weight: 700; }
+    .tag-buy { background: #e6f4ea; color: #1e8e3e; padding: 2px 8px; border-radius: 8px; font-size: 11px; font-weight: 700; }
+
+    /* BENCHMARK */
+    .benchmark-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .bench-card { background: white; border-radius: 10px; padding: 20px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .bench-val { font-size: 28px; font-weight: 800; margin: 8px 0; }
+    .bench-lbl { font-size: 11px; color: #888; }
+
+    /* AKTIVE POSITIONER */
+    .section-card { background: white; border-radius: 10px; padding: 18px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .section-title { font-size: 15px; font-weight: 700; margin-bottom: 14px; color: #1a1a2e; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th { background: #f0f4f8; padding: 8px 10px; text-align: left; font-weight: 600; color: #555; font-size: 11px; }
+    td { padding: 8px 10px; border-bottom: 1px solid #f5f5f5; vertical-align: middle; }
+    tr:hover { background: #fafafa; }
+    .rank-badge { background: #1a1a2e; color: white; padding: 2px 7px; border-radius: 10px; font-size: 11px; font-weight: 700; }
+    .trend-acc { color: #1e8e3e; font-weight: 600; font-size: 12px; }
+    .trend-slow { color: #f59c00; font-weight: 600; font-size: 12px; }
+    .trend-side { color: #888; font-size: 12px; }
+    .mom-fast { background: #e6f4ea; color: #1e8e3e; padding: 2px 7px; border-radius: 8px; font-size: 11px; font-weight: 600; }
+    .mom-stable { background: #e8f4fd; color: #1565c0; padding: 2px 7px; border-radius: 8px; font-size: 11px; }
+    .mom-slow { background: #fff3e0; color: #e65100; padding: 2px 7px; border-radius: 8px; font-size: 11px; }
+    .mom-flat { background: #fce8e6; color: #d93025; padding: 2px 7px; border-radius: 8px; font-size: 11px; font-weight: 600; }
+    .shift-bull { background: #e6f4ea; color: #1e8e3e; padding: 1px 6px; border-radius: 8px; font-size: 10px; font-weight: 700; margin-left: 6px; }
+    .shift-bear { background: #fce8e6; color: #d93025; padding: 1px 6px; border-radius: 8px; font-size: 10px; font-weight: 700; margin-left: 6px; }
+    .category-tag { background: #e8f4fd; color: #1565c0; padding: 1px 6px; border-radius: 8px; font-size: 10px; }
+    .pos { color: #1e8e3e; font-weight: 700; }
+    .neg { color: #d93025; font-weight: 700; }
+
+    /* MARKEDSMULIGHEDER */
+    .opp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+    .opp-card { background: #f8fbff; border: 1px solid #e0eaf5; border-radius: 8px; padding: 12px; }
+    .opp-rank { font-size: 11px; font-weight: 700; color: #1565c0; margin-bottom: 4px; }
+    .opp-name { font-weight: 700; font-size: 12px; color: #1a1a2e; margin-bottom: 2px; }
+    .opp-ticker { font-size: 10px; color: #888; margin-bottom: 6px; }
+    .opp-stats { display: flex; gap: 10px; font-size: 11px; }
+    .opp-stat { color: #555; }
+    .opp-stat span { font-weight: 700; color: #1e8e3e; }
+
+    /* HISTORIK */
+    .sold-table td { color: #888; }
+
+    /* METODIK */
+    .metodik { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .metodik h3 { font-size: 14px; font-weight: 700; margin-bottom: 12px; color: #1a1a2e; border-bottom: 2px solid #4ecdc4; padding-bottom: 6px; }
+    .metodik-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .metodik-col h4 { font-size: 12px; font-weight: 700; color: #4ecdc4; margin: 10px 0 6px; }
+    .metodik-col p, .metodik-col li { font-size: 11px; color: #555; line-height: 1.6; }
+    .metodik-col ul { padding-left: 16px; }
+    .disclaimer { background: #f0f7ff; border-left: 3px solid #4ecdc4; padding: 10px 14px; border-radius: 4px; font-size: 11px; color: #555; margin-top: 12px; font-style: italic; }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <h1>📡 TrendAgent <span>ETF Monthly</span></h1>
+    <div class="header-meta">Strategisk status opdateret 05-05-2026 07:30 (Uge 19)</div>
+  </div>
+  <div class="badge">
+    <div class="lbl">BENCHMARK: VanEck Semiconductor UCITS ETF (+31.69% sidste md.)</div>
+    <div class="val" style="color: #ff6b6b">
+      -31.69% alpha
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- TRAIL STOP -->
+  
+
+  <!-- HANDLINGSSIGNALER -->
+  
+  <div class="signal-grid">
+    
+    
+    <div class="signal-box">
+      <div class="signal-title">🟢 Rotationsmuligheder</div>
+      
+      <div class="signal-item">
+        <span class="tag-buy">ROTATIONSMÅL</span>
+        <span>Global X Hydrogen UCITS ETF (Rank #1) med 1M afkast på +63.2%</span>
+      </div>
+      
+      <div class="signal-item">
+        <span class="tag-buy">ROTATIONSMÅL</span>
+        <span>iShares MSCI Global Semiconductors UCITS (Rank #2) med 1M afkast på +35.5%</span>
+      </div>
+      
+      <div class="signal-item">
+        <span class="tag-buy">ROTATIONSMÅL</span>
+        <span>Franklin FTSE Korea UCITS ETF (Rank #3) med 1M afkast på +33.4%</span>
+      </div>
+      
+      <div class="signal-item">
+        <span class="tag-buy">ROTATIONSMÅL</span>
+        <span>Xtrackers MSCI Korea UCITS ETF 1C (Rank #4) med 1M afkast på +33.4%</span>
+      </div>
+      
+      <div class="signal-item">
+        <span class="tag-buy">ROTATIONSMÅL</span>
+        <span>Amundi MSCI Korea UCITS ETF Acc (Rank #5) med 1M afkast på +33.3%</span>
+      </div>
+      
+    </div>
+    
+  </div>
+  
+
+  <!-- BENCHMARK -->
+  <div class="benchmark-grid">
+    <div class="bench-card">
+      <div class="bench-lbl">DIN PORTEFØLJE (TOTAL SNIT)</div>
+      <div class="bench-val" style="color: #1e8e3e">
+        +0.00%
+      </div>
+    </div>
+    <div class="bench-card">
+      <div class="bench-lbl">VS. BENCHMARK — VanEck Semiconductor UCITS ETF</div>
+      <div class="bench-val" style="color: #d93025">
+        -31.69%
+      </div>
+    </div>
+  </div>
+
+  <!-- AKTIVE POSITIONER -->
+  
+
+  <!-- MARKEDSMULIGHEDER -->
+  
+  <div class="section-card">
+    <div class="section-title">🔭 Top 5 Markedsmuligheder (Hele ETF-universet)</div>
+    <div class="opp-grid">
+      
+      <div class="opp-card">
+        <div class="opp-rank">Rank #1 af 15</div>
+        <div class="opp-name">Global X Hydrogen UCITS ETF</div>
+        <div class="opp-ticker">HYCN.DE
+          <span class="category-tag" style="margin-left:4px;">Hydrogen & C</span>
+        </div>
+        <div class="opp-stats">
+          <div class="opp-stat">1M: <span>+63.2%</span></div>
+          <div class="opp-stat">ÅTD: <span>+97.2%</span></div>
+        </div>
+        <div style="font-size:11px; color:#888; margin-top:4px;">🚀 Accelererer</div>
+      </div>
+      
+      <div class="opp-card">
+        <div class="opp-rank">Rank #2 af 15</div>
+        <div class="opp-name">iShares MSCI Global Semiconductors UCITS</div>
+        <div class="opp-ticker">SEC0.DE
+          <span class="category-tag" style="margin-left:4px;">Halvledere</span>
+        </div>
+        <div class="opp-stats">
+          <div class="opp-stat">1M: <span>+35.5%</span></div>
+          <div class="opp-stat">ÅTD: <span>+55.1%</span></div>
+        </div>
+        <div style="font-size:11px; color:#888; margin-top:4px;">📉 Bremser</div>
+      </div>
+      
+      <div class="opp-card">
+        <div class="opp-rank">Rank #3 af 15</div>
+        <div class="opp-name">Franklin FTSE Korea UCITS ETF</div>
+        <div class="opp-ticker">FLXK.DE
+          <span class="category-tag" style="margin-left:4px;">Korea</span>
+        </div>
+        <div class="opp-stats">
+          <div class="opp-stat">1M: <span>+33.4%</span></div>
+          <div class="opp-stat">ÅTD: <span>+70.9%</span></div>
+        </div>
+        <div style="font-size:11px; color:#888; margin-top:4px;">📉 Bremser</div>
+      </div>
+      
+      <div class="opp-card">
+        <div class="opp-rank">Rank #4 af 15</div>
+        <div class="opp-name">Xtrackers MSCI Korea UCITS ETF 1C</div>
+        <div class="opp-ticker">DBX8.DE
+          <span class="category-tag" style="margin-left:4px;">Korea</span>
+        </div>
+        <div class="opp-stats">
+          <div class="opp-stat">1M: <span>+33.4%</span></div>
+          <div class="opp-stat">ÅTD: <span>+71.0%</span></div>
+        </div>
+        <div style="font-size:11px; color:#888; margin-top:4px;">📉 Bremser</div>
+      </div>
+      
+      <div class="opp-card">
+        <div class="opp-rank">Rank #5 af 15</div>
+        <div class="opp-name">Amundi MSCI Korea UCITS ETF Acc</div>
+        <div class="opp-ticker">LKOR.DE
+          <span class="category-tag" style="margin-left:4px;">Korea</span>
+        </div>
+        <div class="opp-stats">
+          <div class="opp-stat">1M: <span>+33.3%</span></div>
+          <div class="opp-stat">ÅTD: <span>+70.6%</span></div>
+        </div>
+        <div style="font-size:11px; color:#888; margin-top:4px;">📉 Bremser</div>
+      </div>
+      
+    </div>
+  </div>
+  
+
+  <!-- SOLGTE POSITIONER -->
+  
+
+  <!-- METODIK -->
+  <div class="metodik">
+    <h3>📖 Detaljeret Metodik & Definitioner</h3>
+    <div class="metodik-grid">
+      <div class="metodik-col">
+        <h4>📊 MARKEDSRANK (RELATIV STYRKE)</h4>
+        <p>Alle ETF'er i universet rangeres efter 1M afkast. Rank #1 = stærkest momentum. Bruges til at vurdere om dine positioner holder trit med markedet.</p>
+        <ul>
+          <li><strong>Top Performer:</strong> Top 5 med positivt afkast</li>
+          <li><strong>Stabil:</strong> Top 7</li>
+          <li><strong>Slower:</strong> Udenfor top 7 eller negativt afkast</li>
+          <li><strong>Outperformed:</strong> Udenfor top 10 — andre løber hurtigere</li>
+        </ul>
+
+        <h4>📈 TREND VELOCITY</h4>
+        <p>Sammenligner ugens afkast mod månedens gennemsnit per uge (1M afkast / 4):</p>
+        <ul>
+          <li><strong>🚀 Accelererer:</strong> Ugen er stærkere end månedssnittet</li>
+          <li><strong>📉 Bremser:</strong> Ugen er svagere end månedssnittet</li>
+          <li><strong>➡️ Stabil:</strong> På linje med månedssnittet</li>
+        </ul>
+
+        <h4>🔄 TREND SHIFT</h4>
+        <p>Viser om en fond har skiftet trend siden forrige månedlige rapport:</p>
+        <ul>
+          <li><strong style="color:#d93025;">BULL→BEAR:</strong> Faldet under MA — overvej rotation</li>
+          <li><strong style="color:#1e8e3e;">BEAR→BULL:</strong> Steget over MA — potentielt signal</li>
+        </ul>
+      </div>
+      <div class="metodik-col">
+        <h4>⚠️ TRAIL STOP (HIGH WATER MARK)</h4>
+        <ul>
+          <li><strong>High Water Mark:</strong> Højeste kurs siden køb — opdateres automatisk</li>
+          <li><strong>Fald fra top:</strong> (kurs / HWM − 1) × 100</li>
+          <li><strong>Tærskel:</strong> 3.0% — advarsel sendes ved større fald</li>
+        </ul>
+
+        <h4>📡 BENCHMARK</h4>
+        <p>VanEck Semiconductor UCITS ETF bruges som proxy-benchmark for ETF-universet. Alpha = din porteføljes snit minus benchmark. Positivt alpha = du slår markedet.</p>
+
+        <h4>🔭 MARKEDSMULIGHEDER</h4>
+        <p>Top 5 ikke-ejede ETF'er fra universet sorteret efter 1M afkast. Bruges til at identificere potentielle rotationsmål.</p>
+
+        <div class="disclaimer">
+          Vi følger momentum og relativ styrke. Vi køber ETF'er der er stærkere end deres historiske gennemsnit og overvejer at rotere ud af ETF'er der mister momentum. Systemet giver signaler — du tager beslutningerne.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
