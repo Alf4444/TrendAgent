@@ -325,8 +325,6 @@ def main():
         isin = str(row.get(isin_col, '')).strip()
         name = str(row.get(name_col, isin)).strip() if name_col else isin
 
-        if not isin:
-            continue
 
         # Hent ticker direkte fra justETF
         ticker = str(row.get(ticker_col, '')).strip() if ticker_col else ''
