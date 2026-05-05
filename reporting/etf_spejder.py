@@ -59,10 +59,15 @@ MAX_TER          = 1.0          # Maks 1% TER
 REQUIRE_ACC      = True         # Kun akkumulerende
 
 # Scoring
-MIN_SCORE        = 2            # Minimum score for at komme med
-MIN_MOMENTUM_PCT = 5.0          # Min % over MA
-MAX_RSI          = 70           # Ikke overkøbt
-MAX_CANDIDATES   = 15           # Max antal kandidater i output
+MIN_SCORE             = 2     # Minimum score for at komme med
+MIN_MOMENTUM_PCT      = 5.0   # Min % over MA (stabile)
+MAX_RSI               = 70    # Ikke overkøbt (stabile)
+MAX_CANDIDATES_STABIL = 10    # Max stabile trendere
+MAX_CANDIDATES_HURTIG = 10    # Max hurtige heste
+
+# Hurtig hest grænser
+HURTIG_MIN_MOMENTUM   = 20.0  # Min % over MA
+HURTIG_MIN_1Y         = 50.0  # Min 1-årsafkast
 
 # Pause mellem yfinance-kald for at undgå rate limiting
 YFINANCE_DELAY   = 0.3
@@ -201,8 +206,18 @@ def score_etf(isin, name, row, prices, is_owned, is_watchlist):
     rsi      = get_rsi(prices, 14)
     cross    = get_cross_signal(prices)
 
-    # Kræv BULL-trend og positiv momentum
+    # Hurtige heste: ingen RSI-krav, høj momentum er nok
+    # Stabile trendere: kræver RSI < 70 og momentum 5-20%
+    is_hurtig = momentum >= HURTIG_MIN_MOMENTUM or (
+        rsi is not None and False  # 1Y tjekkes i return-blokken
+    )
+
+    # Kræv BULL-trend og minimum momentum
     if trend != "BULL" or momentum < MIN_MOMENTUM_PCT:
+        return None
+
+    # Stabile: fjern overkøbte
+    if not is_hurtig and rsi is not None and rsi >= MAX_RSI:
         return None
 
     # Beregn score
@@ -243,18 +258,26 @@ def score_etf(isin, name, row, prices, is_owned, is_watchlist):
     if score < MIN_SCORE:
         return None
 
+    # Bestem kategori
+    return_1y_val = round(float(return_1y_raw), 2) if return_1y_raw is not None else 0
+    if momentum >= HURTIG_MIN_MOMENTUM or return_1y_val >= HURTIG_MIN_1Y:
+        kategori = "hurtig"
+    else:
+        kategori = "stabil"
+
     return {
         "isin":        isin,
         "name":        name,
         "ticker":      row.get('_ticker', ''),
         "score":       score,
+        "kategori":    kategori,
         "momentum":    momentum,
         "ma_label":    ma_label,
         "trend":       trend,
         "rsi":         round(rsi, 1) if rsi else None,
         "cross":       cross,
         "return_1m":   round(return_1m, 2) if return_1m is not None else None,
-        "return_1y":   round(float(return_1y_raw), 2) if return_1y_raw is not None else None,
+        "return_1y":   return_1y_val if return_1y_raw is not None else None,
         "ter":         round(float(ter_raw), 2) if ter_raw else None,
         "is_owned":    is_owned,
         "is_watchlist": is_watchlist,
@@ -372,25 +395,37 @@ def main():
             print(f"   Nok kandidater fundet — stopper tidligt ved {i+1} ETF'er")
             break
 
-    # Sortér på score + momentum
-    candidates.sort(key=lambda x: (x['score'], x['momentum']), reverse=True)
+    # Del i to kategorier
+    stabile = [c for c in candidates if c['kategori'] == 'stabil']
+    hurtige  = [c for c in candidates if c['kategori'] == 'hurtig']
 
-    # Top kandidater
-    top = candidates[:MAX_CANDIDATES]
+    # Sortér hver liste
+    stabile.sort(key=lambda x: (x['score'], x['momentum']), reverse=True)
+    hurtige.sort(key=lambda x: x['momentum'], reverse=True)
+
+    top_stabile = stabile[:MAX_CANDIDATES_STABIL]
+    top_hurtige  = hurtige[:MAX_CANDIDATES_HURTIG]
+    top_alle     = top_hurtige + top_stabile  # Hurtige øverst
 
     # Gem hits
     output = {
-        "_scanned_at":   datetime.now().strftime('%Y-%m-%d %H:%M'),
+        "_scanned_at":    datetime.now().strftime('%Y-%m-%d %H:%M'),
         "_total_scanned": processed,
-        "_total_hits":   len(candidates),
+        "_total_hits":    len(candidates),
+        "_stabile_hits":  len(stabile),
+        "_hurtige_hits":  len(hurtige),
         "_filters": {
-            "min_aum_eur":    MIN_AUM_EUR,
-            "max_ter":        MAX_TER,
-            "min_momentum":   MIN_MOMENTUM_PCT,
-            "max_rsi":        MAX_RSI,
-            "min_score":      MIN_SCORE,
+            "min_aum_eur":         MIN_AUM_EUR,
+            "max_ter":             MAX_TER,
+            "min_momentum_stabil": MIN_MOMENTUM_PCT,
+            "max_rsi_stabil":      MAX_RSI,
+            "min_momentum_hurtig": HURTIG_MIN_MOMENTUM,
+            "min_1y_hurtig":       HURTIG_MIN_1Y,
+            "min_score":           MIN_SCORE,
         },
-        "hits": top,
+        "hits":         top_alle,
+        "hits_stabile": top_stabile,
+        "hits_hurtige": top_hurtige,
     }
 
     save_json(HITS_FILE, output)
@@ -403,13 +438,19 @@ def main():
     print(f"   Top {len(top)} gemt til {HITS_FILE.name}")
     print()
 
-    if top:
-        print("🏆 Top kandidater:")
-        for h in top[:5]:
+    if top_hurtige:
+        print(f"\n🚀 Hurtige Heste ({len(top_hurtige)}):")
+        for h in top_hurtige[:5]:
             owned_tag = " ⭐" if h['is_owned'] else ""
-            watch_tag = " 👁" if h['is_watchlist'] else ""
-            print(f"  [{h['score']}pt] {h['name'][:40]}{owned_tag}{watch_tag}")
-            print(f"       Momentum: +{h['momentum']}%, RSI: {h['rsi']}, Cross: {h['cross']}")
+            print(f"  [{h['score']}pt] {h['name'][:40]}{owned_tag}")
+            print(f"       Momentum: +{h['momentum']}%, RSI: {h['rsi']}, 1Y: {h['return_1y']}%")
+
+    if top_stabile:
+        print(f"\n📈 Stabile Trendere ({len(top_stabile)}):")
+        for h in top_stabile[:5]:
+            owned_tag = " ⭐" if h['is_owned'] else ""
+            print(f"  [{h['score']}pt] {h['name'][:40]}{owned_tag}")
+            print(f"       Momentum: +{h['momentum']}%, RSI: {h['rsi']}, 1Y: {h['return_1y']}%")
 
     print(f"{'='*55}\n")
 
