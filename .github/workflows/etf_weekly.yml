@@ -30,6 +30,11 @@ jobs:
       - name: Fetch fresh ETF data
         run: python reporting/etf_provider.py
 
+      - name: Run Spejder screening
+        run: |
+          pip install git+https://github.com/druzsan/justetf-scraping.git -q
+          python reporting/etf_spejder.py
+
       - name: Build Weekly Report
         run: python reporting/etf_build_weekly.py
 
@@ -37,7 +42,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add data/etf_latest.json data/etf_history.json data/etf_hwm.json build/etf_weekly.html
+          git add data/etf_latest.json data/etf_history.json data/etf_hwm.json data/etf_spejder_hits.json build/etf_weekly.html
           git commit -m "ETF Weekly rapport + HWM opdateret [skip ci]" || echo "Ingen ændringer at committe"
           git pull --rebase origin main
           git push
