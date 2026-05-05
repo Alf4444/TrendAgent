@@ -2,3 +2,19 @@
   "_comment": "ETF-portefølje — opdateres via GitHub browser. Se TrendAgent_Portfolio_Guide.docx",
   "_format": "ISIN: { name, ticker, active, buy_date, buy_price, sell_date?, sell_price? }"
 }
+{
+  "IE00BMC38736": {
+    "name": "VanEck Semiconductor UCITS ETF",
+    "ticker": "VVSM.DE",
+    "active": true,
+    "buy_date": "2026-05-05",
+    "buy_price": 78.04
+  },
+  "IE00BHZRR030": {
+    "name": "Franklin FTSE Korea UCITS ETF",
+    "ticker": "FLXK.DE",
+    "active": true,
+    "buy_date": "2026-05-05",
+    "buy_price": 76.81
+  }
+}
