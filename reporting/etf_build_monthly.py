@@ -38,7 +38,27 @@ HWM_FILE       = ROOT / "data/etf_hwm.json"
 TEMPLATE_FILE  = ROOT / "templates/etf_monthly.html.j2"
 REPORT_FILE    = ROOT / "build/etf_monthly.html"
 
-TRAIL_STOP_PCT = 3.0
+TRAIL_STOP_PCT = 3.0  # Default — overrides af volatilitet per fond
+
+def get_trail_stop_pct(volatility):
+    """
+    Beregner variabelt Trail Stop baseret på fondens volatilitet.
+    Høj volatilitet = løsere stop (undgår falske alarmer).
+    Lav volatilitet = strammere stop (beskytter gevinster tæt).
+
+    Volatilitet er 20-dages standardafvigelse af daglige afkast i %.
+      < 1.0%  → 3% stop  (fx obligationer, lav-vol fonde)
+      1-2%    → 5% stop  (fx brede aktieindeks)
+      > 2.0%  → 7% stop  (fx Korea, Hydrogen, Halvledere)
+    """
+    if volatility is None:
+        return TRAIL_STOP_PCT
+    if volatility < 1.0:
+        return 3.0
+    elif volatility < 2.0:
+        return 5.0
+    else:
+        return 7.0
 
 # Benchmark — VanEck Semiconductor bruges som proxy for "markedet"
 # da universet er tema/sektor-ETF'er. Kan ændres.
@@ -187,7 +207,8 @@ def build_monthly():
 
             # Trail Stop
             hwm_entry, alert = check_trail_stop(
-                isin, curr_p, buy_p, hwm_data, today_str, TRAIL_STOP_PCT
+                isin, curr_p, buy_p, hwm_data, today_str,
+                get_trail_stop_pct(official.get('volatility'))
             )
             hwm_data[isin] = hwm_entry
             if alert:
