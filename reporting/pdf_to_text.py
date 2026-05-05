@@ -1,4 +1,6 @@
 import pdfplumber
+import logging
+logging.getLogger("pdfminer").setLevel(logging.ERROR)
 import requests
 import json
 from pathlib import Path
