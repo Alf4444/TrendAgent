@@ -391,7 +391,7 @@ def main():
             print(f"   [{i+1}/{len(records)}] Scannet: {processed}, Kandidater: {len(candidates)}")
 
         # Stop tidligt hvis vi har nok kandidater og har scannet alle prioriterede
-        if len(candidates) >= MAX_CANDIDATES * 3 and i > 100:
+        if len(candidates) >= (MAX_CANDIDATES_STABIL + MAX_CANDIDATES_HURTIG) * 3 and i > 100:
             print(f"   Nok kandidater fundet — stopper tidligt ved {i+1} ETF'er")
             break
 
