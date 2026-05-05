@@ -7,6 +7,9 @@ on:
   workflow_dispatch:
     # Tillader manuel kørsel fra GitHub Actions UI
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
