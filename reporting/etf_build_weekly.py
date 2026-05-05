@@ -35,16 +35,13 @@ HISTORY_FILE   = ROOT / "data/etf_history.json"
 WATCHLIST_FILE = ROOT / "config/etf_watchlist.json"
 PORTFOLIO_FILE = ROOT / "config/etf_portfolio.json"
 HWM_FILE       = ROOT / "data/etf_hwm.json"
+SPEJDER_FILE   = ROOT / "data/etf_spejder_hits.json"
 TEMPLATE_FILE  = ROOT / "templates/etf_weekly.html.j2"
 REPORT_FILE    = ROOT / "build/etf_weekly.html"
 
 TRAIL_STOP_PCT = 3.0
 
 # Spejder-filtre
-SPEJDER_MIN_MOMENTUM_PCT  = 5.0    # Min % over MA for at komme på listen
-SPEJDER_MAX_RSI           = 70     # Ikke overkøbt
-SPEJDER_REQUIRE_BULL      = True   # Kun BULL-trend
-SPEJDER_GOLDEN_BONUS      = True   # Fremhæv Golden Cross
 
 
 # ==========================================
@@ -107,6 +104,19 @@ def build_weekly():
     }
 
     hwm_data          = load_hwm()
+
+    # Indlæs Spejder-hits hvis tilgængelige
+    spejder_data     = load_json(SPEJDER_FILE, {})
+    spejder_hits_all = spejder_data.get('hits', [])         if isinstance(spejder_data, dict) else []
+    spejder_hurtige  = spejder_data.get('hits_hurtige', []) if isinstance(spejder_data, dict) else []
+    spejder_stabile  = spejder_data.get('hits_stabile', []) if isinstance(spejder_data, dict) else []
+    spejder_meta = {
+        'scanned_at':    spejder_data.get('_scanned_at', ''),
+        'total_scanned': spejder_data.get('_total_scanned', 0),
+        'total_hits':    spejder_data.get('_total_hits', 0),
+        'hurtige_hits':  spejder_data.get('_hurtige_hits', 0),
+        'stabile_hits':  spejder_data.get('_stabile_hits', 0),
+    } if spejder_data else {}
     today_str         = datetime.now().strftime('%Y-%m-%d')
     trail_stop_alerts = []
 
@@ -208,40 +218,7 @@ def build_weekly():
         }
         rows.append(row)
 
-        # --- SPEJDEREN ---
-        # Finder ikke-ejede ETF'er med stærkt momentum og sunde signaler
-        if not is_active:
-            spejder_score = 0
-            spejder_reasons = []
-
-            # Krav 1: BULL-trend
-            if SPEJDER_REQUIRE_BULL and trend_state != "BULL":
-                continue
-
-            # Krav 2: Positiv momentum over grænse
-            if momentum >= SPEJDER_MIN_MOMENTUM_PCT:
-                spejder_score += 2
-                spejder_reasons.append(f"Momentum +{momentum:.1f}% over {ma_label}")
-
-            # Krav 3: Ikke overkøbt
-            if rsi is not None and rsi < SPEJDER_MAX_RSI:
-                spejder_score += 1
-                spejder_reasons.append(f"RSI {rsi:.0f} — ikke overkøbt")
-            elif rsi is None:
-                spejder_score += 1  # Ingen RSI-data er ikke diskvalificerende
-
-            # Bonus: Golden Cross
-            if cross == "🚀 GOLDEN":
-                spejder_score += 2
-                spejder_reasons.append("Golden Cross — MA20 krydser MA50 opad")
-
-            # Tilføj til Spejder-listen hvis score > 0
-            if spejder_score > 0 and momentum >= SPEJDER_MIN_MOMENTUM_PCT:
-                spejder_hits.append({
-                    **row,
-                    'spejder_score':   spejder_score,
-                    'spejder_reasons': spejder_reasons,
-                })
+        # Spejder-logik er flyttet til etf_spejder.py
 
     # Gem opdaterede HWM
     save_hwm(hwm_data)
@@ -280,7 +257,10 @@ def build_weekly():
         portfolio_alerts     = portfolio_alerts,
         trail_stop_alerts    = trail_stop_alerts,
         trail_stop_pct       = TRAIL_STOP_PCT,
-        spejder_hits         = spejder_hits[:8],   # Max 8 kandidater
+        spejder_hits         = spejder_hits_all,
+        spejder_hurtige      = spejder_hurtige,
+        spejder_stabile      = spejder_stabile,
+        spejder_meta         = spejder_meta,
         top_up               = top_up,
         top_down             = top_down,
         rows                 = sorted(rows, key=lambda x: (not x['is_active'], -x['momentum'])),
