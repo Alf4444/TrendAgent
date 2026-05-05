@@ -21,14 +21,22 @@
   },
   "PFA000002761": {
     "name": "Maj Invest Guld, Sølv & Miner UCITS ETF",
-    "active": true,
+    "active": false,
     "buy_date": "2026-03-02",
     "buy_price": 146.90
+    "sell_date": "2026-05-05",
+    "sell_price": 114.08
   },
   "PFA000002726": {
     "name": "Sydinvest Globale EM-aktier",
     "active": true,
     "buy_date": "2026-03-02",
     "buy_price": 210.48
+  },
+  "PFA000002753": {
+    "name": "Robeco Circular Economy Equities",
+    "active": true,
+    "buy_date": "2026-05-05",
+    "buy_price": 144.58
   }
 }
