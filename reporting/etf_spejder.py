@@ -435,7 +435,7 @@ def main():
     print(f"   Scannet: {processed} ETF'er")
     print(f"   Sprunget over: {skipped} (ingen ticker)")
     print(f"   Kandidater: {len(candidates)}")
-    print(f"   Top {len(top)} gemt til {HITS_FILE.name}")
+    print(f"   Top {len(top_hurtige) + len(top_stabile)} gemt til {HITS_FILE.name}")
     print()
 
     if top_hurtige:
