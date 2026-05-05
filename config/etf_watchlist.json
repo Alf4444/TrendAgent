@@ -1,0 +1,111 @@
+{
+  "_comment": "TrendAgent ETF Watchlist — Nordnet/Xetra UCITS ETF'er",
+  "_updated": "2026-05-05",
+  "_format": "ISIN: { name, ticker (yfinance), category, ter_pct, nordnet_url }",
+
+  "IE0002RPS3K2": {
+    "name": "Global X Hydrogen UCITS ETF",
+    "ticker": "HYCN.DE",
+    "category": "Tema — Hydrogen & Clean Energy",
+    "ter_pct": 0.50,
+    "nordnet_url": "https://www.nordnet.dk/etf/liste/global-x-hydrogen-ucits-hycn-xeta"
+  },
+  "LU1900066975": {
+    "name": "Amundi MSCI Korea UCITS ETF Acc",
+    "ticker": "LKOR.DE",
+    "category": "Lande — Korea",
+    "ter_pct": 0.45,
+    "nordnet_url": "https://www.nordnet.dk/etf/liste/amundi-msci-korea-ucits-lkor-xeta"
+  },
+  "LU0292100046": {
+    "name": "Xtrackers MSCI Korea UCITS ETF 1C",
+    "ticker": "DBX8.DE",
+    "category": "Lande — Korea",
+    "ter_pct": 0.45,
+    "nordnet_url": "https://www.nordnet.dk/etf/liste/xtrackers-msci-korea-ucits-dbx8-xeta"
+  },
+  "IE00B0M63391": {
+    "name": "iShares MSCI Korea UCITS ETF (Dist)",
+    "ticker": "IQQK.DE",
+    "category": "Lande — Korea",
+    "ter_pct": 0.65,
+    "nordnet_url": "https://www.nordnet.dk/etf/liste/i-shares-msci-korea-ucits-iqqk-xeta"
+  },
+  "IE00BHZRR030": {
+    "name": "Franklin FTSE Korea UCITS ETF",
+    "ticker": "FLXK.DE",
+    "category": "Lande — Korea",
+    "ter_pct": 0.09,
+    "nordnet_url": "https://www.nordnet.dk/etf/liste/franklin-ftse-korea-ucits-flxk-xeta"
+  },
+  "IE0002PG6CA6": {
+    "name": "VanEck Rare Earth and Strategic Metals UCITS ETF",
+    "ticker": "VVMX.DE",
+    "category": "Råvarer — Sjældne jordarter",
+    "ter_pct": 0.59,
+    "nordnet_url": "https://www.nordnet.dk/etf/liste/van-eck-rare-earth-vvmx-xeta"
+  },
+  "IE000YU9K6K2": {
+    "name": "VanEck Space Innovators UCITS ETF",
+    "ticker": "JEDI.DE",
+    "category": "Tema — Space & Forsvar",
+    "ter_pct": 0.55,
+    "nordnet_url": "https://www.nordnet.dk/etf/liste/van-eck-space-innovators-ucits-jedi-xeta"
+  },
+  "IE000I8KRLL9": {
+    "name": "iShares MSCI Global Semiconductors UCITS ETF USD Acc",
+    "ticker": "SEC0.DE",
+    "category": "Sektor — Halvledere",
+    "ter_pct": 0.35,
+    "nordnet_url": "https://www.nordnet.dk/etf/liste/i-shares-msci-global-semiconductors-sec0-xeta"
+  },
+  "IE000KHX9DX6": {
+    "name": "WisdomTree Strategic Metals and Rare Earths Miners UCITS ETF",
+    "ticker": "RARE.DE",
+    "category": "Råvarer — Sjældne jordarter",
+    "ter_pct": 0.50,
+    "nordnet_url": "https://www.nordnet.dk/etf/liste/wisdom-tree-strategic-metals-rare-xeta"
+  },
+  "IE00BMC38736": {
+    "name": "VanEck Semiconductor UCITS ETF",
+    "ticker": "VVSM.DE",
+    "category": "Sektor — Halvledere",
+    "ter_pct": 0.35,
+    "nordnet_url": "https://www.nordnet.dk/etf/liste/van-eck-semiconductor-ucits-etf-vvsm-xeta"
+  },
+  "IE0003BJ2JS4": {
+    "name": "WisdomTree Uranium and Nuclear Energy UCITS ETF",
+    "ticker": "WNUC.DE",
+    "category": "Tema — Uranium & Nuklear",
+    "ter_pct": 0.45,
+    "nordnet_url": "https://www.nordnet.dk/etf/liste/wisdom-tree-uranium-nuclear-wnuc-xeta"
+  },
+  "IE000UL6CLP7": {
+    "name": "Global X Silver Miners UCITS ETF USD Acc",
+    "ticker": "SLVR.DE",
+    "category": "Råvarer — Ædelmetaller",
+    "ter_pct": 0.65,
+    "nordnet_url": "https://www.nordnet.dk/etf/liste/global-x-silver-miners-slvr-xeta"
+  },
+  "IE00BF0M2Z96": {
+    "name": "L&G Battery Value-Chain UCITS ETF",
+    "ticker": "BATE.DE",
+    "category": "Tema — Batteri & Energilagring",
+    "ter_pct": 0.49,
+    "nordnet_url": "https://www.nordnet.dk/etf/liste/lg-battery-value-chain-ucits-bate-xeta"
+  },
+  "IE00BLCHJN13": {
+    "name": "Global X Lithium & Battery Tech UCITS ETF USD Acc",
+    "ticker": "LI7U.DE",
+    "category": "Tema — Batteri & Energilagring",
+    "ter_pct": 0.60,
+    "nordnet_url": "https://www.nordnet.dk/etf/liste/global-x-lithium-li7u-xeta"
+  },
+  "IE000NDWFGA5": {
+    "name": "Global X Uranium UCITS ETF USD Acc",
+    "ticker": "URNU.DE",
+    "category": "Tema — Uranium & Nuklear",
+    "ter_pct": 0.70,
+    "nordnet_url": "https://www.nordnet.dk/etf/liste/global-x-uranium-ucits-urnu-xeta"
+  }
+}
