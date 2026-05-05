@@ -1,0 +1,4 @@
+{
+  "_comment": "ETF-portefølje — opdateres via GitHub browser. Se TrendAgent_Portfolio_Guide.docx",
+  "_format": "ISIN: { name, ticker, active, buy_date, buy_price, sell_date?, sell_price? }"
+}
