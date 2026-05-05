@@ -1,3 +1,15 @@
+"""
+etf_build_weekly.py — Ugentlig ETF-rapport for TrendAgent
+==========================================================
+Genererer build/etf_weekly.html med:
+  - Aktive ETF-positioner med Trail Stop og afkast
+  - Spejderens top-kandidater (momentum + Golden Cross)
+  - Top 5 op/ned i universet
+  - Momentum-chart over alle ETF'er
+
+Køres af .github/workflows/etf_weekly.yml (lørdag kl. 07:00)
+"""
+
 import json
 import sys
 from pathlib import Path
@@ -17,22 +29,26 @@ from utils import (
 # ==========================================
 # KONFIGURATION & STIER
 # ==========================================
-ROOT = Path(__file__).resolve().parents[1]
-HISTORY_FILE   = ROOT / "data/history.json"
-LATEST_FILE    = ROOT / "data/latest.json"
-PORTFOLIO_FILE = ROOT / "config/portfolio.json"
-TEMPLATE_FILE  = ROOT / "templates/weekly.html.j2"
-REPORT_FILE    = ROOT / "build/weekly.html"
-HWM_FILE       = ROOT / "data/high_water_marks.json"
+ROOT           = Path(__file__).resolve().parents[1]
+LATEST_FILE    = ROOT / "data/etf_latest.json"
+HISTORY_FILE   = ROOT / "data/etf_history.json"
+WATCHLIST_FILE = ROOT / "config/etf_watchlist.json"
+PORTFOLIO_FILE = ROOT / "config/etf_portfolio.json"
+HWM_FILE       = ROOT / "data/etf_hwm.json"
+SPEJDER_FILE   = ROOT / "data/etf_spejder_hits.json"
+TEMPLATE_FILE  = ROOT / "templates/etf_weekly.html.j2"
+REPORT_FILE    = ROOT / "build/etf_weekly.html"
 
 TRAIL_STOP_PCT = 3.0
 
+# Spejder-filtre
+
 
 # ==========================================
-# HWM — fil-håndtering (ikke i utils.py)
+# HWM — fil-håndtering
 # ==========================================
 
-def load_high_water_marks():
+def load_hwm():
     if HWM_FILE.exists():
         try:
             with open(HWM_FILE, "r", encoding="utf-8") as f:
@@ -41,11 +57,25 @@ def load_high_water_marks():
             pass
     return {}
 
-
-def save_high_water_marks(hwm_data):
+def save_hwm(hwm_data):
     HWM_FILE.parent.mkdir(exist_ok=True)
     with open(HWM_FILE, "w", encoding="utf-8") as f:
         json.dump(hwm_data, f, indent=2)
+
+
+# ==========================================
+# HJÆLPEFUNKTIONER
+# ==========================================
+
+def load_json(path, default):
+    if not path.exists():
+        return default
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"⚠️  Kunne ikke læse {path}: {e}")
+        return default
 
 
 # ==========================================
@@ -53,38 +83,48 @@ def save_high_water_marks(hwm_data):
 # ==========================================
 
 def build_weekly():
-    print("🔄 Starter generering af ugerapport...")
+    print("🔄 Starter generering af ETF ugerapport...")
 
-    for f in [HISTORY_FILE, LATEST_FILE, PORTFOLIO_FILE, TEMPLATE_FILE]:
+    for f in [LATEST_FILE, HISTORY_FILE, WATCHLIST_FILE, TEMPLATE_FILE]:
         if not f.exists():
             print(f"❌ FEJL: Mangler fil: {f}")
             return
 
-    with open(HISTORY_FILE, 'r', encoding='utf-8') as f:
-        history = json.load(f)
-    with open(LATEST_FILE, 'r', encoding='utf-8') as f:
-        latest = json.load(f)
-    with open(PORTFOLIO_FILE, 'r', encoding='utf-8') as f:
-        portfolio = json.load(f)
+    latest    = load_json(LATEST_FILE, [])
+    history   = load_json(HISTORY_FILE, {})
+    watchlist = load_json(WATCHLIST_FILE, {})
+    portfolio = load_json(PORTFOLIO_FILE, {})
+
+    # Filtrer watchlist-kommentarer
+    watchlist = {k: v for k, v in watchlist.items() if not k.startswith('_')}
 
     portfolio_isins = {
         isin for isin, info in portfolio.items()
         if info.get("active", False)
     }
-    print(f"📋 Aktive positioner: {len(portfolio_isins)} fonde")
 
-    hwm_data          = load_high_water_marks()
+    hwm_data          = load_hwm()
+
+    # Indlæs Spejder-hits hvis tilgængelige
+    spejder_data = load_json(SPEJDER_FILE, {})
+    spejder_hits_all = spejder_data.get('hits', []) if isinstance(spejder_data, dict) else []
+    spejder_meta = {
+        'scanned_at':    spejder_data.get('_scanned_at', ''),
+        'total_scanned': spejder_data.get('_total_scanned', 0),
+        'total_hits':    spejder_data.get('_total_hits', 0),
+    } if spejder_data else {}
     today_str         = datetime.now().strftime('%Y-%m-%d')
     trail_stop_alerts = []
 
-    rows = []
+    rows              = []
     active_week_returns = []
+    spejder_hits      = []
 
     for item in latest:
-        isin    = item['isin']
-        p_dict  = history.get(isin, {})
+        isin      = item['isin']
+        p_dict    = history.get(isin, {})
 
-        # Kun handelsdage — samme filtrering som daily
+        # Kun handelsdage
         sorted_dates = [d for d in sorted(p_dict.keys()) if is_trading_day(d)]
         p_list       = [p_dict[d] for d in sorted_dates]
 
@@ -95,26 +135,25 @@ def build_weekly():
         is_active = isin in portfolio_isins
 
         # Sikr dagens NAV er med
-        if not p_list or p_list[-1] != cur_nav:
+        if p_list[-1] != cur_nav:
             p_list.append(cur_nav)
 
-        # --- MOMENTUM (Afstand til bedste tilgængelige MA) ---
+        # --- TEKNISKE BEREGNINGER ---
         ma_val, ma_label = get_best_ma(p_list)
+        rsi              = get_rsi(p_list, 14)
+        cross            = get_cross_signal(p_list)
+        dd               = calculate_drawdown(p_list)
 
+        # Momentum — afstand til bedste MA
         if ma_val and cur_nav:
             momentum = round(((cur_nav / ma_val) - 1) * 100, 2)
         else:
             momentum = round(item.get('return_1m') or 0.0, 2)
             ma_label = "1M proxy"
 
-        trend_state = "BULL" if momentum > 0 else "BEAR"
+        trend_state = get_trend_state(p_list)
 
-        ytd   = calculate_ytd(p_dict)
-        dd    = calculate_drawdown(p_list)
-        rsi   = get_rsi(p_list, 14)
-        cross = get_cross_signal(p_list)
-
-        # RSI-alert — bruges kun som badge på aktive fonde i tabellen
+        # RSI alert
         rsi_alert = None
         if rsi is not None:
             if rsi >= 70:
@@ -122,7 +161,8 @@ def build_weekly():
             elif rsi <= 30:
                 rsi_alert = "oversolgt"
 
-        # Total afkast fra køb (hvis aktiv) eller fra tidligste historik
+        # Afkast
+        week_change = float(item.get('return_1w') or 0.0)
         if is_active and isin in portfolio:
             buy_price = portfolio[isin].get('buy_price', 0)
             total_ret = round(((cur_nav / buy_price) - 1) * 100, 2) if buy_price else 0.0
@@ -130,12 +170,10 @@ def build_weekly():
             buy_price = 0
             total_ret = round(((cur_nav / p_list[0]) - 1) * 100, 2) if p_list else 0.0
 
-        week_change = float(item.get('return_1w') or 0.0)
-
         if is_active:
             active_week_returns.append(week_change)
 
-        # --- TRAILING STOP CHECK (kun aktive fonde) ---
+        # --- TRAIL STOP (kun aktive) ---
         trail_alert = None
         if is_active and buy_price and cur_nav:
             hwm_entry, trail_alert = check_trail_stop(
@@ -143,82 +181,95 @@ def build_weekly():
             )
             hwm_data[isin] = hwm_entry
             if trail_alert:
-                trail_alert["name"] = portfolio[isin].get("name", isin)
+                trail_alert["name"] = portfolio[isin].get("name", item.get('name', isin))
                 trail_stop_alerts.append(trail_alert)
                 print(
                     f"🔔 TRAIL STOP: {trail_alert['name']} faldet {trail_alert['fall_pct']}% "
-                    f"fra top {trail_alert['hwm']} ({trail_alert['hwm_date']}) → nu {trail_alert['curr']}"
+                    f"fra top {trail_alert['hwm']} → nu {trail_alert['curr']}"
                 )
 
-        rows.append({
+        row = {
             'isin':            isin,
             'name':            item.get('name', isin),
+            'ticker':          item.get('ticker', ''),
+            'category':        item.get('category', ''),
             'week_change_pct': week_change,
             'total_return':    float(total_ret),
             'trend_state':     trend_state,
             'ma_label':        ma_label,
             'momentum':        momentum,
-            'ytd_return':      float(ytd),
-            'drawdown':        float(dd),
-            'is_active':       is_active,
             'rsi':             rsi,
             'rsi_alert':       rsi_alert,
             'cross_20_50':     cross,
+            'drawdown':        float(dd),
+            'is_active':       is_active,
             'buy_price':       buy_price if is_active else None,
             'curr_price':      cur_nav,
             'trail_alert':     trail_alert,
             'hwm':             hwm_data.get(isin, {}).get('hwm') if is_active else None,
             'hwm_date':        hwm_data.get(isin, {}).get('hwm_date') if is_active else None,
-        })
+            'return_1m':       item.get('return_1m'),
+            'return_1y':       item.get('return_1y'),
+            'return_ytd':      item.get('return_ytd'),
+        }
+        rows.append(row)
 
-    # Gem opdaterede HWM (deles med daily og monthly)
-    save_high_water_marks(hwm_data)
+        # Spejder-logik er flyttet til etf_spejder.py
 
-    # --- AGGREGEREDE DATA ---
+    # Gem opdaterede HWM
+    save_hwm(hwm_data)
+
+    # Sorter Spejder efter score + momentum
+    spejder_hits.sort(key=lambda x: (x['spejder_score'], x['momentum']), reverse=True)
+
+    # Aggregerede data
     avg_portfolio_return = (
         sum(active_week_returns) / len(active_week_returns)
         if active_week_returns else 0.0
     )
 
+    # Top/bund 5 på ugeafkast
+    top_up   = sorted(rows, key=lambda x: x['week_change_pct'], reverse=True)[:5]
+    top_down = sorted(rows, key=lambda x: x['week_change_pct'])[:5]
+
+    # Chart data — top 10 momentum
     chart_data = sorted(rows, key=lambda x: x['momentum'], reverse=True)[:10]
 
+    # Portfolio alerts (kraftige fald på ugen)
     portfolio_alerts = [
         {'msg': '⚠️ Kraftigt fald', 'name': r['name'], 'change': r['week_change_pct']}
         for r in rows
         if r['is_active'] and r['week_change_pct'] < -3.0
     ]
 
-    market_opportunities = [
-        r for r in rows
-        if not r['is_active'] and r['momentum'] > 2.0 and r['trend_state'] == "BULL"
-    ][:8]
-
-    # --- TEMPLATE RENDERING ---
+    # Render template
     template_text  = TEMPLATE_FILE.read_text(encoding="utf-8")
     jinja_template = Template(template_text)
 
-    færdig_html = jinja_template.render(
+    html = jinja_template.render(
         week_number          = datetime.now().isocalendar()[1],
         report_date          = datetime.now().strftime("%d. %B %Y"),
         avg_portfolio_return = round(avg_portfolio_return, 2),
         portfolio_alerts     = portfolio_alerts,
         trail_stop_alerts    = trail_stop_alerts,
         trail_stop_pct       = TRAIL_STOP_PCT,
-        market_opportunities = market_opportunities,
-        top_up               = sorted(rows, key=lambda x: x['week_change_pct'], reverse=True)[:5],
-        top_down             = sorted(rows, key=lambda x: x['week_change_pct'])[:5],
+        spejder_hits         = spejder_hits_all,
+        spejder_meta         = spejder_meta,
+        top_up               = top_up,
+        top_down             = top_down,
         rows                 = sorted(rows, key=lambda x: (not x['is_active'], -x['momentum'])),
         chart_labels         = [r['name'][:20] for r in chart_data],
         chart_values         = [r['momentum'] for r in chart_data],
     )
 
     REPORT_FILE.parent.mkdir(parents=True, exist_ok=True)
-    REPORT_FILE.write_text(færdig_html, encoding="utf-8")
+    REPORT_FILE.write_text(html, encoding="utf-8")
 
-    print(f"✅ Succes! Ugerapport genereret: {REPORT_FILE}")
-    print(f"   Aktive fonde: {len(active_week_returns)}, Snit ugeafkast: {avg_portfolio_return:.2f}%")
+    print(f"✅ ETF Ugerapport genereret: {REPORT_FILE}")
+    print(f"   {len(rows)} ETF'er analyseret")
+    print(f"   {len(spejder_hits)} Spejder-kandidater")
     if trail_stop_alerts:
-        print(f"   ⚠️  {len(trail_stop_alerts)} trail stop-advarsel(er) i rapporten.")
+        print(f"   ⚠️  {len(trail_stop_alerts)} trail stop-advarsel(er)")
 
 
 if __name__ == "__main__":
