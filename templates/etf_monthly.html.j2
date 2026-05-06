@@ -121,17 +121,21 @@
   <!-- HANDLINGSSIGNALER -->
   {% if sell_signals or buy_signals %}
   <div class="signal-grid">
-    {% if sell_signals %}
     <div class="signal-box">
       <div class="signal-title">🔴 Overvej salg / rotation</div>
-      {% for f in sell_signals %}
-      <div class="signal-item">
-        <span class="tag-sell">OUTPERFORMED</span>
-        <span>{{ f.name[:40] }} ligger udenfor top 10 (Rank #{{ f.rank }}). Opportunity cost er høj.</span>
-      </div>
-      {% endfor %}
+      {% if sell_signals %}
+        {% for f in sell_signals %}
+        <div class="signal-item">
+          <span class="tag-sell">OUTPERFORMED</span>
+          <span>{{ f.name[:40] }} ligger udenfor top 10 (Rank #{{ f.rank }}). Opportunity cost er høj.</span>
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="signal-item" style="color:#888; font-size:12px;">
+          ✅ Ingen salgssignaler — alle aktive positioner holder trit med markedet.
+        </div>
+      {% endif %}
     </div>
-    {% endif %}
     {% if buy_signals %}
     <div class="signal-box">
       <div class="signal-title">🟢 Rotationsmuligheder</div>
@@ -194,7 +198,7 @@
           <td class="{{ 'trend-acc' if 'Accelererer' in f.trend_label else 'trend-slow' if 'Bremser' in f.trend_label else 'trend-side' }}">
             {{ f.trend_label }}
           </td>
-          <td><span class="{{ f.momentum_class }}">{{ f.momentum_label }}</span></td>
+          <td><span class="{{ f.momentum_class | replace('momentum-', 'mom-') }}">{{ f.momentum_label }}</span></td>
           <td class="{{ 'pos' if (f.return_1m or 0) >= 0 else 'neg' }}">
             {{ '%+.2f'|format(f.return_1m) if f.return_1m is not none else '—' }}%
           </td>
