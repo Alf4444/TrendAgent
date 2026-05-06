@@ -268,5 +268,23 @@
     "return_ytd": 28.55,
     "volatility": 2.72,
     "data_points": 225
+  },
+  {
+    "isin": "IE00B4L5Y983",
+    "name": "iShares Core MSCI World UCITS ETF",
+    "ticker": "IWDA.AS",
+    "category": "Benchmark — MSCI World",
+    "ter_pct": 0.2,
+    "nav": 119.58,
+    "nav_date": "2026-05-06",
+    "currency": "EUR",
+    "return_1w": 2.82,
+    "return_1m": 8.35,
+    "return_3m": 6.17,
+    "return_6m": 7.02,
+    "return_1y": 25.49,
+    "return_ytd": 7.22,
+    "volatility": 0.69,
+    "data_points": 510
   }
 ]
