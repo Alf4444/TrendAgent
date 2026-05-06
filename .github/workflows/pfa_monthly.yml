@@ -1,4 +1,4 @@
-name: Monthly Report
+name: PFA Monthly Report
 
 on:
   workflow_dispatch: {}
@@ -44,7 +44,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add build/monthly.html data/high_water_marks.json
+          git add build/monthly.html data/pfa_hwm.json
           git commit -m "Monthly Deep Dive + HWM opdateret [skip ci]" || echo "Ingen ændringer"
           # Stash utrackede filer så rebase kan køre
           git stash --include-untracked || true
