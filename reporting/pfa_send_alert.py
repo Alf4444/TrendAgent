@@ -1,11 +1,11 @@
 """
 send_alert.py — Trail Stop e-mail notifikation
 ===============================================
-Læser pfa_hwm.json og pfa_latest.json og sender en e-mail
+Læser high_water_marks.json og latest.json og sender en e-mail
 hvis nogen aktive fonde har udløst Trail Stop.
 
 Kaldes fra GitHub Actions efter rapport-bygningen:
-    python reporting/send_alert.py --trail-pct 3.0
+    python reporting/pfa_send_alert.py --trail-pct 3.0
 
 Miljøvariabler (GitHub Secrets):
     MAIL_USERNAME    fx. ditbrugernavn@gmail.com
@@ -13,7 +13,7 @@ Miljøvariabler (GitHub Secrets):
     MAIL_RECIPIENTS  Kommasepareret liste: a@b.com,c@d.com
 
 Testtilstand:
-    python reporting/send_alert.py --trail-pct 0.1
+    python reporting/pfa_send_alert.py --trail-pct 0.1
 """
 
 import argparse
@@ -27,7 +27,7 @@ from email.mime.text import MIMEText
 from pathlib import Path
 
 ROOT           = Path(__file__).resolve().parents[1]
-HWM_FILE       = ROOT / "data/pfa_hwm.json"
+HWM_FILE       = ROOT / "data/pfa_high_water_marks.json"
 LATEST_FILE    = ROOT / "data/pfa_latest.json"
 PORTFOLIO_FILE = ROOT / "config/pfa_portfolio.json"
 
