@@ -47,7 +47,7 @@ jobs:
           git config --local user.name "GitHub Action"
           git add build/weekly.html data/history.json data/latest.json data/high_water_marks.json
           git commit -m "Weekly report + HWM opdateret [skip ci]" || echo "Ingen ændringer at committe"
-          # Pull med rebase inden push for at undgå rejected push hvis et andet
-          # workflow har committet til main i mellemtiden.
+          git stash || true
           git pull --rebase origin main
+          git stash pop || true
           git push
