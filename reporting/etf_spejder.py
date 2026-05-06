@@ -122,6 +122,74 @@ def get_yfinance_ticker(isin, name):
     return None
 
 
+def calculate_weighted_momentum(row):
+    """
+    Beregner tidsvægtet momentum-score baseret på afkast over
+    flere tidshorisonter. Nyere perioder vægtes tungere.
+
+    Normaliseret til månedligt afkast for fair sammenligning:
+      1M afkast           → ganges med 4 (høj vægt — nuværende momentum)
+      3M afkast / 3       → ganges med 2 (middel vægt)
+      6M afkast / 6       → ganges med 1 (lav vægt — historisk)
+
+    Returnerer (weighted_score, consistency_bonus, details_dict)
+    """
+    r1m = row.get('last_month')   or row.get('month1')
+    r3m = row.get('last_three_months') or row.get('month3')
+    r6m = row.get('last_six_months')   or row.get('month6')
+
+    try:
+        r1m = float(r1m) if r1m is not None else None
+        r3m = float(r3m) if r3m is not None else None
+        r6m = float(r6m) if r6m is not None else None
+    except Exception:
+        r1m = r3m = r6m = None
+
+    # Normaliser til månedligt afkast
+    r1m_monthly = r1m                    if r1m is not None else None
+    r3m_monthly = (r3m / 3)              if r3m is not None else None
+    r6m_monthly = (r6m / 6)              if r6m is not None else None
+
+    # Vejede score — kræver mindst 1M data
+    if r1m_monthly is None:
+        return 0, 0, {}
+
+    weighted = r1m_monthly * 4
+    if r3m_monthly is not None:
+        weighted += r3m_monthly * 2
+    if r6m_monthly is not None:
+        weighted += r6m_monthly * 1
+
+    # Konsistens-bonus
+    consistency_bonus = 0
+    reasons_bonus = []
+    available = [x for x in [r1m_monthly, r3m_monthly, r6m_monthly] if x is not None]
+
+    # Bonus A: Alle tilgaengelige perioder er positive
+    if available and all(x > 0 for x in available):
+        consistency_bonus += 1
+        reasons_bonus.append("Konsistent positiv på alle tidshorisonter")
+
+    # Bonus B: Acceleration — nyere periode er bedre end aeldre
+    if r1m_monthly is not None and r3m_monthly is not None and r6m_monthly is not None:
+        if r1m_monthly > r3m_monthly > r6m_monthly:
+            consistency_bonus += 2
+            reasons_bonus.append(f"Accelererende trend: {r6m_monthly:.1f}% → {r3m_monthly:.1f}% → {r1m_monthly:.1f}% pr. md.")
+        elif r1m_monthly > r3m_monthly:
+            consistency_bonus += 1
+            reasons_bonus.append(f"Momentum tiltagende: {r3m_monthly:.1f}% → {r1m_monthly:.1f}% pr. md.")
+
+    details = {
+        "r1m_monthly": round(r1m_monthly, 2) if r1m_monthly else None,
+        "r3m_monthly": round(r3m_monthly, 2) if r3m_monthly else None,
+        "r6m_monthly": round(r6m_monthly, 2) if r6m_monthly else None,
+        "weighted":    round(weighted, 2),
+        "bonus":       consistency_bonus,
+        "bonus_reasons": reasons_bonus,
+    }
+    return weighted, consistency_bonus, details
+
+
 def fetch_prices(ticker, months=12):
     """
     Henter historiske kurser via yfinance.
@@ -256,6 +324,14 @@ def score_etf(isin, name, row, prices, is_owned, is_watchlist):
         score += 1
         reasons.append(f"1M afkast: +{return_1m:.1f}%")
 
+    # Tidsvagtet momentum + konsistens-bonus
+    weighted_score, consistency_bonus, momentum_details = calculate_weighted_momentum(row)
+    score += consistency_bonus
+
+    if momentum_details.get('bonus_reasons'):
+        for br in momentum_details['bonus_reasons']:
+            reasons.append(br)
+
     if score < MIN_SCORE:
         return None
 
@@ -271,6 +347,8 @@ def score_etf(isin, name, row, prices, is_owned, is_watchlist):
         "name":        name,
         "ticker":      row.get('_ticker', ''),
         "score":       score,
+        "weighted_momentum": round(weighted_score, 2),
+        "consistency_bonus": consistency_bonus,
         "kategori":    kategori,
         "momentum":    momentum,
         "ma_label":    ma_label,
@@ -442,8 +520,8 @@ def main():
     hurtige  = [c for c in candidates if c['kategori'] == 'hurtig']
 
     # Sortér hver liste
-    stabile.sort(key=lambda x: (x['score'], x['momentum']), reverse=True)
-    hurtige.sort(key=lambda x: x['momentum'], reverse=True)
+    stabile.sort(key=lambda x: (x['score'], x.get('weighted_momentum', 0)), reverse=True)
+    hurtige.sort(key=lambda x: (x.get('weighted_momentum', 0), x['momentum']), reverse=True)
 
     top_stabile = stabile[:MAX_CANDIDATES_STABIL]
     top_hurtige  = hurtige[:MAX_CANDIDATES_HURTIG]
