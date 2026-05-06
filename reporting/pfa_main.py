@@ -150,7 +150,7 @@ def main():
 
     # --- DATAVALIDERING ---
     try:
-        from validate_data import validate
+        from pfa_validate_data import validate
         errors, warnings = validate(verbose=False)
         if errors:
             print(f"\n⚠️  DATAVALIDERING: {len(errors)} kritiske fejl fundet!")
