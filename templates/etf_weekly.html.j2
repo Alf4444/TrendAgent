@@ -150,9 +150,14 @@
     <div class="spejder-title" style="color: #e53935;">
       🚀 Hurtige Heste — Momentum &gt;20% eller 1Y &gt;50%
       <span style="font-size:11px; font-weight:normal; color:#888; margin-left:8px;">Høj risiko · Kræver aktiv overvågning · HWM passer på dig</span>
+      {% if spejder_hurtige|length > 5 %}
+      <span style="float:right; font-size:11px; font-weight:normal; color:#e53935; cursor:pointer;" onclick="toggleSpejder('hurtige')">
+        Vis alle {{ spejder_hurtige|length }} ▾
+      </span>
+      {% endif %}
     </div>
-    <div class="spejder-grid">
-      {% for s in spejder_hurtige %}
+    <div class="spejder-grid" id="spejder-hurtige">
+      {% for s in spejder_hurtige[:5] %}
       <div class="spejder-card" style="border-color: #e53935; background: #fff5f5;">
         <div class="spejder-name">
           {{ '⭐ ' if s.is_owned else '👁 ' if s.is_watchlist else '🆕 ' }}
@@ -163,7 +168,7 @@
             Score: {{ s.score }}pt
           </span>
           {% if s.rsi and s.rsi >= 70 %}
-          <span style="margin-left:4px; background:#d93025; color:white; padding:1px 6px; border-radius:8px; font-size:10px;">RSI {{ '%.0f'|format(s.rsi) }} ⚠️</span>
+          <span style="margin-left:4px; background:#d93025; color:white; padding:1px 6px; border-radius:8px; font-size:10px;" title="RSI ≥70 — overkøbt. Overvej at vente på tilbagefald.">RSI {{ '%.0f'|format(s.rsi) }} ⚠️</span>
           {% endif %}
         </div>
         <div class="spejder-stats">
@@ -178,6 +183,30 @@
       </div>
       {% endfor %}
     </div>
+    {% if spejder_hurtige|length > 5 %}
+    <div class="spejder-grid" id="spejder-hurtige-rest" style="display:none; margin-top:10px;">
+      {% for s in spejder_hurtige[5:] %}
+      <div class="spejder-card" style="border-color: #e53935; background: #fff5f5;">
+        <div class="spejder-name">
+          {{ '⭐ ' if s.is_owned else '👁 ' if s.is_watchlist else '🆕 ' }}
+          {{ s.name[:45] }}
+        </div>
+        <div class="spejder-ticker">{{ s.ticker }}
+          <span style="margin-left:6px; background:#fce8e6; color:#c62828; padding:1px 6px; border-radius:8px; font-size:10px;">Score: {{ s.score }}pt</span>
+          {% if s.rsi and s.rsi >= 70 %}
+          <span style="margin-left:4px; background:#d93025; color:white; padding:1px 6px; border-radius:8px; font-size:10px;" title="RSI ≥70 — overkøbt">RSI {{ '%.0f'|format(s.rsi) }} ⚠️</span>
+          {% endif %}
+        </div>
+        <div class="spejder-stats">
+          <div class="spejder-stat">Momentum: <span class="val" style="color:#e53935;">+{{ s.momentum }}%</span></div>
+          <div class="spejder-stat">1M: <span class="val">{{ '%+.1f'|format(s.return_1m) if s.return_1m is not none else '–' }}%</span></div>
+          {% if s.rsi %}<div class="spejder-stat">RSI: <span class="val" style="color: {{ '#d93025' if s.rsi >= 70 else '#555' }}">{{ '%.0f'|format(s.rsi) }}</span></div>{% endif %}
+        </div>
+        <div class="spejder-reasons">{% for r in s.reasons %}<span>✓ {{ r }}</span>{% endfor %}</div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
   </div>
   {% endif %}
 
@@ -187,9 +216,14 @@
     <div class="spejder-title" style="color: #0d9488;">
       📈 Stabile Trendere — Momentum 5-20%, RSI &lt;70
       <span style="font-size:11px; font-weight:normal; color:#888; margin-left:8px;">Lavere risiko · Langsigtet momentum · HWM holder øje</span>
+      {% if spejder_stabile|length > 5 %}
+      <span style="float:right; font-size:11px; font-weight:normal; color:#0d9488; cursor:pointer;" onclick="toggleSpejder('stabile')">
+        Vis alle {{ spejder_stabile|length }} ▾
+      </span>
+      {% endif %}
     </div>
-    <div class="spejder-grid">
-      {% for s in spejder_stabile %}
+    <div class="spejder-grid" id="spejder-stabile">
+      {% for s in spejder_stabile[:5] %}
       <div class="spejder-card" style="border-color: #4ecdc4; background: #f0fdfa;">
         <div class="spejder-name">
           {{ '⭐ ' if s.is_owned else '👁 ' if s.is_watchlist else '🆕 ' }}
@@ -212,6 +246,25 @@
       </div>
       {% endfor %}
     </div>
+    {% if spejder_stabile|length > 5 %}
+    <div class="spejder-grid" id="spejder-stabile-rest" style="display:none; margin-top:10px;">
+      {% for s in spejder_stabile[5:] %}
+      <div class="spejder-card" style="border-color: #4ecdc4; background: #f0fdfa;">
+        <div class="spejder-name">
+          {{ '⭐ ' if s.is_owned else '👁 ' if s.is_watchlist else '🆕 ' }}{{ s.name[:45] }}
+        </div>
+        <div class="spejder-ticker">{{ s.ticker }}
+          <span style="margin-left:6px; background:#e0f2f1; color:#00695c; padding:1px 6px; border-radius:8px; font-size:10px;">Score: {{ s.score }}pt</span>
+        </div>
+        <div class="spejder-stats">
+          <div class="spejder-stat">Momentum: <span class="val">+{{ s.momentum }}%</span></div>
+          <div class="spejder-stat">1M: <span class="val">{{ '%+.1f'|format(s.return_1m) if s.return_1m is not none else '–' }}%</span></div>
+          {% if s.rsi %}<div class="spejder-stat">RSI: <span class="val">{{ '%.0f'|format(s.rsi) }}</span></div>{% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
   </div>
   {% endif %}
 
@@ -227,11 +280,11 @@
       {% endfor %}
     </div>
     <div class="card">
-      <div class="card-title">📉 Ugens Bund 5</div>
+      <div class="card-title">📉 Ugens Svageste 5</div>
       {% for r in top_down %}
       <div class="top-row">
         <span>{{ '⭐ ' if r.is_active else '' }}{{ r.name[:38] }}</span>
-        <span class="neg">{{ '%+.2f'|format(r.week_change_pct) }}%</span>
+        <span class="{{ 'neg' if r.week_change_pct < 0 else 'pos' }}">{{ '%+.2f'|format(r.week_change_pct) }}%</span>
       </div>
       {% endfor %}
     </div>
@@ -251,7 +304,7 @@
         <tr>
           <th>Fond</th>
           <th>Uge %</th>
-          <th>Total %</th>
+          <th>Afkast fra køb</th>
           <th>Trend</th>
           <th>Momentum %</th>
           <th>Cross</th>
@@ -270,7 +323,7 @@
             {{ '⭐ ' if row.is_active else '' }}
             <strong>{{ row.name[:40] }}</strong>
             {% if row.is_active and row.rsi_alert %}
-              <span style="font-size:11px;">{{ '🔴' if row.rsi_alert == 'overkøbt' else '🔵' }}</span>
+              <span style="font-size:11px;" title="{{ 'RSI ' + '%.0f'|format(row.rsi) + ' — overkøbt (≥70)' if row.rsi_alert == 'overkøbt' else 'RSI ' + '%.0f'|format(row.rsi) + ' — oversolgt (≤30)' }}">{{ '🔴' if row.rsi_alert == 'overkøbt' else '🔵' }}</span>
             {% endif %}
             <br>
             <span style="font-size:10px; color:#888;">{{ row.ticker }}</span>
@@ -282,7 +335,11 @@
           </td>
 
           <td style="font-weight: 700; color: {{ '#1e8e3e' if (row.total_return or 0) >= 0 else '#d93025' }}">
-            {{ '%+.2f'|format(row.total_return) if row.total_return is not none else '–' }}%
+            {% if row.is_active %}
+              {{ '%+.2f'|format(row.total_return) if row.total_return is not none else '–' }}%
+            {% else %}
+              <span style="color:#ccc;">—</span>
+            {% endif %}
           </td>
 
           <td>
@@ -312,7 +369,13 @@
             {{ '%+.1f'|format(row.return_1y) if row.return_1y is not none else '–' }}%
           </td>
 
-          <td style="color: #d93025;">{{ '%.1f'|format(row.drawdown) }}%</td>
+          <td style="color: {{ '#d93025' if row.is_active and row.drawdown < -0.1 else '#888' }};">
+            {% if row.is_active and row.hwm %}
+              {{ '%.1f'|format(row.drawdown) }}%
+            {% else %}
+              <span style="color:#ddd;">—</span>
+            {% endif %}
+          </td>
 
           <td>
             {% if row.trail_alert %}
@@ -389,6 +452,33 @@
 <!-- CHART.JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 <script>
+  // Fix 4: Toggle Spejder vis alle
+  function toggleSpejder(type) {
+    const rest = document.getElementById('spejder-' + type + '-rest');
+    const btn = event.target;
+    if (rest.style.display === 'none') {
+      rest.style.display = 'grid';
+      btn.textContent = 'Skjul ▴';
+    } else {
+      rest.style.display = 'none';
+      btn.textContent = 'Vis alle ▾';
+    }
+  }
+
+  // Fix 6: Skjul Cross-kolonne hvis alle er –
+  document.addEventListener('DOMContentLoaded', function() {
+    const crossCells = document.querySelectorAll('td.cross-none');
+    const allCross = document.querySelectorAll('table tbody td:nth-child(6)');
+    const hasData = Array.from(allCross).some(td => td.textContent.trim() !== '–');
+    if (!hasData) {
+      // Skjul header og alle cross-celler
+      const ths = document.querySelectorAll('table th');
+      if (ths[5]) ths[5].style.display = 'none';
+      allCross.forEach(td => td.style.display = 'none');
+    }
+  });
+
+  // Momentum chart
   const ctx = document.getElementById('momentumChart').getContext('2d');
   new Chart(ctx, {
     type: 'bar',
