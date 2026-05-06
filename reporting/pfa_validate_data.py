@@ -15,9 +15,9 @@ from datetime import datetime, timedelta
 ROOT           = Path(__file__).resolve().parents[1]
 
 # PFA filer
-LATEST_FILE    = ROOT / "data/latest.json"
-HISTORY_FILE   = ROOT / "data/history.json"
-PORTFOLIO_FILE = ROOT / "config/portfolio.json"
+LATEST_FILE    = ROOT / "data/pfa_latest.json"
+HISTORY_FILE   = ROOT / "data/pfa_history.json"
+PORTFOLIO_FILE = ROOT / "config/pfa_portfolio.json"
 
 # ETF filer
 ETF_LATEST_FILE    = ROOT / "data/etf_latest.json"
