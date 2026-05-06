@@ -107,5 +107,12 @@
     "category": "Tema — Uranium & Nuklear",
     "ter_pct": 0.70,
     "nordnet_url": "https://www.nordnet.dk/etf/liste/global-x-uranium-ucits-urnu-xeta"
+  },
+  "IE00B4L5Y983": {
+    "name": "iShares Core MSCI World UCITS ETF",
+    "ticker": "IWDA.AS",
+    "category": "Benchmark — MSCI World",
+    "ter_pct": 0.20,
+    "_benchmark": true
   }
 }
