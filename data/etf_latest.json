@@ -14,6 +14,7 @@
     "return_6m": 41.3,
     "return_1y": 277.22,
     "return_ytd": 97.16,
+    "volatility": 3.75,
     "data_points": 504
   },
   {
@@ -31,6 +32,7 @@
     "return_6m": 74.86,
     "return_1y": 189.54,
     "return_ytd": 70.63,
+    "volatility": 2.8,
     "data_points": 504
   },
   {
@@ -48,6 +50,7 @@
     "return_6m": 73.65,
     "return_1y": 188.55,
     "return_ytd": 71.03,
+    "volatility": 2.9,
     "data_points": 505
   },
   {
@@ -65,6 +68,7 @@
     "return_6m": 73.35,
     "return_1y": 187.14,
     "return_ytd": 69.47,
+    "volatility": 2.74,
     "data_points": 504
   },
   {
@@ -82,6 +86,7 @@
     "return_6m": 73.92,
     "return_1y": 181.92,
     "return_ytd": 70.94,
+    "volatility": 2.78,
     "data_points": 504
   },
   {
@@ -99,6 +104,7 @@
     "return_6m": 60.53,
     "return_1y": 165.73,
     "return_ytd": 38.6,
+    "volatility": 2.06,
     "data_points": 504
   },
   {
@@ -116,6 +122,7 @@
     "return_6m": 58.18,
     "return_1y": 165.58,
     "return_ytd": 47.1,
+    "volatility": 2.52,
     "data_points": 504
   },
   {
@@ -133,6 +140,7 @@
     "return_6m": 54.71,
     "return_1y": 154.8,
     "return_ytd": 55.14,
+    "volatility": 2.08,
     "data_points": 504
   },
   {
@@ -150,6 +158,7 @@
     "return_6m": 49.76,
     "return_1y": 140.41,
     "return_ytd": 23.6,
+    "volatility": 1.68,
     "data_points": 504
   },
   {
@@ -167,6 +176,7 @@
     "return_6m": 46.63,
     "return_1y": 137.09,
     "return_ytd": 46.68,
+    "volatility": 2.07,
     "data_points": 504
   },
   {
@@ -184,6 +194,7 @@
     "return_6m": 15.56,
     "return_1y": 137.03,
     "return_ytd": 28.26,
+    "volatility": 2.4,
     "data_points": 290
   },
   {
@@ -201,6 +212,7 @@
     "return_6m": 37.74,
     "return_1y": 123.99,
     "return_ytd": 0.6,
+    "volatility": 2.64,
     "data_points": 504
   },
   {
@@ -218,6 +230,7 @@
     "return_6m": 44.93,
     "return_1y": 129.15,
     "return_ytd": 33.66,
+    "volatility": 1.76,
     "data_points": 504
   },
   {
@@ -235,6 +248,7 @@
     "return_6m": 43.77,
     "return_1y": 126.98,
     "return_ytd": 33.06,
+    "volatility": 1.57,
     "data_points": 504
   },
   {
@@ -252,6 +266,7 @@
     "return_6m": 10.76,
     "return_1y": null,
     "return_ytd": 28.75,
+    "volatility": 2.89,
     "data_points": 224
   }
 ]
