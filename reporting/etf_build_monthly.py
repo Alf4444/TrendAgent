@@ -60,9 +60,9 @@ def get_trail_stop_pct(volatility):
     else:
         return 7.0
 
-# Benchmark — VanEck Semiconductor bruges som proxy for "markedet"
-# da universet er tema/sektor-ETF'er. Kan ændres.
-BENCHMARK_ISIN = "IE00BMC38736"  # VVSM — VanEck Semiconductor
+# Benchmark — iShares Core MSCI World UCITS ETF bruges som bredt markedsbenchmark
+# Ticker: IWDA.AS (Amsterdam) — repræsenterer globalt udviklede markeder
+BENCHMARK_ISIN = "IE00B4L5Y983"  # IWDA — iShares Core MSCI World
 
 
 # ==========================================
@@ -118,6 +118,8 @@ def build_monthly():
     portfolio = load_json(PORTFOLIO_FILE, {})
     watchlist = {k: v for k, v in watchlist.items() if not k.startswith('_')}
     portfolio = {k: v for k, v in portfolio.items() if not k.startswith('_')}
+    # Benchmark-fonde må ikke vises i tabeller eller markedsmuligheder
+    benchmark_isins = {k for k, v in watchlist.items() if v.get('_benchmark')}
 
     rank_map, total_count = get_ranking_data(latest)
     latest_map = {item['isin']: item for item in latest}
@@ -225,7 +227,11 @@ def build_monthly():
     # --- BENCHMARK ---
     benchmark_item   = latest_map.get(BENCHMARK_ISIN, {})
     benchmark_return = benchmark_item.get('return_1m') or 0
-    benchmark_name   = benchmark_item.get('name', 'VanEck Semiconductor')
+    benchmark_name   = benchmark_item.get('name', 'iShares Core MSCI World')
+    # Fallback: hvis IWDA ikke er i universet, brug porteføljens egne afkast som reference
+    if not benchmark_item:
+        print("⚠️  MSCI World benchmark (IWDA) ikke fundet i etf_latest.json — benchmark vises som N/A")
+        benchmark_name = "MSCI World (ikke tilgængeligt)"
 
     avg_port_return = (
         sum(active_returns) / len(active_returns)
@@ -234,10 +240,12 @@ def build_monthly():
 
     # --- TOP 5 MARKEDSMULIGHEDER ---
     # Ikke-ejede ETF'er sorteret efter 1M afkast
-    active_isins = {isin for isin, p in portfolio.items() if p.get('active', False)}
+    # Ekskluderer ALLE positioner i portfolio (aktive + solgte)
+    all_portfolio_isins = set(portfolio.keys())
     opps = [
         item for item in latest
-        if item['isin'] not in active_isins
+        if item['isin'] not in all_portfolio_isins
+        and item['isin'] not in benchmark_isins
         and item.get('return_1m') is not None
     ]
     opps_sorted = sorted(opps, key=lambda x: x.get('return_1m') or 0, reverse=True)[:5]
