@@ -29,7 +29,7 @@ jobs:
 
       - name: Build Weekly Report
         run: |
-          python reporting/build_weekly_report.py
+          python reporting/pfa_build_weekly_report.py
 
       - name: Send Trail Stop Alert (3.0%)
         env:
@@ -37,7 +37,7 @@ jobs:
           MAIL_PASSWORD:    ${{ secrets.MAIL_PASSWORD }}
           MAIL_RECIPIENTS:  ${{ secrets.MAIL_RECIPIENTS }}
         run: |
-          python reporting/send_alert.py \
+          python reporting/pfa_send_alert.py \
             --trail-pct 3.0 \
             --report-type "Weekly rapport"
 
@@ -45,7 +45,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add build/weekly.html data/pfa_history.json data/pfa_latest.json data/pfa_hwm.json
+          git add build/weekly.html data/history.json data/latest.json data/high_water_marks.json
           git commit -m "Weekly report + HWM opdateret [skip ci]" || echo "Ingen ændringer at committe"
           git stash || true
           git pull --rebase origin main
