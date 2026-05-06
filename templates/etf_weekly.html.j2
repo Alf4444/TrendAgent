@@ -168,6 +168,7 @@
         </div>
         <div class="spejder-stats">
           <div class="spejder-stat">Momentum: <span class="val" style="color:#e53935;">+{{ s.momentum }}%</span></div>
+          {% if s.weighted_momentum %}<div class="spejder-stat">Vægtet: <span class="val" style="color:#e53935;">{{ '%+.1f'|format(s.weighted_momentum) }}</span></div>{% endif %}
           <div class="spejder-stat">1Y: <span class="val" style="color:#e53935;">{{ '%+.1f'|format(s.return_1y) if s.return_1y is not none else '–' }}%</span></div>
           <div class="spejder-stat">1M: <span class="val">{{ '%+.1f'|format(s.return_1m) if s.return_1m is not none else '–' }}%</span></div>
           {% if s.rsi %}<div class="spejder-stat">RSI: <span class="val" style="color: {{ '#d93025' if s.rsi >= 70 else '#555' }}">{{ '%.0f'|format(s.rsi) }}</span></div>{% endif %}
@@ -201,6 +202,7 @@
         </div>
         <div class="spejder-stats">
           <div class="spejder-stat">Momentum: <span class="val">+{{ s.momentum }}%</span></div>
+          {% if s.weighted_momentum %}<div class="spejder-stat">Vægtet: <span class="val">{{ '%+.1f'|format(s.weighted_momentum) }}</span></div>{% endif %}
           <div class="spejder-stat">1M: <span class="val">{{ '%+.1f'|format(s.return_1m) if s.return_1m is not none else '–' }}%</span></div>
           <div class="spejder-stat">1Y: <span class="val">{{ '%+.1f'|format(s.return_1y) if s.return_1y is not none else '–' }}%</span></div>
           {% if s.rsi %}<div class="spejder-stat">RSI: <span class="val">{{ '%.0f'|format(s.rsi) }}</span></div>{% endif %}
