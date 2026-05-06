@@ -2,7 +2,7 @@
 validate_data.py — Automatisk datakontrol for TrendAgent
 =========================================================
 Køres af main.py efter daglig dataopdatering.
-Tjekker latest.json og history.json for fejl og uoverensstemmelser.
+Tjekker pfa_latest.json og pfa_history.json for fejl og uoverensstemmelser.
 
 Returnerer antal kritiske fejl (exit code 0 = OK, >0 = fejl fundet).
 """
@@ -15,9 +15,9 @@ from datetime import datetime, timedelta
 ROOT           = Path(__file__).resolve().parents[1]
 
 # PFA filer
-LATEST_FILE    = ROOT / "data/latest.json"
-HISTORY_FILE   = ROOT / "data/history.json"
-PORTFOLIO_FILE = ROOT / "config/portfolio.json"
+LATEST_FILE    = ROOT / "data/pfa_latest.json"
+HISTORY_FILE   = ROOT / "data/pfa_history.json"
+PORTFOLIO_FILE = ROOT / "config/pfa_portfolio.json"
 
 # ETF filer
 ETF_LATEST_FILE    = ROOT / "data/etf_latest.json"
@@ -74,7 +74,7 @@ def validate(verbose=True):
     today      = datetime.now().strftime('%Y-%m-%d')
 
     # ==========================================
-    # TJEK 1: latest.json — grundlæggende felter
+    # TJEK 1: pfa_latest.json — grundlæggende felter
     # ==========================================
     for item in latest:
         isin = item.get('isin', '?')
@@ -143,19 +143,19 @@ def validate(verbose=True):
             if not p_info.get('buy_date'):
                 warnings.append(f"ADVARSEL: Aktiv fond {isin} ({name}) mangler buy_date")
 
-            # Aktiv fond skal findes i latest.json
+            # Aktiv fond skal findes i pfa_latest.json
             if isin not in latest_map:
                 errors.append(
-                    f"FEJL: Aktiv fond {isin} ({name}) mangler i latest.json "
+                    f"FEJL: Aktiv fond {isin} ({name}) mangler i pfa_latest.json "
                     f"— PFA leverer ikke data for denne fond"
                 )
 
             # Aktiv fond skal have NAV
             elif not latest_map[isin].get('nav'):
-                errors.append(f"FEJL: Aktiv fond {isin} ({name}) har ingen NAV i latest.json")
+                errors.append(f"FEJL: Aktiv fond {isin} ({name}) har ingen NAV i pfa_latest.json")
 
     # ==========================================
-    # TJEK 4: history.json — kursspring
+    # TJEK 4: pfa_history.json — kursspring
     # ==========================================
     jump_count = 0
     for isin, dates_dict in history.items():
