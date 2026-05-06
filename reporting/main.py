@@ -11,8 +11,8 @@ from pfa import parse_pfa_from_text
 
 ROOT          = Path(__file__).resolve().parents[1]
 TEXT_DIR      = ROOT / "build/text"
-OUT_FILE      = ROOT / "data/latest.json"
-HISTORY_FILE  = ROOT / "data/history.json"
+OUT_FILE      = ROOT / "data/pfa_latest.json"
+HISTORY_FILE  = ROOT / "data/pfa_history.json"
 CONFIG_FILE   = ROOT / "config/pfa_pdfs.json"
 
 # Maksimalt tilladt dagligt kurs-hop i % før vi afviser datapunktet.
