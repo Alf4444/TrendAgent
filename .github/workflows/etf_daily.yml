@@ -1,10 +1,11 @@
-name: ETF Daily Report
+name: ETF Daily Update
 
 on:
   schedule:
-    # Lørdag kl. 07:00 DK (05:00 UTC)
-    - cron: '0 5 * * 6'
+    # Hverdage kl. 18:30 DK (16:30 UTC) — efter børslukning i Europa
+    - cron: '30 16 * * 1-5'
   workflow_dispatch:
+    # Tillader manuel kørsel fra GitHub Actions UI
 
 permissions:
   contents: write
@@ -27,23 +28,17 @@ jobs:
           pip install yfinance
           pip install jinja2
 
-      - name: Fetch fresh ETF data
+      - name: Fetch ETF Data
         run: python reporting/etf_provider.py
-
-      - name: Run Spejder screening
-        run: |
-          pip install git+https://github.com/druzsan/justetf-scraping.git -q
-          python reporting/etf_spejder.py
-
-      - name: Build Weekly Report
-        run: python reporting/etf_build_weekly.py
 
       - name: Commit and Push changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add data/etf_latest.json data/etf_history.json data/etf_hwm.json build/etf_weekly.html
-          git add data/etf_spejder_hits.json 2>/dev/null || true
-          git commit -m "ETF Weekly rapport + HWM opdateret [skip ci]" || echo "Ingen ændringer at committe"
+          git add data/etf_latest.json data/etf_history.json
+          git stash || true
           git pull --rebase origin main
+          git stash pop || true
+          git add data/etf_latest.json data/etf_history.json
+          git commit -m "ETF data opdateret $(date +'%Y-%m-%d %H:%M') [skip ci]" || echo "Ingen ændringer at committe"
           git push
