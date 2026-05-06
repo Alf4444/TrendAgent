@@ -1,5 +1,5 @@
 {
-  "_scanned_at": "2026-05-06 05:35",
+  "_scanned_at": "2026-05-06 06:01",
   "_total_scanned": 209,
   "_total_hits": 60,
   "_stabile_hits": 47,
@@ -15,7 +15,7 @@
   },
   "hits": [
     {
-      "isin": "FLXK.DE",
+      "isin": "IE00BHZRR030",
       "name": "Franklin FTSE Korea UCITS ETF",
       "ticker": "FLXK.DE",
       "score": 3,
@@ -28,17 +28,17 @@
       "return_1m": 40.17,
       "return_1y": 196.51,
       "ter": 0.09,
-      "is_owned": false,
+      "is_owned": true,
       "is_watchlist": true,
       "reasons": [
         "Momentum +70.8% over MA200",
         "1M afkast: +40.2%"
       ],
-      "scanned_at": "2026-05-06 05:35",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "SEC0.DE",
+      "isin": "IE000I8KRLL9",
       "name": "iShares MSCI Global Semiconductors UCITS ETF USD (Acc)",
       "ticker": "SEC0.DE",
       "score": 3,
@@ -57,11 +57,11 @@
         "Momentum +58.6% over MA200",
         "1M afkast: +40.1%"
       ],
-      "scanned_at": "2026-05-06 05:35",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "VVSM.DE",
+      "isin": "IE00BMC38736",
       "name": "VanEck Semiconductor UCITS ETF",
       "ticker": "VVSM.DE",
       "score": 3,
@@ -74,17 +74,17 @@
       "return_1m": 35.74,
       "return_1y": 145.68,
       "ter": 0.35,
-      "is_owned": false,
+      "is_owned": true,
       "is_watchlist": true,
       "reasons": [
         "Momentum +50.5% over MA200",
         "1M afkast: +35.7%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "QDVI.DE",
+      "isin": "",
       "name": "iShares Edge MSCI USA Value Factor UCITS ETF",
       "ticker": "QDVI.DE",
       "score": 3,
@@ -103,11 +103,11 @@
         "Momentum +29.1% over MA200",
         "1M afkast: +18.5%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "EMXC.DE",
+      "isin": "",
       "name": "Amundi MSCI Emerging Ex China UCITS ETF Acc",
       "ticker": "EMXC.DE",
       "score": 3,
@@ -126,11 +126,11 @@
         "Momentum +27.4% over MA200",
         "1M afkast: +18.7%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "84X0.DE",
+      "isin": "",
       "name": "iShares MSCI EM ex-China UCITS ETF USD (Acc)",
       "ticker": "84X0.DE",
       "score": 3,
@@ -149,11 +149,11 @@
         "Momentum +27.2% over MA200",
         "1M afkast: +18.4%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "IQQH.DE",
+      "isin": "",
       "name": "iShares Global Clean Energy Transition UCITS ETF USD (Dist)",
       "ticker": "IQQH.DE",
       "score": 3,
@@ -172,11 +172,11 @@
         "Momentum +26.6% over MA200",
         "1M afkast: +15.1%"
       ],
-      "scanned_at": "2026-05-06 05:35",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "IS3S.DE",
+      "isin": "",
       "name": "iShares Edge MSCI World Value Factor UCITS ETF",
       "ticker": "IS3S.DE",
       "score": 3,
@@ -195,11 +195,11 @@
         "Momentum +22.2% over MA200",
         "1M afkast: +12.3%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:00",
       "is_new_this_week": false
     },
     {
-      "isin": "XDEV.DE",
+      "isin": "",
       "name": "Xtrackers MSCI World Value UCITS ETF 1C",
       "ticker": "XDEV.DE",
       "score": 3,
@@ -218,11 +218,11 @@
         "Momentum +21.9% over MA200",
         "1M afkast: +12.3%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "4BRZ.DE",
+      "isin": "",
       "name": "iShares MSCI Brazil UCITS ETF (DE) USD (Acc)",
       "ticker": "4BRZ.DE",
       "score": 4,
@@ -242,11 +242,11 @@
         "RSI 28 — ikke overkøbt",
         "1M afkast: +0.8%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "CEMS.DE",
+      "isin": "",
       "name": "iShares Edge MSCI Europe Value Factor UCITS ETF",
       "ticker": "CEMS.DE",
       "score": 4,
@@ -266,11 +266,11 @@
         "RSI 49 — ikke overkøbt",
         "1M afkast: +4.4%"
       ],
-      "scanned_at": "2026-05-06 05:35",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "ISPA.DE",
+      "isin": "",
       "name": "iShares STOXX Global Select Dividend 100 UCITS ETF (DE)",
       "ticker": "ISPA.DE",
       "score": 4,
@@ -290,11 +290,11 @@
         "RSI 57 — ikke overkøbt",
         "1M afkast: +2.1%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "IUSN.DE",
+      "isin": "",
       "name": "iShares MSCI World Small Cap UCITS ETF",
       "ticker": "IUSN.DE",
       "score": 4,
@@ -314,11 +314,11 @@
         "RSI 67 — ikke overkøbt",
         "1M afkast: +6.2%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:00",
       "is_new_this_week": false
     },
     {
-      "isin": "VFEM.DE",
+      "isin": "",
       "name": "Vanguard FTSE Emerging Markets UCITS ETF (USD) Distributing",
       "ticker": "VFEM.DE",
       "score": 4,
@@ -338,11 +338,11 @@
         "RSI 66 — ikke overkøbt",
         "1M afkast: +8.8%"
       ],
-      "scanned_at": "2026-05-06 05:35",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "LCUJ.DE",
+      "isin": "",
       "name": "Amundi Core MSCI Japan UCITS ETF Acc",
       "ticker": "LCUJ.DE",
       "score": 4,
@@ -362,11 +362,11 @@
         "RSI 53 — ikke overkøbt",
         "1M afkast: +3.2%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "SPY4.DE",
+      "isin": "",
       "name": "State Street SPDR S&P 400 U.S. Mid Cap UCITS ETF USD Unhedged (Acc)",
       "ticker": "SPY4.DE",
       "score": 4,
@@ -386,11 +386,11 @@
         "RSI 67 — ikke overkøbt",
         "1M afkast: +6.0%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "DBXJ.DE",
+      "isin": "",
       "name": "Xtrackers MSCI Japan UCITS ETF 1C",
       "ticker": "DBXJ.DE",
       "score": 4,
@@ -410,11 +410,11 @@
         "RSI 53 — ikke overkøbt",
         "1M afkast: +3.4%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "EUNN.DE",
+      "isin": "",
       "name": "iShares Core MSCI Japan IMI UCITS ETF",
       "ticker": "EUNN.DE",
       "score": 4,
@@ -434,11 +434,11 @@
         "RSI 51 — ikke overkøbt",
         "1M afkast: +2.5%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:00",
       "is_new_this_week": false
     },
     {
-      "isin": "VGWD.DE",
+      "isin": "",
       "name": "Vanguard FTSE All-World High Dividend Yield UCITS ETF Distributing",
       "ticker": "VGWD.DE",
       "score": 4,
@@ -458,11 +458,11 @@
         "RSI 56 — ikke overkøbt",
         "1M afkast: +2.2%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:00",
       "is_new_this_week": false
     },
     {
-      "isin": "VJPN.DE",
+      "isin": "",
       "name": "Vanguard FTSE Japan UCITS ETF (USD) Distributing",
       "ticker": "VJPN.DE",
       "score": 4,
@@ -482,13 +482,13 @@
         "RSI 51 — ikke overkøbt",
         "1M afkast: +2.8%"
       ],
-      "scanned_at": "2026-05-06 05:35",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     }
   ],
   "hits_stabile": [
     {
-      "isin": "CEMS.DE",
+      "isin": "",
       "name": "iShares Edge MSCI Europe Value Factor UCITS ETF",
       "ticker": "CEMS.DE",
       "score": 4,
@@ -508,11 +508,11 @@
         "RSI 49 — ikke overkøbt",
         "1M afkast: +4.4%"
       ],
-      "scanned_at": "2026-05-06 05:35",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "ISPA.DE",
+      "isin": "",
       "name": "iShares STOXX Global Select Dividend 100 UCITS ETF (DE)",
       "ticker": "ISPA.DE",
       "score": 4,
@@ -532,11 +532,11 @@
         "RSI 57 — ikke overkøbt",
         "1M afkast: +2.1%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "IUSN.DE",
+      "isin": "",
       "name": "iShares MSCI World Small Cap UCITS ETF",
       "ticker": "IUSN.DE",
       "score": 4,
@@ -556,11 +556,11 @@
         "RSI 67 — ikke overkøbt",
         "1M afkast: +6.2%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:00",
       "is_new_this_week": false
     },
     {
-      "isin": "VFEM.DE",
+      "isin": "",
       "name": "Vanguard FTSE Emerging Markets UCITS ETF (USD) Distributing",
       "ticker": "VFEM.DE",
       "score": 4,
@@ -580,11 +580,11 @@
         "RSI 66 — ikke overkøbt",
         "1M afkast: +8.8%"
       ],
-      "scanned_at": "2026-05-06 05:35",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "LCUJ.DE",
+      "isin": "",
       "name": "Amundi Core MSCI Japan UCITS ETF Acc",
       "ticker": "LCUJ.DE",
       "score": 4,
@@ -604,11 +604,11 @@
         "RSI 53 — ikke overkøbt",
         "1M afkast: +3.2%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "SPY4.DE",
+      "isin": "",
       "name": "State Street SPDR S&P 400 U.S. Mid Cap UCITS ETF USD Unhedged (Acc)",
       "ticker": "SPY4.DE",
       "score": 4,
@@ -628,11 +628,11 @@
         "RSI 67 — ikke overkøbt",
         "1M afkast: +6.0%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "DBXJ.DE",
+      "isin": "",
       "name": "Xtrackers MSCI Japan UCITS ETF 1C",
       "ticker": "DBXJ.DE",
       "score": 4,
@@ -652,11 +652,11 @@
         "RSI 53 — ikke overkøbt",
         "1M afkast: +3.4%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "EUNN.DE",
+      "isin": "",
       "name": "iShares Core MSCI Japan IMI UCITS ETF",
       "ticker": "EUNN.DE",
       "score": 4,
@@ -676,11 +676,11 @@
         "RSI 51 — ikke overkøbt",
         "1M afkast: +2.5%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:00",
       "is_new_this_week": false
     },
     {
-      "isin": "VGWD.DE",
+      "isin": "",
       "name": "Vanguard FTSE All-World High Dividend Yield UCITS ETF Distributing",
       "ticker": "VGWD.DE",
       "score": 4,
@@ -700,11 +700,11 @@
         "RSI 56 — ikke overkøbt",
         "1M afkast: +2.2%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:00",
       "is_new_this_week": false
     },
     {
-      "isin": "VJPN.DE",
+      "isin": "",
       "name": "Vanguard FTSE Japan UCITS ETF (USD) Distributing",
       "ticker": "VJPN.DE",
       "score": 4,
@@ -724,13 +724,13 @@
         "RSI 51 — ikke overkøbt",
         "1M afkast: +2.8%"
       ],
-      "scanned_at": "2026-05-06 05:35",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     }
   ],
   "hits_hurtige": [
     {
-      "isin": "FLXK.DE",
+      "isin": "IE00BHZRR030",
       "name": "Franklin FTSE Korea UCITS ETF",
       "ticker": "FLXK.DE",
       "score": 3,
@@ -743,17 +743,17 @@
       "return_1m": 40.17,
       "return_1y": 196.51,
       "ter": 0.09,
-      "is_owned": false,
+      "is_owned": true,
       "is_watchlist": true,
       "reasons": [
         "Momentum +70.8% over MA200",
         "1M afkast: +40.2%"
       ],
-      "scanned_at": "2026-05-06 05:35",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "SEC0.DE",
+      "isin": "IE000I8KRLL9",
       "name": "iShares MSCI Global Semiconductors UCITS ETF USD (Acc)",
       "ticker": "SEC0.DE",
       "score": 3,
@@ -772,11 +772,11 @@
         "Momentum +58.6% over MA200",
         "1M afkast: +40.1%"
       ],
-      "scanned_at": "2026-05-06 05:35",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "VVSM.DE",
+      "isin": "IE00BMC38736",
       "name": "VanEck Semiconductor UCITS ETF",
       "ticker": "VVSM.DE",
       "score": 3,
@@ -789,17 +789,17 @@
       "return_1m": 35.74,
       "return_1y": 145.68,
       "ter": 0.35,
-      "is_owned": false,
+      "is_owned": true,
       "is_watchlist": true,
       "reasons": [
         "Momentum +50.5% over MA200",
         "1M afkast: +35.7%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "QDVI.DE",
+      "isin": "",
       "name": "iShares Edge MSCI USA Value Factor UCITS ETF",
       "ticker": "QDVI.DE",
       "score": 3,
@@ -818,11 +818,11 @@
         "Momentum +29.1% over MA200",
         "1M afkast: +18.5%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "EMXC.DE",
+      "isin": "",
       "name": "Amundi MSCI Emerging Ex China UCITS ETF Acc",
       "ticker": "EMXC.DE",
       "score": 3,
@@ -841,11 +841,11 @@
         "Momentum +27.4% over MA200",
         "1M afkast: +18.7%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "84X0.DE",
+      "isin": "",
       "name": "iShares MSCI EM ex-China UCITS ETF USD (Acc)",
       "ticker": "84X0.DE",
       "score": 3,
@@ -864,11 +864,11 @@
         "Momentum +27.2% over MA200",
         "1M afkast: +18.4%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "IQQH.DE",
+      "isin": "",
       "name": "iShares Global Clean Energy Transition UCITS ETF USD (Dist)",
       "ticker": "IQQH.DE",
       "score": 3,
@@ -887,11 +887,11 @@
         "Momentum +26.6% over MA200",
         "1M afkast: +15.1%"
       ],
-      "scanned_at": "2026-05-06 05:35",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "IS3S.DE",
+      "isin": "",
       "name": "iShares Edge MSCI World Value Factor UCITS ETF",
       "ticker": "IS3S.DE",
       "score": 3,
@@ -910,11 +910,11 @@
         "Momentum +22.2% over MA200",
         "1M afkast: +12.3%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:00",
       "is_new_this_week": false
     },
     {
-      "isin": "XDEV.DE",
+      "isin": "",
       "name": "Xtrackers MSCI World Value UCITS ETF 1C",
       "ticker": "XDEV.DE",
       "score": 3,
@@ -933,11 +933,11 @@
         "Momentum +21.9% over MA200",
         "1M afkast: +12.3%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     },
     {
-      "isin": "4BRZ.DE",
+      "isin": "",
       "name": "iShares MSCI Brazil UCITS ETF (DE) USD (Acc)",
       "ticker": "4BRZ.DE",
       "score": 4,
@@ -957,7 +957,7 @@
         "RSI 28 — ikke overkøbt",
         "1M afkast: +0.8%"
       ],
-      "scanned_at": "2026-05-06 05:34",
+      "scanned_at": "2026-05-06 06:01",
       "is_new_this_week": false
     }
   ],
