@@ -46,5 +46,7 @@ jobs:
           git add data/etf_spejder_hits.json 2>/dev/null || true
           git add data/etf_spejder_prev.json 2>/dev/null || true
           git commit -m "ETF Weekly rapport + HWM opdateret [skip ci]" || echo "Ingen ændringer at committe"
+          git stash || true
           git pull --rebase origin main
+          git stash pop || true
           git push
