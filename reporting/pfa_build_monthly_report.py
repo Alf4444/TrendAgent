@@ -18,12 +18,12 @@ from utils import (
 # KONFIGURATION & STIER
 # ==========================================
 ROOT = Path(__file__).resolve().parents[1]
-DATA_FILE      = ROOT / "data/latest.json"
-HISTORY_FILE   = ROOT / "data/history.json"
-PORTFOLIO_FILE = ROOT / "config/portfolio.json"
-TEMPLATE_FILE  = ROOT / "templates/monthly.html.j2"
-REPORT_FILE    = ROOT / "build/monthly.html"
-HWM_FILE       = ROOT / "data/high_water_marks.json"
+DATA_FILE      = ROOT / "data/pfa_latest.json"
+HISTORY_FILE   = ROOT / "data/pfa_history.json"
+PORTFOLIO_FILE = ROOT / "config/pfa_portfolio.json"
+TEMPLATE_FILE  = ROOT / "templates/pfa_monthly.html.j2"
+REPORT_FILE    = ROOT / "build/pfa_monthly.html"
+HWM_FILE       = ROOT / "data/pfa_hwm.json"
 
 BENCHMARK_ISIN = "PFA000002233"
 TRAIL_STOP_PCT = 3.0
