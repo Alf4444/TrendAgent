@@ -18,12 +18,12 @@ from utils import (
 # KONFIGURATION & STIER
 # ==========================================
 ROOT           = Path(__file__).resolve().parents[1]
-DATA_FILE      = ROOT / "data/latest.json"
-HISTORY_FILE   = ROOT / "data/history.json"
-PORTFOLIO_FILE = ROOT / "config/portfolio.json"
-HWM_FILE       = ROOT / "data/high_water_marks.json"
-TEMPLATE_FILE  = ROOT / "templates/daily.html.j2"
-REPORT_FILE    = ROOT / "build/daily.html"
+DATA_FILE      = ROOT / "data/pfa_latest.json"
+HISTORY_FILE   = ROOT / "data/pfa_history.json"
+PORTFOLIO_FILE = ROOT / "config/pfa_portfolio.json"
+HWM_FILE       = ROOT / "data/pfa_hwm.json"
+TEMPLATE_FILE  = ROOT / "templates/pfa_daily.html.j2"
+REPORT_FILE    = ROOT / "build/pfa_daily.html"
 README_FILE    = ROOT / "README.md"
 
 # Stop-loss grænser
