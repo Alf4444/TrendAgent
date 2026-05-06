@@ -1,4 +1,4 @@
-name: ETF Weekly Report
+name: ETF Daily Report
 
 on:
   schedule:
