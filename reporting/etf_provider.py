@@ -17,6 +17,8 @@ from datetime import datetime, timedelta
 # Tilføj reporting/ til Python-stien så utils.py kan importeres
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+from utils import get_volatility
+
 try:
     import yfinance as yf
 except ImportError:
