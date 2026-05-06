@@ -245,9 +245,6 @@ def build_weekly():
     # Gem opdaterede HWM
     save_hwm(hwm_data)
 
-    # Sorter Spejder efter score + momentum
-    spejder_hits.sort(key=lambda x: (x['spejder_score'], x['momentum']), reverse=True)
-
     # Aggregerede data
     avg_portfolio_return = (
         sum(active_week_returns) / len(active_week_returns)
