@@ -115,8 +115,9 @@ def build_weekly():
     watchlist = load_json(WATCHLIST_FILE, {})
     portfolio = load_json(PORTFOLIO_FILE, {})
 
-    # Filtrer watchlist-kommentarer
     watchlist = {k: v for k, v in watchlist.items() if not k.startswith('_')}
+    # Benchmark-fonde må ikke vises i tabeller, top/bund eller Spejder
+    benchmark_isins = {k for k, v in watchlist.items() if v.get('_benchmark')}
 
     portfolio_isins = {
         isin for isin, info in portfolio.items()
@@ -146,6 +147,9 @@ def build_weekly():
 
     for item in latest:
         isin      = item['isin']
+        # Spring benchmark-fonde over — de må ikke vises i tabellen
+        if isin in benchmark_isins:
+            continue
         p_dict    = history.get(isin, {})
 
         # Kun handelsdage
