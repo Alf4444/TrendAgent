@@ -1,6 +1,6 @@
 {
-  "_scanned_at": "2026-05-05 15:10",
-  "_total_scanned": 207,
+  "_scanned_at": "2026-05-06 05:30",
+  "_total_scanned": 209,
   "_total_hits": 60,
   "_stabile_hits": 47,
   "_hurtige_hits": 13,
@@ -20,21 +20,22 @@
       "ticker": "FLXK.DE",
       "score": 3,
       "kategori": "hurtig",
-      "momentum": 69.94,
+      "momentum": 70.85,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 83.4,
+      "rsi": 83.8,
       "cross": "–",
-      "return_1m": 33.17,
-      "return_1y": 189.14,
+      "return_1m": 40.17,
+      "return_1y": 196.51,
       "ter": 0.09,
       "is_owned": false,
       "is_watchlist": true,
       "reasons": [
-        "Momentum +69.9% over MA200",
-        "1M afkast: +33.2%"
+        "Momentum +70.8% over MA200",
+        "1M afkast: +40.2%"
       ],
-      "scanned_at": "2026-05-05 15:10"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
     },
     {
       "isin": "SEC0.DE",
@@ -42,21 +43,22 @@
       "ticker": "SEC0.DE",
       "score": 3,
       "kategori": "hurtig",
-      "momentum": 57.79,
+      "momentum": 58.58,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 83.3,
+      "rsi": 83.6,
       "cross": "–",
-      "return_1m": 34.19,
-      "return_1y": 154.42,
+      "return_1m": 40.13,
+      "return_1y": 162.95,
       "ter": 0.35,
       "is_owned": false,
       "is_watchlist": true,
       "reasons": [
-        "Momentum +57.8% over MA200",
-        "1M afkast: +34.2%"
+        "Momentum +58.6% over MA200",
+        "1M afkast: +40.1%"
       ],
-      "scanned_at": "2026-05-05 15:10"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
     },
     {
       "isin": "VVSM.DE",
@@ -64,21 +66,22 @@
       "ticker": "VVSM.DE",
       "score": 3,
       "kategori": "hurtig",
-      "momentum": 49.9,
+      "momentum": 50.51,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 81.1,
+      "rsi": 81.4,
       "cross": "–",
-      "return_1m": 30.5,
-      "return_1y": 134.56,
+      "return_1m": 35.74,
+      "return_1y": 145.68,
       "ter": 0.35,
       "is_owned": false,
       "is_watchlist": true,
       "reasons": [
-        "Momentum +49.9% over MA200",
-        "1M afkast: +30.5%"
+        "Momentum +50.5% over MA200",
+        "1M afkast: +35.7%"
       ],
-      "scanned_at": "2026-05-05 15:09"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
     },
     {
       "isin": "QDVI.DE",
@@ -86,21 +89,22 @@
       "ticker": "QDVI.DE",
       "score": 3,
       "kategori": "hurtig",
-      "momentum": 29.23,
+      "momentum": 29.07,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 90.4,
+      "rsi": 90.3,
       "cross": "–",
-      "return_1m": 15.1,
-      "return_1y": 59.53,
+      "return_1m": 18.46,
+      "return_1y": 64.0,
       "ter": 0.2,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +29.2% over MA200",
-        "1M afkast: +15.1%"
+        "Momentum +29.1% over MA200",
+        "1M afkast: +18.5%"
       ],
-      "scanned_at": "2026-05-05 15:10"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
     },
     {
       "isin": "EMXC.DE",
@@ -108,21 +112,22 @@
       "ticker": "EMXC.DE",
       "score": 3,
       "kategori": "hurtig",
-      "momentum": 27.07,
+      "momentum": 27.41,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 79.0,
+      "rsi": 79.4,
       "cross": "–",
-      "return_1m": 15.87,
-      "return_1y": 57.88,
+      "return_1m": 18.72,
+      "return_1y": 60.48,
       "ter": 0.15,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +27.1% over MA200",
-        "1M afkast: +15.9%"
+        "Momentum +27.4% over MA200",
+        "1M afkast: +18.7%"
       ],
-      "scanned_at": "2026-05-05 15:10"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
     },
     {
       "isin": "84X0.DE",
@@ -130,21 +135,22 @@
       "ticker": "84X0.DE",
       "score": 3,
       "kategori": "hurtig",
-      "momentum": 26.79,
+      "momentum": 27.21,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 79.3,
+      "rsi": 79.8,
       "cross": "–",
-      "return_1m": 14.93,
-      "return_1y": 56.9,
+      "return_1m": 18.35,
+      "return_1y": 59.87,
       "ter": 0.18,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +26.8% over MA200",
-        "1M afkast: +14.9%"
+        "Momentum +27.2% over MA200",
+        "1M afkast: +18.4%"
       ],
-      "scanned_at": "2026-05-05 15:09"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
     },
     {
       "isin": "IQQH.DE",
@@ -152,21 +158,22 @@
       "ticker": "IQQH.DE",
       "score": 3,
       "kategori": "hurtig",
-      "momentum": 25.6,
+      "momentum": 26.57,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 75.0,
+      "rsi": 76.2,
       "cross": "–",
-      "return_1m": 12.04,
-      "return_1y": 71.09,
+      "return_1m": 15.14,
+      "return_1y": 76.69,
       "ter": 0.65,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +25.6% over MA200",
-        "1M afkast: +12.0%"
+        "Momentum +26.6% over MA200",
+        "1M afkast: +15.1%"
       ],
-      "scanned_at": "2026-05-05 15:10"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
     },
     {
       "isin": "IS3S.DE",
@@ -174,21 +181,22 @@
       "ticker": "IS3S.DE",
       "score": 3,
       "kategori": "hurtig",
-      "momentum": 21.91,
+      "momentum": 22.18,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 87.2,
+      "rsi": 87.4,
       "cross": "–",
-      "return_1m": 9.97,
-      "return_1y": 46.97,
+      "return_1m": 12.32,
+      "return_1y": 49.45,
       "ter": 0.25,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +21.9% over MA200",
-        "1M afkast: +10.0%"
+        "Momentum +22.2% over MA200",
+        "1M afkast: +12.3%"
       ],
-      "scanned_at": "2026-05-05 15:09"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
     },
     {
       "isin": "XDEV.DE",
@@ -196,21 +204,22 @@
       "ticker": "XDEV.DE",
       "score": 3,
       "kategori": "hurtig",
-      "momentum": 21.53,
+      "momentum": 21.85,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 86.5,
+      "rsi": 86.8,
       "cross": "–",
-      "return_1m": 9.93,
-      "return_1y": 46.84,
+      "return_1m": 12.34,
+      "return_1y": 50.27,
       "ter": 0.25,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +21.5% over MA200",
-        "1M afkast: +9.9%"
+        "Momentum +21.9% over MA200",
+        "1M afkast: +12.3%"
       ],
-      "scanned_at": "2026-05-05 15:10"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
     },
     {
       "isin": "4BRZ.DE",
@@ -218,22 +227,23 @@
       "ticker": "4BRZ.DE",
       "score": 4,
       "kategori": "hurtig",
-      "momentum": 21.05,
+      "momentum": 21.65,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 24.7,
+      "rsi": 28.1,
       "cross": "–",
-      "return_1m": 2.19,
-      "return_1y": 49.78,
+      "return_1m": 0.75,
+      "return_1y": 47.83,
       "ter": 0.31,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +21.1% over MA200",
-        "RSI 25 — ikke overkøbt",
-        "1M afkast: +2.2%"
+        "Momentum +21.6% over MA200",
+        "RSI 28 — ikke overkøbt",
+        "1M afkast: +0.8%"
       ],
-      "scanned_at": "2026-05-05 15:10"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
     },
     {
       "isin": "CEMS.DE",
@@ -241,22 +251,23 @@
       "ticker": "CEMS.DE",
       "score": 4,
       "kategori": "stabil",
-      "momentum": 11.08,
+      "momentum": 11.61,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 46.4,
+      "rsi": 49.2,
       "cross": "–",
-      "return_1m": 3.31,
-      "return_1y": 31.96,
+      "return_1m": 4.36,
+      "return_1y": 32.75,
       "ter": 0.25,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +11.1% over MA200",
-        "RSI 46 — ikke overkøbt",
-        "1M afkast: +3.3%"
+        "Momentum +11.6% over MA200",
+        "RSI 49 — ikke overkøbt",
+        "1M afkast: +4.4%"
       ],
-      "scanned_at": "2026-05-05 15:10"
+      "scanned_at": "2026-05-06 05:30",
+      "is_new_this_week": false
     },
     {
       "isin": "ISPA.DE",
@@ -264,22 +275,23 @@
       "ticker": "ISPA.DE",
       "score": 4,
       "kategori": "stabil",
-      "momentum": 10.77,
+      "momentum": 10.94,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 55.1,
+      "rsi": 56.8,
       "cross": "–",
-      "return_1m": 1.64,
-      "return_1y": 30.59,
+      "return_1m": 2.13,
+      "return_1y": 31.32,
       "ter": 0.46,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +10.8% over MA200",
-        "RSI 55 — ikke overkøbt",
-        "1M afkast: +1.6%"
+        "Momentum +10.9% over MA200",
+        "RSI 57 — ikke overkøbt",
+        "1M afkast: +2.1%"
       ],
-      "scanned_at": "2026-05-05 15:10"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": false
     },
     {
       "isin": "IUSN.DE",
@@ -287,22 +299,23 @@
       "ticker": "IUSN.DE",
       "score": 4,
       "kategori": "stabil",
-      "momentum": 10.42,
+      "momentum": 10.46,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 66.9,
+      "rsi": 67.0,
       "cross": "–",
-      "return_1m": 5.56,
-      "return_1y": 30.14,
+      "return_1m": 6.17,
+      "return_1y": 31.3,
       "ter": 0.35,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +10.4% over MA200",
+        "Momentum +10.5% over MA200",
         "RSI 67 — ikke overkøbt",
-        "1M afkast: +5.6%"
+        "1M afkast: +6.2%"
       ],
-      "scanned_at": "2026-05-05 15:09"
+      "scanned_at": "2026-05-06 05:28",
+      "is_new_this_week": false
     },
     {
       "isin": "VFEM.DE",
@@ -310,45 +323,23 @@
       "ticker": "VFEM.DE",
       "score": 4,
       "kategori": "stabil",
-      "momentum": 9.45,
+      "momentum": 9.48,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 65.8,
+      "rsi": 65.9,
       "cross": "–",
-      "return_1m": 7.73,
-      "return_1y": 26.62,
+      "return_1m": 8.85,
+      "return_1y": 27.12,
       "ter": 0.17,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +9.4% over MA200",
+        "Momentum +9.5% over MA200",
         "RSI 66 — ikke overkøbt",
-        "1M afkast: +7.7%"
+        "1M afkast: +8.8%"
       ],
-      "scanned_at": "2026-05-05 15:10"
-    },
-    {
-      "isin": "SPY4.DE",
-      "name": "State Street SPDR S&P 400 U.S. Mid Cap UCITS ETF USD Unhedged (Acc)",
-      "ticker": "SPY4.DE",
-      "score": 4,
-      "kategori": "stabil",
-      "momentum": 9.06,
-      "ma_label": "MA200",
-      "trend": "BULL",
-      "rsi": 67.0,
-      "cross": "–",
-      "return_1m": 5.02,
-      "return_1y": 20.92,
-      "ter": 0.3,
-      "is_owned": false,
-      "is_watchlist": false,
-      "reasons": [
-        "Momentum +9.1% over MA200",
-        "RSI 67 — ikke overkøbt",
-        "1M afkast: +5.0%"
-      ],
-      "scanned_at": "2026-05-05 15:09"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": false
     },
     {
       "isin": "LCUJ.DE",
@@ -356,22 +347,47 @@
       "ticker": "LCUJ.DE",
       "score": 4,
       "kategori": "stabil",
-      "momentum": 8.81,
+      "momentum": 9.22,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 50.9,
+      "rsi": 52.8,
       "cross": "–",
-      "return_1m": 2.36,
-      "return_1y": 25.82,
+      "return_1m": 3.25,
+      "return_1y": 24.87,
       "ter": 0.12,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +8.8% over MA200",
-        "RSI 51 — ikke overkøbt",
-        "1M afkast: +2.4%"
+        "Momentum +9.2% over MA200",
+        "RSI 53 — ikke overkøbt",
+        "1M afkast: +3.2%"
       ],
-      "scanned_at": "2026-05-05 15:09"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": false
+    },
+    {
+      "isin": "SPY4.DE",
+      "name": "State Street SPDR S&P 400 U.S. Mid Cap UCITS ETF USD Unhedged (Acc)",
+      "ticker": "SPY4.DE",
+      "score": 4,
+      "kategori": "stabil",
+      "momentum": 9.14,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 67.3,
+      "cross": "–",
+      "return_1m": 6.01,
+      "return_1y": 22.33,
+      "ter": 0.3,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +9.1% over MA200",
+        "RSI 67 — ikke overkøbt",
+        "1M afkast: +6.0%"
+      ],
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": false
     },
     {
       "isin": "DBXJ.DE",
@@ -379,68 +395,23 @@
       "ticker": "DBXJ.DE",
       "score": 4,
       "kategori": "stabil",
-      "momentum": 8.78,
+      "momentum": 9.11,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 51.6,
+      "rsi": 53.1,
       "cross": "–",
-      "return_1m": 2.39,
-      "return_1y": 25.28,
+      "return_1m": 3.35,
+      "return_1y": 26.26,
       "ter": 0.12,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +8.8% over MA200",
-        "RSI 52 — ikke overkøbt",
-        "1M afkast: +2.4%"
+        "Momentum +9.1% over MA200",
+        "RSI 53 — ikke overkøbt",
+        "1M afkast: +3.4%"
       ],
-      "scanned_at": "2026-05-05 15:09"
-    },
-    {
-      "isin": "VGWD.DE",
-      "name": "Vanguard FTSE All-World High Dividend Yield UCITS ETF Distributing",
-      "ticker": "VGWD.DE",
-      "score": 4,
-      "kategori": "stabil",
-      "momentum": 8.77,
-      "ma_label": "MA200",
-      "trend": "BULL",
-      "rsi": 54.3,
-      "cross": "–",
-      "return_1m": 1.6,
-      "return_1y": 23.79,
-      "ter": 0.29,
-      "is_owned": false,
-      "is_watchlist": false,
-      "reasons": [
-        "Momentum +8.8% over MA200",
-        "RSI 54 — ikke overkøbt",
-        "1M afkast: +1.6%"
-      ],
-      "scanned_at": "2026-05-05 15:09"
-    },
-    {
-      "isin": "VJPN.DE",
-      "name": "Vanguard FTSE Japan UCITS ETF (USD) Distributing",
-      "ticker": "VJPN.DE",
-      "score": 4,
-      "kategori": "stabil",
-      "momentum": 8.62,
-      "ma_label": "MA200",
-      "trend": "BULL",
-      "rsi": 49.3,
-      "cross": "–",
-      "return_1m": 2.03,
-      "return_1y": 25.5,
-      "ter": 0.1,
-      "is_owned": false,
-      "is_watchlist": false,
-      "reasons": [
-        "Momentum +8.6% over MA200",
-        "RSI 49 — ikke overkøbt",
-        "1M afkast: +2.0%"
-      ],
-      "scanned_at": "2026-05-05 15:10"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": false
     },
     {
       "isin": "EUNN.DE",
@@ -448,22 +419,71 @@
       "ticker": "EUNN.DE",
       "score": 4,
       "kategori": "stabil",
-      "momentum": 8.6,
+      "momentum": 9.05,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 49.2,
+      "rsi": 51.3,
       "cross": "–",
-      "return_1m": 1.67,
-      "return_1y": 25.49,
+      "return_1m": 2.47,
+      "return_1y": 24.98,
       "ter": 0.12,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +8.6% over MA200",
-        "RSI 49 — ikke overkøbt",
-        "1M afkast: +1.7%"
+        "Momentum +9.1% over MA200",
+        "RSI 51 — ikke overkøbt",
+        "1M afkast: +2.5%"
       ],
-      "scanned_at": "2026-05-05 15:09"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": false
+    },
+    {
+      "isin": "VGWD.DE",
+      "name": "Vanguard FTSE All-World High Dividend Yield UCITS ETF Distributing",
+      "ticker": "VGWD.DE",
+      "score": 4,
+      "kategori": "stabil",
+      "momentum": 9.02,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 55.9,
+      "cross": "–",
+      "return_1m": 2.18,
+      "return_1y": 24.74,
+      "ter": 0.29,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +9.0% over MA200",
+        "RSI 56 — ikke overkøbt",
+        "1M afkast: +2.2%"
+      ],
+      "scanned_at": "2026-05-06 05:28",
+      "is_new_this_week": false
+    },
+    {
+      "isin": "VJPN.DE",
+      "name": "Vanguard FTSE Japan UCITS ETF (USD) Distributing",
+      "ticker": "VJPN.DE",
+      "score": 4,
+      "kategori": "stabil",
+      "momentum": 8.97,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 50.8,
+      "cross": "–",
+      "return_1m": 2.84,
+      "return_1y": 26.28,
+      "ter": 0.1,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +9.0% over MA200",
+        "RSI 51 — ikke overkøbt",
+        "1M afkast: +2.8%"
+      ],
+      "scanned_at": "2026-05-06 05:30",
+      "is_new_this_week": false
     }
   ],
   "hits_stabile": [
@@ -473,22 +493,23 @@
       "ticker": "CEMS.DE",
       "score": 4,
       "kategori": "stabil",
-      "momentum": 11.08,
+      "momentum": 11.61,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 46.4,
+      "rsi": 49.2,
       "cross": "–",
-      "return_1m": 3.31,
-      "return_1y": 31.96,
+      "return_1m": 4.36,
+      "return_1y": 32.75,
       "ter": 0.25,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +11.1% over MA200",
-        "RSI 46 — ikke overkøbt",
-        "1M afkast: +3.3%"
+        "Momentum +11.6% over MA200",
+        "RSI 49 — ikke overkøbt",
+        "1M afkast: +4.4%"
       ],
-      "scanned_at": "2026-05-05 15:10"
+      "scanned_at": "2026-05-06 05:30",
+      "is_new_this_week": false
     },
     {
       "isin": "ISPA.DE",
@@ -496,22 +517,23 @@
       "ticker": "ISPA.DE",
       "score": 4,
       "kategori": "stabil",
-      "momentum": 10.77,
+      "momentum": 10.94,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 55.1,
+      "rsi": 56.8,
       "cross": "–",
-      "return_1m": 1.64,
-      "return_1y": 30.59,
+      "return_1m": 2.13,
+      "return_1y": 31.32,
       "ter": 0.46,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +10.8% over MA200",
-        "RSI 55 — ikke overkøbt",
-        "1M afkast: +1.6%"
+        "Momentum +10.9% over MA200",
+        "RSI 57 — ikke overkøbt",
+        "1M afkast: +2.1%"
       ],
-      "scanned_at": "2026-05-05 15:10"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": false
     },
     {
       "isin": "IUSN.DE",
@@ -519,22 +541,23 @@
       "ticker": "IUSN.DE",
       "score": 4,
       "kategori": "stabil",
-      "momentum": 10.42,
+      "momentum": 10.46,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 66.9,
+      "rsi": 67.0,
       "cross": "–",
-      "return_1m": 5.56,
-      "return_1y": 30.14,
+      "return_1m": 6.17,
+      "return_1y": 31.3,
       "ter": 0.35,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +10.4% over MA200",
+        "Momentum +10.5% over MA200",
         "RSI 67 — ikke overkøbt",
-        "1M afkast: +5.6%"
+        "1M afkast: +6.2%"
       ],
-      "scanned_at": "2026-05-05 15:09"
+      "scanned_at": "2026-05-06 05:28",
+      "is_new_this_week": false
     },
     {
       "isin": "VFEM.DE",
@@ -542,45 +565,23 @@
       "ticker": "VFEM.DE",
       "score": 4,
       "kategori": "stabil",
-      "momentum": 9.45,
+      "momentum": 9.48,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 65.8,
+      "rsi": 65.9,
       "cross": "–",
-      "return_1m": 7.73,
-      "return_1y": 26.62,
+      "return_1m": 8.85,
+      "return_1y": 27.12,
       "ter": 0.17,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +9.4% over MA200",
+        "Momentum +9.5% over MA200",
         "RSI 66 — ikke overkøbt",
-        "1M afkast: +7.7%"
+        "1M afkast: +8.8%"
       ],
-      "scanned_at": "2026-05-05 15:10"
-    },
-    {
-      "isin": "SPY4.DE",
-      "name": "State Street SPDR S&P 400 U.S. Mid Cap UCITS ETF USD Unhedged (Acc)",
-      "ticker": "SPY4.DE",
-      "score": 4,
-      "kategori": "stabil",
-      "momentum": 9.06,
-      "ma_label": "MA200",
-      "trend": "BULL",
-      "rsi": 67.0,
-      "cross": "–",
-      "return_1m": 5.02,
-      "return_1y": 20.92,
-      "ter": 0.3,
-      "is_owned": false,
-      "is_watchlist": false,
-      "reasons": [
-        "Momentum +9.1% over MA200",
-        "RSI 67 — ikke overkøbt",
-        "1M afkast: +5.0%"
-      ],
-      "scanned_at": "2026-05-05 15:09"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": false
     },
     {
       "isin": "LCUJ.DE",
@@ -588,22 +589,47 @@
       "ticker": "LCUJ.DE",
       "score": 4,
       "kategori": "stabil",
-      "momentum": 8.81,
+      "momentum": 9.22,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 50.9,
+      "rsi": 52.8,
       "cross": "–",
-      "return_1m": 2.36,
-      "return_1y": 25.82,
+      "return_1m": 3.25,
+      "return_1y": 24.87,
       "ter": 0.12,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +8.8% over MA200",
-        "RSI 51 — ikke overkøbt",
-        "1M afkast: +2.4%"
+        "Momentum +9.2% over MA200",
+        "RSI 53 — ikke overkøbt",
+        "1M afkast: +3.2%"
       ],
-      "scanned_at": "2026-05-05 15:09"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": false
+    },
+    {
+      "isin": "SPY4.DE",
+      "name": "State Street SPDR S&P 400 U.S. Mid Cap UCITS ETF USD Unhedged (Acc)",
+      "ticker": "SPY4.DE",
+      "score": 4,
+      "kategori": "stabil",
+      "momentum": 9.14,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 67.3,
+      "cross": "–",
+      "return_1m": 6.01,
+      "return_1y": 22.33,
+      "ter": 0.3,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +9.1% over MA200",
+        "RSI 67 — ikke overkøbt",
+        "1M afkast: +6.0%"
+      ],
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": false
     },
     {
       "isin": "DBXJ.DE",
@@ -611,68 +637,23 @@
       "ticker": "DBXJ.DE",
       "score": 4,
       "kategori": "stabil",
-      "momentum": 8.78,
+      "momentum": 9.11,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 51.6,
+      "rsi": 53.1,
       "cross": "–",
-      "return_1m": 2.39,
-      "return_1y": 25.28,
+      "return_1m": 3.35,
+      "return_1y": 26.26,
       "ter": 0.12,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +8.8% over MA200",
-        "RSI 52 — ikke overkøbt",
-        "1M afkast: +2.4%"
+        "Momentum +9.1% over MA200",
+        "RSI 53 — ikke overkøbt",
+        "1M afkast: +3.4%"
       ],
-      "scanned_at": "2026-05-05 15:09"
-    },
-    {
-      "isin": "VGWD.DE",
-      "name": "Vanguard FTSE All-World High Dividend Yield UCITS ETF Distributing",
-      "ticker": "VGWD.DE",
-      "score": 4,
-      "kategori": "stabil",
-      "momentum": 8.77,
-      "ma_label": "MA200",
-      "trend": "BULL",
-      "rsi": 54.3,
-      "cross": "–",
-      "return_1m": 1.6,
-      "return_1y": 23.79,
-      "ter": 0.29,
-      "is_owned": false,
-      "is_watchlist": false,
-      "reasons": [
-        "Momentum +8.8% over MA200",
-        "RSI 54 — ikke overkøbt",
-        "1M afkast: +1.6%"
-      ],
-      "scanned_at": "2026-05-05 15:09"
-    },
-    {
-      "isin": "VJPN.DE",
-      "name": "Vanguard FTSE Japan UCITS ETF (USD) Distributing",
-      "ticker": "VJPN.DE",
-      "score": 4,
-      "kategori": "stabil",
-      "momentum": 8.62,
-      "ma_label": "MA200",
-      "trend": "BULL",
-      "rsi": 49.3,
-      "cross": "–",
-      "return_1m": 2.03,
-      "return_1y": 25.5,
-      "ter": 0.1,
-      "is_owned": false,
-      "is_watchlist": false,
-      "reasons": [
-        "Momentum +8.6% over MA200",
-        "RSI 49 — ikke overkøbt",
-        "1M afkast: +2.0%"
-      ],
-      "scanned_at": "2026-05-05 15:10"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": false
     },
     {
       "isin": "EUNN.DE",
@@ -680,22 +661,71 @@
       "ticker": "EUNN.DE",
       "score": 4,
       "kategori": "stabil",
-      "momentum": 8.6,
+      "momentum": 9.05,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 49.2,
+      "rsi": 51.3,
       "cross": "–",
-      "return_1m": 1.67,
-      "return_1y": 25.49,
+      "return_1m": 2.47,
+      "return_1y": 24.98,
       "ter": 0.12,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +8.6% over MA200",
-        "RSI 49 — ikke overkøbt",
-        "1M afkast: +1.7%"
+        "Momentum +9.1% over MA200",
+        "RSI 51 — ikke overkøbt",
+        "1M afkast: +2.5%"
       ],
-      "scanned_at": "2026-05-05 15:09"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": false
+    },
+    {
+      "isin": "VGWD.DE",
+      "name": "Vanguard FTSE All-World High Dividend Yield UCITS ETF Distributing",
+      "ticker": "VGWD.DE",
+      "score": 4,
+      "kategori": "stabil",
+      "momentum": 9.02,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 55.9,
+      "cross": "–",
+      "return_1m": 2.18,
+      "return_1y": 24.74,
+      "ter": 0.29,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +9.0% over MA200",
+        "RSI 56 — ikke overkøbt",
+        "1M afkast: +2.2%"
+      ],
+      "scanned_at": "2026-05-06 05:28",
+      "is_new_this_week": false
+    },
+    {
+      "isin": "VJPN.DE",
+      "name": "Vanguard FTSE Japan UCITS ETF (USD) Distributing",
+      "ticker": "VJPN.DE",
+      "score": 4,
+      "kategori": "stabil",
+      "momentum": 8.97,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 50.8,
+      "cross": "–",
+      "return_1m": 2.84,
+      "return_1y": 26.28,
+      "ter": 0.1,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +9.0% over MA200",
+        "RSI 51 — ikke overkøbt",
+        "1M afkast: +2.8%"
+      ],
+      "scanned_at": "2026-05-06 05:30",
+      "is_new_this_week": false
     }
   ],
   "hits_hurtige": [
@@ -705,21 +735,22 @@
       "ticker": "FLXK.DE",
       "score": 3,
       "kategori": "hurtig",
-      "momentum": 69.94,
+      "momentum": 70.85,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 83.4,
+      "rsi": 83.8,
       "cross": "–",
-      "return_1m": 33.17,
-      "return_1y": 189.14,
+      "return_1m": 40.17,
+      "return_1y": 196.51,
       "ter": 0.09,
       "is_owned": false,
       "is_watchlist": true,
       "reasons": [
-        "Momentum +69.9% over MA200",
-        "1M afkast: +33.2%"
+        "Momentum +70.8% over MA200",
+        "1M afkast: +40.2%"
       ],
-      "scanned_at": "2026-05-05 15:10"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
     },
     {
       "isin": "SEC0.DE",
@@ -727,21 +758,22 @@
       "ticker": "SEC0.DE",
       "score": 3,
       "kategori": "hurtig",
-      "momentum": 57.79,
+      "momentum": 58.58,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 83.3,
+      "rsi": 83.6,
       "cross": "–",
-      "return_1m": 34.19,
-      "return_1y": 154.42,
+      "return_1m": 40.13,
+      "return_1y": 162.95,
       "ter": 0.35,
       "is_owned": false,
       "is_watchlist": true,
       "reasons": [
-        "Momentum +57.8% over MA200",
-        "1M afkast: +34.2%"
+        "Momentum +58.6% over MA200",
+        "1M afkast: +40.1%"
       ],
-      "scanned_at": "2026-05-05 15:10"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
     },
     {
       "isin": "VVSM.DE",
@@ -749,21 +781,22 @@
       "ticker": "VVSM.DE",
       "score": 3,
       "kategori": "hurtig",
-      "momentum": 49.9,
+      "momentum": 50.51,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 81.1,
+      "rsi": 81.4,
       "cross": "–",
-      "return_1m": 30.5,
-      "return_1y": 134.56,
+      "return_1m": 35.74,
+      "return_1y": 145.68,
       "ter": 0.35,
       "is_owned": false,
       "is_watchlist": true,
       "reasons": [
-        "Momentum +49.9% over MA200",
-        "1M afkast: +30.5%"
+        "Momentum +50.5% over MA200",
+        "1M afkast: +35.7%"
       ],
-      "scanned_at": "2026-05-05 15:09"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
     },
     {
       "isin": "QDVI.DE",
@@ -771,21 +804,22 @@
       "ticker": "QDVI.DE",
       "score": 3,
       "kategori": "hurtig",
-      "momentum": 29.23,
+      "momentum": 29.07,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 90.4,
+      "rsi": 90.3,
       "cross": "–",
-      "return_1m": 15.1,
-      "return_1y": 59.53,
+      "return_1m": 18.46,
+      "return_1y": 64.0,
       "ter": 0.2,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +29.2% over MA200",
-        "1M afkast: +15.1%"
+        "Momentum +29.1% over MA200",
+        "1M afkast: +18.5%"
       ],
-      "scanned_at": "2026-05-05 15:10"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
     },
     {
       "isin": "EMXC.DE",
@@ -793,21 +827,22 @@
       "ticker": "EMXC.DE",
       "score": 3,
       "kategori": "hurtig",
-      "momentum": 27.07,
+      "momentum": 27.41,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 79.0,
+      "rsi": 79.4,
       "cross": "–",
-      "return_1m": 15.87,
-      "return_1y": 57.88,
+      "return_1m": 18.72,
+      "return_1y": 60.48,
       "ter": 0.15,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +27.1% over MA200",
-        "1M afkast: +15.9%"
+        "Momentum +27.4% over MA200",
+        "1M afkast: +18.7%"
       ],
-      "scanned_at": "2026-05-05 15:10"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
     },
     {
       "isin": "84X0.DE",
@@ -815,21 +850,22 @@
       "ticker": "84X0.DE",
       "score": 3,
       "kategori": "hurtig",
-      "momentum": 26.79,
+      "momentum": 27.21,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 79.3,
+      "rsi": 79.8,
       "cross": "–",
-      "return_1m": 14.93,
-      "return_1y": 56.9,
+      "return_1m": 18.35,
+      "return_1y": 59.87,
       "ter": 0.18,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +26.8% over MA200",
-        "1M afkast: +14.9%"
+        "Momentum +27.2% over MA200",
+        "1M afkast: +18.4%"
       ],
-      "scanned_at": "2026-05-05 15:09"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
     },
     {
       "isin": "IQQH.DE",
@@ -837,21 +873,22 @@
       "ticker": "IQQH.DE",
       "score": 3,
       "kategori": "hurtig",
-      "momentum": 25.6,
+      "momentum": 26.57,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 75.0,
+      "rsi": 76.2,
       "cross": "–",
-      "return_1m": 12.04,
-      "return_1y": 71.09,
+      "return_1m": 15.14,
+      "return_1y": 76.69,
       "ter": 0.65,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +25.6% over MA200",
-        "1M afkast: +12.0%"
+        "Momentum +26.6% over MA200",
+        "1M afkast: +15.1%"
       ],
-      "scanned_at": "2026-05-05 15:10"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
     },
     {
       "isin": "IS3S.DE",
@@ -859,21 +896,22 @@
       "ticker": "IS3S.DE",
       "score": 3,
       "kategori": "hurtig",
-      "momentum": 21.91,
+      "momentum": 22.18,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 87.2,
+      "rsi": 87.4,
       "cross": "–",
-      "return_1m": 9.97,
-      "return_1y": 46.97,
+      "return_1m": 12.32,
+      "return_1y": 49.45,
       "ter": 0.25,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +21.9% over MA200",
-        "1M afkast: +10.0%"
+        "Momentum +22.2% over MA200",
+        "1M afkast: +12.3%"
       ],
-      "scanned_at": "2026-05-05 15:09"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
     },
     {
       "isin": "XDEV.DE",
@@ -881,21 +919,22 @@
       "ticker": "XDEV.DE",
       "score": 3,
       "kategori": "hurtig",
-      "momentum": 21.53,
+      "momentum": 21.85,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 86.5,
+      "rsi": 86.8,
       "cross": "–",
-      "return_1m": 9.93,
-      "return_1y": 46.84,
+      "return_1m": 12.34,
+      "return_1y": 50.27,
       "ter": 0.25,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +21.5% over MA200",
-        "1M afkast: +9.9%"
+        "Momentum +21.9% over MA200",
+        "1M afkast: +12.3%"
       ],
-      "scanned_at": "2026-05-05 15:10"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
     },
     {
       "isin": "4BRZ.DE",
@@ -903,22 +942,256 @@
       "ticker": "4BRZ.DE",
       "score": 4,
       "kategori": "hurtig",
-      "momentum": 21.05,
+      "momentum": 21.65,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 24.7,
+      "rsi": 28.1,
       "cross": "–",
-      "return_1m": 2.19,
-      "return_1y": 49.78,
+      "return_1m": 0.75,
+      "return_1y": 47.83,
       "ter": 0.31,
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +21.1% over MA200",
-        "RSI 25 — ikke overkøbt",
-        "1M afkast: +2.2%"
+        "Momentum +21.6% over MA200",
+        "RSI 28 — ikke overkøbt",
+        "1M afkast: +0.8%"
       ],
-      "scanned_at": "2026-05-05 15:10"
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
+    }
+  ],
+  "hits_nye": [
+    {
+      "isin": "FLXK.DE",
+      "name": "Franklin FTSE Korea UCITS ETF",
+      "ticker": "FLXK.DE",
+      "score": 3,
+      "kategori": "hurtig",
+      "momentum": 70.85,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 83.8,
+      "cross": "–",
+      "return_1m": 40.17,
+      "return_1y": 196.51,
+      "ter": 0.09,
+      "is_owned": false,
+      "is_watchlist": true,
+      "reasons": [
+        "Momentum +70.8% over MA200",
+        "1M afkast: +40.2%"
+      ],
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
+    },
+    {
+      "isin": "SEC0.DE",
+      "name": "iShares MSCI Global Semiconductors UCITS ETF USD (Acc)",
+      "ticker": "SEC0.DE",
+      "score": 3,
+      "kategori": "hurtig",
+      "momentum": 58.58,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 83.6,
+      "cross": "–",
+      "return_1m": 40.13,
+      "return_1y": 162.95,
+      "ter": 0.35,
+      "is_owned": false,
+      "is_watchlist": true,
+      "reasons": [
+        "Momentum +58.6% over MA200",
+        "1M afkast: +40.1%"
+      ],
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
+    },
+    {
+      "isin": "VVSM.DE",
+      "name": "VanEck Semiconductor UCITS ETF",
+      "ticker": "VVSM.DE",
+      "score": 3,
+      "kategori": "hurtig",
+      "momentum": 50.51,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 81.4,
+      "cross": "–",
+      "return_1m": 35.74,
+      "return_1y": 145.68,
+      "ter": 0.35,
+      "is_owned": false,
+      "is_watchlist": true,
+      "reasons": [
+        "Momentum +50.5% over MA200",
+        "1M afkast: +35.7%"
+      ],
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
+    },
+    {
+      "isin": "QDVI.DE",
+      "name": "iShares Edge MSCI USA Value Factor UCITS ETF",
+      "ticker": "QDVI.DE",
+      "score": 3,
+      "kategori": "hurtig",
+      "momentum": 29.07,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 90.3,
+      "cross": "–",
+      "return_1m": 18.46,
+      "return_1y": 64.0,
+      "ter": 0.2,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +29.1% over MA200",
+        "1M afkast: +18.5%"
+      ],
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
+    },
+    {
+      "isin": "EMXC.DE",
+      "name": "Amundi MSCI Emerging Ex China UCITS ETF Acc",
+      "ticker": "EMXC.DE",
+      "score": 3,
+      "kategori": "hurtig",
+      "momentum": 27.41,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 79.4,
+      "cross": "–",
+      "return_1m": 18.72,
+      "return_1y": 60.48,
+      "ter": 0.15,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +27.4% over MA200",
+        "1M afkast: +18.7%"
+      ],
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
+    },
+    {
+      "isin": "84X0.DE",
+      "name": "iShares MSCI EM ex-China UCITS ETF USD (Acc)",
+      "ticker": "84X0.DE",
+      "score": 3,
+      "kategori": "hurtig",
+      "momentum": 27.21,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 79.8,
+      "cross": "–",
+      "return_1m": 18.35,
+      "return_1y": 59.87,
+      "ter": 0.18,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +27.2% over MA200",
+        "1M afkast: +18.4%"
+      ],
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
+    },
+    {
+      "isin": "IQQH.DE",
+      "name": "iShares Global Clean Energy Transition UCITS ETF USD (Dist)",
+      "ticker": "IQQH.DE",
+      "score": 3,
+      "kategori": "hurtig",
+      "momentum": 26.57,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 76.2,
+      "cross": "–",
+      "return_1m": 15.14,
+      "return_1y": 76.69,
+      "ter": 0.65,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +26.6% over MA200",
+        "1M afkast: +15.1%"
+      ],
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
+    },
+    {
+      "isin": "IS3S.DE",
+      "name": "iShares Edge MSCI World Value Factor UCITS ETF",
+      "ticker": "IS3S.DE",
+      "score": 3,
+      "kategori": "hurtig",
+      "momentum": 22.18,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 87.4,
+      "cross": "–",
+      "return_1m": 12.32,
+      "return_1y": 49.45,
+      "ter": 0.25,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +22.2% over MA200",
+        "1M afkast: +12.3%"
+      ],
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
+    },
+    {
+      "isin": "XDEV.DE",
+      "name": "Xtrackers MSCI World Value UCITS ETF 1C",
+      "ticker": "XDEV.DE",
+      "score": 3,
+      "kategori": "hurtig",
+      "momentum": 21.85,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 86.8,
+      "cross": "–",
+      "return_1m": 12.34,
+      "return_1y": 50.27,
+      "ter": 0.25,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +21.9% over MA200",
+        "1M afkast: +12.3%"
+      ],
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
+    },
+    {
+      "isin": "4BRZ.DE",
+      "name": "iShares MSCI Brazil UCITS ETF (DE) USD (Acc)",
+      "ticker": "4BRZ.DE",
+      "score": 4,
+      "kategori": "hurtig",
+      "momentum": 21.65,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 28.1,
+      "cross": "–",
+      "return_1m": 0.75,
+      "return_1y": 47.83,
+      "ter": 0.31,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +21.6% over MA200",
+        "RSI 28 — ikke overkøbt",
+        "1M afkast: +0.8%"
+      ],
+      "scanned_at": "2026-05-06 05:29",
+      "is_new_this_week": true
     }
   ]
 }
