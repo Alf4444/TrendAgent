@@ -1,4 +1,4 @@
-name: Weekly Report
+name: PFA Weekly Report
 
 on:
   workflow_dispatch: {}
