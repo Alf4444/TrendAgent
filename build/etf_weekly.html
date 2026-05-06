@@ -1,1635 +1,301 @@
-<!DOCTYPE html>
-<html lang="da">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TrendAgent ETF Weekly — Uge 19</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f6f9; color: #2c3e50; font-size: 14px; }
-    .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: white; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; }
-    .header h1 { font-size: 22px; font-weight: 700; }
-    .header h1 span { color: #4ecdc4; }
-    .header-meta { font-size: 12px; color: #aaa; margin-top: 4px; }
-    .badge-afkast { background: #4ecdc4; color: #1a1a2e; padding: 8px 16px; border-radius: 8px; text-align: center; }
-    .badge-afkast .val { font-size: 22px; font-weight: 800; }
-    .badge-afkast .lbl { font-size: 11px; opacity: 0.8; }
-    .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
-
-    /* ALERTS */
-    .alert-box { border-radius: 8px; padding: 14px 18px; margin-bottom: 16px; }
-    .alert-trail { background: #fef3cd; border-left: 4px solid #f59c00; }
-    .alert-portfolio { background: #fce8e6; border-left: 4px solid #d93025; }
-    .alert-title { font-weight: 700; font-size: 13px; margin-bottom: 8px; }
-    .alert-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid rgba(0,0,0,0.06); font-size: 13px; }
-    .alert-row:last-child { border-bottom: none; }
-    .tag-red { background: #d93025; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; }
-    .tag-green { background: #1e8e3e; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; }
-    .tag-gold { background: #f59c00; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; }
-
-    /* SPEJDER */
-    .spejder-box { background: white; border-radius: 10px; padding: 18px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-left: 4px solid #4ecdc4; }
-    .spejder-title { font-size: 15px; font-weight: 700; color: #1a1a2e; margin-bottom: 12px; }
-    .spejder-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
-    .spejder-card { background: #f8fbff; border: 1px solid #e0eaf5; border-radius: 8px; padding: 12px; }
-    .spejder-card.golden { border-color: #f59c00; background: #fffdf0; }
-    .spejder-name { font-weight: 700; font-size: 13px; color: #1a1a2e; margin-bottom: 4px; }
-    .spejder-ticker { font-size: 11px; color: #888; margin-bottom: 6px; }
-    .spejder-stats { display: flex; gap: 12px; font-size: 12px; margin-bottom: 6px; }
-    .spejder-stat { color: #555; }
-    .spejder-stat .val { font-weight: 700; color: #1e8e3e; }
-    .spejder-reasons { font-size: 11px; color: #666; }
-    .spejder-reasons span { display: block; }
-
-    /* TOP/BUND */
-    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-    .card { background: white; border-radius: 10px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-    .card-title { font-size: 13px; font-weight: 700; margin-bottom: 10px; color: #555; }
-    .top-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #f0f0f0; font-size: 12px; }
-    .top-row:last-child { border-bottom: none; }
-    .pos { color: #1e8e3e; font-weight: 700; }
-    .neg { color: #d93025; font-weight: 700; }
-
-    /* CHART */
-    .chart-card { background: white; border-radius: 10px; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-    .chart-title { font-size: 13px; font-weight: 700; color: #555; margin-bottom: 12px; }
-
-    /* TABEL */
-    .table-card { background: white; border-radius: 10px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 16px; }
-    .table-title { font-size: 15px; font-weight: 700; margin-bottom: 14px; color: #1a1a2e; }
-    table { width: 100%; border-collapse: collapse; font-size: 12px; }
-    th { background: #f0f4f8; padding: 8px 10px; text-align: left; font-weight: 600; color: #555; font-size: 11px; white-space: nowrap; }
-    td { padding: 8px 10px; border-bottom: 1px solid #f5f5f5; vertical-align: middle; }
-    tr.active-row { background: #fffef5; }
-    tr.active-row td:first-child { border-left: 3px solid #f59c00; }
-    tr:hover { background: #fafafa; }
-    .trend-bull { background: #e6f4ea; color: #1e8e3e; padding: 2px 7px; border-radius: 10px; font-size: 11px; font-weight: 600; white-space: nowrap; }
-    .trend-bear { background: #fce8e6; color: #d93025; padding: 2px 7px; border-radius: 10px; font-size: 11px; font-weight: 600; white-space: nowrap; }
-    .trend-warmup { background: #f0f4f8; color: #888; padding: 2px 7px; border-radius: 10px; font-size: 11px; }
-    .cross-golden { color: #e67e00; font-weight: 700; font-size: 11px; }
-    .cross-death { color: #d93025; font-weight: 700; font-size: 11px; }
-    .cross-none { color: #ccc; }
-    .trail-tag { background: #d93025; color: white; padding: 2px 7px; border-radius: 8px; font-size: 10px; font-weight: 700; }
-    .hwm-info { font-size: 10px; color: #888; }
-    .category-tag { background: #e8f4fd; color: #1565c0; padding: 1px 6px; border-radius: 8px; font-size: 10px; }
-
-    /* METODIK */
-    .metodik { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 16px; }
-    .metodik h3 { font-size: 14px; font-weight: 700; margin-bottom: 12px; color: #1a1a2e; border-bottom: 2px solid #4ecdc4; padding-bottom: 6px; }
-    .metodik-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    .metodik-col h4 { font-size: 12px; font-weight: 700; color: #4ecdc4; margin: 10px 0 6px; }
-    .metodik-col p, .metodik-col li { font-size: 11px; color: #555; line-height: 1.6; }
-    .metodik-col ul { padding-left: 16px; }
-    .disclaimer { background: #f0f7ff; border-left: 3px solid #4ecdc4; padding: 10px 14px; border-radius: 4px; font-size: 11px; color: #555; margin-top: 12px; font-style: italic; }
-  </style>
-</head>
-<body>
-
-<!-- HEADER -->
-<div class="header">
-  <div>
-    <h1>📡 TrendAgent <span>ETF Weekly</span></h1>
-    <div class="header-meta">Uge 19 | Dato: 06. May 2026</div>
-  </div>
-  
-  <div class="badge-afkast">
-    <div class="lbl">UGENS AFKAST (⭐)</div>
-    <div class="val" style="color: #1a1a2e">
-      +14.09%
-    </div>
-  </div>
-  
-</div>
-
-<div class="container">
-
-  <!-- TRAIL STOP ADVARSLER -->
-  
-
-  <!-- PORTFOLIO ALERTS -->
-  
-
-  <!-- SPEJDER META -->
-  
-  <div style="font-size:11px; color:#888; margin-bottom:8px; padding: 6px 0;">
-    🛰️ Spejder scannede 161 ETF'er · 20 hurtige · 40 stabile · 2026-05-06 18:51
-    &nbsp;·&nbsp; ⭐ ejet &nbsp;·&nbsp; 👁 watchlist &nbsp;·&nbsp; 🆕 ny
-  </div>
-  
-
-  <!-- SPEJDER: HURTIGE HESTE -->
-  
-  <div class="spejder-box" style="border-left-color: #e53935; background: white;">
-    <div class="spejder-title" style="color: #e53935;">
-      🚀 Hurtige Heste — Momentum &gt;20% eller 1Y &gt;50%
-      <span style="font-size:11px; font-weight:normal; color:#888; margin-left:8px;">Høj risiko · Kræver aktiv overvågning · HWM passer på dig</span>
-    </div>
-    <div class="spejder-grid">
-      
-      <div class="spejder-card" style="border-color: #e53935; background: #fff5f5;">
-        <div class="spejder-name">
-          ⭐ 
-          Franklin FTSE Korea UCITS ETF
-        </div>
-        <div class="spejder-ticker">FLXK.DE
-          <span style="margin-left:6px; background:#fce8e6; color:#c62828; padding:1px 6px; border-radius:8px; font-size:10px;">
-            Score: 6pt
-          </span>
-          
-          <span style="margin-left:4px; background:#d93025; color:white; padding:1px 6px; border-radius:8px; font-size:10px;">RSI 86 ⚠️</span>
-          
-        </div>
-        <div class="spejder-stats">
-          <div class="spejder-stat">Momentum: <span class="val" style="color:#e53935;">+77.29%</span></div>
-          <div class="spejder-stat">Vægtet: <span class="val" style="color:#e53935;">+206.8</span></div>
-          <div class="spejder-stat">1Y: <span class="val" style="color:#e53935;">+196.5%</span></div>
-          <div class="spejder-stat">1M: <span class="val">+40.2%</span></div>
-          <div class="spejder-stat">RSI: <span class="val" style="color: #d93025">86</span></div>
-        </div>
-        <div class="spejder-reasons"><span>✓ Momentum +77.3% over MA200</span><span>✓ 1M afkast: +40.2%</span><span>✓ Konsistent positiv på alle tidshorisonter</span><span>✓ Accelererende trend: 15.0% → 15.6% → 40.2% pr. md.</span></div>
-        <div style="font-size:10px; color:#aaa; margin-top:4px;">TER: 0.09%</div>
-      </div>
-      
-      <div class="spejder-card" style="border-color: #e53935; background: #fff5f5;">
-        <div class="spejder-name">
-          ⭐ 
-          VanEck Semiconductor UCITS ETF
-        </div>
-        <div class="spejder-ticker">VVSM.DE
-          <span style="margin-left:6px; background:#fce8e6; color:#c62828; padding:1px 6px; border-radius:8px; font-size:10px;">
-            Score: 6pt
-          </span>
-          
-          <span style="margin-left:4px; background:#d93025; color:white; padding:1px 6px; border-radius:8px; font-size:10px;">RSI 84 ⚠️</span>
-          
-        </div>
-        <div class="spejder-stats">
-          <div class="spejder-stat">Momentum: <span class="val" style="color:#e53935;">+56.6%</span></div>
-          <div class="spejder-stat">Vægtet: <span class="val" style="color:#e53935;">+179.0</span></div>
-          <div class="spejder-stat">1Y: <span class="val" style="color:#e53935;">+145.7%</span></div>
-          <div class="spejder-stat">1M: <span class="val">+35.7%</span></div>
-          <div class="spejder-stat">RSI: <span class="val" style="color: #d93025">84</span></div>
-        </div>
-        <div class="spejder-reasons"><span>✓ Momentum +56.6% over MA200</span><span>✓ 1M afkast: +35.7%</span><span>✓ Konsistent positiv på alle tidshorisonter</span><span>✓ Accelererende trend: 8.4% → 13.8% → 35.7% pr. md.</span></div>
-        <div style="font-size:10px; color:#aaa; margin-top:4px;">TER: 0.35%</div>
-      </div>
-      
-      <div class="spejder-card" style="border-color: #e53935; background: #fff5f5;">
-        <div class="spejder-name">
-          🆕 
-          iShares Automation & Robotics UCITS ETF
-        </div>
-        <div class="spejder-ticker">2B76.DE
-          <span style="margin-left:6px; background:#fce8e6; color:#c62828; padding:1px 6px; border-radius:8px; font-size:10px;">
-            Score: 6pt
-          </span>
-          
-          <span style="margin-left:4px; background:#d93025; color:white; padding:1px 6px; border-radius:8px; font-size:10px;">RSI 85 ⚠️</span>
-          
-        </div>
-        <div class="spejder-stats">
-          <div class="spejder-stat">Momentum: <span class="val" style="color:#e53935;">+21.99%</span></div>
-          <div class="spejder-stat">Vægtet: <span class="val" style="color:#e53935;">+111.1</span></div>
-          <div class="spejder-stat">1Y: <span class="val" style="color:#e53935;">+39.8%</span></div>
-          <div class="spejder-stat">1M: <span class="val">+23.5%</span></div>
-          <div class="spejder-stat">RSI: <span class="val" style="color: #d93025">85</span></div>
-        </div>
-        <div class="spejder-reasons"><span>✓ Momentum +22.0% over MA200</span><span>✓ 1M afkast: +23.5%</span><span>✓ Konsistent positiv på alle tidshorisonter</span><span>✓ Accelererende trend: 2.5% → 7.4% → 23.5% pr. md.</span></div>
-        <div style="font-size:10px; color:#aaa; margin-top:4px;">TER: 0.4%</div>
-      </div>
-      
-      <div class="spejder-card" style="border-color: #e53935; background: #fff5f5;">
-        <div class="spejder-name">
-          🆕 
-          Xtrackers Artificial Intelligence & Big Data 
-        </div>
-        <div class="spejder-ticker">XAIX.DE
-          <span style="margin-left:6px; background:#fce8e6; color:#c62828; padding:1px 6px; border-radius:8px; font-size:10px;">
-            Score: 6pt
-          </span>
-          
-          <span style="margin-left:4px; background:#d93025; color:white; padding:1px 6px; border-radius:8px; font-size:10px;">RSI 84 ⚠️</span>
-          
-        </div>
-        <div class="spejder-stats">
-          <div class="spejder-stat">Momentum: <span class="val" style="color:#e53935;">+20.79%</span></div>
-          <div class="spejder-stat">Vægtet: <span class="val" style="color:#e53935;">+105.9</span></div>
-          <div class="spejder-stat">1Y: <span class="val" style="color:#e53935;">+47.7%</span></div>
-          <div class="spejder-stat">1M: <span class="val">+22.3%</span></div>
-          <div class="spejder-stat">RSI: <span class="val" style="color: #d93025">84</span></div>
-        </div>
-        <div class="spejder-reasons"><span>✓ Momentum +20.8% over MA200</span><span>✓ 1M afkast: +22.3%</span><span>✓ Konsistent positiv på alle tidshorisonter</span><span>✓ Accelererende trend: 2.3% → 7.2% → 22.3% pr. md.</span></div>
-        <div style="font-size:10px; color:#aaa; margin-top:4px;">TER: 0.35%</div>
-      </div>
-      
-      <div class="spejder-card" style="border-color: #e53935; background: #fff5f5;">
-        <div class="spejder-name">
-          🆕 
-          Amundi MSCI Emerging Ex China UCITS ETF Acc
-        </div>
-        <div class="spejder-ticker">EMXC.DE
-          <span style="margin-left:6px; background:#fce8e6; color:#c62828; padding:1px 6px; border-radius:8px; font-size:10px;">
-            Score: 6pt
-          </span>
-          
-          <span style="margin-left:4px; background:#d93025; color:white; padding:1px 6px; border-radius:8px; font-size:10px;">RSI 82 ⚠️</span>
-          
-        </div>
-        <div class="spejder-stats">
-          <div class="spejder-stat">Momentum: <span class="val" style="color:#e53935;">+30.44%</span></div>
-          <div class="spejder-stat">Vægtet: <span class="val" style="color:#e53935;">+92.4</span></div>
-          <div class="spejder-stat">1Y: <span class="val" style="color:#e53935;">+60.5%</span></div>
-          <div class="spejder-stat">1M: <span class="val">+18.7%</span></div>
-          <div class="spejder-stat">RSI: <span class="val" style="color: #d93025">82</span></div>
-        </div>
-        <div class="spejder-reasons"><span>✓ Momentum +30.4% over MA200</span><span>✓ 1M afkast: +18.7%</span><span>✓ Konsistent positiv på alle tidshorisonter</span><span>✓ Accelererende trend: 5.2% → 6.2% → 18.7% pr. md.</span></div>
-        <div style="font-size:10px; color:#aaa; margin-top:4px;">TER: 0.15%</div>
-      </div>
-      
-      <div class="spejder-card" style="border-color: #e53935; background: #fff5f5;">
-        <div class="spejder-name">
-          🆕 
-          iShares Edge MSCI USA Value Factor UCITS ETF
-        </div>
-        <div class="spejder-ticker">QDVI.DE
-          <span style="margin-left:6px; background:#fce8e6; color:#c62828; padding:1px 6px; border-radius:8px; font-size:10px;">
-            Score: 6pt
-          </span>
-          
-          <span style="margin-left:4px; background:#d93025; color:white; padding:1px 6px; border-radius:8px; font-size:10px;">RSI 91 ⚠️</span>
-          
-        </div>
-        <div class="spejder-stats">
-          <div class="spejder-stat">Momentum: <span class="val" style="color:#e53935;">+30.23%</span></div>
-          <div class="spejder-stat">Vægtet: <span class="val" style="color:#e53935;">+91.7</span></div>
-          <div class="spejder-stat">1Y: <span class="val" style="color:#e53935;">+64.0%</span></div>
-          <div class="spejder-stat">1M: <span class="val">+18.5%</span></div>
-          <div class="spejder-stat">RSI: <span class="val" style="color: #d93025">91</span></div>
-        </div>
-        <div class="spejder-reasons"><span>✓ Momentum +30.2% over MA200</span><span>✓ 1M afkast: +18.5%</span><span>✓ Konsistent positiv på alle tidshorisonter</span><span>✓ Accelererende trend: 5.4% → 6.2% → 18.5% pr. md.</span></div>
-        <div style="font-size:10px; color:#aaa; margin-top:4px;">TER: 0.2%</div>
-      </div>
-      
-      <div class="spejder-card" style="border-color: #e53935; background: #fff5f5;">
-        <div class="spejder-name">
-          🆕 
-          iShares MSCI EM ex-China UCITS ETF USD (Acc)
-        </div>
-        <div class="spejder-ticker">84X0.DE
-          <span style="margin-left:6px; background:#fce8e6; color:#c62828; padding:1px 6px; border-radius:8px; font-size:10px;">
-            Score: 6pt
-          </span>
-          
-          <span style="margin-left:4px; background:#d93025; color:white; padding:1px 6px; border-radius:8px; font-size:10px;">RSI 82 ⚠️</span>
-          
-        </div>
-        <div class="spejder-stats">
-          <div class="spejder-stat">Momentum: <span class="val" style="color:#e53935;">+30.2%</span></div>
-          <div class="spejder-stat">Vægtet: <span class="val" style="color:#e53935;">+90.7</span></div>
-          <div class="spejder-stat">1Y: <span class="val" style="color:#e53935;">+59.9%</span></div>
-          <div class="spejder-stat">1M: <span class="val">+18.4%</span></div>
-          <div class="spejder-stat">RSI: <span class="val" style="color: #d93025">82</span></div>
-        </div>
-        <div class="spejder-reasons"><span>✓ Momentum +30.2% over MA200</span><span>✓ 1M afkast: +18.4%</span><span>✓ Konsistent positiv på alle tidshorisonter</span><span>✓ Accelererende trend: 5.2% → 6.1% → 18.4% pr. md.</span></div>
-        <div style="font-size:10px; color:#aaa; margin-top:4px;">TER: 0.18%</div>
-      </div>
-      
-      <div class="spejder-card" style="border-color: #e53935; background: #fff5f5;">
-        <div class="spejder-name">
-          🆕 
-          iShares MSCI EM Asia UCITS ETF (Acc)
-        </div>
-        <div class="spejder-ticker">CEBL.DE
-          <span style="margin-left:6px; background:#fce8e6; color:#c62828; padding:1px 6px; border-radius:8px; font-size:10px;">
-            Score: 6pt
-          </span>
-          
-          <span style="margin-left:4px; background:#d93025; color:white; padding:1px 6px; border-radius:8px; font-size:10px;">RSI 82 ⚠️</span>
-          
-        </div>
-        <div class="spejder-stats">
-          <div class="spejder-stat">Momentum: <span class="val" style="color:#e53935;">+23.6%</span></div>
-          <div class="spejder-stat">Vægtet: <span class="val" style="color:#e53935;">+85.1</span></div>
-          <div class="spejder-stat">1Y: <span class="val" style="color:#e53935;">+46.8%</span></div>
-          <div class="spejder-stat">1M: <span class="val">+17.9%</span></div>
-          <div class="spejder-stat">RSI: <span class="val" style="color: #d93025">82</span></div>
-        </div>
-        <div class="spejder-reasons"><span>✓ Momentum +23.6% over MA200</span><span>✓ 1M afkast: +17.9%</span><span>✓ Konsistent positiv på alle tidshorisonter</span><span>✓ Accelererende trend: 3.5% → 5.1% → 17.9% pr. md.</span></div>
-        <div style="font-size:10px; color:#aaa; margin-top:4px;">TER: 0.2%</div>
-      </div>
-      
-      <div class="spejder-card" style="border-color: #e53935; background: #fff5f5;">
-        <div class="spejder-name">
-          🆕 
-          Amundi MSCI Emerging Markets Swap UCITS ETF E
-        </div>
-        <div class="spejder-ticker">AMEM.DE
-          <span style="margin-left:6px; background:#fce8e6; color:#c62828; padding:1px 6px; border-radius:8px; font-size:10px;">
-            Score: 6pt
-          </span>
-          
-          <span style="margin-left:4px; background:#d93025; color:white; padding:1px 6px; border-radius:8px; font-size:10px;">RSI 80 ⚠️</span>
-          
-        </div>
-        <div class="spejder-stats">
-          <div class="spejder-stat">Momentum: <span class="val" style="color:#e53935;">+21.54%</span></div>
-          <div class="spejder-stat">Vægtet: <span class="val" style="color:#e53935;">+70.0</span></div>
-          <div class="spejder-stat">1Y: <span class="val" style="color:#e53935;">+45.1%</span></div>
-          <div class="spejder-stat">1M: <span class="val">+14.6%</span></div>
-          <div class="spejder-stat">RSI: <span class="val" style="color: #d93025">80</span></div>
-        </div>
-        <div class="spejder-reasons"><span>✓ Momentum +21.5% over MA200</span><span>✓ 1M afkast: +14.6%</span><span>✓ Konsistent positiv på alle tidshorisonter</span><span>✓ Accelererende trend: 3.3% → 4.1% → 14.6% pr. md.</span></div>
-        <div style="font-size:10px; color:#aaa; margin-top:4px;">TER: 0.2%</div>
-      </div>
-      
-      <div class="spejder-card" style="border-color: #e53935; background: #fff5f5;">
-        <div class="spejder-name">
-          🆕 
-          Xtrackers MSCI Emerging Markets UCITS ETF 1C
-        </div>
-        <div class="spejder-ticker">XMME.DE
-          <span style="margin-left:6px; background:#fce8e6; color:#c62828; padding:1px 6px; border-radius:8px; font-size:10px;">
-            Score: 6pt
-          </span>
-          
-          <span style="margin-left:4px; background:#d93025; color:white; padding:1px 6px; border-radius:8px; font-size:10px;">RSI 79 ⚠️</span>
-          
-        </div>
-        <div class="spejder-stats">
-          <div class="spejder-stat">Momentum: <span class="val" style="color:#e53935;">+21.18%</span></div>
-          <div class="spejder-stat">Vægtet: <span class="val" style="color:#e53935;">+69.7</span></div>
-          <div class="spejder-stat">1Y: <span class="val" style="color:#e53935;">+45.3%</span></div>
-          <div class="spejder-stat">1M: <span class="val">+14.5%</span></div>
-          <div class="spejder-stat">RSI: <span class="val" style="color: #d93025">79</span></div>
-        </div>
-        <div class="spejder-reasons"><span>✓ Momentum +21.2% over MA200</span><span>✓ 1M afkast: +14.5%</span><span>✓ Konsistent positiv på alle tidshorisonter</span><span>✓ Accelererende trend: 3.3% → 4.1% → 14.5% pr. md.</span></div>
-        <div style="font-size:10px; color:#aaa; margin-top:4px;">TER: 0.18%</div>
-      </div>
-      
-    </div>
-  </div>
-  
-
-  <!-- SPEJDER: STABILE TRENDERE -->
-  
-  <div class="spejder-box" style="border-left-color: #4ecdc4; background: white;">
-    <div class="spejder-title" style="color: #0d9488;">
-      📈 Stabile Trendere — Momentum 5-20%, RSI &lt;70
-      <span style="font-size:11px; font-weight:normal; color:#888; margin-left:8px;">Lavere risiko · Langsigtet momentum · HWM holder øje</span>
-    </div>
-    <div class="spejder-grid">
-      
-      <div class="spejder-card" style="border-color: #4ecdc4; background: #f0fdfa;">
-        <div class="spejder-name">
-          🆕 
-          iShares MSCI Europe SRI UCITS ETF (Acc)
-        </div>
-        <div class="spejder-ticker">IUSK.DE
-          <span style="margin-left:6px; background:#e0f2f1; color:#00695c; padding:1px 6px; border-radius:8px; font-size:10px;">
-            Score: 6pt
-          </span>
-        </div>
-        <div class="spejder-stats">
-          <div class="spejder-stat">Momentum: <span class="val">+5.75%</span></div>
-          <div class="spejder-stat">Vægtet: <span class="val">+23.4</span></div>
-          <div class="spejder-stat">1M: <span class="val">+5.3%</span></div>
-          <div class="spejder-stat">1Y: <span class="val">+3.4%</span></div>
-          <div class="spejder-stat">RSI: <span class="val">60</span></div>
-        </div>
-        <div class="spejder-reasons"><span>✓ Momentum +5.8% over MA200</span><span>✓ RSI 60 — ikke overkøbt</span><span>✓ 1M afkast: +5.3%</span><span>✓ Konsistent positiv på alle tidshorisonter</span><span>✓ Momentum tiltagende: 0.6% → 5.3% pr. md.</span></div>
-        <div style="font-size:10px; color:#aaa; margin-top:4px;">TER: 0.2%</div>
-      </div>
-      
-      <div class="spejder-card" style="border-color: #4ecdc4; background: #f0fdfa;">
-        <div class="spejder-name">
-          🆕 
-          UBS EURO STOXX 50 ESG UCITS ETF EUR dis
-        </div>
-        <div class="spejder-ticker">UET5.DE
-          <span style="margin-left:6px; background:#e0f2f1; color:#00695c; padding:1px 6px; border-radius:8px; font-size:10px;">
-            Score: 6pt
-          </span>
-        </div>
-        <div class="spejder-stats">
-          <div class="spejder-stat">Momentum: <span class="val">+8.51%</span></div>
-          <div class="spejder-stat">Vægtet: <span class="val">+20.8</span></div>
-          <div class="spejder-stat">1M: <span class="val">+4.9%</span></div>
-          <div class="spejder-stat">1Y: <span class="val">+16.5%</span></div>
-          <div class="spejder-stat">RSI: <span class="val">59</span></div>
-        </div>
-        <div class="spejder-reasons"><span>✓ Momentum +8.5% over MA200</span><span>✓ RSI 59 — ikke overkøbt</span><span>✓ 1M afkast: +4.9%</span><span>✓ Konsistent positiv på alle tidshorisonter</span><span>✓ Momentum tiltagende: 0.0% → 4.9% pr. md.</span></div>
-        <div style="font-size:10px; color:#aaa; margin-top:4px;">TER: 0.1%</div>
-      </div>
-      
-      <div class="spejder-card" style="border-color: #4ecdc4; background: #f0fdfa;">
-        <div class="spejder-name">
-          🆕 
-          iShares MSCI EMU ESG Enhanced CTB UCITS ETF E
-        </div>
-        <div class="spejder-ticker">EDM4.DE
-          <span style="margin-left:6px; background:#e0f2f1; color:#00695c; padding:1px 6px; border-radius:8px; font-size:10px;">
-            Score: 6pt
-          </span>
-        </div>
-        <div class="spejder-stats">
-          <div class="spejder-stat">Momentum: <span class="val">+7.8%</span></div>
-          <div class="spejder-stat">Vægtet: <span class="val">+18.7</span></div>
-          <div class="spejder-stat">1M: <span class="val">+4.3%</span></div>
-          <div class="spejder-stat">1Y: <span class="val">+15.5%</span></div>
-          <div class="spejder-stat">RSI: <span class="val">57</span></div>
-        </div>
-        <div class="spejder-reasons"><span>✓ Momentum +7.8% over MA200</span><span>✓ RSI 57 — ikke overkøbt</span><span>✓ 1M afkast: +4.3%</span><span>✓ Konsistent positiv på alle tidshorisonter</span><span>✓ Momentum tiltagende: 0.3% → 4.3% pr. md.</span></div>
-        <div style="font-size:10px; color:#aaa; margin-top:4px;">TER: 0.12%</div>
-      </div>
-      
-      <div class="spejder-card" style="border-color: #4ecdc4; background: #f0fdfa;">
-        <div class="spejder-name">
-          🆕 
-          iShares Core MSCI EMU UCITS ETF EUR (Acc)
-        </div>
-        <div class="spejder-ticker">SXR7.DE
-          <span style="margin-left:6px; background:#e0f2f1; color:#00695c; padding:1px 6px; border-radius:8px; font-size:10px;">
-            Score: 6pt
-          </span>
-        </div>
-        <div class="spejder-stats">
-          <div class="spejder-stat">Momentum: <span class="val">+8.43%</span></div>
-          <div class="spejder-stat">Vægtet: <span class="val">+18.5</span></div>
-          <div class="spejder-stat">1M: <span class="val">+4.1%</span></div>
-          <div class="spejder-stat">1Y: <span class="val">+16.8%</span></div>
-          <div class="spejder-stat">RSI: <span class="val">58</span></div>
-        </div>
-        <div class="spejder-reasons"><span>✓ Momentum +8.4% over MA200</span><span>✓ RSI 58 — ikke overkøbt</span><span>✓ 1M afkast: +4.1%</span><span>✓ Konsistent positiv på alle tidshorisonter</span><span>✓ Momentum tiltagende: 0.4% → 4.1% pr. md.</span></div>
-        <div style="font-size:10px; color:#aaa; margin-top:4px;">TER: 0.12%</div>
-      </div>
-      
-      <div class="spejder-card" style="border-color: #4ecdc4; background: #f0fdfa;">
-        <div class="spejder-name">
-          🆕 
-          Xtrackers MSCI Japan UCITS ETF 1C
-        </div>
-        <div class="spejder-ticker">DBXJ.DE
-          <span style="margin-left:6px; background:#e0f2f1; color:#00695c; padding:1px 6px; border-radius:8px; font-size:10px;">
-            Score: 6pt
-          </span>
-        </div>
-        <div class="spejder-stats">
-          <div class="spejder-stat">Momentum: <span class="val">+11.41%</span></div>
-          <div class="spejder-stat">Vægtet: <span class="val">+18.1</span></div>
-          <div class="spejder-stat">1M: <span class="val">+3.4%</span></div>
-          <div class="spejder-stat">1Y: <span class="val">+26.3%</span></div>
-          <div class="spejder-stat">RSI: <span class="val">64</span></div>
-        </div>
-        <div class="spejder-reasons"><span>✓ Momentum +11.4% over MA200</span><span>✓ RSI 64 — ikke overkøbt</span><span>✓ 1M afkast: +3.4%</span><span>✓ Konsistent positiv på alle tidshorisonter</span><span>✓ Momentum tiltagende: 1.4% → 3.4% pr. md.</span></div>
-        <div style="font-size:10px; color:#aaa; margin-top:4px;">TER: 0.12%</div>
-      </div>
-      
-      <div class="spejder-card" style="border-color: #4ecdc4; background: #f0fdfa;">
-        <div class="spejder-name">
-          🆕 
-          iShares EURO STOXX 50 UCITS ETF (DE)
-        </div>
-        <div class="spejder-ticker">EXW1.DE
-          <span style="margin-left:6px; background:#e0f2f1; color:#00695c; padding:1px 6px; border-radius:8px; font-size:10px;">
-            Score: 6pt
-          </span>
-        </div>
-        <div class="spejder-stats">
-          <div class="spejder-stat">Momentum: <span class="val">+7.32%</span></div>
-          <div class="spejder-stat">Vægtet: <span class="val">+17.8</span></div>
-          <div class="spejder-stat">1M: <span class="val">+4.2%</span></div>
-          <div class="spejder-stat">1Y: <span class="val">+14.2%</span></div>
-          <div class="spejder-stat">RSI: <span class="val">58</span></div>
-        </div>
-        <div class="spejder-reasons"><span>✓ Momentum +7.3% over MA200</span><span>✓ RSI 58 — ikke overkøbt</span><span>✓ 1M afkast: +4.2%</span><span>✓ Konsistent positiv på alle tidshorisonter</span><span>✓ Momentum tiltagende: 0.2% → 4.2% pr. md.</span></div>
-        <div style="font-size:10px; color:#aaa; margin-top:4px;">TER: 0.09%</div>
-      </div>
-      
-      <div class="spejder-card" style="border-color: #4ecdc4; background: #f0fdfa;">
-        <div class="spejder-name">
-          🆕 
-          Amundi Core MSCI Japan UCITS ETF Acc
-        </div>
-        <div class="spejder-ticker">LCUJ.DE
-          <span style="margin-left:6px; background:#e0f2f1; color:#00695c; padding:1px 6px; border-radius:8px; font-size:10px;">
-            Score: 6pt
-          </span>
-        </div>
-        <div class="spejder-stats">
-          <div class="spejder-stat">Momentum: <span class="val">+11.73%</span></div>
-          <div class="spejder-stat">Vægtet: <span class="val">+17.6</span></div>
-          <div class="spejder-stat">1M: <span class="val">+3.2%</span></div>
-          <div class="spejder-stat">1Y: <span class="val">+24.9%</span></div>
-          <div class="spejder-stat">RSI: <span class="val">65</span></div>
-        </div>
-        <div class="spejder-reasons"><span>✓ Momentum +11.7% over MA200</span><span>✓ RSI 65 — ikke overkøbt</span><span>✓ 1M afkast: +3.2%</span><span>✓ Konsistent positiv på alle tidshorisonter</span><span>✓ Momentum tiltagende: 1.4% → 3.2% pr. md.</span></div>
-        <div style="font-size:10px; color:#aaa; margin-top:4px;">TER: 0.12%</div>
-      </div>
-      
-      <div class="spejder-card" style="border-color: #4ecdc4; background: #f0fdfa;">
-        <div class="spejder-name">
-          🆕 
-          Xtrackers EURO STOXX 50 UCITS ETF 1C
-        </div>
-        <div class="spejder-ticker">XESC.DE
-          <span style="margin-left:6px; background:#e0f2f1; color:#00695c; padding:1px 6px; border-radius:8px; font-size:10px;">
-            Score: 6pt
-          </span>
-        </div>
-        <div class="spejder-stats">
-          <div class="spejder-stat">Momentum: <span class="val">+7.29%</span></div>
-          <div class="spejder-stat">Vægtet: <span class="val">+17.4</span></div>
-          <div class="spejder-stat">1M: <span class="val">+4.1%</span></div>
-          <div class="spejder-stat">1Y: <span class="val">+14.2%</span></div>
-          <div class="spejder-stat">RSI: <span class="val">58</span></div>
-        </div>
-        <div class="spejder-reasons"><span>✓ Momentum +7.3% over MA200</span><span>✓ RSI 58 — ikke overkøbt</span><span>✓ 1M afkast: +4.1%</span><span>✓ Konsistent positiv på alle tidshorisonter</span><span>✓ Momentum tiltagende: 0.0% → 4.1% pr. md.</span></div>
-        <div style="font-size:10px; color:#aaa; margin-top:4px;">TER: 0.09%</div>
-      </div>
-      
-      <div class="spejder-card" style="border-color: #4ecdc4; background: #f0fdfa;">
-        <div class="spejder-name">
-          🆕 
-          Xtrackers EURO STOXX 50 UCITS ETF 1D
-        </div>
-        <div class="spejder-ticker">XESX.DE
-          <span style="margin-left:6px; background:#e0f2f1; color:#00695c; padding:1px 6px; border-radius:8px; font-size:10px;">
-            Score: 6pt
-          </span>
-        </div>
-        <div class="spejder-stats">
-          <div class="spejder-stat">Momentum: <span class="val">+7.31%</span></div>
-          <div class="spejder-stat">Vægtet: <span class="val">+17.3</span></div>
-          <div class="spejder-stat">1M: <span class="val">+4.1%</span></div>
-          <div class="spejder-stat">1Y: <span class="val">+14.2%</span></div>
-          <div class="spejder-stat">RSI: <span class="val">58</span></div>
-        </div>
-        <div class="spejder-reasons"><span>✓ Momentum +7.3% over MA200</span><span>✓ RSI 58 — ikke overkøbt</span><span>✓ 1M afkast: +4.1%</span><span>✓ Konsistent positiv på alle tidshorisonter</span><span>✓ Momentum tiltagende: 0.1% → 4.1% pr. md.</span></div>
-        <div style="font-size:10px; color:#aaa; margin-top:4px;">TER: 0.09%</div>
-      </div>
-      
-      <div class="spejder-card" style="border-color: #4ecdc4; background: #f0fdfa;">
-        <div class="spejder-name">
-          🆕 
-          iShares Core EURO STOXX 50 UCITS ETF EUR (Dis
-        </div>
-        <div class="spejder-ticker">EUN2.DE
-          <span style="margin-left:6px; background:#e0f2f1; color:#00695c; padding:1px 6px; border-radius:8px; font-size:10px;">
-            Score: 6pt
-          </span>
-        </div>
-        <div class="spejder-stats">
-          <div class="spejder-stat">Momentum: <span class="val">+7.31%</span></div>
-          <div class="spejder-stat">Vægtet: <span class="val">+17.2</span></div>
-          <div class="spejder-stat">1M: <span class="val">+4.1%</span></div>
-          <div class="spejder-stat">1Y: <span class="val">+14.0%</span></div>
-          <div class="spejder-stat">RSI: <span class="val">58</span></div>
-        </div>
-        <div class="spejder-reasons"><span>✓ Momentum +7.3% over MA200</span><span>✓ RSI 58 — ikke overkøbt</span><span>✓ 1M afkast: +4.1%</span><span>✓ Konsistent positiv på alle tidshorisonter</span><span>✓ Momentum tiltagende: 0.0% → 4.1% pr. md.</span></div>
-        <div style="font-size:10px; color:#aaa; margin-top:4px;">TER: 0.1%</div>
-      </div>
-      
-    </div>
-  </div>
-  
-
-  <!-- TOP/BUND -->
-  <div class="two-col">
-    <div class="card">
-      <div class="card-title">🚀 Ugens Top 5</div>
-      
-      <div class="top-row">
-        <span>Global X Hydrogen UCITS ETF</span>
-        <span class="pos">+18.26%</span>
-      </div>
-      
-      <div class="top-row">
-        <span>⭐ Franklin FTSE Korea UCITS ETF</span>
-        <span class="pos">+17.02%</span>
-      </div>
-      
-      <div class="top-row">
-        <span>iShares MSCI Korea UCITS ETF (Dist)</span>
-        <span class="pos">+16.73%</span>
-      </div>
-      
-      <div class="top-row">
-        <span>Amundi MSCI Korea UCITS ETF Acc</span>
-        <span class="pos">+16.49%</span>
-      </div>
-      
-      <div class="top-row">
-        <span>Xtrackers MSCI Korea UCITS ETF 1C</span>
-        <span class="pos">+16.48%</span>
-      </div>
-      
-    </div>
-    <div class="card">
-      <div class="card-title">📉 Ugens Bund 5</div>
-      
-      <div class="top-row">
-        <span>Global X Uranium UCITS ETF USD Acc</span>
-        <span class="neg">+3.55%</span>
-      </div>
-      
-      <div class="top-row">
-        <span>WisdomTree Uranium and Nuclear Energy </span>
-        <span class="neg">+4.10%</span>
-      </div>
-      
-      <div class="top-row">
-        <span>Global X Lithium & Battery Tech UCITS </span>
-        <span class="neg">+5.68%</span>
-      </div>
-      
-      <div class="top-row">
-        <span>VanEck Space Innovators UCITS ETF</span>
-        <span class="neg">+5.78%</span>
-      </div>
-      
-      <div class="top-row">
-        <span>Global X Silver Miners UCITS ETF USD A</span>
-        <span class="neg">+5.78%</span>
-      </div>
-      
-    </div>
-  </div>
-
-  <!-- MOMENTUM CHART -->
-  <div class="chart-card">
-    <div class="chart-title">📊 Top 10 Stærkeste Trends (Momentum % fra MA200)</div>
-    <canvas id="momentumChart" height="80"></canvas>
-  </div>
-
-  <!-- HOVED TABEL -->
-  <div class="table-card">
-    <div class="table-title">📋 Alle ETF'er</div>
-    <table>
-      <thead>
-        <tr>
-          <th>Fond</th>
-          <th>Uge %</th>
-          <th>Total %</th>
-          <th>Trend</th>
-          <th>Momentum %</th>
-          <th>Cross</th>
-          <th>RSI</th>
-          <th>1M %</th>
-          <th>1Y %</th>
-          <th>Drawdown</th>
-          <th>Trail Stop</th>
-        </tr>
-      </thead>
-      <tbody>
-        
-        <tr class="active-row">
-
-          <td>
-            ⭐ 
-            <strong>Franklin FTSE Korea UCITS ETF</strong>
-            
-              <span style="font-size:11px;">🔴</span>
-            
-            <br>
-            <span style="font-size:10px; color:#888;">FLXK.DE</span>
-            <span class="category-tag" style="margin-left:4px;">Korea</span>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +17.02%
-          </td>
-
-          <td style="font-weight: 700; color: #1e8e3e">
-            +9.89%
-          </td>
-
-          <td>
-            <span class="trend-bull">
-              BULL
-            </span>
-            <small style="color:#aaa; font-size:10px;">(MA200)</small>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +77.89%
-          </td>
-
-          <td class="cross-none">
-            –
-          </td>
-
-          <td style="color: #d93025">
-            86
-          </td>
-
-          <td style="color: #1e8e3e">
-            +46.9%
-          </td>
-
-          <td style="color: #1e8e3e">
-            +211.7%
-          </td>
-
-          <td style="color: #d93025;">0.0%</td>
-
-          <td>
-            
-              <span class="hwm-info">HWM: 84.41</span>
-            
-          </td>
-
-        </tr>
-        
-        <tr class="active-row">
-
-          <td>
-            ⭐ 
-            <strong>VanEck Semiconductor UCITS ETF</strong>
-            
-              <span style="font-size:11px;">🔴</span>
-            
-            <br>
-            <span style="font-size:10px; color:#888;">VVSM.DE</span>
-            <span class="category-tag" style="margin-left:4px;">Halvledere</span>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +11.16%
-          </td>
-
-          <td style="font-weight: 700; color: #1e8e3e">
-            +7.12%
-          </td>
-
-          <td>
-            <span class="trend-bull">
-              BULL
-            </span>
-            <small style="color:#aaa; font-size:10px;">(MA200)</small>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +55.56%
-          </td>
-
-          <td class="cross-none">
-            –
-          </td>
-
-          <td style="color: #d93025">
-            84
-          </td>
-
-          <td style="color: #1e8e3e">
-            +41.0%
-          </td>
-
-          <td style="color: #1e8e3e">
-            +157.2%
-          </td>
-
-          <td style="color: #d93025;">0.0%</td>
-
-          <td>
-            
-              <span class="hwm-info">HWM: 83.6</span>
-            
-          </td>
-
-        </tr>
-        
-        <tr class="">
-
-          <td>
-            
-            <strong>Global X Hydrogen UCITS ETF</strong>
-            
-            <br>
-            <span style="font-size:10px; color:#888;">HYCN.DE</span>
-            <span class="category-tag" style="margin-left:4px;">Hydrogen & Clea</span>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +18.26%
-          </td>
-
-          <td style="font-weight: 700; color: #1e8e3e">
-            +169.68%
-          </td>
-
-          <td>
-            <span class="trend-bull">
-              BULL
-            </span>
-            <small style="color:#aaa; font-size:10px;">(MA200)</small>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +88.67%
-          </td>
-
-          <td class="cross-none">
-            –
-          </td>
-
-          <td style="color: #d93025">
-            89
-          </td>
-
-          <td style="color: #1e8e3e">
-            +79.6%
-          </td>
-
-          <td style="color: #1e8e3e">
-            +315.0%
-          </td>
-
-          <td style="color: #d93025;">0.0%</td>
-
-          <td>
-            
-              <span style="color:#ddd;">—</span>
-            
-          </td>
-
-        </tr>
-        
-        <tr class="">
-
-          <td>
-            
-            <strong>Amundi MSCI Korea UCITS ETF Acc</strong>
-            
-            <br>
-            <span style="font-size:10px; color:#888;">LKOR.DE</span>
-            <span class="category-tag" style="margin-left:4px;">Korea</span>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +16.49%
-          </td>
-
-          <td style="font-weight: 700; color: #1e8e3e">
-            +168.23%
-          </td>
-
-          <td>
-            <span class="trend-bull">
-              BULL
-            </span>
-            <small style="color:#aaa; font-size:10px;">(MA200)</small>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +78.44%
-          </td>
-
-          <td class="cross-none">
-            –
-          </td>
-
-          <td style="color: #d93025">
-            86
-          </td>
-
-          <td style="color: #1e8e3e">
-            +46.4%
-          </td>
-
-          <td style="color: #1e8e3e">
-            +219.2%
-          </td>
-
-          <td style="color: #d93025;">0.0%</td>
-
-          <td>
-            
-              <span style="color:#ddd;">—</span>
-            
-          </td>
-
-        </tr>
-        
-        <tr class="">
-
-          <td>
-            
-            <strong>iShares MSCI Korea UCITS ETF (Dist)</strong>
-            
-            <br>
-            <span style="font-size:10px; color:#888;">IQQK.DE</span>
-            <span class="category-tag" style="margin-left:4px;">Korea</span>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +16.73%
-          </td>
-
-          <td style="font-weight: 700; color: #1e8e3e">
-            +166.26%
-          </td>
-
-          <td>
-            <span class="trend-bull">
-              BULL
-            </span>
-            <small style="color:#aaa; font-size:10px;">(MA200)</small>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +77.78%
-          </td>
-
-          <td class="cross-none">
-            –
-          </td>
-
-          <td style="color: #d93025">
-            86
-          </td>
-
-          <td style="color: #1e8e3e">
-            +46.4%
-          </td>
-
-          <td style="color: #1e8e3e">
-            +217.5%
-          </td>
-
-          <td style="color: #d93025;">0.0%</td>
-
-          <td>
-            
-              <span style="color:#ddd;">—</span>
-            
-          </td>
-
-        </tr>
-        
-        <tr class="">
-
-          <td>
-            
-            <strong>Xtrackers MSCI Korea UCITS ETF 1C</strong>
-            
-            <br>
-            <span style="font-size:10px; color:#888;">DBX8.DE</span>
-            <span class="category-tag" style="margin-left:4px;">Korea</span>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +16.48%
-          </td>
-
-          <td style="font-weight: 700; color: #1e8e3e">
-            +166.61%
-          </td>
-
-          <td>
-            <span class="trend-bull">
-              BULL
-            </span>
-            <small style="color:#aaa; font-size:10px;">(MA200)</small>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +77.62%
-          </td>
-
-          <td class="cross-none">
-            –
-          </td>
-
-          <td style="color: #d93025">
-            87
-          </td>
-
-          <td style="color: #1e8e3e">
-            +46.3%
-          </td>
-
-          <td style="color: #1e8e3e">
-            +217.5%
-          </td>
-
-          <td style="color: #d93025;">0.0%</td>
-
-          <td>
-            
-              <span style="color:#ddd;">—</span>
-            
-          </td>
-
-        </tr>
-        
-        <tr class="">
-
-          <td>
-            
-            <strong>iShares MSCI Global Semiconductors UCITS</strong>
-            
-            <br>
-            <span style="font-size:10px; color:#888;">SEC0.DE</span>
-            <span class="category-tag" style="margin-left:4px;">Halvledere</span>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +12.84%
-          </td>
-
-          <td style="font-weight: 700; color: #1e8e3e">
-            +134.01%
-          </td>
-
-          <td>
-            <span class="trend-bull">
-              BULL
-            </span>
-            <small style="color:#aaa; font-size:10px;">(MA200)</small>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +63.06%
-          </td>
-
-          <td class="cross-none">
-            –
-          </td>
-
-          <td style="color: #d93025">
-            85
-          </td>
-
-          <td style="color: #1e8e3e">
-            +45.0%
-          </td>
-
-          <td style="color: #1e8e3e">
-            +177.8%
-          </td>
-
-          <td style="color: #d93025;">0.0%</td>
-
-          <td>
-            
-              <span style="color:#ddd;">—</span>
-            
-          </td>
-
-        </tr>
-        
-        <tr class="">
-
-          <td>
-            
-            <strong>Global X Lithium & Battery Tech UCITS ET</strong>
-            
-            <br>
-            <span style="font-size:10px; color:#888;">LI7U.DE</span>
-            <span class="category-tag" style="margin-left:4px;">Batteri & Energ</span>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +5.68%
-          </td>
-
-          <td style="font-weight: 700; color: #1e8e3e">
-            +83.22%
-          </td>
-
-          <td>
-            <span class="trend-bull">
-              BULL
-            </span>
-            <small style="color:#aaa; font-size:10px;">(MA200)</small>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +43.95%
-          </td>
-
-          <td class="cross-none">
-            –
-          </td>
-
-          <td style="color: #d93025">
-            82
-          </td>
-
-          <td style="color: #1e8e3e">
-            +21.1%
-          </td>
-
-          <td style="color: #1e8e3e">
-            +135.1%
-          </td>
-
-          <td style="color: #d93025;">0.0%</td>
-
-          <td>
-            
-              <span style="color:#ddd;">—</span>
-            
-          </td>
-
-        </tr>
-        
-        <tr class="">
-
-          <td>
-            
-            <strong>L&G Battery Value-Chain UCITS ETF</strong>
-            
-            <br>
-            <span style="font-size:10px; color:#888;">BATE.DE</span>
-            <span class="category-tag" style="margin-left:4px;">Batteri & Energ</span>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +6.75%
-          </td>
-
-          <td style="font-weight: 700; color: #1e8e3e">
-            +107.46%
-          </td>
-
-          <td>
-            <span class="trend-bull">
-              BULL
-            </span>
-            <small style="color:#aaa; font-size:10px;">(MA200)</small>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +43.65%
-          </td>
-
-          <td class="cross-none">
-            –
-          </td>
-
-          <td style="color: #d93025">
-            92
-          </td>
-
-          <td style="color: #1e8e3e">
-            +23.1%
-          </td>
-
-          <td style="color: #1e8e3e">
-            +136.8%
-          </td>
-
-          <td style="color: #d93025;">0.0%</td>
-
-          <td>
-            
-              <span style="color:#ddd;">—</span>
-            
-          </td>
-
-        </tr>
-        
-        <tr class="">
-
-          <td>
-            
-            <strong>VanEck Space Innovators UCITS ETF</strong>
-            
-            <br>
-            <span style="font-size:10px; color:#888;">JEDI.DE</span>
-            <span class="category-tag" style="margin-left:4px;">Space & Forsvar</span>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +5.78%
-          </td>
-
-          <td style="font-weight: 700; color: #1e8e3e">
-            +313.36%
-          </td>
-
-          <td>
-            <span class="trend-bull">
-              BULL
-            </span>
-            <small style="color:#aaa; font-size:10px;">(MA200)</small>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +41.12%
-          </td>
-
-          <td class="cross-none">
-            –
-          </td>
-
-          <td style="color: #555">
-            52
-          </td>
-
-          <td style="color: #1e8e3e">
-            +7.3%
-          </td>
-
-          <td style="color: #1e8e3e">
-            +164.3%
-          </td>
-
-          <td style="color: #d93025;">-6.4%</td>
-
-          <td>
-            
-              <span style="color:#ddd;">—</span>
-            
-          </td>
-
-        </tr>
-        
-        <tr class="">
-
-          <td>
-            
-            <strong>VanEck Rare Earth and Strategic Metals U</strong>
-            
-            <br>
-            <span style="font-size:10px; color:#888;">VVMX.DE</span>
-            <span class="category-tag" style="margin-left:4px;">Sjældne jordart</span>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +6.54%
-          </td>
-
-          <td style="font-weight: 700; color: #1e8e3e">
-            +89.88%
-          </td>
-
-          <td>
-            <span class="trend-bull">
-              BULL
-            </span>
-            <small style="color:#aaa; font-size:10px;">(MA200)</small>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +40.59%
-          </td>
-
-          <td class="cross-none">
-            –
-          </td>
-
-          <td style="color: #d93025">
-            72
-          </td>
-
-          <td style="color: #1e8e3e">
-            +19.9%
-          </td>
-
-          <td style="color: #1e8e3e">
-            +173.3%
-          </td>
-
-          <td style="color: #d93025;">0.0%</td>
-
-          <td>
-            
-              <span style="color:#ddd;">—</span>
-            
-          </td>
-
-        </tr>
-        
-        <tr class="">
-
-          <td>
-            
-            <strong>WisdomTree Strategic Metals and Rare Ear</strong>
-            
-            <br>
-            <span style="font-size:10px; color:#888;">RARE.DE</span>
-            <span class="category-tag" style="margin-left:4px;">Sjældne jordart</span>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +7.16%
-          </td>
-
-          <td style="font-weight: 700; color: #1e8e3e">
-            +127.55%
-          </td>
-
-          <td>
-            <span class="trend-bull">
-              BULL
-            </span>
-            <small style="color:#aaa; font-size:10px;">(MA200)</small>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +34.59%
-          </td>
-
-          <td class="cross-none">
-            –
-          </td>
-
-          <td style="color: #555">
-            67
-          </td>
-
-          <td style="color: #1e8e3e">
-            +14.5%
-          </td>
-
-          <td style="color: #1e8e3e">
-            +147.1%
-          </td>
-
-          <td style="color: #d93025;">0.0%</td>
-
-          <td>
-            
-              <span style="color:#ddd;">—</span>
-            
-          </td>
-
-        </tr>
-        
-        <tr class="">
-
-          <td>
-            
-            <strong>WisdomTree Uranium and Nuclear Energy UC</strong>
-            
-            <br>
-            <span style="font-size:10px; color:#888;">WNUC.DE</span>
-            <span class="category-tag" style="margin-left:4px;">Uranium & Nukle</span>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +4.10%
-          </td>
-
-          <td style="font-weight: 700; color: #1e8e3e">
-            +153.22%
-          </td>
-
-          <td>
-            <span class="trend-bull">
-              BULL
-            </span>
-            <small style="color:#aaa; font-size:10px;">(MA200)</small>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +18.24%
-          </td>
-
-          <td class="cross-none">
-            –
-          </td>
-
-          <td style="color: #555">
-            51
-          </td>
-
-          <td style="color: #1e8e3e">
-            +8.7%
-          </td>
-
-          <td style="color: #1e8e3e">
-            +136.7%
-          </td>
-
-          <td style="color: #d93025;">-6.6%</td>
-
-          <td>
-            
-              <span style="color:#ddd;">—</span>
-            
-          </td>
-
-        </tr>
-        
-        <tr class="">
-
-          <td>
-            
-            <strong>Global X Uranium UCITS ETF USD Acc</strong>
-            
-            <br>
-            <span style="font-size:10px; color:#888;">URNU.DE</span>
-            <span class="category-tag" style="margin-left:4px;">Uranium & Nukle</span>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +3.55%
-          </td>
-
-          <td style="font-weight: 700; color: #1e8e3e">
-            +49.85%
-          </td>
-
-          <td>
-            <span class="trend-bull">
-              BULL
-            </span>
-            <small style="color:#aaa; font-size:10px;">(MA200)</small>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +16.94%
-          </td>
-
-          <td class="cross-none">
-            –
-          </td>
-
-          <td style="color: #555">
-            53
-          </td>
-
-          <td style="color: #1e8e3e">
-            +13.3%
-          </td>
-
-          <td style="color: #1e8e3e">
-            –%
-          </td>
-
-          <td style="color: #d93025;">-5.7%</td>
-
-          <td>
-            
-              <span style="color:#ddd;">—</span>
-            
-          </td>
-
-        </tr>
-        
-        <tr class="">
-
-          <td>
-            
-            <strong>Global X Silver Miners UCITS ETF USD Acc</strong>
-            
-            <br>
-            <span style="font-size:10px; color:#888;">SLVR.DE</span>
-            <span class="category-tag" style="margin-left:4px;">Ædelmetaller</span>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +5.78%
-          </td>
-
-          <td style="font-weight: 700; color: #1e8e3e">
-            +180.94%
-          </td>
-
-          <td>
-            <span class="trend-bull">
-              BULL
-            </span>
-            <small style="color:#aaa; font-size:10px;">(MA200)</small>
-          </td>
-
-          <td style="color: #1e8e3e; font-weight: 600;">
-            +16.28%
-          </td>
-
-          <td class="cross-none">
-            –
-          </td>
-
-          <td style="color: #555">
-            42
-          </td>
-
-          <td style="color: #d93025">
-            -2.0%
-          </td>
-
-          <td style="color: #1e8e3e">
-            +129.5%
-          </td>
-
-          <td style="color: #d93025;">-21.7%</td>
-
-          <td>
-            
-              <span style="color:#ddd;">—</span>
-            
-          </td>
-
-        </tr>
-        
-      </tbody>
-    </table>
-  </div>
-
-  <!-- METODIK -->
-  <div class="metodik">
-    <h3>📖 Fuld Metodik & Definitioner</h3>
-    <div class="metodik-grid">
-      <div class="metodik-col">
-        <h4>📡 Spejderen</h4>
-        <p>Finder ETF'er du ikke ejer, som opfylder alle tre kriterier:</p>
-        <ul>
-          <li><strong>BULL-trend:</strong> Kurs over bedste tilgængelige MA</li>
-          <li><strong>Momentum ≥ 5%:</strong> Fonden har styrke</li>
-          <li><strong>RSI &lt; 70:</strong> Ikke overkøbt endnu</li>
-          <li><strong>Bonus — Golden Cross:</strong> MA20 krydser MA50 opad</li>
-        </ul>
-
-        <h4>📈 Trend & Momentum</h4>
-        <ul>
-          <li><strong>MA200:</strong> Primær indikator — kræver ~9 måneder data</li>
-          <li><strong>MA50:</strong> Fallback indtil MA200 er tilgængeligt</li>
-          <li><strong>Momentum %:</strong> Afstand fra kurs til bedste MA</li>
-          <li><strong>BULL</strong> = kurs over MA &nbsp;·&nbsp; <strong>BEAR</strong> = kurs under MA</li>
-        </ul>
-
-        <h4>🔀 Cross</h4>
-        <ul>
-          <li><strong>🚀 GOLDEN:</strong> MA20 krydser op over MA50 — positivt signal</li>
-          <li><strong>💀 DEATH:</strong> MA20 krydser ned under MA50 — negativt signal</li>
-        </ul>
-      </div>
-      <div class="metodik-col">
-        <h4>⚠️ Trail Stop (High Water Mark)</h4>
-        <ul>
-          <li>Beskytter gevinster ved at advare når en fond falder mere end 3.0% fra sit toppunkt</li>
-          <li><strong>HWM</strong> = højeste kurs siden køb — opdateres automatisk</li>
-          <li><strong>Fald fra top</strong> = (kurs / HWM − 1) × 100</li>
-          <li>En advarsel er ikke et salgssignal — brug din vurdering</li>
-        </ul>
-
-        <h4>📊 Afkast</h4>
-        <ul>
-          <li><strong>Uge %:</strong> Afkast de seneste 7 dage fra historikken</li>
-          <li><strong>Total %:</strong> Afkast siden køb (aktive) eller siden første datapunkt</li>
-          <li><strong>1M / 1Y:</strong> Beregnet fra historikken</li>
-        </ul>
-
-        <h4>⭐ Ugens Afkast</h4>
-        <p>Simpelt gennemsnit af alle aktive positioners ugeafkast. Bruges som hurtigt pejlemærke — ikke som præcis porteføljeafkast.</p>
-
-        <div class="disclaimer">
-          Vi følger momentum og relativ styrke. Vi køber ETF'er der er stærkere end deres historiske gennemsnit (BULL-trend), og overvejer at rotere ud af ETF'er der mister momentum. Systemet giver signaler — du tager beslutningerne.
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<!-- CHART.JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-<script>
-  const ctx = document.getElementById('momentumChart').getContext('2d');
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ["Global X Hydrogen UC", "Amundi MSCI Korea UC", "Franklin FTSE Korea ", "iShares MSCI Korea U", "Xtrackers MSCI Korea", "iShares MSCI Global ", "VanEck Semiconductor", "Global X Lithium \u0026 B", "L\u0026G Battery Value-Ch", "VanEck Space Innovat"],
-      datasets: [{
-        label: 'Momentum % fra MA',
-        data: [88.67, 78.44, 77.89, 77.78, 77.62, 63.06, 55.56, 43.95, 43.65, 41.12],
-        backgroundColor: [88.67, 78.44, 77.89, 77.78, 77.62, 63.06, 55.56, 43.95, 43.65, 41.12].map(v =>
-          v > 0 ? 'rgba(78, 205, 196, 0.7)' : 'rgba(217, 48, 37, 0.6)'
-        ),
-        borderColor: [88.67, 78.44, 77.89, 77.78, 77.62, 63.06, 55.56, 43.95, 43.65, 41.12].map(v =>
-          v > 0 ? 'rgba(78, 205, 196, 1)' : 'rgba(217, 48, 37, 1)'
-        ),
-        borderWidth: 1,
-        borderRadius: 4,
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          callbacks: {
-            label: ctx => `Momentum: ${ctx.raw > 0 ? '+' : ''}${ctx.raw.toFixed(2)}%`
-          }
-        }
-      },
-      scales: {
-        y: {
-          grid: { color: '#f0f0f0' },
-          ticks: { callback: v => v + '%', font: { size: 11 } }
-        },
-        x: {
-          grid: { display: false },
-          ticks: { font: { size: 10 }, maxRotation: 30 }
-        }
-      }
+"""
+etf_build_weekly.py — Ugentlig ETF-rapport for TrendAgent
+==========================================================
+Genererer build/etf_weekly.html med:
+  - Aktive ETF-positioner med Trail Stop og afkast
+  - Spejderens top-kandidater (momentum + Golden Cross)
+  - Top 5 op/ned i universet
+  - Momentum-chart over alle ETF'er
+
+Køres af .github/workflows/etf_weekly.yml (lørdag kl. 07:00)
+"""
+
+import json
+import sys
+from pathlib import Path
+from datetime import datetime
+from jinja2 import Template
+
+# Tilføj reporting/ til Python-stien så utils.py kan importeres
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from utils import (
+    get_ma, get_best_ma, get_rsi,
+    calculate_drawdown, calculate_ytd,
+    get_cross_signal, get_trend_state,
+    check_trail_stop, is_trading_day,
+)
+
+# ==========================================
+# KONFIGURATION & STIER
+# ==========================================
+ROOT           = Path(__file__).resolve().parents[1]
+LATEST_FILE    = ROOT / "data/etf_latest.json"
+HISTORY_FILE   = ROOT / "data/etf_history.json"
+WATCHLIST_FILE = ROOT / "config/etf_watchlist.json"
+PORTFOLIO_FILE = ROOT / "config/etf_portfolio.json"
+HWM_FILE       = ROOT / "data/etf_hwm.json"
+SPEJDER_FILE   = ROOT / "data/etf_spejder_hits.json"
+TEMPLATE_FILE  = ROOT / "templates/etf_weekly.html.j2"
+REPORT_FILE    = ROOT / "build/etf_weekly.html"
+
+TRAIL_STOP_PCT = 3.0  # Default — overrides af volatilitet per fond
+
+def get_trail_stop_pct(volatility):
+    """
+    Beregner variabelt Trail Stop baseret på fondens volatilitet.
+    Høj volatilitet = løsere stop (undgår falske alarmer).
+    Lav volatilitet = strammere stop (beskytter gevinster tæt).
+
+    Volatilitet er 20-dages standardafvigelse af daglige afkast i %.
+      < 1.0%  → 3% stop  (fx obligationer, lav-vol fonde)
+      1-2%    → 5% stop  (fx brede aktieindeks)
+      > 2.0%  → 7% stop  (fx Korea, Hydrogen, Halvledere)
+    """
+    if volatility is None:
+        return TRAIL_STOP_PCT
+    if volatility < 1.0:
+        return 3.0
+    elif volatility < 2.0:
+        return 5.0
+    else:
+        return 7.0
+
+# Spejder-filtre
+
+
+# ==========================================
+# HWM — fil-håndtering
+# ==========================================
+
+def load_hwm():
+    if HWM_FILE.exists():
+        try:
+            with open(HWM_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {}
+
+def save_hwm(hwm_data):
+    HWM_FILE.parent.mkdir(exist_ok=True)
+    with open(HWM_FILE, "w", encoding="utf-8") as f:
+        json.dump(hwm_data, f, indent=2)
+
+
+# ==========================================
+# HJÆLPEFUNKTIONER
+# ==========================================
+
+def load_json(path, default):
+    if not path.exists():
+        return default
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"⚠️  Kunne ikke læse {path}: {e}")
+        return default
+
+
+# ==========================================
+# HOVEDFUNKTION
+# ==========================================
+
+def build_weekly():
+    print("🔄 Starter generering af ETF ugerapport...")
+
+    for f in [LATEST_FILE, HISTORY_FILE, WATCHLIST_FILE, TEMPLATE_FILE]:
+        if not f.exists():
+            print(f"❌ FEJL: Mangler fil: {f}")
+            return
+
+    latest    = load_json(LATEST_FILE, [])
+    history   = load_json(HISTORY_FILE, {})
+    watchlist = load_json(WATCHLIST_FILE, {})
+    portfolio = load_json(PORTFOLIO_FILE, {})
+
+    # Filtrer watchlist-kommentarer
+    watchlist = {k: v for k, v in watchlist.items() if not k.startswith('_')}
+
+    portfolio_isins = {
+        isin for isin, info in portfolio.items()
+        if info.get("active", False)
     }
-  });
-</script>
 
-</body>
-</html>
+    hwm_data          = load_hwm()
+
+    # Indlæs Spejder-hits hvis tilgængelige
+    spejder_data     = load_json(SPEJDER_FILE, {})
+    spejder_hits_all = spejder_data.get('hits', [])         if isinstance(spejder_data, dict) else []
+    spejder_hurtige  = spejder_data.get('hits_hurtige', []) if isinstance(spejder_data, dict) else []
+    spejder_stabile  = spejder_data.get('hits_stabile', []) if isinstance(spejder_data, dict) else []
+    spejder_meta = {
+        'scanned_at':    spejder_data.get('_scanned_at', ''),
+        'total_scanned': spejder_data.get('_total_scanned', 0),
+        'total_hits':    spejder_data.get('_total_hits', 0),
+        'hurtige_hits':  spejder_data.get('_hurtige_hits', 0),
+        'stabile_hits':  spejder_data.get('_stabile_hits', 0),
+    } if spejder_data else {}
+    today_str         = datetime.now().strftime('%Y-%m-%d')
+    trail_stop_alerts = []
+
+    rows              = []
+    active_week_returns = []
+    spejder_hits      = []
+
+    for item in latest:
+        isin      = item['isin']
+        p_dict    = history.get(isin, {})
+
+        # Kun handelsdage
+        sorted_dates = [d for d in sorted(p_dict.keys()) if is_trading_day(d)]
+        p_list       = [p_dict[d] for d in sorted_dates]
+
+        if not p_list:
+            continue
+
+        cur_nav   = item.get('nav') or 0.0
+        is_active = isin in portfolio_isins
+
+        # Sikr dagens NAV er med
+        if p_list[-1] != cur_nav:
+            p_list.append(cur_nav)
+
+        # --- TEKNISKE BEREGNINGER ---
+        ma_val, ma_label = get_best_ma(p_list)
+        rsi              = get_rsi(p_list, 14)
+        cross            = get_cross_signal(p_list)
+        dd               = calculate_drawdown(p_list)
+
+        # Momentum — afstand til bedste MA
+        if ma_val and cur_nav:
+            momentum = round(((cur_nav / ma_val) - 1) * 100, 2)
+        else:
+            momentum = round(item.get('return_1m') or 0.0, 2)
+            ma_label = "1M proxy"
+
+        trend_state = get_trend_state(p_list)
+
+        # RSI alert
+        rsi_alert = None
+        if rsi is not None:
+            if rsi >= 70:
+                rsi_alert = "overkøbt"
+            elif rsi <= 30:
+                rsi_alert = "oversolgt"
+
+        # Afkast
+        week_change = float(item.get('return_1w') or 0.0)
+        if is_active and isin in portfolio:
+            buy_price = portfolio[isin].get('buy_price', 0)
+            total_ret = round(((cur_nav / buy_price) - 1) * 100, 2) if buy_price else 0.0
+        else:
+            buy_price = 0
+            total_ret = round(((cur_nav / p_list[0]) - 1) * 100, 2) if p_list else 0.0
+
+        if is_active:
+            active_week_returns.append(week_change)
+
+        # --- TRAIL STOP (kun aktive) ---
+        trail_alert = None
+        if is_active and buy_price and cur_nav:
+            etf_vol    = item.get('volatility') if 'item' in dir() else None
+            trail_pct  = get_trail_stop_pct(etf_vol)
+            hwm_entry, trail_alert = check_trail_stop(
+                isin, cur_nav, buy_price, hwm_data, today_str, trail_pct
+            )
+            hwm_data[isin] = hwm_entry
+            if trail_alert:
+                trail_alert["name"] = portfolio[isin].get("name", item.get('name', isin))
+                trail_stop_alerts.append(trail_alert)
+                print(
+                    f"🔔 TRAIL STOP: {trail_alert['name']} faldet {trail_alert['fall_pct']}% "
+                    f"fra top {trail_alert['hwm']} → nu {trail_alert['curr']}"
+                )
+
+        row = {
+            'isin':            isin,
+            'name':            item.get('name', isin),
+            'ticker':          item.get('ticker', ''),
+            'category':        item.get('category', ''),
+            'week_change_pct': week_change,
+            'total_return':    float(total_ret),
+            'trend_state':     trend_state,
+            'ma_label':        ma_label,
+            'momentum':        momentum,
+            'rsi':             rsi,
+            'rsi_alert':       rsi_alert,
+            'cross_20_50':     cross,
+            'drawdown':        float(dd),
+            'is_active':       is_active,
+            'buy_price':       buy_price if is_active else None,
+            'curr_price':      cur_nav,
+            'trail_alert':     trail_alert,
+            'hwm':             hwm_data.get(isin, {}).get('hwm') if is_active else None,
+            'hwm_date':        hwm_data.get(isin, {}).get('hwm_date') if is_active else None,
+            'return_1m':       item.get('return_1m'),
+            'return_1y':       item.get('return_1y'),
+            'return_ytd':      item.get('return_ytd'),
+        }
+        rows.append(row)
+
+        # Spejder-logik er flyttet til etf_spejder.py
+
+    # Gem opdaterede HWM
+    save_hwm(hwm_data)
+
+    # Aggregerede data
+    avg_portfolio_return = (
+        sum(active_week_returns) / len(active_week_returns)
+        if active_week_returns else 0.0
+    )
+
+    # Top/bund 5 på ugeafkast
+    top_up   = sorted(rows, key=lambda x: x['week_change_pct'], reverse=True)[:5]
+    top_down = sorted(rows, key=lambda x: x['week_change_pct'])[:5]
+
+    # Chart data — top 10 momentum
+    chart_data = sorted(rows, key=lambda x: x['momentum'], reverse=True)[:10]
+
+    # Portfolio alerts (kraftige fald på ugen)
+    portfolio_alerts = [
+        {'msg': '⚠️ Kraftigt fald', 'name': r['name'], 'change': r['week_change_pct']}
+        for r in rows
+        if r['is_active'] and r['week_change_pct'] < -3.0
+    ]
+
+    # Render template
+    template_text  = TEMPLATE_FILE.read_text(encoding="utf-8")
+    jinja_template = Template(template_text)
+
+    html = jinja_template.render(
+        week_number          = datetime.now().isocalendar()[1],
+        report_date          = datetime.now().strftime("%d. %B %Y"),
+        avg_portfolio_return = round(avg_portfolio_return, 2),
+        portfolio_alerts     = portfolio_alerts,
+        trail_stop_alerts    = trail_stop_alerts,
+        trail_stop_pct       = TRAIL_STOP_PCT,
+        spejder_hits         = spejder_hits_all,
+        spejder_hurtige      = spejder_hurtige,
+        spejder_stabile      = spejder_stabile,
+        spejder_meta         = spejder_meta,
+        top_up               = top_up,
+        top_down             = top_down,
+        rows                 = sorted(rows, key=lambda x: (not x['is_active'], -x['momentum'])),
+        chart_labels         = [r['name'][:20] for r in chart_data],
+        chart_values         = [r['momentum'] for r in chart_data],
+    )
+
+    REPORT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    REPORT_FILE.write_text(html, encoding="utf-8")
+
+    print(f"✅ ETF Ugerapport genereret: {REPORT_FILE}")
+    print(f"   {len(rows)} ETF'er analyseret")
+    print(f"   {len(spejder_hits)} Spejder-kandidater")
+    if trail_stop_alerts:
+        print(f"   ⚠️  {len(trail_stop_alerts)} trail stop-advarsel(er)")
+
+
+if __name__ == "__main__":
+    build_weekly()
