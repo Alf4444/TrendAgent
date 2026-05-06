@@ -267,7 +267,7 @@ def score_etf(isin, name, row, prices, is_owned, is_watchlist):
         kategori = "stabil"
 
     return {
-        "isin":        isin,
+        "isin":        row.get('_effective_isin') or row.get('_isin') or isin,
         "name":        name,
         "ticker":      row.get('_ticker', ''),
         "score":       score,
@@ -303,7 +303,28 @@ def main():
     owned_isins     = {isin for isin, p in portfolio.items() if p.get('active', False)}
     watchlist_isins = set(watchlist.keys())
 
+    # Byg ticker→ISIN mapping fra watchlist
+    # justETF returnerer tickers — vi skal matche dem mod ISIN fra portfolio
+    ticker_to_isin = {
+        v.get('ticker', '').upper(): k
+        for k, v in watchlist.items()
+        if v.get('ticker')
+    }
+    # Tilfoej også portfolio tickers
+    for isin, p in portfolio.items():
+        t = p.get('ticker', '')
+        if t:
+            ticker_to_isin[t.upper()] = isin
+
+    # Omvendt: ISIN→ticker for owned check
+    owned_tickers = {
+        p.get('ticker', '').upper()
+        for isin, p in portfolio.items()
+        if p.get('active', False) and p.get('ticker')
+    }
+
     print(f"📋 Kendte fonde: {len(watchlist_isins)} watchlist, {len(owned_isins)} ejede")
+    print(f"   Ticker→ISIN mapping: {len(ticker_to_isin)} tickers kendte")
 
     # Hent univers
     df = fetch_universe()
@@ -361,15 +382,25 @@ def main():
         if isin and isin in watchlist:
             ticker = watchlist[isin].get('ticker', ticker)
 
-        is_owned     = (isin in owned_isins) if isin else False
-        is_watchlist = (isin in watchlist_isins) if isin else (ticker.replace('.DE','') in {w.get('ticker','').replace('.DE','') for w in watchlist.values()})
+        # Slå ISIN op fra ticker hvis ikke direkte tilgængeligt
+        effective_isin = isin or ticker_to_isin.get(ticker.upper(), '')
+
+        is_owned     = (
+            (effective_isin in owned_isins) or
+            (ticker.upper() in owned_tickers)
+        )
+        is_watchlist = (
+            (effective_isin in watchlist_isins) or
+            (ticker.upper() in ticker_to_isin)
+        )
 
         if not ticker:
             skipped += 1
             continue
 
-        row['_ticker'] = ticker
-        row['_isin']   = isin or ticker
+        row['_ticker']         = ticker
+        row['_isin']           = effective_isin
+        row['_effective_isin'] = effective_isin
 
         # Hent kurser
         prices = fetch_prices(ticker, months=12)
@@ -380,7 +411,6 @@ def main():
         time.sleep(YFINANCE_DELAY)
 
         # Score
-        effective_isin = isin or row.get('_isin', ticker)
         result = score_etf(effective_isin, name, row, prices, is_owned, is_watchlist)
         if result:
             candidates.append(result)
