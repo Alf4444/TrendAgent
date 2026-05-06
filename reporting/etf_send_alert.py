@@ -96,7 +96,7 @@ def build_email_html(nye_hits, trail_alerts, portfolio, latest_map, hwm_data):
             {f"+{h['return_1y']:.1f}%" if h.get('return_1y') else '–'}
           </td>
           <td style="padding:8px; border-bottom:1px solid #eee;">
-            {h.get('rsi', '–'):.0f if isinstance(h.get('rsi'), float) else h.get('rsi', '–')}{rsi_warn}{golden}
+            {f"{h['rsi']:.0f}" if isinstance(h.get('rsi'), float) else "–"}{rsi_warn}{golden}
           </td>
           <td style="padding:8px; border-bottom:1px solid #eee; color:#888; font-size:11px;">
             TER: {h.get('ter', '–')}%
