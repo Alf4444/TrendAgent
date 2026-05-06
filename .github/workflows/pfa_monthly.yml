@@ -28,7 +28,7 @@ jobs:
 
       - name: Build Monthly Report
         run: |
-          python reporting/build_monthly_report.py
+          python reporting/pfa_build_monthly_report.py
 
       - name: Send Trail Stop Alert (3.0%)
         env:
