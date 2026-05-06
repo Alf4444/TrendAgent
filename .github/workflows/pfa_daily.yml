@@ -37,13 +37,13 @@ jobs:
           mkdir -p build/text build/pdf data
 
       - name: Download and Convert PDF
-        run: python reporting/pdf_to_text.py
+        run: python reporting/pfa_pdf_to_text.py
 
       - name: Parse to JSON
-        run: python reporting/main.py
+        run: python reporting/pfa_main.py
 
       - name: Build Daily Report
-        run: python reporting/build_daily_report.py
+        run: python reporting/pfa_build_daily_report.py
 
       - name: Send Daily Alert (ved aktive signaler)
         env:
@@ -51,7 +51,7 @@ jobs:
           MAIL_PASSWORD:   ${{ secrets.MAIL_PASSWORD }}
           MAIL_RECIPIENTS: ${{ secrets.MAIL_RECIPIENTS }}
         run: |
-          python reporting/send_alert.py \
+          python reporting/pfa_send_alert.py \
             --trail-pct 3.0 \
             --report-type "Daily Radar"
 
@@ -60,7 +60,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           # Tilføj kun de ønskede filer — ikke PDF'er fra build/pdf/
-          git add build/daily.html data/pfa_history.json data/pfa_latest.json data/pfa_hwm.json README.md
+          git add build/daily.html data/history.json data/latest.json data/high_water_marks.json README.md
           git commit -m "Robot: Daglig opdatering (kl. 18:00 tjek) [skip ci]" || echo "Ingen ændringer at gemme"
           # Stash utrackede filer (PDF'er mv.) så rebase kan køre
           git stash --include-untracked || true
