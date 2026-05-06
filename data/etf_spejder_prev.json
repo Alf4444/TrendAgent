@@ -1,5 +1,5 @@
 {
-  "_scanned_at": "2026-05-06 05:30",
+  "_scanned_at": "2026-05-06 05:35",
   "_total_scanned": 209,
   "_total_hits": 60,
   "_stabile_hits": 47,
@@ -34,8 +34,8 @@
         "Momentum +70.8% over MA200",
         "1M afkast: +40.2%"
       ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
+      "scanned_at": "2026-05-06 05:35",
+      "is_new_this_week": false
     },
     {
       "isin": "SEC0.DE",
@@ -57,8 +57,8 @@
         "Momentum +58.6% over MA200",
         "1M afkast: +40.1%"
       ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
+      "scanned_at": "2026-05-06 05:35",
+      "is_new_this_week": false
     },
     {
       "isin": "VVSM.DE",
@@ -80,8 +80,8 @@
         "Momentum +50.5% over MA200",
         "1M afkast: +35.7%"
       ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
+      "scanned_at": "2026-05-06 05:34",
+      "is_new_this_week": false
     },
     {
       "isin": "QDVI.DE",
@@ -103,8 +103,8 @@
         "Momentum +29.1% over MA200",
         "1M afkast: +18.5%"
       ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
+      "scanned_at": "2026-05-06 05:34",
+      "is_new_this_week": false
     },
     {
       "isin": "EMXC.DE",
@@ -126,8 +126,8 @@
         "Momentum +27.4% over MA200",
         "1M afkast: +18.7%"
       ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
+      "scanned_at": "2026-05-06 05:34",
+      "is_new_this_week": false
     },
     {
       "isin": "84X0.DE",
@@ -149,8 +149,8 @@
         "Momentum +27.2% over MA200",
         "1M afkast: +18.4%"
       ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
+      "scanned_at": "2026-05-06 05:34",
+      "is_new_this_week": false
     },
     {
       "isin": "IQQH.DE",
@@ -172,8 +172,8 @@
         "Momentum +26.6% over MA200",
         "1M afkast: +15.1%"
       ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
+      "scanned_at": "2026-05-06 05:35",
+      "is_new_this_week": false
     },
     {
       "isin": "IS3S.DE",
@@ -195,8 +195,8 @@
         "Momentum +22.2% over MA200",
         "1M afkast: +12.3%"
       ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
+      "scanned_at": "2026-05-06 05:34",
+      "is_new_this_week": false
     },
     {
       "isin": "XDEV.DE",
@@ -218,8 +218,8 @@
         "Momentum +21.9% over MA200",
         "1M afkast: +12.3%"
       ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
+      "scanned_at": "2026-05-06 05:34",
+      "is_new_this_week": false
     },
     {
       "isin": "4BRZ.DE",
@@ -242,8 +242,8 @@
         "RSI 28 — ikke overkøbt",
         "1M afkast: +0.8%"
       ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
+      "scanned_at": "2026-05-06 05:34",
+      "is_new_this_week": false
     },
     {
       "isin": "CEMS.DE",
@@ -266,7 +266,7 @@
         "RSI 49 — ikke overkøbt",
         "1M afkast: +4.4%"
       ],
-      "scanned_at": "2026-05-06 05:30",
+      "scanned_at": "2026-05-06 05:35",
       "is_new_this_week": false
     },
     {
@@ -290,7 +290,7 @@
         "RSI 57 — ikke overkøbt",
         "1M afkast: +2.1%"
       ],
-      "scanned_at": "2026-05-06 05:29",
+      "scanned_at": "2026-05-06 05:34",
       "is_new_this_week": false
     },
     {
@@ -314,7 +314,7 @@
         "RSI 67 — ikke overkøbt",
         "1M afkast: +6.2%"
       ],
-      "scanned_at": "2026-05-06 05:28",
+      "scanned_at": "2026-05-06 05:34",
       "is_new_this_week": false
     },
     {
@@ -338,7 +338,7 @@
         "RSI 66 — ikke overkøbt",
         "1M afkast: +8.8%"
       ],
-      "scanned_at": "2026-05-06 05:29",
+      "scanned_at": "2026-05-06 05:35",
       "is_new_this_week": false
     },
     {
@@ -362,7 +362,7 @@
         "RSI 53 — ikke overkøbt",
         "1M afkast: +3.2%"
       ],
-      "scanned_at": "2026-05-06 05:29",
+      "scanned_at": "2026-05-06 05:34",
       "is_new_this_week": false
     },
     {
@@ -386,7 +386,7 @@
         "RSI 67 — ikke overkøbt",
         "1M afkast: +6.0%"
       ],
-      "scanned_at": "2026-05-06 05:29",
+      "scanned_at": "2026-05-06 05:34",
       "is_new_this_week": false
     },
     {
@@ -410,7 +410,7 @@
         "RSI 53 — ikke overkøbt",
         "1M afkast: +3.4%"
       ],
-      "scanned_at": "2026-05-06 05:29",
+      "scanned_at": "2026-05-06 05:34",
       "is_new_this_week": false
     },
     {
@@ -434,7 +434,7 @@
         "RSI 51 — ikke overkøbt",
         "1M afkast: +2.5%"
       ],
-      "scanned_at": "2026-05-06 05:29",
+      "scanned_at": "2026-05-06 05:34",
       "is_new_this_week": false
     },
     {
@@ -458,7 +458,7 @@
         "RSI 56 — ikke overkøbt",
         "1M afkast: +2.2%"
       ],
-      "scanned_at": "2026-05-06 05:28",
+      "scanned_at": "2026-05-06 05:34",
       "is_new_this_week": false
     },
     {
@@ -482,7 +482,7 @@
         "RSI 51 — ikke overkøbt",
         "1M afkast: +2.8%"
       ],
-      "scanned_at": "2026-05-06 05:30",
+      "scanned_at": "2026-05-06 05:35",
       "is_new_this_week": false
     }
   ],
@@ -508,7 +508,7 @@
         "RSI 49 — ikke overkøbt",
         "1M afkast: +4.4%"
       ],
-      "scanned_at": "2026-05-06 05:30",
+      "scanned_at": "2026-05-06 05:35",
       "is_new_this_week": false
     },
     {
@@ -532,7 +532,7 @@
         "RSI 57 — ikke overkøbt",
         "1M afkast: +2.1%"
       ],
-      "scanned_at": "2026-05-06 05:29",
+      "scanned_at": "2026-05-06 05:34",
       "is_new_this_week": false
     },
     {
@@ -556,7 +556,7 @@
         "RSI 67 — ikke overkøbt",
         "1M afkast: +6.2%"
       ],
-      "scanned_at": "2026-05-06 05:28",
+      "scanned_at": "2026-05-06 05:34",
       "is_new_this_week": false
     },
     {
@@ -580,7 +580,7 @@
         "RSI 66 — ikke overkøbt",
         "1M afkast: +8.8%"
       ],
-      "scanned_at": "2026-05-06 05:29",
+      "scanned_at": "2026-05-06 05:35",
       "is_new_this_week": false
     },
     {
@@ -604,7 +604,7 @@
         "RSI 53 — ikke overkøbt",
         "1M afkast: +3.2%"
       ],
-      "scanned_at": "2026-05-06 05:29",
+      "scanned_at": "2026-05-06 05:34",
       "is_new_this_week": false
     },
     {
@@ -628,7 +628,7 @@
         "RSI 67 — ikke overkøbt",
         "1M afkast: +6.0%"
       ],
-      "scanned_at": "2026-05-06 05:29",
+      "scanned_at": "2026-05-06 05:34",
       "is_new_this_week": false
     },
     {
@@ -652,7 +652,7 @@
         "RSI 53 — ikke overkøbt",
         "1M afkast: +3.4%"
       ],
-      "scanned_at": "2026-05-06 05:29",
+      "scanned_at": "2026-05-06 05:34",
       "is_new_this_week": false
     },
     {
@@ -676,7 +676,7 @@
         "RSI 51 — ikke overkøbt",
         "1M afkast: +2.5%"
       ],
-      "scanned_at": "2026-05-06 05:29",
+      "scanned_at": "2026-05-06 05:34",
       "is_new_this_week": false
     },
     {
@@ -700,7 +700,7 @@
         "RSI 56 — ikke overkøbt",
         "1M afkast: +2.2%"
       ],
-      "scanned_at": "2026-05-06 05:28",
+      "scanned_at": "2026-05-06 05:34",
       "is_new_this_week": false
     },
     {
@@ -724,7 +724,7 @@
         "RSI 51 — ikke overkøbt",
         "1M afkast: +2.8%"
       ],
-      "scanned_at": "2026-05-06 05:30",
+      "scanned_at": "2026-05-06 05:35",
       "is_new_this_week": false
     }
   ],
@@ -749,8 +749,8 @@
         "Momentum +70.8% over MA200",
         "1M afkast: +40.2%"
       ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
+      "scanned_at": "2026-05-06 05:35",
+      "is_new_this_week": false
     },
     {
       "isin": "SEC0.DE",
@@ -772,8 +772,8 @@
         "Momentum +58.6% over MA200",
         "1M afkast: +40.1%"
       ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
+      "scanned_at": "2026-05-06 05:35",
+      "is_new_this_week": false
     },
     {
       "isin": "VVSM.DE",
@@ -795,8 +795,8 @@
         "Momentum +50.5% over MA200",
         "1M afkast: +35.7%"
       ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
+      "scanned_at": "2026-05-06 05:34",
+      "is_new_this_week": false
     },
     {
       "isin": "QDVI.DE",
@@ -818,8 +818,8 @@
         "Momentum +29.1% over MA200",
         "1M afkast: +18.5%"
       ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
+      "scanned_at": "2026-05-06 05:34",
+      "is_new_this_week": false
     },
     {
       "isin": "EMXC.DE",
@@ -841,8 +841,8 @@
         "Momentum +27.4% over MA200",
         "1M afkast: +18.7%"
       ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
+      "scanned_at": "2026-05-06 05:34",
+      "is_new_this_week": false
     },
     {
       "isin": "84X0.DE",
@@ -864,8 +864,8 @@
         "Momentum +27.2% over MA200",
         "1M afkast: +18.4%"
       ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
+      "scanned_at": "2026-05-06 05:34",
+      "is_new_this_week": false
     },
     {
       "isin": "IQQH.DE",
@@ -887,8 +887,8 @@
         "Momentum +26.6% over MA200",
         "1M afkast: +15.1%"
       ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
+      "scanned_at": "2026-05-06 05:35",
+      "is_new_this_week": false
     },
     {
       "isin": "IS3S.DE",
@@ -910,8 +910,8 @@
         "Momentum +22.2% over MA200",
         "1M afkast: +12.3%"
       ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
+      "scanned_at": "2026-05-06 05:34",
+      "is_new_this_week": false
     },
     {
       "isin": "XDEV.DE",
@@ -933,8 +933,8 @@
         "Momentum +21.9% over MA200",
         "1M afkast: +12.3%"
       ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
+      "scanned_at": "2026-05-06 05:34",
+      "is_new_this_week": false
     },
     {
       "isin": "4BRZ.DE",
@@ -957,241 +957,9 @@
         "RSI 28 — ikke overkøbt",
         "1M afkast: +0.8%"
       ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
+      "scanned_at": "2026-05-06 05:34",
+      "is_new_this_week": false
     }
   ],
-  "hits_nye": [
-    {
-      "isin": "FLXK.DE",
-      "name": "Franklin FTSE Korea UCITS ETF",
-      "ticker": "FLXK.DE",
-      "score": 3,
-      "kategori": "hurtig",
-      "momentum": 70.85,
-      "ma_label": "MA200",
-      "trend": "BULL",
-      "rsi": 83.8,
-      "cross": "–",
-      "return_1m": 40.17,
-      "return_1y": 196.51,
-      "ter": 0.09,
-      "is_owned": false,
-      "is_watchlist": true,
-      "reasons": [
-        "Momentum +70.8% over MA200",
-        "1M afkast: +40.2%"
-      ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
-    },
-    {
-      "isin": "SEC0.DE",
-      "name": "iShares MSCI Global Semiconductors UCITS ETF USD (Acc)",
-      "ticker": "SEC0.DE",
-      "score": 3,
-      "kategori": "hurtig",
-      "momentum": 58.58,
-      "ma_label": "MA200",
-      "trend": "BULL",
-      "rsi": 83.6,
-      "cross": "–",
-      "return_1m": 40.13,
-      "return_1y": 162.95,
-      "ter": 0.35,
-      "is_owned": false,
-      "is_watchlist": true,
-      "reasons": [
-        "Momentum +58.6% over MA200",
-        "1M afkast: +40.1%"
-      ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
-    },
-    {
-      "isin": "VVSM.DE",
-      "name": "VanEck Semiconductor UCITS ETF",
-      "ticker": "VVSM.DE",
-      "score": 3,
-      "kategori": "hurtig",
-      "momentum": 50.51,
-      "ma_label": "MA200",
-      "trend": "BULL",
-      "rsi": 81.4,
-      "cross": "–",
-      "return_1m": 35.74,
-      "return_1y": 145.68,
-      "ter": 0.35,
-      "is_owned": false,
-      "is_watchlist": true,
-      "reasons": [
-        "Momentum +50.5% over MA200",
-        "1M afkast: +35.7%"
-      ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
-    },
-    {
-      "isin": "QDVI.DE",
-      "name": "iShares Edge MSCI USA Value Factor UCITS ETF",
-      "ticker": "QDVI.DE",
-      "score": 3,
-      "kategori": "hurtig",
-      "momentum": 29.07,
-      "ma_label": "MA200",
-      "trend": "BULL",
-      "rsi": 90.3,
-      "cross": "–",
-      "return_1m": 18.46,
-      "return_1y": 64.0,
-      "ter": 0.2,
-      "is_owned": false,
-      "is_watchlist": false,
-      "reasons": [
-        "Momentum +29.1% over MA200",
-        "1M afkast: +18.5%"
-      ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
-    },
-    {
-      "isin": "EMXC.DE",
-      "name": "Amundi MSCI Emerging Ex China UCITS ETF Acc",
-      "ticker": "EMXC.DE",
-      "score": 3,
-      "kategori": "hurtig",
-      "momentum": 27.41,
-      "ma_label": "MA200",
-      "trend": "BULL",
-      "rsi": 79.4,
-      "cross": "–",
-      "return_1m": 18.72,
-      "return_1y": 60.48,
-      "ter": 0.15,
-      "is_owned": false,
-      "is_watchlist": false,
-      "reasons": [
-        "Momentum +27.4% over MA200",
-        "1M afkast: +18.7%"
-      ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
-    },
-    {
-      "isin": "84X0.DE",
-      "name": "iShares MSCI EM ex-China UCITS ETF USD (Acc)",
-      "ticker": "84X0.DE",
-      "score": 3,
-      "kategori": "hurtig",
-      "momentum": 27.21,
-      "ma_label": "MA200",
-      "trend": "BULL",
-      "rsi": 79.8,
-      "cross": "–",
-      "return_1m": 18.35,
-      "return_1y": 59.87,
-      "ter": 0.18,
-      "is_owned": false,
-      "is_watchlist": false,
-      "reasons": [
-        "Momentum +27.2% over MA200",
-        "1M afkast: +18.4%"
-      ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
-    },
-    {
-      "isin": "IQQH.DE",
-      "name": "iShares Global Clean Energy Transition UCITS ETF USD (Dist)",
-      "ticker": "IQQH.DE",
-      "score": 3,
-      "kategori": "hurtig",
-      "momentum": 26.57,
-      "ma_label": "MA200",
-      "trend": "BULL",
-      "rsi": 76.2,
-      "cross": "–",
-      "return_1m": 15.14,
-      "return_1y": 76.69,
-      "ter": 0.65,
-      "is_owned": false,
-      "is_watchlist": false,
-      "reasons": [
-        "Momentum +26.6% over MA200",
-        "1M afkast: +15.1%"
-      ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
-    },
-    {
-      "isin": "IS3S.DE",
-      "name": "iShares Edge MSCI World Value Factor UCITS ETF",
-      "ticker": "IS3S.DE",
-      "score": 3,
-      "kategori": "hurtig",
-      "momentum": 22.18,
-      "ma_label": "MA200",
-      "trend": "BULL",
-      "rsi": 87.4,
-      "cross": "–",
-      "return_1m": 12.32,
-      "return_1y": 49.45,
-      "ter": 0.25,
-      "is_owned": false,
-      "is_watchlist": false,
-      "reasons": [
-        "Momentum +22.2% over MA200",
-        "1M afkast: +12.3%"
-      ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
-    },
-    {
-      "isin": "XDEV.DE",
-      "name": "Xtrackers MSCI World Value UCITS ETF 1C",
-      "ticker": "XDEV.DE",
-      "score": 3,
-      "kategori": "hurtig",
-      "momentum": 21.85,
-      "ma_label": "MA200",
-      "trend": "BULL",
-      "rsi": 86.8,
-      "cross": "–",
-      "return_1m": 12.34,
-      "return_1y": 50.27,
-      "ter": 0.25,
-      "is_owned": false,
-      "is_watchlist": false,
-      "reasons": [
-        "Momentum +21.9% over MA200",
-        "1M afkast: +12.3%"
-      ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
-    },
-    {
-      "isin": "4BRZ.DE",
-      "name": "iShares MSCI Brazil UCITS ETF (DE) USD (Acc)",
-      "ticker": "4BRZ.DE",
-      "score": 4,
-      "kategori": "hurtig",
-      "momentum": 21.65,
-      "ma_label": "MA200",
-      "trend": "BULL",
-      "rsi": 28.1,
-      "cross": "–",
-      "return_1m": 0.75,
-      "return_1y": 47.83,
-      "ter": 0.31,
-      "is_owned": false,
-      "is_watchlist": false,
-      "reasons": [
-        "Momentum +21.6% over MA200",
-        "RSI 28 — ikke overkøbt",
-        "1M afkast: +0.8%"
-      ],
-      "scanned_at": "2026-05-06 05:29",
-      "is_new_this_week": true
-    }
-  ]
+  "hits_nye": []
 }
