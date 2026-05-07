@@ -3,10 +3,11 @@ etf_build_monthly.py — Månedlig ETF-rapport for TrendAgent
 ============================================================
 Genererer build/etf_monthly.html med:
   - Aktive positioner med total afkast, rank og Trend Velocity
-  - Alpha vs benchmark (VVSM som proxy for globalt ETF-marked)
+  - Alpha vs benchmark (IWDA som proxy for globalt ETF-marked)
   - Top 5 markedsmuligheder fra watchlist
   - Trail Stop advarsler
   - Strategiske handlingssignaler
+  - Handelshistorik fra config/trades.json
 
 Køres af .github/workflows/etf_monthly.yml (lørdag kl. 07:30)
 """
@@ -40,19 +41,9 @@ TEMPLATE_FILE  = ROOT / "templates/etf_monthly.html.j2"
 REPORT_FILE    = ROOT / "build/etf_monthly.html"
 TRADES_FILE    = ROOT / "config/trades.json"
 
-TRAIL_STOP_PCT = 3.0  # Default — overrides af volatilitet per fond
+TRAIL_STOP_PCT = 3.0
 
 def get_trail_stop_pct(volatility):
-    """
-    Beregner variabelt Trail Stop baseret på fondens volatilitet.
-    Høj volatilitet = løsere stop (undgår falske alarmer).
-    Lav volatilitet = strammere stop (beskytter gevinster tæt).
-
-    Volatilitet er 20-dages standardafvigelse af daglige afkast i %.
-      < 1.0%  → 3% stop  (fx obligationer, lav-vol fonde)
-      1-2%    → 5% stop  (fx brede aktieindeks)
-      > 2.0%  → 7% stop  (fx Korea, Hydrogen, Halvledere)
-    """
     if volatility is None:
         return TRAIL_STOP_PCT
     if volatility < 1.0:
@@ -62,8 +53,6 @@ def get_trail_stop_pct(volatility):
     else:
         return 7.0
 
-# Benchmark — iShares Core MSCI World UCITS ETF bruges som bredt markedsbenchmark
-# Ticker: IWDA.AS (Amsterdam) — repræsenterer globalt udviklede markeder
 BENCHMARK_ISIN = "IE00B4L5Y983"  # IWDA — iShares Core MSCI World
 
 
@@ -96,7 +85,6 @@ def save_hwm(hwm_data):
         json.dump(hwm_data, f, indent=2)
 
 def get_ranking_data(latest_list):
-    """Rangerer alle ETF'er efter 1M afkast."""
     sorted_list = sorted(latest_list, key=lambda x: x.get('return_1m') or -999, reverse=True)
     rank_map = {item['isin']: index + 1 for index, item in enumerate(sorted_list)}
     return rank_map, len(sorted_list)
@@ -120,7 +108,6 @@ def build_monthly():
     portfolio = load_json(PORTFOLIO_FILE, {})
     watchlist = {k: v for k, v in watchlist.items() if not k.startswith('_')}
     portfolio = {k: v for k, v in portfolio.items() if not k.startswith('_')}
-    # Benchmark-fonde må ikke vises i tabeller eller markedsmuligheder
     benchmark_isins = {k for k, v in watchlist.items() if v.get('_benchmark')}
 
     rank_map, total_count = get_ranking_data(latest)
@@ -149,7 +136,6 @@ def build_monthly():
 
         total_return = round(((curr_p - buy_p) / buy_p * 100), 2) if buy_p > 0 else 0
 
-        # Historik — kun handelsdage
         p_dict = history.get(isin, {})
         sorted_dates = [d for d in sorted(p_dict.keys()) if is_trading_day(d)]
         prices = [p_dict[d] for d in sorted_dates]
@@ -159,7 +145,6 @@ def build_monthly():
         rsi_val          = get_rsi(prices, 14)
         ma_val, ma_label = get_best_ma(prices)
 
-        # Trend Velocity og Momentum Status
         t_label, t_class = get_trend_velocity(
             official.get('return_1w') or 0,
             official.get('return_1m') or 0,
@@ -169,7 +154,6 @@ def build_monthly():
             rank,
         )
 
-        # Trend state + shift
         prev_trend  = hwm_data.get(isin, {}).get('trend_state')
         t_state     = get_trend_state(prices)
         trend_shift = get_trend_shift(prices, prev_trend)
@@ -209,7 +193,6 @@ def build_monthly():
             active_rows.append(fund_data)
             active_returns.append(total_return)
 
-            # Trail Stop
             hwm_entry, alert = check_trail_stop(
                 isin, curr_p, buy_p, hwm_data, today_str,
                 get_trail_stop_pct(official.get('volatility'))
@@ -230,7 +213,6 @@ def build_monthly():
     benchmark_item   = latest_map.get(BENCHMARK_ISIN, {})
     benchmark_return = benchmark_item.get('return_1m') or 0
     benchmark_name   = benchmark_item.get('name', 'iShares Core MSCI World')
-    # Fallback: hvis IWDA ikke er i universet, brug porteføljens egne afkast som reference
     if not benchmark_item:
         print("⚠️  MSCI World benchmark (IWDA) ikke fundet i etf_latest.json — benchmark vises som N/A")
         benchmark_name = "MSCI World (ikke tilgængeligt)"
@@ -241,8 +223,6 @@ def build_monthly():
     )
 
     # --- TOP 5 MARKEDSMULIGHEDER ---
-    # Ikke-ejede ETF'er sorteret efter 1M afkast
-    # Ekskluderer ALLE positioner i portfolio (aktive + solgte)
     all_portfolio_isins = set(portfolio.keys())
     opps = [
         item for item in latest
@@ -269,7 +249,6 @@ def build_monthly():
             "trend_label": t_label_o,
         })
 
-    # Handlingssignaler
     sell_signals = [f for f in active_rows if f['momentum_class'] == 'momentum-flat']
     buy_signals  = [o for o in market_opps if o['return_1m'] > 10.0]
 
