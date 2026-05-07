@@ -1,272 +1,2228 @@
-"""
-pfa_build_weekly_report.py — Ugentlig PFA-rapport for TrendAgent
-=============================================================
-Genererer build/pfa_weekly.html med:
-  - Aktive positioner med ugeafkast, momentum og Trail Stop
-  - Top 5 op/ned i hele PFA-universet
-  - Momentum-chart over top 10 stærkeste trends
-  - Markedsmuligheder (BULL-fonde ikke i portefølje)
-  - Trail Stop advarsler med HWM
+<!doctype html>
+<html lang="da">
+<head>
+  <meta charset="utf-8">
+  <title>TrendAgent Weekly</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: -apple-system, sans-serif; background: #f0f2f5; padding: 20px; color: #1a1a1a; }
+    .container { max-width: 1050px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+    .score-box { border: 2px solid #22c55e; background: #e6f4ea; padding: 15px; border-radius: 8px; text-align: center; min-width: 150px; }
+    .grid { display: flex; gap: 20px; margin-bottom: 25px; }
+    .box { flex: 1; padding: 15px; border-radius: 8px; border: 1px solid #ddd; background: #fafafa; }
+    .chart-container { height: 250px; margin-bottom: 30px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 12px; border-bottom: 1px solid #eee; text-align: left; font-size: 14px; }
+    th { background: #f8f9fa; color: #666; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .active { background: #fffde7; font-weight: bold; }
+    .trend-bull { color: #22c55e; font-weight: bold; }
+    .trend-bear { color: #ef4444; font-weight: bold; }
+    .pos { color: #16a34a; font-weight: bold; }
+    .neg { color: #dc2626; font-weight: bold; }
 
-Køres af .github/workflows/pfa_weekly.yml (lørdag kl. 07:00)
-"""
+    /* Trail Stop */
+    .trail-alert-box { background: #fce8e6; border-left: 5px solid #d93025; padding: 18px 20px;
+                       margin-bottom: 25px; border-radius: 8px; }
+    .trail-alert-box h3 { margin: 0 0 12px 0; color: #c5221f; font-size: 16px; }
+    .trail-alert-item { display: flex; justify-content: space-between; align-items: center;
+                        padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.07); font-size: 13px; }
+    .trail-alert-item:last-child { border-bottom: none; }
+    .trail-badge { background: #d93025; color: white; padding: 3px 9px; border-radius: 12px;
+                   font-size: 11px; font-weight: bold; white-space: nowrap; }
+    .trail-icon { color: #d93025; font-weight: bold; margin-right: 8px; }
 
-import json
-import sys
-from pathlib import Path
-from datetime import datetime
-from jinja2 import Template
+    /* Footer */
+    .footer { margin-top: 40px; padding: 30px; background: #f8f9fa; border-radius: 12px; border-top: 2px solid #eee; }
+    .footer h2 { margin-top: 0; color: #2c3e50; border-bottom: 1px solid #ddd; padding-bottom: 10px; font-size: 22px; }
+    .footer h3 { color: #333; font-size: 16px; margin-top: 25px; margin-bottom: 8px;
+                 border-left: 4px solid #22c55e; padding-left: 10px; }
+    .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 20px; }
+    .footer-col p { font-size: 13.5px; line-height: 1.6; color: #444; margin-bottom: 12px; }
+    .footer-col ul { padding-left: 20px; margin: 0; }
+    .footer-col li { font-size: 13px; color: #555; margin-bottom: 8px; line-height: 1.5; }
+    .def-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
+    .def-table td { padding: 8px 10px; border-bottom: 1px solid #e8e8e8; vertical-align: top; }
+    .def-table td:first-child { font-weight: bold; color: #2c3e50; white-space: nowrap;
+                                width: 180px; padding-right: 15px; }
+    .strategy-box { margin-top: 30px; padding: 20px; background: #fff; border-radius: 8px;
+                    border-left: 5px solid #22c55e; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+  </style>
+</head>
+<body>
+  <div class="container">
 
-# Tilføj reporting/ til Python-stien så utils.py kan importeres
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+    <!-- HEADER -->
+    <div class="header">
+      <div>
+        <h1>📈 TrendAgent Weekly</h1>
+        <small>Uge 19 | Dato: 07. May 2026</small>
+      </div>
+      <div class="score-box">
+        <small>UGENS AFKAST (⭐)</small><br>
+        <strong style="font-size: 24px; color: #15803d;">2.67%</strong>
+      </div>
+    </div>
 
-from utils import (
-    get_ma, get_best_ma, get_rsi,
-    calculate_drawdown, calculate_ytd,
-    get_cross_signal, get_trend_state,
-    check_trail_stop, is_trading_day,
-)
+    <!-- TRAIL STOP ADVARSLER -->
+    
 
-# ==========================================
-# KONFIGURATION & STIER
-# ==========================================
-ROOT           = Path(__file__).resolve().parents[1]
-DATA_FILE      = ROOT / "data/pfa_latest.json"
-HISTORY_FILE   = ROOT / "data/pfa_history.json"
-PORTFOLIO_FILE = ROOT / "config/pfa_portfolio.json"
-HWM_FILE       = ROOT / "data/pfa_hwm.json"
-TEMPLATE_FILE  = ROOT / "templates/pfa_weekly.html.j2"
-REPORT_FILE    = ROOT / "build/pfa_weekly.html"
+    <!-- PORTEFØLJE ALARMER OG MULIGHEDER -->
+    
+    <div style="background: #fffde7; border-left: 5px solid #fbc02d; padding: 20px; margin-bottom: 25px; border-radius: 4px;">
+      
+      
+        <div style="margin-top:10px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.05);">
+          <strong>🎯 Nye BULL-muligheder:</strong>
+          <span style="color: #444;">
+          iShares MSCI Emerging Markets UCITS ETF, UBS Globale Bæredygtige Aktier, PFA Indeks USA Aktier, iShares MSCI ACWI Global Equities UCITS ETF, PFA Indeks Globale Aktier
+          </span>
+        </div>
+      
+    </div>
+    
 
-TRAIL_STOP_PCT = 3.0
+    <!-- TOP 5 / BUND 5 -->
+    <div class="grid">
+      <div class="box" style="border-top: 4px solid #22c55e;">
+        <h4 style="margin-top:0;">🚀 Ugens Top 5</h4>
+        
+          <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
+            <span>C WorldWide Asien</span>
+            <strong style="color: #16a34a;">+3.57%</strong>
+          </div>
+        
+          <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
+            <span>Robeco Circular Economy Equities</span>
+            <strong style="color: #16a34a;">+3.09%</strong>
+          </div>
+        
+          <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
+            <span>UBS Globale Bæredygtige Aktier</span>
+            <strong style="color: #16a34a;">+2.19%</strong>
+          </div>
+        
+          <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
+            <span>Sydinvest Globale EM-aktier</span>
+            <strong style="color: #16a34a;">+2.07%</strong>
+          </div>
+        
+          <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
+            <span>Xtrackers Råvarer UCITS ETF</span>
+            <strong style="color: #16a34a;">+2.03%</strong>
+          </div>
+        
+      </div>
+      <div class="box" style="border-top: 4px solid #ef4444;">
+        <h4 style="margin-top:0;">⚠️ Ugens Bund 5</h4>
+        
+          <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
+            <span>Maj Invest Guld, Sølv & Miner UCITS</span>
+            <strong style="color: #dc2626;">-1.50%</strong>
+          </div>
+        
+          <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
+            <span>BankInvest Højt Udbytte Aktier</span>
+            <strong style="color: #dc2626;">-1.13%</strong>
+          </div>
+        
+          <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
+            <span>SKAGEN Global</span>
+            <strong style="color: #dc2626;">-0.46%</strong>
+          </div>
+        
+          <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
+            <span>BLS Invest Danske Aktier</span>
+            <strong style="color: #dc2626;">-0.46%</strong>
+          </div>
+        
+          <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
+            <span>Sydinvest HøjrenteLande</span>
+            <strong style="color: #dc2626;">-0.31%</strong>
+          </div>
+        
+      </div>
+    </div>
 
+    <!-- MOMENTUM GRAF -->
+    <div class="chart-container">
+      <canvas id="momentumChart"></canvas>
+    </div>
 
-# ==========================================
-# HWM — fil-håndtering
-# ==========================================
+    <!-- FONDSTABEL -->
+    <table>
+      <thead>
+        <tr>
+          <th>Fond</th>
+          <th>Uge %</th>
+          <th>Total %</th>
+          <th>Trend (MA50)</th>
+          <th>Momentum %</th>
+          <th>Cross</th>
+          <th>ÅTD %</th>
+          <th>Drawdown</th>
+          <th>Trail Stop</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr class="active">
+          <td>⭐
+            C WorldWide Asien
+            
+              <span style="font-size:11px; margin-left:4px;">
+                🔴
+              </span>
+            
+          </td>
 
-def load_high_water_marks():
-    if HWM_FILE.exists():
-        try:
-            with open(HWM_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception:
-            pass
-    return {}
+          <td style="color: #16a34a; font-weight: 500;">
+            +3.57%
+          </td>
 
+          <td style="font-weight: bold; color: #16a34a">
+            +10.50%
+          </td>
 
-def save_high_water_marks(hwm_data):
-    HWM_FILE.parent.mkdir(exist_ok=True)
-    with open(HWM_FILE, "w", encoding="utf-8") as f:
-        json.dump(hwm_data, f, indent=2)
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
 
+          <td style="color: #16a34a;">
+            +11.57%
+          </td>
 
-# ==========================================
-# HJÆLPEFUNKTIONER
-# ==========================================
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
 
-def load_json(path, default):
-    if not path.exists():
-        return default
-    try:
-        with open(path, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except Exception as e:
-        print(f"⚠️  Kunne ikke læse {path}: {e}")
-        return default
+          <td style="color: #16a34a;">
+            +26.55%
+          </td>
 
+          <td style="color: #dc2626;">-0.15%</td>
 
-# ==========================================
-# HOVEDFUNKTION
-# ==========================================
+          <td>
+            
+              
+                <span style="font-size:12px; color:#666;">
+                  HWM: 435.38
+                </span>
+              
+            
+          </td>
+        </tr>
+        
+        <tr class="active">
+          <td>⭐
+            Robeco Circular Economy Equities
+            
+              <span style="font-size:11px; margin-left:4px;">
+                🔴
+              </span>
+            
+          </td>
 
-def build_weekly():
-    print("🔄 Starter generering af PFA ugerapport...")
+          <td style="color: #16a34a; font-weight: 500;">
+            +3.09%
+          </td>
 
-    for f in [DATA_FILE, HISTORY_FILE, PORTFOLIO_FILE, TEMPLATE_FILE]:
-        if not f.exists():
-            print(f"❌ FEJL: Mangler fil: {f}")
-            return
+          <td style="font-weight: bold; color: #16a34a">
+            +0.06%
+          </td>
 
-    latest    = load_json(DATA_FILE, [])
-    history   = load_json(HISTORY_FILE, {})
-    portfolio = load_json(PORTFOLIO_FILE, {})
-    hwm_data  = load_high_water_marks()
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
 
-    portfolio_isins = {
-        isin for isin, info in portfolio.items()
-        if info.get("active", False)
-    }
+          <td style="color: #16a34a;">
+            +9.88%
+          </td>
 
-    today_str         = datetime.now().strftime('%Y-%m-%d')
-    trail_stop_alerts = []
-    rows              = []
-    active_week_returns = []
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
 
-    for item in latest:
-        isin    = item.get('isin')
-        nav     = item.get('nav')
-        if not isin or nav is None:
-            continue
+          <td style="color: #16a34a;">
+            +18.75%
+          </td>
 
-        # Historik — kun handelsdage
-        p_dict       = history.get(isin, {})
-        sorted_dates = [d for d in sorted(p_dict.keys()) if is_trading_day(d)]
-        p_list       = [p_dict[d] for d in sorted_dates]
+          <td style="color: #dc2626;">-0.25%</td>
 
-        if not p_list:
-            continue
+          <td>
+            
+              
+                <span style="font-size:12px; color:#666;">
+                  HWM: 145.02
+                </span>
+              
+            
+          </td>
+        </tr>
+        
+        <tr class="active">
+          <td>⭐
+            Sydinvest Globale EM-aktier
+            
+              <span style="font-size:11px; margin-left:4px;">
+                🔴
+              </span>
+            
+          </td>
 
-        is_active = isin in portfolio_isins
+          <td style="color: #16a34a; font-weight: 500;">
+            +2.07%
+          </td>
 
-        # Sikr dagens NAV er med
-        if p_list[-1] != nav:
-            p_list.append(nav)
+          <td style="font-weight: bold; color: #16a34a">
+            +6.52%
+          </td>
 
-        # --- TEKNISKE BEREGNINGER ---
-        ma_val, ma_label = get_best_ma(p_list)
-        rsi              = get_rsi(p_list, 14)
-        cross            = get_cross_signal(p_list)
-        dd               = calculate_drawdown(p_list)
-        ytd              = calculate_ytd(p_dict)
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
 
-        # Momentum — afstand til bedste MA
-        if ma_val and nav:
-            momentum = round(((nav / ma_val) - 1) * 100, 2)
-        else:
-            momentum = round(item.get('return_1m') or 0.0, 2)
-            ma_label = "1M proxy"
+          <td style="color: #16a34a;">
+            +8.67%
+          </td>
 
-        trend_state = get_trend_state(p_list)
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
 
-        # RSI alert
-        rsi_alert = None
-        if rsi is not None:
-            if rsi >= 70:
-                rsi_alert = "overkøbt"
-            elif rsi <= 30:
-                rsi_alert = "oversolgt"
+          <td style="color: #16a34a;">
+            +22.02%
+          </td>
 
-        # Afkast
-        week_change = float(item.get('return_1w') or 0.0)
+          <td style="color: #dc2626;">-0.19%</td>
 
-        if is_active and isin in portfolio:
-            buy_price = portfolio[isin].get('buy_price', 0)
-            total_ret = round(((nav / buy_price) - 1) * 100, 2) if buy_price else None
-        else:
-            buy_price = 0
-            total_ret = None
+          <td>
+            
+              
+                <span style="font-size:12px; color:#666;">
+                  HWM: 224.63
+                </span>
+              
+            
+          </td>
+        </tr>
+        
+        <tr class="active">
+          <td>⭐
+            Lazard Emerging Markets Equity Fund
+            
+              <span style="font-size:11px; margin-left:4px;">
+                🔴
+              </span>
+            
+          </td>
 
-        if is_active:
-            active_week_returns.append(week_change)
+          <td style="color: #16a34a; font-weight: 500;">
+            +1.94%
+          </td>
 
-        # --- TRAIL STOP (kun aktive) ---
-        trail_alert = None
-        if is_active and buy_price and nav:
-            hwm_entry, trail_alert = check_trail_stop(
-                isin, nav, buy_price, hwm_data, today_str, TRAIL_STOP_PCT
-            )
-            hwm_data[isin] = hwm_entry
-            if trail_alert:
-                trail_alert["name"] = portfolio[isin].get("name", item.get('name', isin))
-                trail_stop_alerts.append(trail_alert)
-                print(
-                    f"🔔 TRAIL STOP: {trail_alert['name']} faldet {trail_alert['fall_pct']}% "
-                    f"fra top {trail_alert['hwm']} → nu {trail_alert['curr']}"
-                )
+          <td style="font-weight: bold; color: #16a34a">
+            +4.52%
+          </td>
 
-        rows.append({
-            'isin':            isin,
-            'name':            item.get('name', isin),
-            'week_change_pct': week_change,
-            'total_return':    total_ret,
-            'trend_state':     trend_state,
-            'ma_label':        ma_label,
-            'momentum':        momentum,
-            'rsi':             rsi,
-            'rsi_alert':       rsi_alert,
-            'cross_20_50':     cross,
-            'drawdown':        float(dd),
-            'ytd_return':      ytd,
-            'is_active':       is_active,
-            'buy_price':       buy_price if is_active else None,
-            'curr_price':      nav,
-            'trail_alert':     trail_alert,
-            'hwm':             hwm_data.get(isin, {}).get('hwm') if is_active else None,
-            'hwm_date':        hwm_data.get(isin, {}).get('hwm_date') if is_active else None,
-            'return_1m':       item.get('return_1m'),
-            'return_1y':       item.get('return_1y'),
-        })
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
 
-    # Gem opdaterede HWM (deles med daily og monthly)
-    save_high_water_marks(hwm_data)
+          <td style="color: #16a34a;">
+            +6.01%
+          </td>
 
-    # --- AGGREGEREDE DATA ---
-    avg_portfolio_return = (
-        sum(active_week_returns) / len(active_week_returns)
-        if active_week_returns else 0.0
-    )
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
 
-    # Top/bund 5 på ugeafkast
-    top_up   = sorted(rows, key=lambda x: x['week_change_pct'], reverse=True)[:5]
-    top_down = sorted(rows, key=lambda x: x['week_change_pct'])[:5]
+          <td style="color: #16a34a;">
+            +19.42%
+          </td>
 
-    # Chart data — top 10 momentum
-    chart_data = sorted(rows, key=lambda x: x['momentum'], reverse=True)[:10]
+          <td style="color: #dc2626;">0.00%</td>
 
-    # Portfolio alerts — kraftige fald på ugen for aktive fonde
-    portfolio_alerts = [
-        {'msg': '⚠️ Kraftigt fald denne uge:', 'name': r['name'], 'change': r['week_change_pct']}
-        for r in rows
-        if r['is_active'] and r['week_change_pct'] < -3.0
-    ]
+          <td>
+            
+              
+                <span style="font-size:12px; color:#666;">
+                  HWM: 433.99
+                </span>
+              
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            iShares MSCI Emerging Markets UCITS ETF
+            
+          </td>
 
-    # Markedsmuligheder — BULL-fonde ikke i portefølje med momentum > 2%
-    market_opportunities = [
-        r for r in rows
-        if not r['is_active']
-        and r['trend_state'] == 'BULL'
-        and r['momentum'] > 2.0
-    ]
-    market_opportunities = sorted(
-        market_opportunities,
-        key=lambda x: x['momentum'],
-        reverse=True
-    )[:5]
+          <td style="color: #16a34a; font-weight: 500;">
+            +1.92%
+          </td>
 
-    # Sorter rows: aktive øverst, derefter efter momentum
-    sorted_rows = sorted(rows, key=lambda x: (not x['is_active'], -x['momentum']))
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
 
-    # --- RENDER TEMPLATE ---
-    if not TEMPLATE_FILE.exists():
-        print(f"❌ Template mangler: {TEMPLATE_FILE}")
-        return
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
 
-    template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
-    html = template.render(
-        week_number          = datetime.now().isocalendar()[1],
-        report_date          = datetime.now().strftime("%d. %B %Y"),
-        avg_portfolio_return = round(avg_portfolio_return, 2),
-        trail_stop_alerts    = trail_stop_alerts,
-        trail_stop_pct       = TRAIL_STOP_PCT,
-        portfolio_alerts     = portfolio_alerts,
-        market_opportunities = market_opportunities,
-        top_up               = top_up,
-        top_down             = top_down,
-        rows                 = sorted_rows,
-        chart_labels         = [r['name'][:20] for r in chart_data],
-        chart_values         = [r['momentum'] for r in chart_data],
-    )
+          <td style="color: #16a34a;">
+            +7.20%
+          </td>
 
-    REPORT_FILE.parent.mkdir(parents=True, exist_ok=True)
-    REPORT_FILE.write_text(html, encoding="utf-8")
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
 
-    print(f"✅ PFA Ugerapport genereret: {REPORT_FILE}")
-    print(f"   {len(rows)} fonde analyseret")
-    print(f"   {len([r for r in rows if r['is_active']])} aktive positioner")
-    if trail_stop_alerts:
-        print(f"   ⚠️  {len(trail_stop_alerts)} trail stop-advarsel(er)")
+          <td style="color: #16a34a;">
+            +18.03%
+          </td>
 
+          <td style="color: #dc2626;">0.00%</td>
 
-if __name__ == "__main__":
-    build_weekly()
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            UBS Globale Bæredygtige Aktier
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +2.19%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +6.06%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +4.49%
+          </td>
+
+          <td style="color: #dc2626;">0.00%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            PFA Indeks USA Aktier
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +1.48%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +5.75%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +6.15%
+          </td>
+
+          <td style="color: #dc2626;">0.00%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            iShares MSCI ACWI Global Equities UCITS 
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +1.41%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +4.63%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +7.67%
+          </td>
+
+          <td style="color: #dc2626;">0.00%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            PFA Indeks Globale Aktier
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +1.26%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +4.50%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +7.23%
+          </td>
+
+          <td style="color: #dc2626;">0.00%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            Xtrackers MSCI World EUR Hedged UCITS ET
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +1.21%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +4.35%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +4.89%
+          </td>
+
+          <td style="color: #dc2626;">0.00%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            Xtrackers Råvarer UCITS ETF
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +2.03%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +3.95%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +22.49%
+          </td>
+
+          <td style="color: #dc2626;">-0.96%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            Magna Eastern European Fund
+            
+          </td>
+
+          <td style="color: #dc2626; font-weight: 500;">
+            -0.28%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +3.69%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +10.91%
+          </td>
+
+          <td style="color: #dc2626;">-3.34%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            Kerne Invest Globale Aktier
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +1.69%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +3.54%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +6.16%
+          </td>
+
+          <td style="color: #dc2626;">0.00%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            PFA Indeks 75
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +0.95%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +3.40%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +5.50%
+          </td>
+
+          <td style="color: #dc2626;">0.00%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            Qblue Global Equities Responsible Transi
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +1.28%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +3.35%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +5.55%
+          </td>
+
+          <td style="color: #dc2626;">-1.93%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            Sparinvest Value Aktier
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +1.37%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +3.12%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +9.12%
+          </td>
+
+          <td style="color: #dc2626;">0.00%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            PFA Indeks 50
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +0.65%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +2.30%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +3.78%
+          </td>
+
+          <td style="color: #dc2626;">0.00%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            Kerne Invest Danske Aktier
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +0.72%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +2.24%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #dc2626;">
+            -1.12%
+          </td>
+
+          <td style="color: #dc2626;">-5.29%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            C WorldWide Globale Aktier
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +0.58%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +2.18%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +1.81%
+          </td>
+
+          <td style="color: #dc2626;">-2.44%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            BLS Invest Danske Aktier
+            
+          </td>
+
+          <td style="color: #dc2626; font-weight: 500;">
+            -0.46%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +2.02%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #dc2626;">
+            -4.51%
+          </td>
+
+          <td style="color: #dc2626;">-7.74%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            Robeco Global SDG Equities
+            
+          </td>
+
+          <td style="color: #dc2626; font-weight: 500;">
+            -0.17%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +2.01%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +1.23%
+          </td>
+
+          <td style="color: #dc2626;">-1.28%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            Maj Invest Danske Aktier
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +0.76%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +1.87%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #dc2626;">
+            -4.84%
+          </td>
+
+          <td style="color: #dc2626;">-7.11%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            iShares Core MSCI Japan IMI UCITS ETF
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +0.64%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +1.82%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +10.88%
+          </td>
+
+          <td style="color: #dc2626;">-3.87%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            PFA Indeks 25
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +0.34%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +1.16%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +2.05%
+          </td>
+
+          <td style="color: #dc2626;">0.00%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            SKAGEN Global
+            
+          </td>
+
+          <td style="color: #dc2626; font-weight: 500;">
+            -0.46%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +1.10%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #dc2626;">
+            -5.21%
+          </td>
+
+          <td style="color: #dc2626;">-12.66%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            Robeco Sustainable Water Equities
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +1.29%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +1.10%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +1.11%
+          </td>
+
+          <td style="color: #dc2626;">-5.03%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            PFA Indeks Europa Aktier
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +0.51%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +0.92%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +4.18%
+          </td>
+
+          <td style="color: #dc2626;">-3.46%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            iShares Inflation Linked Govt Bond UCITS
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +0.49%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +0.90%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +2.86%
+          </td>
+
+          <td style="color: #dc2626;">0.00%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            PFA Danske Erhvervsejendomme Core
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +0.60%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +0.77%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +1.82%
+          </td>
+
+          <td style="color: #dc2626;">0.00%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            WM Opportunistisk Emerging Markets Oblig
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +0.46%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +0.67%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +2.43%
+          </td>
+
+          <td style="color: #dc2626;">-0.51%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            Threadneedle Pan European ESG Equities
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +1.07%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +0.53%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +3.16%
+          </td>
+
+          <td style="color: #dc2626;">-5.54%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            Nordea Invest European High Yield Bonds
+            
+          </td>
+
+          <td style="color: #dc2626; font-weight: 500;">
+            -0.02%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +0.46%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +0.15%
+          </td>
+
+          <td style="color: #dc2626;">-0.70%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            iShares Global High Yield Corp Bond EUR 
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +0.02%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +0.40%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +0.29%
+          </td>
+
+          <td style="color: #dc2626;">-0.57%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            Fundsmith Equity Fund
+            
+          </td>
+
+          <td style="color: #dc2626; font-weight: 500;">
+            -0.01%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +0.31%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #dc2626;">
+            -6.39%
+          </td>
+
+          <td style="color: #dc2626;">-14.90%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            PFA Pengemarked
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +0.04%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +0.16%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +0.54%
+          </td>
+
+          <td style="color: #dc2626;">0.00%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            PFA Indeks Globale Obligationer
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +0.03%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +0.02%
+          </td>
+
+          <td style="font-size: 12px; color: #1a73e8;">
+            🚀 GOLDEN
+          </td>
+
+          <td style="color: #16a34a;">
+            +0.33%
+          </td>
+
+          <td style="color: #dc2626;">-1.05%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            Sydinvest HøjrenteLande
+            
+          </td>
+
+          <td style="color: #dc2626; font-weight: 500;">
+            -0.31%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bear">
+            BEAR
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #dc2626;">
+            -0.18%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +0.73%
+          </td>
+
+          <td style="color: #dc2626;">-2.22%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            Maj Invest Globale Obligationer Akkumule
+            
+          </td>
+
+          <td style="color: #dc2626; font-weight: 500;">
+            -0.20%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bear">
+            BEAR
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #dc2626;">
+            -0.28%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +0.91%
+          </td>
+
+          <td style="color: #dc2626;">-1.85%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            Robeco Biodiversity Equities
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +1.19%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bear">
+            BEAR
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #dc2626;">
+            -0.28%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #dc2626;">
+            -0.94%
+          </td>
+
+          <td style="color: #dc2626;">-7.52%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            Kerne Invest Indeks Mellemlange Obligati
+            
+          </td>
+
+          <td style="color: #dc2626; font-weight: 500;">
+            -0.08%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bear">
+            BEAR
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #dc2626;">
+            -0.30%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #dc2626;">
+            -0.36%
+          </td>
+
+          <td style="color: #dc2626;">-1.26%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            iShares Global IG Corp Bond EUR Hedged U
+            
+          </td>
+
+          <td style="color: #dc2626; font-weight: 500;">
+            -0.17%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bear">
+            BEAR
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #dc2626;">
+            -0.34%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #dc2626;">
+            -0.59%
+          </td>
+
+          <td style="color: #dc2626;">-1.77%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            BankInvest Højt Udbytte Aktier
+            
+          </td>
+
+          <td style="color: #dc2626; font-weight: 500;">
+            -1.13%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bear">
+            BEAR
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #dc2626;">
+            -0.50%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #dc2626;">
+            -0.51%
+          </td>
+
+          <td style="color: #dc2626;">-6.02%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            iShares MSCI China UCITS ETF
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +1.12%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bear">
+            BEAR
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #dc2626;">
+            -0.76%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #dc2626;">
+            -4.57%
+          </td>
+
+          <td style="color: #dc2626;">-13.04%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            iShares MSCI World Health Care Sector Ad
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +1.24%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bear">
+            BEAR
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #dc2626;">
+            -2.54%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #dc2626;">
+            -5.21%
+          </td>
+
+          <td style="color: #dc2626;">-8.66%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            Maj Invest UCITS ETF Defence & Cybersecu
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +1.24%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bear">
+            BEAR
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #dc2626;">
+            -5.03%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +2.19%
+          </td>
+
+          <td style="color: #dc2626;">-11.29%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            iShares Global Aerospace & Defence UCITS
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +1.35%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bear">
+            BEAR
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #dc2626;">
+            -5.09%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +2.94%
+          </td>
+
+          <td style="color: #dc2626;">-11.40%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            Maj Invest Guld, Sølv & Miner UCITS ETF
+            
+          </td>
+
+          <td style="color: #dc2626; font-weight: 500;">
+            -1.50%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bear">
+            BEAR
+            <small style="color:#999; font-weight:normal;">(MA20)</small>
+          </td>
+
+          <td style="color: #dc2626;">
+            -7.52%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +9.72%
+          </td>
+
+          <td style="color: #dc2626;">-21.00%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+        </tr>
+        
+      </tbody>
+    </table>
+
+    <!-- METODIK & DEFINITIONER -->
+    <div class="footer">
+      <h2>📖 Fuld Metodik & Definitioner</h2>
+
+      <div class="footer-grid">
+        <div class="footer-col">
+
+          <h3>📈 Trend & Momentum</h3>
+          <p>Trend-status afgøres ved at sammenligne fondens aktuelle kurs med dens glidende gennemsnit (MA).
+          Vi bruger det bedste tilgængelige MA afhængigt af hvor meget historik vi har opbygget:</p>
+          <ul>
+            <li><strong>MA200</strong> (200-dages): Primær indikator. Kræver ca. 9 måneders daglige data.
+                Giver det mest stabile signal og filtrerer kortsigtet støj fra.</li>
+            <li><strong>MA50</strong> (50-dages): Bruges som fallback indtil MA200 er tilgængeligt.
+                Mere følsom over for kortsigtede bevægelser.</li>
+            <li><strong>MA20</strong> (20-dages): Bruges som fallback hvis hverken MA200 eller MA50
+                er mulige endnu. Meget kortsigtet signal.</li>
+            <li><strong>1M proxy:</strong> Bruges de første uger, inden MA20 er mulig.
+                Her bruges det officielle 1M afkast fra PFA's faktaark som midlertidig indikator.</li>
+          </ul>
+          <p><strong>BULL</strong> = kurs over MA → fonden har momentum og styrke.<br>
+             <strong>BEAR</strong> = kurs under MA → fonden er svagere end sit historiske gennemsnit.</p>
+
+          <h3>📊 Nøgletal</h3>
+          <table class="def-table">
+            <tr>
+              <td>Uge %</td>
+              <td>Officielt afkast fra PFA's faktaark for den seneste uge.</td>
+            </tr>
+            <tr>
+              <td>Total %</td>
+              <td>Dit urealiserede afkast siden købsdato, beregnet som (aktuel / købspris − 1) × 100.</td>
+            </tr>
+            <tr>
+              <td>Momentum %</td>
+              <td>Afstand fra aktuel kurs til bedste tilgængelige MA i procent.
+                  Positivt = fonden er over sit gennemsnit og har styrke.</td>
+            </tr>
+            <tr>
+              <td>ÅTD %</td>
+              <td>Afkast siden årets start, beregnet fra seneste kurs i historikken
+                  fra 31. december forrige år.</td>
+            </tr>
+            <tr>
+              <td>Cross</td>
+              <td>🚀 GOLDEN: MA20 krydser op over MA50 — positivt momentum-signal.
+                  💀 DEATH: MA20 krydser ned under MA50 — negativt signal.
+                  Kræver mindst 51 datapunkter.</td>
+            </tr>
+            <tr>
+              <td>RSI 🔴🔵</td>
+              <td>Relative Strength Index. Lille ikon vises kun på dine aktive positioner:
+                  🔴 overkøbt (≥70) — potentielt salgssignal.
+                  🔵 oversolgt (≤30) — potentielt købssignal.</td>
+            </tr>
+            <tr>
+              <td>Drawdown</td>
+              <td>Aktuelt fald fra fondens højeste kurs (ATH) i den tilgængelige historik.
+                  Vises som negativ procent.</td>
+            </tr>
+          </table>
+
+        </div>
+
+        <div class="footer-col">
+
+          <h3>🔔 Trail Stop (High Water Mark)</h3>
+          <p>Trail Stop beskytter dine gevinster ved automatisk at advare dig når en fond
+          falder for meget fra sit toppunkt — selv hvis den stadig er i plus fra din købspris.</p>
+          <table class="def-table">
+            <tr>
+              <td>High Water Mark</td>
+              <td>Den højeste kurs fonden har haft siden du købte den. Opdateres automatisk
+                  hver gang fonden sætter ny top. Initialiseres til din købspris.</td>
+            </tr>
+            <tr>
+              <td>Fald fra top</td>
+              <td>Beregnes som (aktuel kurs / HWM − 1) × 100. Advarsel sendes når
+                  faldet overstiger tærsklen (3.0%).</td>
+            </tr>
+            <tr>
+              <td>Tærskel</td>
+              <td>Aktuelt 3.0%. Valgt til at fange reelle momentum-skift
+                  uden for mange falske alarmer ved normal daglig volatilitet.</td>
+            </tr>
+          </table>
+          <p style="margin-top:12px;"><strong>Sådan tolker du en Trail Stop advarsel:</strong></p>
+          <ul>
+            <li>Er <strong>1M afkast</strong> stadig positivt? → Kan være en normal korrektion.</li>
+            <li>Er fondens <strong>Rank</strong> stadig i top 10? → Momentum er måske intakt.</li>
+            <li>Falder fonden mere end 5-7% fra top? → Overvej rotation til en stærkere fond.</li>
+            <li>En advarsel er aldrig automatisk et salgssignal — brug den som anledning til at handle aktivt.</li>
+          </ul>
+
+          <h3>🎯 Markedsmuligheder</h3>
+          <p>Fonde fra det fulde PFA-univers (~47 fonde) der ikke er i din portefølje,
+          men har positivt momentum (over 2%) og er i BULL-trend. Bruges til at identificere
+          potentielle rotationsmål.</p>
+
+          <h3>⭐ Ugens Afkast</h3>
+          <p>Det simple gennemsnit af alle aktive positioners uge-afkast. Bruges som et hurtigt
+          pejlemærke — ikke som et præcist vægtet porteføljeafkast, da vi ikke har positionsstørrelser.</p>
+
+        </div>
+      </div>
+
+      <div class="strategy-box">
+        <strong>Vores Systematiske Tilgang:</strong> Vi følger momentum og relativ styrke.
+        Vi køber fonde der er stærkere end deres historiske gennemsnit (BULL-trend), og overvejer
+        at rotere ud af fonde der mister momentum (BEAR-trend eller Trail Stop). Mavefornemmelser
+        erstattes af hårde data — vi lader markedet fortælle os hvad der er stærkt.
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const ctx = document.getElementById('momentumChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ["C WorldWide Asien", "Robeco Circular Econ", "Sydinvest Globale EM", "iShares MSCI Emergin", "UBS Globale B\u00e6redygt", "Lazard Emerging Mark", "PFA Indeks USA Aktie", "iShares MSCI ACWI Gl", "PFA Indeks Globale A", "Xtrackers MSCI World"],
+        datasets: [{
+          label: 'Momentum % (Afstand til MA)',
+          data: [11.57, 9.88, 8.67, 7.2, 6.06, 6.01, 5.75, 4.63, 4.5, 4.35],
+          backgroundColor: [11.57, 9.88, 8.67, 7.2, 6.06, 6.01, 5.75, 4.63, 4.5, 4.35].map(v => v >= 0
+            ? 'rgba(34, 197, 94, 0.6)' : 'rgba(239, 68, 68, 0.6)'),
+          borderColor: [11.57, 9.88, 8.67, 7.2, 6.06, 6.01, 5.75, 4.63, 4.5, 4.35].map(v => v >= 0
+            ? 'rgba(34, 197, 94, 1)' : 'rgba(239, 68, 68, 1)'),
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: { display: true, text: 'Top 10 Stærkeste Trends (Momentum % fra MA)', font: { size: 14 } }
+        },
+        scales: { y: { beginAtZero: false } }
+      }
+    });
+  </script>
+</body>
+</html>
