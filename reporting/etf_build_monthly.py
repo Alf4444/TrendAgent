@@ -25,6 +25,7 @@ from utils import (
     get_trend_state, get_trend_shift,
     check_trail_stop, is_trading_day,
 )
+from trades_summary import load_trades, get_summary, format_for_template
 
 # ==========================================
 # KONFIGURATION & STIER
@@ -37,6 +38,7 @@ PORTFOLIO_FILE = ROOT / "config/etf_portfolio.json"
 HWM_FILE       = ROOT / "data/etf_hwm.json"
 TEMPLATE_FILE  = ROOT / "templates/etf_monthly.html.j2"
 REPORT_FILE    = ROOT / "build/etf_monthly.html"
+TRADES_FILE    = ROOT / "config/trades.json"
 
 TRAIL_STOP_PCT = 3.0  # Default — overrides af volatilitet per fond
 
@@ -271,6 +273,11 @@ def build_monthly():
     sell_signals = [f for f in active_rows if f['momentum_class'] == 'momentum-flat']
     buy_signals  = [o for o in market_opps if o['return_1m'] > 10.0]
 
+    # --- HANDELSHISTORIK ---
+    trades      = load_trades(str(TRADES_FILE))
+    etf_summary = get_summary(trades, trade_type="ETF")
+    trades_data = format_for_template(etf_summary)
+
     if not TEMPLATE_FILE.exists():
         print(f"❌ Template mangler: {TEMPLATE_FILE}")
         return
@@ -291,6 +298,7 @@ def build_monthly():
         diff_to_benchmark    = round(avg_port_return - benchmark_return, 2),
         total_count          = total_count,
         trail_stop_pct       = TRAIL_STOP_PCT,
+        trades_data          = trades_data,
     )
 
     REPORT_FILE.parent.mkdir(exist_ok=True)
