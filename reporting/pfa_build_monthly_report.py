@@ -13,6 +13,7 @@ from utils import (
     get_cross_signal, get_trend_state, get_trend_shift,
     check_trail_stop, is_trading_day,
 )
+from trades_summary import load_trades, get_summary, format_for_template
 
 # ==========================================
 # KONFIGURATION & STIER
@@ -24,6 +25,7 @@ PORTFOLIO_FILE = ROOT / "config/pfa_portfolio.json"
 TEMPLATE_FILE  = ROOT / "templates/pfa_monthly.html.j2"
 REPORT_FILE    = ROOT / "build/pfa_monthly.html"
 HWM_FILE       = ROOT / "data/pfa_hwm.json"
+TRADES_FILE    = ROOT / "config/trades.json"
 
 BENCHMARK_ISIN = "PFA000002233"
 TRAIL_STOP_PCT = 3.0
@@ -242,6 +244,11 @@ def build_monthly():
         if active_returns_total else 0
     )
 
+    # --- HANDELSHISTORIK ---
+    trades      = load_trades(str(TRADES_FILE))
+    pfa_summary = get_summary(trades, trade_type="PFA")
+    trades_data = format_for_template(pfa_summary)
+
     if not TEMPLATE_FILE.exists():
         print(f"❌ Template mangler: {TEMPLATE_FILE}")
         return
@@ -263,6 +270,7 @@ def build_monthly():
         warnings             = validation_warnings,
         total_market_count   = total_market_count,
         trail_stop_pct       = TRAIL_STOP_PCT,
+        trades_data          = trades_data,
     )
 
     REPORT_FILE.parent.mkdir(exist_ok=True)
