@@ -1,0 +1,69 @@
+name: PFA Daily Report
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Kører hverdage kl. 18:00 dansk tid (17:00 UTC)
+    - cron: '0 17 * * 1-5'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    env:
+      TZ: 'Europe/Copenhagen'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install requests pdfplumber jinja2
+
+      - name: Preparation
+        run: |
+          mkdir -p build/text build/pdf data
+
+      - name: Download and Convert PDF
+        run: python reporting/pfa_pdf_to_text.py
+
+      - name: Parse to JSON
+        run: python reporting/pfa_main.py
+
+      - name: Build Daily Report
+        run: python reporting/pfa_build_daily_report.py
+
+      - name: Send Daily Alert (ved aktive signaler)
+        env:
+          MAIL_USERNAME:   ${{ secrets.MAIL_USERNAME }}
+          MAIL_PASSWORD:   ${{ secrets.MAIL_PASSWORD }}
+          MAIL_RECIPIENTS: ${{ secrets.MAIL_RECIPIENTS }}
+        run: |
+          python reporting/pfa_send_alert.py \
+            --trail-pct 3.0 \
+            --report-type "Daily Radar"
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          # Tilføj kun de ønskede filer — ikke PDF'er fra build/pdf/
+          git add build/pfa_daily.html data/pfa_history.json data/pfa_latest.json data/pfa_hwm.json README.md
+          git commit -m "PFA: Daglig opdatering (kl. 18:00 tjek) [skip ci]" || echo "Ingen ændringer at gemme"
+          # Stash utrackede filer (PDF'er mv.) så rebase kan køre
+          git stash --include-untracked || true
+          git pull --rebase origin main
+          git stash pop || true
+          git push origin main
