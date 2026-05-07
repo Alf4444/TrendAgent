@@ -280,12 +280,14 @@
         <div class="stat-value">{{ trades_data.win_rate }}</div>
       </div>
       <div class="stat-box">
-        <div class="stat-label">Lukkede handler</div>
-        <div class="stat-value">{{ trades_data.antal_lukket }}</div>
+        <div class="stat-label">Snit holdperiode</div>
+        <div class="stat-value" style="font-size:13px;">{{ trades_data.snit_holdperiode }}</div>
       </div>
       <div class="stat-box">
-        <div class="stat-label">Åbne positioner</div>
-        <div class="stat-value">{{ trades_data.antal_aabent }}</div>
+        <div class="stat-label">Snit afkast/måned</div>
+        <div class="stat-value {{ 'pos' if trades_data.snit_afkast_pr_maaned.startswith('+') else 'neg' if trades_data.snit_afkast_pr_maaned.startswith('-') else '' }}">
+          {{ trades_data.snit_afkast_pr_maaned }}
+        </div>
       </div>
     </div>
 
@@ -296,7 +298,8 @@
         <div class="highlight-label">🏆 Bedste handel</div>
         <div class="highlight-navn">{{ trades_data.bedste_handel.navn }}</div>
         <div class="highlight-afkast">{{ trades_data.bedste_handel.afkast }}</div>
-        <div class="highlight-periode">{{ trades_data.bedste_handel.købt }} → {{ trades_data.bedste_handel.solgt }}</div>
+        <div class="highlight-periode">{{ trades_data.bedste_handel.købt }} → {{ trades_data.bedste_handel.solgt }} · {{ trades_data.bedste_handel.holdperiode }}</div>
+        <div class="highlight-periode">{{ trades_data.bedste_handel.afkast_pr_maaned }} pr. måned</div>
       </div>
       {% endif %}
       {% if trades_data.daarligste_handel %}
@@ -304,9 +307,30 @@
         <div class="highlight-label">📉 Dårligste handel</div>
         <div class="highlight-navn">{{ trades_data.daarligste_handel.navn }}</div>
         <div class="highlight-afkast">{{ trades_data.daarligste_handel.afkast }}</div>
-        <div class="highlight-periode">{{ trades_data.daarligste_handel.købt }} → {{ trades_data.daarligste_handel.solgt }}</div>
+        <div class="highlight-periode">{{ trades_data.daarligste_handel.købt }} → {{ trades_data.daarligste_handel.solgt }} · {{ trades_data.daarligste_handel.holdperiode }}</div>
+        <div class="highlight-periode">{{ trades_data.daarligste_handel.afkast_pr_maaned }} pr. måned</div>
       </div>
       {% endif %}
+    </div>
+    {% endif %}
+
+    {% if trades_data.segment_analyse %}
+    <div style="margin-bottom: 12px;">
+      <div style="font-size: 10px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px;">Segment-analyse</div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px;">
+        {% for seg, data in trades_data.segment_analyse.items() %}
+        <div style="background: #f8fbff; border-radius: 8px; padding: 10px 12px; border-left: 3px solid #4ecdc4;">
+          <div style="font-size: 12px; font-weight: 700; color: #1a1a2e; margin-bottom: 6px;">{{ seg }}</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3px; font-size: 11px;">
+            <span style="color: #888;">Antal</span><span style="font-weight: 600;">{{ data.antal }}</span>
+            <span style="color: #888;">Win-rate</span><span style="font-weight: 600;">{{ data.win_rate }}</span>
+            <span style="color: #888;">Snit</span><span style="font-weight: 600;" class="{{ 'pos' if data.snit_afkast.startswith('+') else 'neg' if data.snit_afkast.startswith('-') else '' }}">{{ data.snit_afkast }}</span>
+            <span style="color: #888;">Bedste</span><span class="pos" style="font-weight: 600;">{{ data.bedste }}</span>
+            <span style="color: #888;">Dårligste</span><span class="neg" style="font-weight: 600;">{{ data.daarligste }}</span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
     </div>
     {% endif %}
 
@@ -317,7 +341,9 @@
           <th>Type</th>
           <th>Købt</th>
           <th>Solgt</th>
+          <th>Holdperiode</th>
           <th style="text-align:right;">Afkast</th>
+          <th style="text-align:right;">Afkast/mdr</th>
         </tr>
       </thead>
       <tbody>
@@ -327,7 +353,9 @@
           <td><span class="type-badge type-{{ handel.type | lower }}">{{ handel.type }}</span></td>
           <td style="color:#888; font-size:11px;">{{ handel.købt }}</td>
           <td style="color:#888; font-size:11px;">{{ handel.solgt }}</td>
+          <td style="color:#888; font-size:11px;">{{ handel.holdperiode }}</td>
           <td style="text-align:right;" class="{{ 'pos' if handel.positiv else 'neg' }}">{{ handel.afkast }}</td>
+          <td style="text-align:right; font-size:11px;" class="{{ 'pos' if handel.afkast_pr_maaned.startswith('+') else 'neg' if handel.afkast_pr_maaned.startswith('-') else '' }}">{{ handel.afkast_pr_maaned }}</td>
         </tr>
         {% endfor %}
       </tbody>
@@ -395,6 +423,13 @@
         </ul>
         <h4>📊 Alpha</h4>
         <p>Dit porteføljes snit-afkast minus benchmark ({{ benchmark_name }}, {{ '%+.2f'|format(benchmark_return) }}%). Positivt = du slår markedet.</p>
+        <h4>📒 Handelshistorik</h4>
+        <ul>
+          <li><strong>Win-rate:</strong> Andel profitable handler af alle lukkede. 50% = halvdelen endte i plus.</li>
+          <li><strong>Snit holdperiode:</strong> Gennemsnitligt antal dage fra køb til salg.</li>
+          <li><strong>Afkast/måned:</strong> (afkast % / dage) × 30 — gør korte og lange handler sammenlignelige.</li>
+          <li><strong>Segment-analyse:</strong> Win-rate og snit opdelt på ETF vs PFA.</li>
+        </ul>
         <h4>⚙️ Datakilder</h4>
         <ul>
           <li>Kurser: yfinance — daglig opdatering</li>
