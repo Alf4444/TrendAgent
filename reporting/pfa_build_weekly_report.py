@@ -1,0 +1,239 @@
+"""
+pfa_build_weekly_report.py — Ugentlig PFA-rapport for TrendAgent
+=================================================================
+Genererer build/pfa_weekly.html med:
+  - Aktive PFA-positioner med ugeafkast, total afkast og Trail Stop
+  - Top 5 op/ned i hele PFA-universet denne uge
+  - Momentum-chart over top 10 stærkeste trends
+  - Markedsmuligheder (BULL-fonde ikke i portefølje med momentum > 2%)
+  - Trail Stop advarsler med HWM
+
+Køres af .github/workflows/pfa_weekly.yml (lørdag kl. 07:00)
+"""
+
+import json
+import sys
+from pathlib import Path
+from datetime import datetime
+from jinja2 import Template
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from utils import (
+    get_ma, get_best_ma, get_rsi,
+    calculate_drawdown, calculate_ytd,
+    get_cross_signal, get_trend_state,
+    check_trail_stop, is_trading_day,
+)
+
+ROOT           = Path(__file__).resolve().parents[1]
+DATA_FILE      = ROOT / "data/pfa_latest.json"
+HISTORY_FILE   = ROOT / "data/pfa_history.json"
+PORTFOLIO_FILE = ROOT / "config/pfa_portfolio.json"
+HWM_FILE       = ROOT / "data/pfa_hwm.json"
+TEMPLATE_FILE  = ROOT / "templates/pfa_weekly.html.j2"
+REPORT_FILE    = ROOT / "build/pfa_weekly.html"
+
+TRAIL_STOP_PCT = 3.0
+
+
+def load_high_water_marks():
+    if HWM_FILE.exists():
+        try:
+            with open(HWM_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {}
+
+
+def save_high_water_marks(hwm_data):
+    HWM_FILE.parent.mkdir(exist_ok=True)
+    with open(HWM_FILE, "w", encoding="utf-8") as f:
+        json.dump(hwm_data, f, indent=2)
+
+
+def load_json(path, default):
+    if not path.exists():
+        return default
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"Kunne ikke læse {path}: {e}")
+        return default
+
+
+def build_weekly():
+    print("Starter generering af PFA ugerapport...")
+
+    for f in [DATA_FILE, HISTORY_FILE, PORTFOLIO_FILE, TEMPLATE_FILE]:
+        if not f.exists():
+            print(f"FEJL: Mangler fil: {f}")
+            return
+
+    latest    = load_json(DATA_FILE, [])
+    history   = load_json(HISTORY_FILE, {})
+    portfolio = load_json(PORTFOLIO_FILE, {})
+    hwm_data  = load_high_water_marks()
+
+    portfolio_isins = {
+        isin for isin, info in portfolio.items()
+        if info.get("active", False)
+    }
+
+    today_str           = datetime.now().strftime('%Y-%m-%d')
+    trail_stop_alerts   = []
+    rows                = []
+    active_week_returns = []
+
+    for item in latest:
+        isin = item.get('isin')
+        nav  = item.get('nav')
+        if not isin or nav is None:
+            continue
+
+        p_dict       = history.get(isin, {})
+        sorted_dates = [d for d in sorted(p_dict.keys()) if is_trading_day(d)]
+        p_list       = [p_dict[d] for d in sorted_dates]
+
+        if not p_list:
+            continue
+
+        is_active = isin in portfolio_isins
+
+        if p_list[-1] != nav:
+            p_list.append(nav)
+
+        ma_val, ma_label = get_best_ma(p_list)
+        rsi              = get_rsi(p_list, 14)
+        cross            = get_cross_signal(p_list)
+        dd               = calculate_drawdown(p_list)
+        ytd              = calculate_ytd(p_dict)
+
+        if ma_val and nav:
+            momentum = round(((nav / ma_val) - 1) * 100, 2)
+        else:
+            momentum = round(item.get('return_1m') or 0.0, 2)
+            ma_label = "1M proxy"
+
+        trend_state = get_trend_state(p_list)
+
+        rsi_alert = None
+        if rsi is not None:
+            if rsi >= 70:
+                rsi_alert = "overkøbt"
+            elif rsi <= 30:
+                rsi_alert = "oversolgt"
+
+        week_change = float(item.get('return_1w') or 0.0)
+
+        if is_active and isin in portfolio:
+            buy_price = portfolio[isin].get('buy_price', 0)
+            total_ret = round(((nav / buy_price) - 1) * 100, 2) if buy_price else None
+        else:
+            buy_price = 0
+            total_ret = None
+
+        if is_active:
+            active_week_returns.append(week_change)
+
+        trail_alert = None
+        if is_active and buy_price and nav:
+            hwm_entry, trail_alert = check_trail_stop(
+                isin, nav, buy_price, hwm_data, today_str, TRAIL_STOP_PCT
+            )
+            hwm_data[isin] = hwm_entry
+            if trail_alert:
+                trail_alert["name"] = portfolio[isin].get("name", item.get('name', isin))
+                trail_stop_alerts.append(trail_alert)
+                print(
+                    f"TRAIL STOP: {trail_alert['name']} faldet {trail_alert['fall_pct']}% "
+                    f"fra top {trail_alert['hwm']} til {trail_alert['curr']}"
+                )
+
+        rows.append({
+            'isin':            isin,
+            'name':            item.get('name', isin),
+            'week_change_pct': week_change,
+            'total_return':    total_ret,
+            'trend_state':     trend_state,
+            'ma_label':        ma_label,
+            'momentum':        momentum,
+            'rsi':             rsi,
+            'rsi_alert':       rsi_alert,
+            'cross_20_50':     cross,
+            'drawdown':        float(dd),
+            'ytd_return':      ytd,
+            'is_active':       is_active,
+            'buy_price':       buy_price if is_active else None,
+            'curr_price':      nav,
+            'trail_alert':     trail_alert,
+            'hwm':             hwm_data.get(isin, {}).get('hwm') if is_active else None,
+            'hwm_date':        hwm_data.get(isin, {}).get('hwm_date') if is_active else None,
+            'return_1m':       item.get('return_1m'),
+            'return_1y':       item.get('return_1y'),
+            'return_ytd':      item.get('return_ytd'),
+        })
+
+    # Gem HWM — deles med pfa_daily og pfa_monthly
+    save_high_water_marks(hwm_data)
+
+    avg_portfolio_return = (
+        sum(active_week_returns) / len(active_week_returns)
+        if active_week_returns else 0.0
+    )
+
+    top_up   = sorted(rows, key=lambda x: x['week_change_pct'], reverse=True)[:5]
+    top_down = sorted(rows, key=lambda x: x['week_change_pct'])[:5]
+    chart_data = sorted(rows, key=lambda x: x['momentum'], reverse=True)[:10]
+
+    portfolio_alerts = [
+        {'msg': 'Kraftigt fald denne uge:', 'name': r['name'], 'change': r['week_change_pct']}
+        for r in rows
+        if r['is_active'] and r['week_change_pct'] < -3.0
+    ]
+
+    market_opportunities = sorted(
+        [r for r in rows
+         if not r['is_active']
+         and r['trend_state'] == 'BULL'
+         and r['momentum'] > 2.0],
+        key=lambda x: x['momentum'],
+        reverse=True
+    )[:5]
+
+    sorted_rows = sorted(rows, key=lambda x: (not x['is_active'], -x['momentum']))
+
+    if not TEMPLATE_FILE.exists():
+        print(f"Template mangler: {TEMPLATE_FILE}")
+        return
+
+    template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
+    html = template.render(
+        week_number          = datetime.now().isocalendar()[1],
+        report_date          = datetime.now().strftime("%d. %B %Y"),
+        avg_portfolio_return = round(avg_portfolio_return, 2),
+        trail_stop_alerts    = trail_stop_alerts,
+        trail_stop_pct       = TRAIL_STOP_PCT,
+        portfolio_alerts     = portfolio_alerts,
+        market_opportunities = market_opportunities,
+        top_up               = top_up,
+        top_down             = top_down,
+        rows                 = sorted_rows,
+        chart_labels         = [r['name'][:20] for r in chart_data],
+        chart_values         = [r['momentum'] for r in chart_data],
+    )
+
+    REPORT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    REPORT_FILE.write_text(html, encoding="utf-8")
+
+    print(f"PFA Ugerapport genereret: {REPORT_FILE}")
+    print(f"   {len(rows)} fonde analyseret")
+    print(f"   {len([r for r in rows if r['is_active']])} aktive positioner")
+    if trail_stop_alerts:
+        print(f"   {len(trail_stop_alerts)} trail stop-advarsel(er)")
+
+
+if __name__ == "__main__":
+    build_weekly()
