@@ -27,6 +27,7 @@ from utils import (
     check_trail_stop, is_trading_day,
 )
 from trades_summary import load_trades, get_summary, format_for_template
+from portfolio_hwm import load_portfolio_hwm, save_portfolio_hwm, update_and_get_drawdown, format_drawdown_for_template
 
 # ==========================================
 # KONFIGURATION & STIER
@@ -40,6 +41,7 @@ HWM_FILE       = ROOT / "data/etf_hwm.json"
 TEMPLATE_FILE  = ROOT / "templates/etf_monthly.html.j2"
 REPORT_FILE    = ROOT / "build/etf_monthly.html"
 TRADES_FILE    = ROOT / "config/trades.json"
+PORTFOLIO_HWM_FILE = ROOT / "data/portfolio_hwm.json"
 
 TRAIL_STOP_PCT = 3.0
 
@@ -257,6 +259,12 @@ def build_monthly():
     etf_summary = get_summary(trades, trade_type="ETF")
     trades_data = format_for_template(etf_summary)
 
+    # --- PORTEFØLJE DRAWDOWN ---
+    portfolio_hwm = load_portfolio_hwm(str(PORTFOLIO_HWM_FILE))
+    dd_raw = update_and_get_drawdown(portfolio_hwm, "etf", today_str, round(avg_port_return, 2))
+    save_portfolio_hwm(portfolio_hwm, str(PORTFOLIO_HWM_FILE))
+    drawdown_data = format_drawdown_for_template(dd_raw)
+
     if not TEMPLATE_FILE.exists():
         print(f"❌ Template mangler: {TEMPLATE_FILE}")
         return
@@ -278,6 +286,7 @@ def build_monthly():
         total_count          = total_count,
         trail_stop_pct       = TRAIL_STOP_PCT,
         trades_data          = trades_data,
+        drawdown_data        = drawdown_data,
     )
 
     REPORT_FILE.parent.mkdir(exist_ok=True)
