@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrendAgent — Oversigt</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f6f9; color: #2c3e50; font-size: 14px; min-height: 100vh; }
+
+    .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: white; padding: 30px; text-align: center; }
+    .header h1 { font-size: 28px; font-weight: 700; margin-bottom: 6px; }
+    .header h1 span { color: #4ecdc4; }
+    .header-meta { font-size: 13px; color: #aaa; }
+    .header-date { font-size: 12px; color: #666; margin-top: 4px; }
+
+    .container { max-width: 800px; margin: 0 auto; padding: 30px 20px; }
+
+    /* SEKTION LABELS */
+    .section-label { font-size: 11px; font-weight: 700; color: #888; text-transform: uppercase;
+                     letter-spacing: 0.08em; margin: 24px 0 10px; }
+    .section-label:first-child { margin-top: 0; }
+
+    /* RAPPORT KORT */
+    .report-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 4px; }
+    .report-card { background: white; border-radius: 10px; padding: 18px 20px;
+                   box-shadow: 0 2px 8px rgba(0,0,0,0.07); text-decoration: none; color: inherit;
+                   display: flex; align-items: center; gap: 14px;
+                   border-left: 4px solid #4ecdc4; transition: all 0.15s; }
+    .report-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
+    .report-card.pfa   { border-left-color: #1a73e8; }
+    .report-card.etf   { border-left-color: #4ecdc4; }
+    .report-card.mgr   { border-left-color: #f59c00; }
+    .report-icon { font-size: 26px; min-width: 36px; text-align: center; }
+    .report-info { flex: 1; }
+    .report-title { font-size: 15px; font-weight: 700; color: #1a1a2e; margin-bottom: 2px; }
+    .report-desc  { font-size: 12px; color: #888; line-height: 1.4; }
+    .report-freq  { font-size: 10px; font-weight: 700; text-transform: uppercase;
+                    padding: 2px 7px; border-radius: 8px; margin-top: 5px; display: inline-block; }
+    .freq-daily   { background: #e6f4ea; color: #1e8e3e; }
+    .freq-weekly  { background: #e8f0fe; color: #1a56b0; }
+    .freq-monthly { background: #fce8e6; color: #d93025; }
+    .freq-tool    { background: #fffdf0; color: #856404; border: 1px solid #f59c00; }
+
+    /* ENKELT KORT (fuld bredde) */
+    .report-card.full { grid-column: 1 / -1; border-left-color: #f59c00; }
+
+    /* STATUS LINJE */
+    .status-bar { background: white; border-radius: 10px; padding: 14px 18px;
+                  box-shadow: 0 2px 8px rgba(0,0,0,0.07); margin-top: 24px;
+                  display: flex; justify-content: space-between; align-items: center;
+                  flex-wrap: wrap; gap: 10px; }
+    .status-item { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    .status-dot  { width: 8px; height: 8px; background: #1e8e3e; border-radius: 50%;
+                   display: inline-block; margin-right: 5px; }
+    .status-label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.04em; }
+    .status-val   { font-size: 13px; font-weight: 700; color: #1a1a2e; }
+
+    /* FOOTER */
+    .footer { text-align: center; margin-top: 30px; font-size: 11px; color: #aaa; }
+    .footer a { color: #4ecdc4; text-decoration: none; }
+
+    @media (max-width: 600px) {
+      .report-grid { grid-template-columns: 1fr; }
+      .report-card.full { grid-column: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📊 Trend<span>Agent</span></h1>
+  <div class="header-meta">PFA Pension · ETF Portefølje · Automatisk overvågning</div>
+  <div class="header-date" id="headerDate"></div>
+</div>
+
+<div class="container">
+
+  <div class="section-label">PFA Pensionsfonde</div>
+  <div class="report-grid">
+    <a class="report-card pfa" href="build/pfa_daily.html">
+      <div class="report-icon">📋</div>
+      <div class="report-info">
+        <div class="report-title">PFA Daily</div>
+        <div class="report-desc">Dagens kurser, Trail Stop og signaler for alle aktive PFA-fonde</div>
+        <span class="report-freq freq-daily">Daglig — hverdage 18:00</span>
+      </div>
+    </a>
+    <a class="report-card pfa" href="build/pfa_weekly.html">
+      <div class="report-icon">📈</div>
+      <div class="report-info">
+        <div class="report-title">PFA Weekly</div>
+        <div class="report-desc">Ugens afkast, MA-signaler og relativ styrke i PFA-universet</div>
+        <span class="report-freq freq-weekly">Ugentlig — lørdag 08:00</span>
+      </div>
+    </a>
+    <a class="report-card pfa full" href="build/pfa_monthly.html">
+      <div class="report-icon">🗓️</div>
+      <div class="report-info">
+        <div class="report-title">PFA Monthly Deep Dive</div>
+        <div class="report-desc">Strategisk analyse, handelshistorik, alpha vs. benchmark og rotationsmuligheder</div>
+        <span class="report-freq freq-monthly">Månedlig — lørdag 08:30</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="section-label">ETF Portefølje</div>
+  <div class="report-grid">
+    <a class="report-card etf" href="build/etf_weekly.html">
+      <div class="report-icon">📡</div>
+      <div class="report-info">
+        <div class="report-title">ETF Weekly</div>
+        <div class="report-desc">Spejder-screening, Hurtige Heste, Stabile Trendere og watchlist-tabel</div>
+        <span class="report-freq freq-weekly">Ugentlig — lørdag 07:00</span>
+      </div>
+    </a>
+    <a class="report-card etf" href="build/etf_monthly.html">
+      <div class="report-icon">🔭</div>
+      <div class="report-info">
+        <div class="report-title">ETF Monthly</div>
+        <div class="report-desc">Alpha vs. MSCI World, rotationsmuligheder og handelshistorik</div>
+        <span class="report-freq freq-monthly">Månedlig — lørdag 07:30</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="section-label">Værktøj</div>
+  <div class="report-grid">
+    <a class="report-card mgr full" href="portfolio.html">
+      <div class="report-icon">✏️</div>
+      <div class="report-info">
+        <div class="report-title">Portfolio Manager</div>
+        <div class="report-desc">Registrér køb og salg — opdaterer config/trades.json direkte i GitHub</div>
+        <span class="report-freq freq-tool">Manuelt redskab</span>
+      </div>
+    </a>
+  </div>
+
+  <!-- STATUS BAR -->
+  <div class="status-bar">
+    <div class="status-item">
+      <span class="status-label">System</span>
+      <span class="status-val"><span class="status-dot"></span>7 workflows aktive</span>
+    </div>
+    <div class="status-item">
+      <span class="status-label">PFA univers</span>
+      <span class="status-val">47 fonde</span>
+    </div>
+    <div class="status-item">
+      <span class="status-label">ETF univers</span>
+      <span class="status-val">161 ETF'er</span>
+    </div>
+    <div class="status-item">
+      <span class="status-label">Repo</span>
+      <span class="status-val"><a href="https://github.com/alf4444/TrendAgent" target="_blank" style="color:#4ecdc4; text-decoration:none;">alf4444/TrendAgent</a></span>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  Genereret af TrendAgent · <a href="https://github.com/alf4444/TrendAgent" target="_blank">GitHub</a>
+</div>
+
+<script>
+  // Vis dagens dato i headeren
+  const d = new Date();
+  const dage = ['søndag','mandag','tirsdag','onsdag','torsdag','fredag','lørdag'];
+  const mdr  = ['januar','februar','marts','april','maj','juni','juli','august','september','oktober','november','december'];
+  document.getElementById('headerDate').textContent =
+    dage[d.getDay()] + ' ' + d.getDate() + '. ' + mdr[d.getMonth()] + ' ' + d.getFullYear();
+</script>
+
+</body>
+</html>
