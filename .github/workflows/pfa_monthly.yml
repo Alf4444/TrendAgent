@@ -4,7 +4,7 @@ on:
   workflow_dispatch: {}
   schedule:
     # Kører hver lørdag kl. 07:30 (06:30 UTC)
-    - cron: "0 6 * * 6"
+    - cron: "30 6 * * 6"
 
 jobs:
   build:
