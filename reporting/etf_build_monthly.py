@@ -1,502 +1,300 @@
-<!DOCTYPE html>
-<html lang="da">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ETF Monthly — Uge {{ week_number }}</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f6f9; color: #2c3e50; font-size: 14px; }
+"""
+etf_build_monthly.py — Månedlig ETF-rapport for TrendAgent
+============================================================
+Genererer build/etf_monthly.html med:
+  - Aktive positioner med total afkast, rank og Trend Velocity
+  - Alpha vs benchmark (IWDA som proxy for globalt ETF-marked)
+  - Top 5 markedsmuligheder fra watchlist
+  - Trail Stop advarsler
+  - Strategiske handlingssignaler
+  - Handelshistorik fra config/trades.json
 
-    /* HEADER */
-    .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: white; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; }
-    .header h1 { font-size: 22px; font-weight: 700; }
-    .header h1 span { color: #4ecdc4; }
-    .header-meta { font-size: 12px; color: #aaa; margin-top: 4px; }
-    .badge-afkast { background: #4ecdc4; color: #1a1a2e; padding: 8px 16px; border-radius: 8px; text-align: center; }
-    .badge-afkast .val { font-size: 22px; font-weight: 800; }
-    .badge-afkast .lbl { font-size: 11px; opacity: 0.8; }
+Køres af .github/workflows/etf_monthly.yml (lørdag kl. 07:30)
+"""
 
-    .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+import json
+import sys
+from pathlib import Path
+from datetime import datetime
+from jinja2 import Template
 
-    /* SCORE GRID */
-    .score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-    .score-box { background: white; padding: 18px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); text-align: center; border-top: 4px solid #4ecdc4; }
-    .score-box small { color: #888; text-transform: uppercase; letter-spacing: 1px; font-size: 10px; }
-    .score-box strong { display: block; font-size: 26px; font-weight: 800; margin-top: 4px; }
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-    /* ALERTS */
-    .alert-box { border-radius: 8px; padding: 14px 18px; margin-bottom: 16px; }
-    .alert-trail { background: #fef3cd; border-left: 4px solid #f59c00; }
-    .alert-sell  { background: #fce8e6; border-left: 4px solid #d93025; }
-    .alert-buy   { background: #e6f4ea; border-left: 4px solid #1e8e3e; }
-    .alert-title { font-weight: 700; font-size: 13px; margin-bottom: 8px; }
-    .alert-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid rgba(0,0,0,0.06); font-size: 13px; }
-    .alert-row:last-child { border-bottom: none; }
-    .tag-red   { background: #d93025; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; }
-    .tag-green { background: #1e8e3e; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; }
-    .tag-gold  { background: #f59c00; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; }
+from utils import (
+    get_ma, get_best_ma, get_rsi,
+    get_trend_velocity, get_momentum_status,
+    get_trend_state, get_trend_shift,
+    check_trail_stop, is_trading_day,
+)
+from trades_summary import load_trades, get_summary, format_for_template
+from portfolio_hwm import load_portfolio_hwm, save_portfolio_hwm, update_and_get_drawdown, format_drawdown_for_template
 
-    /* CARDS */
-    .card { background: white; border-radius: 10px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 16px; }
-    .card-title { font-size: 15px; font-weight: 700; margin-bottom: 14px; color: #1a1a2e; }
+# ==========================================
+# KONFIGURATION & STIER
+# ==========================================
+ROOT           = Path(__file__).resolve().parents[1]
+LATEST_FILE    = ROOT / "data/etf_latest.json"
+HISTORY_FILE   = ROOT / "data/etf_history.json"
+WATCHLIST_FILE = ROOT / "config/etf_watchlist.json"
+PORTFOLIO_FILE = ROOT / "config/etf_portfolio.json"
+HWM_FILE       = ROOT / "data/etf_hwm.json"
+TEMPLATE_FILE  = ROOT / "templates/etf_monthly.html.j2"
+REPORT_FILE    = ROOT / "build/etf_monthly.html"
+TRADES_FILE    = ROOT / "config/trades.json"
+PORTFOLIO_HWM_FILE = ROOT / "data/portfolio_hwm.json"
 
-    /* TABEL */
-    .table-card { background: white; border-radius: 10px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 16px; }
-    .table-title { font-size: 15px; font-weight: 700; margin-bottom: 14px; color: #1a1a2e; }
-    table { width: 100%; border-collapse: collapse; font-size: 12px; }
-    th { background: #f0f4f8; padding: 8px 10px; text-align: left; font-weight: 600; color: #555; font-size: 11px; white-space: nowrap; }
-    td { padding: 8px 10px; border-bottom: 1px solid #f5f5f5; vertical-align: middle; }
-    tr:last-child td { border-bottom: none; }
-    tr.active-row { background: #fffef5; }
-    tr.active-row td:first-child { border-left: 3px solid #f59c00; }
+TRAIL_STOP_PCT = 3.0
 
-    .pos { color: #1e8e3e; font-weight: 700; }
-    .neg { color: #d93025; font-weight: 700; }
-    .rank-badge { background: #2c3e50; color: white; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-size: 11px; }
-    .cat-tag { background: #e8f4fd; color: #1565c0; padding: 1px 6px; border-radius: 8px; font-size: 10px; }
-    .m-tag { padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; white-space: nowrap; }
-    .momentum-fast   { background: #e6f4ea; color: #1e8e3e; }
-    .momentum-slow   { background: #fff3e0; color: #e65100; }
-    .momentum-flat   { background: #fce8e6; color: #d93025; }
-    .momentum-stable { background: #f1f3f4; color: #5f6368; }
-    .trend-bull { background: #e6f4ea; color: #1e8e3e; padding: 2px 7px; border-radius: 10px; font-size: 11px; font-weight: 600; }
-    .trend-bear { background: #fce8e6; color: #d93025; padding: 2px 7px; border-radius: 10px; font-size: 11px; font-weight: 600; }
-    .shift-bull { background: #e6f4ea; color: #1e8e3e; padding: 1px 6px; border-radius: 6px; font-size: 10px; font-weight: 700; margin-left: 4px; }
-    .shift-bear { background: #fce8e6; color: #d93025; padding: 1px 6px; border-radius: 6px; font-size: 10px; font-weight: 700; margin-left: 4px; }
+def get_trail_stop_pct(volatility):
+    if volatility is None:
+        return TRAIL_STOP_PCT
+    if volatility < 1.0:
+        return 3.0
+    elif volatility < 2.0:
+        return 5.0
+    else:
+        return 7.0
 
-    /* HANDELSHISTORIK */
-    .trades-card { background: white; border-radius: 10px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 16px; border-left: 4px solid #4ecdc4; }
-    .trades-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
-    .stat-box { background: #f8fbff; border-radius: 8px; padding: 10px 12px; }
-    .stat-label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 2px; }
-    .stat-value { font-size: 20px; font-weight: 800; color: #1a1a2e; }
-    .stat-value.pos { color: #1e8e3e; }
-    .stat-value.neg { color: #d93025; }
-    .trades-highlights { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-    .highlight-card { border-radius: 8px; padding: 10px 12px; }
-    .highlight-card.pos-card { background: #e6f4ea; border-left: 3px solid #1e8e3e; }
-    .highlight-card.neg-card { background: #fce8e6; border-left: 3px solid #d93025; }
-    .highlight-label  { font-size: 10px; color: #888; margin-bottom: 2px; }
-    .highlight-navn   { font-size: 13px; font-weight: 700; color: #1a1a2e; margin-bottom: 2px; }
-    .highlight-afkast { font-size: 17px; font-weight: 800; }
-    .highlight-card.pos-card .highlight-afkast { color: #1e8e3e; }
-    .highlight-card.neg-card .highlight-afkast { color: #d93025; }
-    .highlight-periode { font-size: 10px; color: #888; }
-    .type-badge { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 10px; font-weight: 700; }
-    .type-pfa { background: #e8f0fe; color: #1a56b0; }
-    .type-etf { background: #e6f4ea; color: #1e8e3e; }
+BENCHMARK_ISIN = "IE00B4L5Y983"  # IWDA — iShares Core MSCI World
 
-    /* METODIK */
-    .drawdown-box { background: white; border-radius: 10px; padding: 16px;
-                    box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 16px;
-                    border-left: 4px solid #4ecdc4; }
-    .drawdown-box.advarsel { border-left-color: #d93025; background: #fffaf9; }
-    .drawdown-box h3-dd { display: block; font-size: 14px; font-weight: 700;
-                          color: #1a1a2e; margin-bottom: 12px; }
-    .drawdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
-    .dd-stat { background: #f8fbff; border-radius: 8px; padding: 8px 10px; }
-    .dd-label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 2px; }
-    .dd-value { font-size: 18px; font-weight: 800; color: #1a1a2e; }
-    .dd-value.pos { color: #1e8e3e; }
-    .dd-value.neg { color: #d93025; }
-    .dd-value.neutral { color: #1a73e8; }
-    .metodik h3 { font-size: 14px; font-weight: 700; margin-bottom: 12px; color: #1a1a2e; border-bottom: 2px solid #4ecdc4; padding-bottom: 6px; }
-    .metodik-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    .metodik-col h4 { font-size: 12px; font-weight: 700; color: #4ecdc4; margin: 10px 0 6px; }
-    .metodik-col p, .metodik-col li { font-size: 11px; color: #555; line-height: 1.6; }
-    .metodik-col ul { padding-left: 16px; }
-    .disclaimer { background: #f0f7ff; border-left: 3px solid #4ecdc4; padding: 10px 14px; border-radius: 4px; font-size: 11px; color: #555; margin-top: 12px; font-style: italic; }
-  </style>
-</head>
-<body>
 
-<!-- HEADER -->
-<div class="header">
-  <div>
-    <h1>📡 ETF <span>Monthly Deep Dive</span></h1>
-    <div class="header-meta">Uge {{ week_number }} | Opdateret: {{ timestamp }} | Benchmark: {{ benchmark_name }}</div>
-  </div>
-  <div class="badge-afkast">
-    <div class="lbl">PORTEFØLJE SNIT</div>
-    <div class="val" style="color: {{ '#1a1a2e' if avg_portfolio_return >= 0 else '#d93025' }}">
-      {{ '%+.2f'|format(avg_portfolio_return) }}%
-    </div>
-  </div>
-</div>
+# ==========================================
+# HJÆLPEFUNKTIONER
+# ==========================================
 
-<div class="container">
+def load_json(path, default):
+    if not path.exists():
+        return default
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"⚠️  Kunne ikke læse {path}: {e}")
+        return default
 
-  <!-- PORTEFØLJE DRAWDOWN -->
-  {% if drawdown_data %}
-  <div class="drawdown-box {{ 'advarsel' if drawdown_data.advarsel else '' }}">
-    <span class="h3-dd">📉 Portefølje Drawdown{% if drawdown_data.advarsel %} — ⚠️ Over 5% fra peak{% endif %}</span>
-    <div class="drawdown-grid">
-      <div class="dd-stat">
-        <div class="dd-label">Aktuel portefølje</div>
-        <div class="dd-value {{ 'pos' if drawdown_data.aktuel.startswith('+') else 'neg' if drawdown_data.aktuel.startswith('-') else 'neutral' }}">
-          {{ drawdown_data.aktuel }}
-        </div>
-      </div>
-      <div class="dd-stat">
-        <div class="dd-label">Peak afkast</div>
-        <div class="dd-value pos">{{ drawdown_data.peak }}</div>
-        <div style="font-size:10px; color:#888; margin-top:2px;">{{ drawdown_data.peak_dato }}</div>
-      </div>
-      <div class="dd-stat">
-        <div class="dd-label">Drawdown fra peak</div>
-        <div class="dd-value {{ 'pos' if drawdown_data.er_ved_peak else 'neg' }}">
-          {{ '— ved peak' if drawdown_data.er_ved_peak else drawdown_data.drawdown }}
-        </div>
-      </div>
-      <div class="dd-stat">
-        <div class="dd-label">Dage siden peak</div>
-        <div class="dd-value neutral">{{ drawdown_data.dage_siden_peak }}</div>
-      </div>
-    </div>
-    <div style="font-size:11px; color:#888;">
-      {% if drawdown_data.er_ved_peak %}✅ Porteføljen er ved sit historiske toppunkt.
-      {% elif drawdown_data.advarsel %}⚠️ Over 5% fra peak — overvej om eksponeringen er for høj.
-      {% else %}Normal korrektion under 5% fra peak — ingen handling nødvendig.{% endif %}
-    </div>
-  </div>
-  {% endif %}
+def load_hwm():
+    if HWM_FILE.exists():
+        try:
+            with open(HWM_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {}
 
-  <!-- ALPHA SCORE GRID -->
-  <div class="score-grid">
-    <div class="score-box">
-      <small>Portefølje snit (total afkast fra køb)</small>
-      <strong class="{{ 'pos' if avg_portfolio_return >= 0 else 'neg' }}">
-        {{ '%+.2f'|format(avg_portfolio_return) }}%
-      </strong>
-    </div>
-    <div class="score-box" style="border-top-color: {{ '#1e8e3e' if diff_to_benchmark >= 0 else '#d93025' }};">
-      <small>Alpha vs. {{ benchmark_name }} ({{ '%+.2f'|format(benchmark_return) }}%)</small>
-      <strong class="{{ 'pos' if diff_to_benchmark >= 0 else 'neg' }}">
-        {{ '%+.2f'|format(diff_to_benchmark) }}%
-      </strong>
-    </div>
-  </div>
+def save_hwm(hwm_data):
+    HWM_FILE.parent.mkdir(exist_ok=True)
+    with open(HWM_FILE, "w", encoding="utf-8") as f:
+        json.dump(hwm_data, f, indent=2)
 
-  <!-- TRAIL STOP ADVARSLER -->
-  {% if trail_stop_alerts %}
-  <div class="alert-box alert-trail">
-    <div class="alert-title">⚠️ Trail Stop Advarsel — {{ trail_stop_alerts|length }} fond(e) udløst (tærskel: {{ trail_stop_pct }}%)</div>
-    {% for a in trail_stop_alerts %}
-    <div class="alert-row">
-      <span><strong>{{ a.name }}</strong></span>
-      <span>
-        HWM: {{ a.hwm }} ({{ a.hwm_date }}) &nbsp;|&nbsp; Nu: {{ a.curr }} &nbsp;
-        <span class="tag-red">{{ '%+.1f'|format(a.fall_pct) }}% fra top</span>
-        &nbsp; Afkast fra køb: <span class="{{ 'pos' if a.total_ret >= 0 else 'neg' }}">{{ '%+.1f'|format(a.total_ret) }}%</span>
-      </span>
-    </div>
-    {% endfor %}
-    <div style="font-size:11px; color:#888; margin-top:8px;">
-      En advarsel er ikke automatisk et salgssignal — tjek fondens rank og 1M afkast før du handler.
-    </div>
-  </div>
-  {% endif %}
+def get_ranking_data(latest_list):
+    sorted_list = sorted(latest_list, key=lambda x: x.get('return_1m') or -999, reverse=True)
+    rank_map = {item['isin']: index + 1 for index, item in enumerate(sorted_list)}
+    return rank_map, len(sorted_list)
 
-  <!-- SALGSSIGNALER -->
-  {% if sell_signals %}
-  <div class="alert-box alert-sell">
-    <div class="alert-title">🛑 Salgsovervejelse — Overhalet af markedet</div>
-    {% for f in sell_signals %}
-    <div class="alert-row">
-      <span><strong>{{ f.name }}</strong> ({{ f.ticker }})</span>
-      <span>Rank <span class="tag-red">#{{ f.rank }}</span> &nbsp; 1M: <span class="neg">{{ '%+.1f'|format(f.return_1m) }}%</span></span>
-    </div>
-    {% endfor %}
-  </div>
-  {% endif %}
 
-  <!-- ROTATIONSMULIGHEDER -->
-  {% if buy_signals %}
-  <div class="alert-box alert-buy">
-    <div class="alert-title">🟢 Rotationsmuligheder</div>
-    {% for o in buy_signals %}
-    <div class="alert-row">
-      <span><strong>{{ o.name }}</strong> {% if o.ticker %}({{ o.ticker }}){% endif %} {% if o.category %}<span class="cat-tag">{{ o.category }}</span>{% endif %}</span>
-      <span>Rank <span class="tag-green">#{{ o.rank }}</span> &nbsp; 1M: <span class="pos">{{ '%+.1f'|format(o.return_1m) }}%</span></span>
-    </div>
-    {% endfor %}
-  </div>
-  {% endif %}
+# ==========================================
+# HOVEDFUNKTION
+# ==========================================
 
-  <!-- AKTIVE POSITIONER -->
-  <div class="table-card">
-    <div class="table-title">⭐ Aktive Positioner & Relativ Styrke</div>
-    <table>
-      <thead>
-        <tr>
-          <th>Rank</th>
-          <th>Fond</th>
-          <th>Trend Velocity</th>
-          <th>Momentum Status</th>
-          <th>Trend</th>
-          <th>Sidste 1M %</th>
-          <th>ÅTD %</th>
-          <th style="text-align:right;">Total Afkast %</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for f in active_funds %}
-        <tr class="active-row">
-          <td><span class="rank-badge">#{{ f.rank }}</span></td>
-          <td>
-            <strong>{{ f.name }}</strong>
-            {% if f.ticker %}<br><span style="font-size:10px; color:#888;">{{ f.ticker }}</span>{% endif %}
-            {% if f.category %}<span class="cat-tag" style="margin-left:4px;">{{ f.category }}</span>{% endif %}
-            {% if f.trend_shift %}
-              <span class="{{ 'shift-bear' if 'BULL→BEAR' in f.trend_shift else 'shift-bull' }}">{{ f.trend_shift }}</span>
-            {% endif %}
-          </td>
-          <td><span class="{{ f.trend_class }}">{{ f.trend_label }}</span></td>
-          <td><span class="m-tag {{ f.momentum_class }}">{{ f.momentum_label }}</span></td>
-          <td>
-            <span class="{{ 'trend-bull' if f.t_state == 'BULL' else 'trend-bear' }}">
-              {{ f.t_state }}
-            </span>
-          </td>
-          <td class="{{ 'pos' if f.return_1m >= 0 else 'neg' }}">{{ '%+.1f'|format(f.return_1m) }}%</td>
-          <td class="{{ 'pos' if (f.return_ytd or 0) >= 0 else 'neg' }}">
-            {% if f.return_ytd is not none %}{{ '%+.1f'|format(f.return_ytd) }}%{% else %}—{% endif %}
-          </td>
-          <td style="text-align:right;" class="{{ 'pos' if f.total_return >= 0 else 'neg' }}">
-            {{ '%+.2f'|format(f.total_return) }}%
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+def build_monthly():
+    print("🔄 Starter generering af ETF månedlig rapport...")
 
-  <!-- TOP 5 MARKEDSMULIGHEDER -->
-  <div class="table-card" style="border-left: 4px solid #1a73e8;">
-    <div class="table-title">🔭 Top 5 Markedsmuligheder (Hele ETF-universet)</div>
-    <table>
-      <thead>
-        <tr>
-          <th>Rank</th>
-          <th>Fond</th>
-          <th>Kategori</th>
-          <th>Trend Status</th>
-          <th>Sidste 1M %</th>
-          <th>ÅTD %</th>
-          <th>1Y %</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for o in market_opps %}
-        <tr>
-          <td><span class="rank-badge">#{{ o.rank }}</span></td>
-          <td>
-            <strong>{{ o.name }}</strong>
-            {% if o.ticker %}<br><span style="font-size:10px; color:#888;">{{ o.ticker }}</span>{% endif %}
-          </td>
-          <td>{% if o.category %}<span class="cat-tag">{{ o.category }}</span>{% else %}—{% endif %}</td>
-          <td><span class="{{ o.trend_label | replace('🚀 ', '') | replace('📉 ', '') | replace('➡️ ', '') | lower | replace(' ', '-') }}">{{ o.trend_label }}</span></td>
-          <td class="pos">{{ '%+.1f'|format(o.return_1m) }}%</td>
-          <td class="{{ 'pos' if (o.return_ytd or 0) >= 0 else 'neg' }}">
-            {% if o.return_ytd %}{{ '%+.1f'|format(o.return_ytd) }}%{% else %}—{% endif %}
-          </td>
-          <td class="{{ 'pos' if (o.return_1y or 0) >= 0 else 'neg' }}">
-            {% if o.return_1y %}{{ '%+.1f'|format(o.return_1y) }}%{% else %}—{% endif %}
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+    for f in [LATEST_FILE, HISTORY_FILE, WATCHLIST_FILE, TEMPLATE_FILE]:
+        if not f.exists():
+            print(f"❌ FEJL: Mangler fil: {f}")
+            return
 
-  <!-- HANDELSHISTORIK — vises kun når der er lukkede ETF-handler -->
-  {% if trades_data and trades_data.antal_lukket > 0 %}
-  <div class="trades-card">
-    <div class="card-title">📒 Handelshistorik — ETF</div>
+    latest    = load_json(LATEST_FILE, [])
+    history   = load_json(HISTORY_FILE, {})
+    watchlist = load_json(WATCHLIST_FILE, {})
+    portfolio = load_json(PORTFOLIO_FILE, {})
+    watchlist = {k: v for k, v in watchlist.items() if not k.startswith('_')}
+    portfolio = {k: v for k, v in portfolio.items() if not k.startswith('_')}
+    benchmark_isins = {k for k, v in watchlist.items() if v.get('_benchmark')}
 
-    <div class="trades-stats">
-      <div class="stat-box">
-        <div class="stat-label">Snit realiseret afkast</div>
-        <div class="stat-value {{ 'pos' if trades_data.total_realiseret.startswith('+') else 'neg' if trades_data.total_realiseret.startswith('-') else '' }}">
-          {{ trades_data.total_realiseret }}
-        </div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-label">Win-rate</div>
-        <div class="stat-value">{{ trades_data.win_rate }}</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-label">Snit holdperiode</div>
-        <div class="stat-value" style="font-size:13px;">{{ trades_data.snit_holdperiode }}</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-label">Snit afkast/måned</div>
-        <div class="stat-value {{ 'pos' if trades_data.snit_afkast_pr_maaned.startswith('+') else 'neg' if trades_data.snit_afkast_pr_maaned.startswith('-') else '' }}">
-          {{ trades_data.snit_afkast_pr_maaned }}
-        </div>
-      </div>
-    </div>
+    rank_map, total_count = get_ranking_data(latest)
+    latest_map = {item['isin']: item for item in latest}
 
-    {% if trades_data.bedste_handel or trades_data.daarligste_handel %}
-    <div class="trades-highlights">
-      {% if trades_data.bedste_handel %}
-      <div class="highlight-card pos-card">
-        <div class="highlight-label">🏆 Bedste handel</div>
-        <div class="highlight-navn">{{ trades_data.bedste_handel.navn }}</div>
-        <div class="highlight-afkast">{{ trades_data.bedste_handel.afkast }}</div>
-        <div class="highlight-periode">{{ trades_data.bedste_handel.købt }} → {{ trades_data.bedste_handel.solgt }} · {{ trades_data.bedste_handel.holdperiode }}</div>
-        <div class="highlight-periode">{{ trades_data.bedste_handel.afkast_pr_maaned }} pr. måned</div>
-      </div>
-      {% endif %}
-      {% if trades_data.daarligste_handel %}
-      <div class="highlight-card neg-card">
-        <div class="highlight-label">📉 Dårligste handel</div>
-        <div class="highlight-navn">{{ trades_data.daarligste_handel.navn }}</div>
-        <div class="highlight-afkast">{{ trades_data.daarligste_handel.afkast }}</div>
-        <div class="highlight-periode">{{ trades_data.daarligste_handel.købt }} → {{ trades_data.daarligste_handel.solgt }} · {{ trades_data.daarligste_handel.holdperiode }}</div>
-        <div class="highlight-periode">{{ trades_data.daarligste_handel.afkast_pr_maaned }} pr. måned</div>
-      </div>
-      {% endif %}
-    </div>
-    {% endif %}
+    now         = datetime.now()
+    today_str   = now.strftime('%Y-%m-%d')
+    timestamp   = now.strftime('%d-%m-%Y %H:%M')
+    week_number = now.strftime('%V')
 
-    {% if trades_data.segment_analyse %}
-    <div style="margin-bottom: 12px;">
-      <div style="font-size: 10px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px;">Segment-analyse</div>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px;">
-        {% for seg, data in trades_data.segment_analyse.items() %}
-        <div style="background: #f8fbff; border-radius: 8px; padding: 10px 12px; border-left: 3px solid #4ecdc4;">
-          <div style="font-size: 12px; font-weight: 700; color: #1a1a2e; margin-bottom: 6px;">{{ seg }}</div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3px; font-size: 11px;">
-            <span style="color: #888;">Antal</span><span style="font-weight: 600;">{{ data.antal }}</span>
-            <span style="color: #888;">Win-rate</span><span style="font-weight: 600;">{{ data.win_rate }}</span>
-            <span style="color: #888;">Snit</span><span style="font-weight: 600;" class="{{ 'pos' if data.snit_afkast.startswith('+') else 'neg' if data.snit_afkast.startswith('-') else '' }}">{{ data.snit_afkast }}</span>
-            <span style="color: #888;">Bedste</span><span class="pos" style="font-weight: 600;">{{ data.bedste }}</span>
-            <span style="color: #888;">Dårligste</span><span class="neg" style="font-weight: 600;">{{ data.daarligste }}</span>
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-    {% endif %}
+    hwm_data          = load_hwm()
+    trail_stop_alerts = []
+    active_rows       = []
+    sold_rows         = []
+    active_returns    = []
 
-    <table>
-      <thead>
-        <tr>
-          <th>Fond</th>
-          <th>Type</th>
-          <th>Købt</th>
-          <th>Solgt</th>
-          <th>Holdperiode</th>
-          <th style="text-align:right;">Afkast</th>
-          <th style="text-align:right;">Afkast/mdr</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for handel in trades_data.lukkede_handler %}
-        <tr>
-          <td><strong>{{ handel.navn }}</strong></td>
-          <td><span class="type-badge type-{{ handel.type | lower }}">{{ handel.type }}</span></td>
-          <td style="color:#888; font-size:11px;">{{ handel.købt }}</td>
-          <td style="color:#888; font-size:11px;">{{ handel.solgt }}</td>
-          <td style="color:#888; font-size:11px;">{{ handel.holdperiode }}</td>
-          <td style="text-align:right;" class="{{ 'pos' if handel.positiv else 'neg' }}">{{ handel.afkast }}</td>
-          <td style="text-align:right; font-size:11px;" class="{{ 'pos' if handel.afkast_pr_maaned.startswith('+') else 'neg' if handel.afkast_pr_maaned.startswith('-') else '' }}">{{ handel.afkast_pr_maaned }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-  {% endif %}
+    for isin, p_info in portfolio.items():
+        if isin not in latest_map:
+            continue
 
-  <!-- SOLGTE POSITIONER -->
-  {% if sold_funds %}
-  <div class="table-card">
-    <div class="table-title">⚪ Historik — Solgte Positioner</div>
-    <table>
-      <thead>
-        <tr><th>Fond</th><th>Ticker</th><th>Købt</th><th>Solgt</th><th style="text-align:right;">Afkast v. salg</th></tr>
-      </thead>
-      <tbody>
-        {% for f in sold_funds %}
-        <tr>
-          <td>{{ f.name }}</td>
-          <td style="color:#888;">{{ f.ticker }}</td>
-          <td style="color:#888; font-size:11px;">{{ f.buy_date }}</td>
-          <td style="color:#888; font-size:11px;">{{ f.sell_date }}</td>
-          <td style="text-align:right;" class="{{ 'pos' if f.total_return >= 0 else 'neg' }}">
-            {{ '%+.2f'|format(f.total_return) }}%
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-  {% endif %}
+        official  = latest_map[isin]
+        rank      = rank_map.get(isin, 99)
+        curr_p    = official.get('nav') or 0
+        buy_p     = p_info.get('buy_price', 0)
+        is_active = p_info.get('active', False)
 
-  <!-- METODIK -->
-  <div class="metodik">
-    <h3>📖 Metodik & Definitioner</h3>
-    <div class="metodik-grid">
-      <div class="metodik-col">
-        <h4>🏆 Markeds-Ranking (Relativ Styrke)</h4>
-        <p>Alle {{ total_count }} ETF'er rangeres efter 1M afkast. Rank #1 = stærkest momentum.</p>
-        <ul>
-          <li><strong>🚀 Top Performer:</strong> Top 5 med positivt afkast</li>
-          <li><strong>✅ Stabil:</strong> Top 7</li>
-          <li><strong>⚠️ Slower:</strong> Udenfor top 7 eller negativt afkast</li>
-          <li><strong>🛑 Outperformed:</strong> Udenfor top 10 — andre løber hurtigere</li>
-        </ul>
-        <h4>⚡ Trend Velocity (Acceleration)</h4>
-        <ul>
-          <li><strong>🚀 Accelererer:</strong> Ugens afkast stærkere end månedssnittet</li>
-          <li><strong>📉 Bremser:</strong> Ugens afkast svagere end månedssnittet</li>
-          <li><strong>➡️ Stabil:</strong> På linje med månedssnittet</li>
-        </ul>
-        <h4>🔄 Trend Shift</h4>
-        <ul>
-          <li><strong>BULL→BEAR:</strong> Faldet under MA siden forrige rapport — overvej rotation</li>
-          <li><strong>BEAR→BULL:</strong> Steget over MA — positivt trendskift</li>
-        </ul>
-      </div>
-      <div class="metodik-col">
-        <h4>⚠️ Trail Stop (High Water Mark)</h4>
-        <ul>
-          <li>Advarsel når en fond falder mere end {{ trail_stop_pct }}% fra toppunkt</li>
-          <li><strong>HWM</strong> = højeste kurs siden køb — opdateres automatisk</li>
-          <li><strong>Fald fra top</strong> = (kurs / HWM − 1) × 100</li>
-          <li>Variabelt stop: &lt;1% vol → 3% · 1-2% vol → 5% · &gt;2% vol → 7%</li>
-        </ul>
-        <h4>📊 Alpha</h4>
-        <p>Dit porteføljes snit-afkast minus benchmark ({{ benchmark_name }}, {{ '%+.2f'|format(benchmark_return) }}%). Positivt = du slår markedet.</p>
-        <h4>📒 Handelshistorik</h4>
-        <ul>
-          <li><strong>Win-rate:</strong> Andel profitable handler af alle lukkede. 50% = halvdelen endte i plus.</li>
-          <li><strong>Snit holdperiode:</strong> Gennemsnitligt antal dage fra køb til salg.</li>
-          <li><strong>Afkast/måned:</strong> (afkast % / dage) × 30 — gør korte og lange handler sammenlignelige.</li>
-          <li><strong>Segment-analyse:</strong> Win-rate og snit opdelt på ETF vs PFA.</li>
-        </ul>
-        <h4>📉 Portefølje Drawdown</h4>
-        <ul>
-          <li><strong>Peak:</strong> Højeste samlede porteføljeafkast siden tracking startede</li>
-          <li><strong>Drawdown:</strong> Aktuel minus peak — negativt = under historisk top</li>
-          <li><strong>Advarsel ved -5%:</strong> Signal om at porteføljen er under pres</li>
-          <li><strong>Dage siden peak:</strong> Lang periode indikerer vedvarende svaghed</li>
-        </ul>
-        <h4>⚙️ Datakilder</h4>
-        <ul>
-          <li>Kurser: yfinance — daglig opdatering</li>
-          <li>Historik: opbygges gradvist fra daglige kørsler</li>
-          <li>Benchmark: IWDA.AS (iShares Core MSCI World)</li>
-        </ul>
-        <div class="disclaimer">
-          Vi følger momentum og relativ styrke. Vi køber ETF'er der er stærkere end deres historiske gennemsnit og overvejer at rotere ud af ETF'er der mister momentum. Systemet giver signaler — du tager beslutningerne.
-        </div>
-      </div>
-    </div>
-  </div>
+        total_return = round(((curr_p - buy_p) / buy_p * 100), 2) if buy_p > 0 else 0
 
-</div>
-</body>
-</html>
+        p_dict = history.get(isin, {})
+        sorted_dates = [d for d in sorted(p_dict.keys()) if is_trading_day(d)]
+        prices = [p_dict[d] for d in sorted_dates]
+        if not prices or prices[-1] != curr_p:
+            prices.append(curr_p)
+
+        rsi_val          = get_rsi(prices, 14)
+        ma_val, ma_label = get_best_ma(prices)
+
+        t_label, t_class = get_trend_velocity(
+            official.get('return_1w') or 0,
+            official.get('return_1m') or 0,
+        )
+        m_label, m_class = get_momentum_status(
+            official.get('return_1m') or 0,
+            rank,
+        )
+
+        prev_trend  = hwm_data.get(isin, {}).get('trend_state')
+        t_state     = get_trend_state(prices)
+        trend_shift = get_trend_shift(prices, prev_trend)
+
+        if isin in hwm_data:
+            hwm_data[isin]['trend_state'] = t_state
+        else:
+            hwm_data[isin] = {'trend_state': t_state}
+
+        fund_data = {
+            "isin":           isin,
+            "name":           p_info.get('name', isin),
+            "ticker":         p_info.get('ticker', official.get('ticker', '')),
+            "category":       watchlist.get(isin, {}).get('category', ''),
+            "rank":           rank,
+            "buy_date":       p_info.get('buy_date', 'N/A'),
+            "buy_price":      buy_p,
+            "curr_price":     curr_p,
+            "return_1w":      official.get('return_1w') or 0,
+            "return_1m":      official.get('return_1m') or 0,
+            "return_ytd":     official.get('return_ytd'),
+            "return_1y":      official.get('return_1y'),
+            "trend_label":    t_label,
+            "trend_class":    t_class,
+            "momentum_label": m_label,
+            "momentum_class": m_class,
+            "total_return":   total_return,
+            "rsi":            rsi_val,
+            "ma":             ma_val,
+            "ma_label":       ma_label,
+            "t_state":        t_state,
+            "trend_shift":    trend_shift,
+            "is_active":      is_active,
+        }
+
+        if is_active:
+            active_rows.append(fund_data)
+            active_returns.append(total_return)
+
+            hwm_entry, alert = check_trail_stop(
+                isin, curr_p, buy_p, hwm_data, today_str,
+                get_trail_stop_pct(official.get('volatility'))
+            )
+            hwm_data[isin] = hwm_entry
+            if alert:
+                alert["name"] = p_info.get('name', isin)
+                trail_stop_alerts.append(alert)
+                print(f"🔔 TRAIL STOP: {alert['name']} faldet {alert['fall_pct']}% fra top")
+        else:
+            fund_data["sell_date"]  = p_info.get('sell_date', 'N/A')
+            fund_data["sell_price"] = p_info.get('sell_price', 'N/A')
+            sold_rows.append(fund_data)
+
+    save_hwm(hwm_data)
+
+    # --- BENCHMARK ---
+    benchmark_item   = latest_map.get(BENCHMARK_ISIN, {})
+    benchmark_return = benchmark_item.get('return_1m') or 0
+    benchmark_name   = benchmark_item.get('name', 'iShares Core MSCI World')
+    if not benchmark_item:
+        print("⚠️  MSCI World benchmark (IWDA) ikke fundet i etf_latest.json — benchmark vises som N/A")
+        benchmark_name = "MSCI World (ikke tilgængeligt)"
+
+    avg_port_return = (
+        sum(active_returns) / len(active_returns)
+        if active_returns else 0
+    )
+
+    # --- TOP 5 MARKEDSMULIGHEDER ---
+    all_portfolio_isins = set(portfolio.keys())
+    opps = [
+        item for item in latest
+        if item['isin'] not in all_portfolio_isins
+        and item['isin'] not in benchmark_isins
+        and item.get('return_1m') is not None
+    ]
+    opps_sorted = sorted(opps, key=lambda x: x.get('return_1m') or 0, reverse=True)[:5]
+
+    market_opps = []
+    for o in opps_sorted:
+        t_label_o, _ = get_trend_velocity(
+            o.get('return_1w') or 0,
+            o.get('return_1m') or 0,
+        )
+        market_opps.append({
+            "name":        o.get('name', o['isin']),
+            "ticker":      o.get('ticker', ''),
+            "category":    watchlist.get(o['isin'], {}).get('category', ''),
+            "return_1m":   o.get('return_1m') or 0,
+            "return_ytd":  o.get('return_ytd') or 0,
+            "return_1y":   o.get('return_1y'),
+            "rank":        rank_map.get(o['isin']),
+            "trend_label": t_label_o,
+        })
+
+    sell_signals = [f for f in active_rows if f['momentum_class'] == 'momentum-flat']
+    buy_signals  = [o for o in market_opps if o['return_1m'] > 10.0]
+
+    # --- HANDELSHISTORIK ---
+    trades      = load_trades(str(TRADES_FILE))
+    etf_summary = get_summary(trades, trade_type="ETF")
+    trades_data = format_for_template(etf_summary)
+
+    # --- PORTEFØLJE DRAWDOWN ---
+    portfolio_hwm = load_portfolio_hwm(str(PORTFOLIO_HWM_FILE))
+    dd_raw = update_and_get_drawdown(portfolio_hwm, "etf", today_str, round(avg_port_return, 2))
+    save_portfolio_hwm(portfolio_hwm, str(PORTFOLIO_HWM_FILE))
+    drawdown_data = format_drawdown_for_template(dd_raw)
+
+    if not TEMPLATE_FILE.exists():
+        print(f"❌ Template mangler: {TEMPLATE_FILE}")
+        return
+
+    template = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
+    html = template.render(
+        timestamp            = timestamp,
+        week_number          = week_number,
+        active_funds         = sorted(active_rows, key=lambda x: x['rank']),
+        sold_funds           = sold_rows,
+        market_opps          = market_opps,
+        sell_signals         = sell_signals,
+        buy_signals          = buy_signals,
+        trail_stop_alerts    = trail_stop_alerts,
+        benchmark_name       = benchmark_name,
+        benchmark_return     = round(benchmark_return, 2),
+        avg_portfolio_return = round(avg_port_return, 2),
+        diff_to_benchmark    = round(avg_port_return - benchmark_return, 2),
+        total_count          = total_count,
+        trail_stop_pct       = TRAIL_STOP_PCT,
+        trades_data          = trades_data,
+        drawdown_data        = drawdown_data,
+    )
+
+    REPORT_FILE.parent.mkdir(exist_ok=True)
+    REPORT_FILE.write_text(html, encoding="utf-8")
+    print(f"✅ ETF Månedlig rapport færdig (Uge {week_number})")
+    if trail_stop_alerts:
+        print(f"   ⚠️  {len(trail_stop_alerts)} trail stop-advarsel(er)")
+
+
+if __name__ == "__main__":
+    build_monthly()
