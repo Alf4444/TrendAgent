@@ -1,0 +1,53 @@
+name: PFA Monthly Report
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    # Kører hver lørdag kl. 07:00 (06:00 UTC)
+    - cron: "0 6 * * 6"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install requirements
+        run: |
+          python -m pip install --upgrade pip
+          pip install jinja2 requests
+
+      - name: Build Monthly Report
+        run: |
+          python reporting/pfa_build_monthly_report.py
+
+      - name: Send Trail Stop Alert (3.0%)
+        env:
+          MAIL_USERNAME:    ${{ secrets.MAIL_USERNAME }}
+          MAIL_PASSWORD:    ${{ secrets.MAIL_PASSWORD }}
+          MAIL_RECIPIENTS:  ${{ secrets.MAIL_RECIPIENTS }}
+        run: |
+          python reporting/pfa_send_alert.py \
+            --trail-pct 3.0 \
+            --report-type "Monthly Deep Dive"
+
+      - name: Commit and Push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add build/pfa_monthly.html data/pfa_hwm.json
+          git commit -m "PFA Monthly Deep Dive + HWM opdateret [skip ci]" || echo "Ingen ændringer"
+          # Stash utrackede filer så rebase kan køre
+          git stash --include-untracked || true
+          git pull --rebase origin main
+          git stash pop || true
+          git push
