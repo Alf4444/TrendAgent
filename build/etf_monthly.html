@@ -88,7 +88,19 @@
     .type-etf { background: #e6f4ea; color: #1e8e3e; }
 
     /* METODIK */
-    .metodik { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 16px; }
+    .drawdown-box { background: white; border-radius: 10px; padding: 16px;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 16px;
+                    border-left: 4px solid #4ecdc4; }
+    .drawdown-box.advarsel { border-left-color: #d93025; background: #fffaf9; }
+    .drawdown-box h3-dd { display: block; font-size: 14px; font-weight: 700;
+                          color: #1a1a2e; margin-bottom: 12px; }
+    .drawdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
+    .dd-stat { background: #f8fbff; border-radius: 8px; padding: 8px 10px; }
+    .dd-label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 2px; }
+    .dd-value { font-size: 18px; font-weight: 800; color: #1a1a2e; }
+    .dd-value.pos { color: #1e8e3e; }
+    .dd-value.neg { color: #d93025; }
+    .dd-value.neutral { color: #1a73e8; }
     .metodik h3 { font-size: 14px; font-weight: 700; margin-bottom: 12px; color: #1a1a2e; border-bottom: 2px solid #4ecdc4; padding-bottom: 6px; }
     .metodik-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     .metodik-col h4 { font-size: 12px; font-weight: 700; color: #4ecdc4; margin: 10px 0 6px; }
@@ -103,30 +115,63 @@
 <div class="header">
   <div>
     <h1>📡 ETF <span>Monthly Deep Dive</span></h1>
-    <div class="header-meta">Uge 19 | Opdateret: 08-05-2026 06:41 | Benchmark: iShares Core MSCI World UCITS ETF</div>
+    <div class="header-meta">Uge 19 | Opdateret: 08-05-2026 07:43 | Benchmark: iShares Core MSCI World UCITS ETF</div>
   </div>
   <div class="badge-afkast">
     <div class="lbl">PORTEFØLJE SNIT</div>
     <div class="val" style="color: #1a1a2e">
-      +8.79%
+      +8.45%
     </div>
   </div>
 </div>
 
 <div class="container">
 
+  <!-- PORTEFØLJE DRAWDOWN -->
+  
+  <div class="drawdown-box ">
+    <span class="h3-dd">📉 Portefølje Drawdown</span>
+    <div class="drawdown-grid">
+      <div class="dd-stat">
+        <div class="dd-label">Aktuel portefølje</div>
+        <div class="dd-value pos">
+          +8.45%
+        </div>
+      </div>
+      <div class="dd-stat">
+        <div class="dd-label">Peak afkast</div>
+        <div class="dd-value pos">+8.79%</div>
+        <div style="font-size:10px; color:#888; margin-top:2px;">2026-05-08</div>
+      </div>
+      <div class="dd-stat">
+        <div class="dd-label">Drawdown fra peak</div>
+        <div class="dd-value neg">
+          -0.34%
+        </div>
+      </div>
+      <div class="dd-stat">
+        <div class="dd-label">Dage siden peak</div>
+        <div class="dd-value neutral">0</div>
+      </div>
+    </div>
+    <div style="font-size:11px; color:#888;">
+      Normal korrektion under 5% fra peak — ingen handling nødvendig.
+    </div>
+  </div>
+  
+
   <!-- ALPHA SCORE GRID -->
   <div class="score-grid">
     <div class="score-box">
       <small>Portefølje snit (total afkast fra køb)</small>
       <strong class="pos">
-        +8.79%
+        +8.45%
       </strong>
     </div>
-    <div class="score-box" style="border-top-color: #d93025;">
-      <small>Alpha vs. iShares Core MSCI World UCITS ETF (+9.21%)</small>
-      <strong class="neg">
-        -0.42%
+    <div class="score-box" style="border-top-color: #1e8e3e;">
+      <small>Alpha vs. iShares Core MSCI World UCITS ETF (+6.10%)</small>
+      <strong class="pos">
+        +2.35%
       </strong>
     </div>
   </div>
@@ -144,27 +189,27 @@
     
     <div class="alert-row">
       <span><strong>Global X Hydrogen UCITS ETF</strong> (HYCN.DE) <span class="cat-tag">Tema — Hydrogen & Clean Energy</span></span>
-      <span>Rank <span class="tag-green">#1</span> &nbsp; 1M: <span class="pos">+76.0%</span></span>
-    </div>
-    
-    <div class="alert-row">
-      <span><strong>Xtrackers MSCI Korea UCITS ETF 1C</strong> (DBX8.DE) <span class="cat-tag">Lande — Korea</span></span>
-      <span>Rank <span class="tag-green">#2</span> &nbsp; 1M: <span class="pos">+45.2%</span></span>
+      <span>Rank <span class="tag-green">#1</span> &nbsp; 1M: <span class="pos">+69.8%</span></span>
     </div>
     
     <div class="alert-row">
       <span><strong>iShares MSCI Global Semiconductors UCITS ETF USD Acc</strong> (SEC0.DE) <span class="cat-tag">Sektor — Halvledere</span></span>
-      <span>Rank <span class="tag-green">#4</span> &nbsp; 1M: <span class="pos">+44.4%</span></span>
+      <span>Rank <span class="tag-green">#2</span> &nbsp; 1M: <span class="pos">+34.6%</span></span>
     </div>
     
     <div class="alert-row">
       <span><strong>iShares MSCI Korea UCITS ETF (Dist)</strong> (IQQK.DE) <span class="cat-tag">Lande — Korea</span></span>
-      <span>Rank <span class="tag-green">#5</span> &nbsp; 1M: <span class="pos">+44.2%</span></span>
+      <span>Rank <span class="tag-green">#5</span> &nbsp; 1M: <span class="pos">+30.2%</span></span>
+    </div>
+    
+    <div class="alert-row">
+      <span><strong>Xtrackers MSCI Korea UCITS ETF 1C</strong> (DBX8.DE) <span class="cat-tag">Lande — Korea</span></span>
+      <span>Rank <span class="tag-green">#6</span> &nbsp; 1M: <span class="pos">+30.0%</span></span>
     </div>
     
     <div class="alert-row">
       <span><strong>Amundi MSCI Korea UCITS ETF Acc</strong> (LKOR.DE) <span class="cat-tag">Lande — Korea</span></span>
-      <span>Rank <span class="tag-green">#6</span> &nbsp; 1M: <span class="pos">+44.2%</span></span>
+      <span>Rank <span class="tag-green">#7</span> &nbsp; 1M: <span class="pos">+29.8%</span></span>
     </div>
     
   </div>
@@ -191,6 +236,30 @@
         <tr class="active-row">
           <td><span class="rank-badge">#3</span></td>
           <td>
+            <strong>VanEck Semiconductor UCITS ETF</strong>
+            <br><span style="font-size:10px; color:#888;">VVSM.DE</span>
+            <span class="cat-tag" style="margin-left:4px;">Sektor — Halvledere</span>
+            
+          </td>
+          <td><span class="trend-up">🚀 Accelererer</span></td>
+          <td><span class="m-tag momentum-fast">🚀 Top Performer</span></td>
+          <td>
+            <span class="trend-bull">
+              BULL
+            </span>
+          </td>
+          <td class="pos">+32.5%</td>
+          <td class="pos">
+            +57.9%
+          </td>
+          <td style="text-align:right;" class="pos">
+            +7.66%
+          </td>
+        </tr>
+        
+        <tr class="active-row">
+          <td><span class="rank-badge">#4</span></td>
+          <td>
             <strong>Franklin FTSE Korea UCITS ETF</strong>
             <br><span style="font-size:10px; color:#888;">FLXK.DE</span>
             <span class="cat-tag" style="margin-left:4px;">Lande — Korea</span>
@@ -203,36 +272,12 @@
               BULL
             </span>
           </td>
-          <td class="pos">+44.6%</td>
+          <td class="pos">+30.7%</td>
           <td class="pos">
-            +88.4%
+            +87.1%
           </td>
           <td style="text-align:right;" class="pos">
-            +9.95%
-          </td>
-        </tr>
-        
-        <tr class="active-row">
-          <td><span class="rank-badge">#7</span></td>
-          <td>
-            <strong>VanEck Semiconductor UCITS ETF</strong>
-            <br><span style="font-size:10px; color:#888;">VVSM.DE</span>
-            <span class="cat-tag" style="margin-left:4px;">Sektor — Halvledere</span>
-            
-          </td>
-          <td><span class="trend-down">📉 Bremser</span></td>
-          <td><span class="m-tag momentum-stable">✅ Stabil</span></td>
-          <td>
-            <span class="trend-bull">
-              BULL
-            </span>
-          </td>
-          <td class="pos">+41.0%</td>
-          <td class="pos">
-            +57.9%
-          </td>
-          <td style="text-align:right;" class="pos">
-            +7.64%
+            +9.23%
           </td>
         </tr>
         
@@ -265,46 +310,29 @@
           </td>
           <td><span class="cat-tag">Tema — Hydrogen & Clean Energy</span></td>
           <td><span class="bremser">📉 Bremser</span></td>
-          <td class="pos">+76.0%</td>
+          <td class="pos">+69.8%</td>
           <td class="pos">
-            +109.9%
+            +111.2%
           </td>
           <td class="pos">
-            +304.0%
+            +292.9%
           </td>
         </tr>
         
         <tr>
           <td><span class="rank-badge">#2</span></td>
           <td>
-            <strong>Xtrackers MSCI Korea UCITS ETF 1C</strong>
-            <br><span style="font-size:10px; color:#888;">DBX8.DE</span>
-          </td>
-          <td><span class="cat-tag">Lande — Korea</span></td>
-          <td><span class="accelererer">🚀 Accelererer</span></td>
-          <td class="pos">+45.2%</td>
-          <td class="pos">
-            +88.3%
-          </td>
-          <td class="pos">
-            +221.2%
-          </td>
-        </tr>
-        
-        <tr>
-          <td><span class="rank-badge">#4</span></td>
-          <td>
             <strong>iShares MSCI Global Semiconductors UCITS ETF USD Acc</strong>
             <br><span style="font-size:10px; color:#888;">SEC0.DE</span>
           </td>
           <td><span class="cat-tag">Sektor — Halvledere</span></td>
-          <td><span class="bremser">📉 Bremser</span></td>
-          <td class="pos">+44.4%</td>
+          <td><span class="accelererer">🚀 Accelererer</span></td>
+          <td class="pos">+34.6%</td>
           <td class="pos">
             +66.7%
           </td>
           <td class="pos">
-            +178.3%
+            +168.2%
           </td>
         </tr>
         
@@ -316,29 +344,46 @@
           </td>
           <td><span class="cat-tag">Lande — Korea</span></td>
           <td><span class="accelererer">🚀 Accelererer</span></td>
-          <td class="pos">+44.2%</td>
+          <td class="pos">+30.2%</td>
           <td class="pos">
-            +86.8%
+            +85.5%
           </td>
           <td class="pos">
-            +220.3%
+            +218.1%
           </td>
         </tr>
         
         <tr>
           <td><span class="rank-badge">#6</span></td>
           <td>
+            <strong>Xtrackers MSCI Korea UCITS ETF 1C</strong>
+            <br><span style="font-size:10px; color:#888;">DBX8.DE</span>
+          </td>
+          <td><span class="cat-tag">Lande — Korea</span></td>
+          <td><span class="accelererer">🚀 Accelererer</span></td>
+          <td class="pos">+30.0%</td>
+          <td class="pos">
+            +86.5%
+          </td>
+          <td class="pos">
+            +217.9%
+          </td>
+        </tr>
+        
+        <tr>
+          <td><span class="rank-badge">#7</span></td>
+          <td>
             <strong>Amundi MSCI Korea UCITS ETF Acc</strong>
             <br><span style="font-size:10px; color:#888;">LKOR.DE</span>
           </td>
           <td><span class="cat-tag">Lande — Korea</span></td>
           <td><span class="accelererer">🚀 Accelererer</span></td>
-          <td class="pos">+44.2%</td>
+          <td class="pos">+29.8%</td>
           <td class="pos">
-            +87.6%
+            +85.8%
           </td>
           <td class="pos">
-            +222.4%
+            +218.8%
           </td>
         </tr>
         
@@ -386,13 +431,20 @@
           <li>Variabelt stop: &lt;1% vol → 3% · 1-2% vol → 5% · &gt;2% vol → 7%</li>
         </ul>
         <h4>📊 Alpha</h4>
-        <p>Dit porteføljes snit-afkast minus benchmark (iShares Core MSCI World UCITS ETF, +9.21%). Positivt = du slår markedet.</p>
+        <p>Dit porteføljes snit-afkast minus benchmark (iShares Core MSCI World UCITS ETF, +6.10%). Positivt = du slår markedet.</p>
         <h4>📒 Handelshistorik</h4>
         <ul>
           <li><strong>Win-rate:</strong> Andel profitable handler af alle lukkede. 50% = halvdelen endte i plus.</li>
           <li><strong>Snit holdperiode:</strong> Gennemsnitligt antal dage fra køb til salg.</li>
           <li><strong>Afkast/måned:</strong> (afkast % / dage) × 30 — gør korte og lange handler sammenlignelige.</li>
           <li><strong>Segment-analyse:</strong> Win-rate og snit opdelt på ETF vs PFA.</li>
+        </ul>
+        <h4>📉 Portefølje Drawdown</h4>
+        <ul>
+          <li><strong>Peak:</strong> Højeste samlede porteføljeafkast siden tracking startede</li>
+          <li><strong>Drawdown:</strong> Aktuel minus peak — negativt = under historisk top</li>
+          <li><strong>Advarsel ved -5%:</strong> Signal om at porteføljen er under pres</li>
+          <li><strong>Dage siden peak:</strong> Lang periode indikerer vedvarende svaghed</li>
         </ul>
         <h4>⚙️ Datakilder</h4>
         <ul>
