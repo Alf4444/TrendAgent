@@ -80,7 +80,15 @@
     .metodik-col h4 { font-size: 12px; font-weight: 700; color: #4ecdc4; margin: 10px 0 6px; }
     .metodik-col p, .metodik-col li { font-size: 11px; color: #555; line-height: 1.6; }
     .metodik-col ul { padding-left: 16px; }
-    .disclaimer { background: #f0f7ff; border-left: 3px solid #4ecdc4; padding: 10px 14px; border-radius: 4px; font-size: 11px; color: #555; margin-top: 12px; font-style: italic; }
+    .heatmap-etf-w { background: white; border-radius: 10px; padding: 14px 16px;
+                     box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 16px;
+                     border-left: 4px solid #4ecdc4; }
+    .hm-grid-etf { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+    .hm-cat-etf { background: #f8fbff; border-radius: 8px; padding: 10px 12px;
+                  border-left: 3px solid #4ecdc4; min-width: 150px; flex: 1; }
+    .hm-cat-etf .cat-t { font-size: 11px; font-weight: 700; margin-bottom: 3px; }
+    .hm-cat-etf .cat-a { font-size: 19px; font-weight: 800; margin-bottom: 5px; }
+    .hm-cat-etf .cat-f { font-size: 11px; color: #666; display: flex; justify-content: space-between; padding: 2px 0; }
   </style>
 </head>
 <body>
@@ -392,6 +400,32 @@
       </tbody>
     </table>
   </div>
+
+  <!-- SEKTOR HEATMAP -->
+  {% if heatmap_data %}
+  <div class="heatmap-etf-w">
+    <div style="font-size:13px; font-weight:700; color:#1a1a2e; margin-bottom:8px;">🗺️ Sektor-eksponering — ETF</div>
+    {% if heatmap_warning %}
+    <div style="background:#fffdf0; border:1px solid #f59c00; border-radius:6px; padding:5px 9px; font-size:11px; color:#856404; margin-bottom:8px;">
+      ⚠️ Koncentration: <strong>{{ heatmap_warning.kategori }}</strong> = {{ heatmap_warning.andel_pct }}%
+    </div>
+    {% endif %}
+    <div class="hm-grid-etf">
+      {% for kat in heatmap_data %}
+      <div class="hm-cat-etf" style="border-left-color: {{ kat.farve }};">
+        <div class="cat-t" style="color: {{ kat.farve }};">{{ kat.kategori }}</div>
+        <div class="cat-a" style="color: {{ kat.farve }};">{{ kat.andel_pct }}%</div>
+        {% for fond in kat.fonde %}
+        <div class="cat-f">
+          <span>{{ fond.ticker or fond.navn | truncate(18, true, '…') }}</span>
+          <span class="{{ 'pos' if fond.positiv else 'neg' }}" style="font-weight:700;">{{ fond.total_return }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
 
   <!-- METODIK -->
   <div class="metodik">
