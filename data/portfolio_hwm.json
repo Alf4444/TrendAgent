@@ -3,16 +3,36 @@
     "peak_afkast": 8.21,
     "peak_dato": "2026-05-07",
     "historik": [
-      {"dato": "2026-02-23", "afkast": 0.0, "note": "Lazard købt — portefølje start"},
-      {"dato": "2026-03-02", "afkast": 1.5, "note": "C WorldWide + Sydinvest købt (estimeret)"},
-      {"dato": "2026-05-07", "afkast": 8.21, "note": "Bootstrap fra pfa_hwm.json"}
+      {
+        "dato": "2026-02-23",
+        "afkast": 0.0,
+        "note": "Lazard købt — portefølje start"
+      },
+      {
+        "dato": "2026-03-02",
+        "afkast": 1.5,
+        "note": "C WorldWide + Sydinvest købt (estimeret)"
+      },
+      {
+        "dato": "2026-05-07",
+        "afkast": 8.21,
+        "note": "Bootstrap fra pfa_hwm.json"
+      }
     ]
   },
   "etf": {
-    "peak_afkast": 0.0,
-    "peak_dato": "2026-05-05",
+    "peak_afkast": 8.79,
+    "peak_dato": "2026-05-08",
     "historik": [
-      {"dato": "2026-05-05", "afkast": 0.0, "note": "VVSM + FLXK købt — ETF portefølje start"}
+      {
+        "dato": "2026-05-05",
+        "afkast": 0.0,
+        "note": "VVSM + FLXK købt — ETF portefølje start"
+      },
+      {
+        "dato": "2026-05-08",
+        "afkast": 8.79
+      }
     ]
   }
 }
