@@ -25,6 +25,7 @@ from utils import (
     get_cross_signal, get_trend_state,
     check_trail_stop, is_trading_day,
 )
+from sector_heatmap import build_heatmap, get_concentration_warning
 
 ROOT           = Path(__file__).resolve().parents[1]
 DATA_FILE      = ROOT / "data/pfa_latest.json"
@@ -205,6 +206,11 @@ def build_weekly():
 
     sorted_rows = sorted(rows, key=lambda x: (not x['is_active'], -x['momentum']))
 
+    # --- SEKTOR HEATMAP ---
+    active_fund_data = [r for r in rows if r['is_active']]
+    heatmap_data     = build_heatmap(portfolio, active_fund_data)
+    heatmap_warning  = get_concentration_warning(heatmap_data)
+
     if not TEMPLATE_FILE.exists():
         print(f"Template mangler: {TEMPLATE_FILE}")
         return
@@ -223,6 +229,8 @@ def build_weekly():
         rows                 = sorted_rows,
         chart_labels         = [r['name'][:20] for r in chart_data],
         chart_values         = [r['momentum'] for r in chart_data],
+        heatmap_data         = heatmap_data,
+        heatmap_warning      = heatmap_warning,
     )
 
     REPORT_FILE.parent.mkdir(parents=True, exist_ok=True)
