@@ -17,6 +17,10 @@
         "dato": "2026-05-07",
         "afkast": 8.21,
         "note": "Bootstrap fra pfa_hwm.json"
+      },
+      {
+        "dato": "2026-05-08",
+        "afkast": 8.21
       }
     ]
   },
