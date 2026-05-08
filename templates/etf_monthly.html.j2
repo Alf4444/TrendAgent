@@ -88,7 +88,19 @@
     .type-etf { background: #e6f4ea; color: #1e8e3e; }
 
     /* METODIK */
-    .metodik { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 16px; }
+    .drawdown-box { background: white; border-radius: 10px; padding: 16px;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 16px;
+                    border-left: 4px solid #4ecdc4; }
+    .drawdown-box.advarsel { border-left-color: #d93025; background: #fffaf9; }
+    .drawdown-box h3-dd { display: block; font-size: 14px; font-weight: 700;
+                          color: #1a1a2e; margin-bottom: 12px; }
+    .drawdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
+    .dd-stat { background: #f8fbff; border-radius: 8px; padding: 8px 10px; }
+    .dd-label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 2px; }
+    .dd-value { font-size: 18px; font-weight: 800; color: #1a1a2e; }
+    .dd-value.pos { color: #1e8e3e; }
+    .dd-value.neg { color: #d93025; }
+    .dd-value.neutral { color: #1a73e8; }
     .metodik h3 { font-size: 14px; font-weight: 700; margin-bottom: 12px; color: #1a1a2e; border-bottom: 2px solid #4ecdc4; padding-bottom: 6px; }
     .metodik-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     .metodik-col h4 { font-size: 12px; font-weight: 700; color: #4ecdc4; margin: 10px 0 6px; }
@@ -114,6 +126,41 @@
 </div>
 
 <div class="container">
+
+  <!-- PORTEFØLJE DRAWDOWN -->
+  {% if drawdown_data %}
+  <div class="drawdown-box {{ 'advarsel' if drawdown_data.advarsel else '' }}">
+    <span class="h3-dd">📉 Portefølje Drawdown{% if drawdown_data.advarsel %} — ⚠️ Over 5% fra peak{% endif %}</span>
+    <div class="drawdown-grid">
+      <div class="dd-stat">
+        <div class="dd-label">Aktuel portefølje</div>
+        <div class="dd-value {{ 'pos' if drawdown_data.aktuel.startswith('+') else 'neg' if drawdown_data.aktuel.startswith('-') else 'neutral' }}">
+          {{ drawdown_data.aktuel }}
+        </div>
+      </div>
+      <div class="dd-stat">
+        <div class="dd-label">Peak afkast</div>
+        <div class="dd-value pos">{{ drawdown_data.peak }}</div>
+        <div style="font-size:10px; color:#888; margin-top:2px;">{{ drawdown_data.peak_dato }}</div>
+      </div>
+      <div class="dd-stat">
+        <div class="dd-label">Drawdown fra peak</div>
+        <div class="dd-value {{ 'pos' if drawdown_data.er_ved_peak else 'neg' }}">
+          {{ '— ved peak' if drawdown_data.er_ved_peak else drawdown_data.drawdown }}
+        </div>
+      </div>
+      <div class="dd-stat">
+        <div class="dd-label">Dage siden peak</div>
+        <div class="dd-value neutral">{{ drawdown_data.dage_siden_peak }}</div>
+      </div>
+    </div>
+    <div style="font-size:11px; color:#888;">
+      {% if drawdown_data.er_ved_peak %}✅ Porteføljen er ved sit historiske toppunkt.
+      {% elif drawdown_data.advarsel %}⚠️ Over 5% fra peak — overvej om eksponeringen er for høj.
+      {% else %}Normal korrektion under 5% fra peak — ingen handling nødvendig.{% endif %}
+    </div>
+  </div>
+  {% endif %}
 
   <!-- ALPHA SCORE GRID -->
   <div class="score-grid">
@@ -429,6 +476,13 @@
           <li><strong>Snit holdperiode:</strong> Gennemsnitligt antal dage fra køb til salg.</li>
           <li><strong>Afkast/måned:</strong> (afkast % / dage) × 30 — gør korte og lange handler sammenlignelige.</li>
           <li><strong>Segment-analyse:</strong> Win-rate og snit opdelt på ETF vs PFA.</li>
+        </ul>
+        <h4>📉 Portefølje Drawdown</h4>
+        <ul>
+          <li><strong>Peak:</strong> Højeste samlede porteføljeafkast siden tracking startede</li>
+          <li><strong>Drawdown:</strong> Aktuel minus peak — negativt = under historisk top</li>
+          <li><strong>Advarsel ved -5%:</strong> Signal om at porteføljen er under pres</li>
+          <li><strong>Dage siden peak:</strong> Lang periode indikerer vedvarende svaghed</li>
         </ul>
         <h4>⚙️ Datakilder</h4>
         <ul>
