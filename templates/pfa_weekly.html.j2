@@ -33,7 +33,18 @@
     .trail-icon { color: #d93025; font-weight: bold; margin-right: 8px; }
 
     /* Footer */
-    .footer { margin-top: 40px; padding: 30px; background: #f8f9fa; border-radius: 12px; border-top: 2px solid #eee; }
+    .heatmap-weekly { background: white; border-radius: 10px; padding: 16px 20px;
+                      box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px;
+                      border-left: 4px solid #4ecdc4; }
+    .heatmap-weekly h3 { margin: 0 0 12px 0; font-size: 16px; color: #2c3e50; }
+    .hm-warn-w { background: #fef3cd; border-radius: 6px; padding: 6px 10px;
+                 font-size: 12px; color: #856404; margin-bottom: 10px; }
+    .hm-grid-w { display: flex; gap: 10px; flex-wrap: wrap; }
+    .hm-cat-w { background: #f8f9fa; border-radius: 8px; padding: 10px 14px;
+                border-left: 3px solid #4ecdc4; min-width: 160px; flex: 1; }
+    .hm-cat-w .cat-titel { font-size: 11px; font-weight: 700; margin-bottom: 3px; }
+    .hm-cat-w .cat-andel { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .hm-cat-w .cat-fond { font-size: 11px; color: #666; padding: 2px 0; }
     .footer h2 { margin-top: 0; color: #2c3e50; border-bottom: 1px solid #ddd; padding-bottom: 10px; font-size: 22px; }
     .footer h3 { color: #333; font-size: 16px; margin-top: 25px; margin-bottom: 8px;
                  border-left: 4px solid #22c55e; padding-left: 10px; }
@@ -214,6 +225,27 @@
         {% endfor %}
       </tbody>
     </table>
+
+    <!-- SEKTOR HEATMAP -->
+    {% if heatmap_data %}
+    <div class="heatmap-weekly">
+      <h3>🗺️ Sektor-eksponering — PFA</h3>
+      {% if heatmap_warning %}
+      <div class="hm-warn-w">⚠️ Koncentration: <strong>{{ heatmap_warning.kategori }}</strong> = {{ heatmap_warning.andel_pct }}% — overvej diversificering.</div>
+      {% endif %}
+      <div class="hm-grid-w">
+        {% for kat in heatmap_data %}
+        <div class="hm-cat-w" style="border-left-color: {{ kat.farve }};">
+          <div class="cat-titel" style="color: {{ kat.farve }};">{{ kat.kategori }}</div>
+          <div class="cat-andel" style="color: {{ kat.farve }};">{{ kat.andel_pct }}%</div>
+          {% for fond in kat.fonde %}
+          <div class="cat-fond">{{ fond.navn | truncate(28, true, '…') }} <span class="{{ 'pos' if fond.positiv else 'neg' }}" style="font-weight:600;">{{ fond.total_return }}</span></div>
+          {% endfor %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
 
     <!-- METODIK & DEFINITIONER -->
     <div class="footer">
