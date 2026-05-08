@@ -99,6 +99,22 @@
         .drawdown-bar-wrap { background: #f0f0f0; border-radius: 6px; height: 8px; margin-top: 8px; overflow: hidden; }
         .drawdown-bar { height: 8px; border-radius: 6px; background: #28a745; transition: width 0.3s; }
         .drawdown-bar.neg { background: #d93025; }
+        /* HEATMAP */
+        .heatmap-section { background: white; border-radius: 12px; border-left: 5px solid #4ecdc4;
+                           box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 30px; padding: 20px; }
+        .heatmap-section > h3 { margin: 0 0 16px 0; color: #2c3e50; font-size: 18px; }
+        .heatmap-warn { background: #fef3cd; border-left: 3px solid #f59c00; border-radius: 8px;
+                        padding: 8px 12px; font-size: 12px; color: #856404; margin-bottom: 14px; }
+        .heatmap-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+        .heatmap-card { border-radius: 8px; padding: 12px 14px; border-left: 4px solid #ccc; background: #f8f9fa; }
+        .heatmap-card-title { font-size: 12px; font-weight: 700; margin-bottom: 6px; }
+        .heatmap-andel { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+        .heatmap-fond { font-size: 12px; color: #555; display: flex; justify-content: space-between;
+                        padding: 4px 0; border-bottom: 1px solid rgba(0,0,0,0.06); }
+        .heatmap-fond:last-child { border-bottom: none; }
+        .heatmap-fond .fond-navn { flex: 1; }
+        .heatmap-fond .fond-ret { font-weight: 700; margin-left: 8px; }
+
         .trades-section { background: white; border-radius: 12px; border-left: 5px solid #2c3e50;
                           box-shadow: 0 4px 12px rgba(0,0,0,0.05);
                           margin-bottom: 30px; padding: 20px; }
@@ -139,7 +155,7 @@
     <header class="header">
         <div>
             <h1 style="margin:0; font-size: 28px;">📊 PFA Monthly Deep Dive</h1>
-            <p style="color: #666; margin: 5px 0;">Strategisk status opdateret 08-05-2026 07:45 (Uge 19)</p>
+            <p style="color: #666; margin: 5px 0;">Strategisk status opdateret 08-05-2026 09:09 (Uge 19)</p>
         </div>
         <div style="text-align: right;">
             <span style="background: #2c3e50; color: white; padding: 5px 12px; border-radius: 20px;
@@ -388,6 +404,60 @@
         </table>
     </div>
 
+    <!-- SEKTOR HEATMAP -->
+    
+    <div class="heatmap-section">
+        <h3>🗺️ Sektor-eksponering — PFA</h3>
+        
+        <div class="heatmap-warn">
+            ⚠️ Koncentration: <strong>Region — Emerging Markets</strong> udgør 50%
+            af porteføljen (2 fonde) — overvej diversificering.
+        </div>
+        
+        <div class="heatmap-grid">
+            
+            <div class="heatmap-card" style="border-left-color: #1a73e8;">
+                <div class="heatmap-card-title" style="color: #1a73e8;">Region — Emerging Markets</div>
+                <div class="heatmap-andel" style="color: #1a73e8;">50%</div>
+                
+                <div class="heatmap-fond">
+                    <span class="fond-navn">Lazard Emerging Markets Equity Fund</span>
+                    <span class="fond-ret pos">+6.7%</span>
+                </div>
+                
+                <div class="heatmap-fond">
+                    <span class="fond-navn">Sydinvest Globale EM-aktier</span>
+                    <span class="fond-ret pos">+9.8%</span>
+                </div>
+                
+            </div>
+            
+            <div class="heatmap-card" style="border-left-color: #1a73e8;">
+                <div class="heatmap-card-title" style="color: #1a73e8;">Region — Asien</div>
+                <div class="heatmap-andel" style="color: #1a73e8;">25%</div>
+                
+                <div class="heatmap-fond">
+                    <span class="fond-navn">C WorldWide Asien</span>
+                    <span class="fond-ret pos">+14.3%</span>
+                </div>
+                
+            </div>
+            
+            <div class="heatmap-card" style="border-left-color: #f59c00;">
+                <div class="heatmap-card-title" style="color: #f59c00;">Tema — Cirkulær Økonomi</div>
+                <div class="heatmap-andel" style="color: #f59c00;">25%</div>
+                
+                <div class="heatmap-fond">
+                    <span class="fond-navn">Robeco Circular Economy Equities</span>
+                    <span class="fond-ret pos">+2.0%</span>
+                </div>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+
     <!-- HANDELSHISTORIK -->
     
     <div class="trades-section">
@@ -570,6 +640,13 @@
                     <tr><td>Drawdown fra peak</td><td>Aktuel portefølje minus peak: (aktuel − peak). Negativt tal = du er under dit historiske toppunkt.</td></tr>
                     <tr><td>Advarsel</td><td>Vises når drawdown overstiger 5% — signal om at porteføljen er under pres og eksponering bør overvejes.</td></tr>
                     <tr><td>Dage siden peak</td><td>Antal dage siden porteføljen sidst var på sit toppunkt. Lang periode kan indikere vedvarende svaghed.</td></tr>
+                </table>
+                <h4>🗺️ Sektor-eksponering</h4>
+                <table class="def-table">
+                    <tr><td>Kategori</td><td>Hver fond er klassificeret i én kategori (Region, Sektor, Tema, Råvarer). Kategorien er sat manuelt i pfa_portfolio.json.</td></tr>
+                    <tr><td>Andel %</td><td>Antal fonde i kategorien divideret med totalt antal aktive positioner × 100. Baseret på antal fonde, ikke kronværdi.</td></tr>
+                    <tr><td>Koncentration</td><td>Advarsel vises når én kategori udgør 50% eller mere — indikerer manglende diversificering.</td></tr>
+                    <tr><td>Afkast pr. fond</td><td>Total afkast fra køb for hver fond i kategorien — giver overblik over hvilke kategorier der leverer.</td></tr>
                 </table>
             </div>
             <div class="method-section">
