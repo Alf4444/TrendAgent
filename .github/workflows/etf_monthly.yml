@@ -37,7 +37,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add data/etf_latest.json data/etf_history.json data/etf_hwm.json build/etf_monthly.html
+          git add data/etf_latest.json data/etf_history.json data/etf_hwm.json build/etf_monthly.html data/portfolio_hwm.json
           git commit -m "ETF Monthly rapport opdateret [skip ci]" || echo "Ingen ændringer at committe"
           git pull --rebase origin main
           git push
