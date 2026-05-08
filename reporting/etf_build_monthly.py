@@ -28,6 +28,7 @@ from utils import (
 )
 from trades_summary import load_trades, get_summary, format_for_template
 from portfolio_hwm import load_portfolio_hwm, save_portfolio_hwm, update_and_get_drawdown, format_drawdown_for_template
+from sector_heatmap import build_heatmap, get_concentration_warning
 
 # ==========================================
 # KONFIGURATION & STIER
@@ -265,6 +266,10 @@ def build_monthly():
     save_portfolio_hwm(portfolio_hwm, str(PORTFOLIO_HWM_FILE))
     drawdown_data = format_drawdown_for_template(dd_raw)
 
+    # --- SEKTOR HEATMAP ---
+    heatmap_data    = build_heatmap(portfolio, active_rows, watchlist=watchlist)
+    heatmap_warning = get_concentration_warning(heatmap_data)
+
     if not TEMPLATE_FILE.exists():
         print(f"❌ Template mangler: {TEMPLATE_FILE}")
         return
@@ -287,6 +292,8 @@ def build_monthly():
         trail_stop_pct       = TRAIL_STOP_PCT,
         trades_data          = trades_data,
         drawdown_data        = drawdown_data,
+        heatmap_data         = heatmap_data,
+        heatmap_warning      = heatmap_warning,
     )
 
     REPORT_FILE.parent.mkdir(exist_ok=True)
