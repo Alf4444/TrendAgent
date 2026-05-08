@@ -83,7 +83,22 @@
         .def-table td:first-child { font-weight: bold; color: #2c3e50; white-space: nowrap;
                                     width: 170px; padding-right: 12px; }
 
-        /* Handelshistorik */
+        /* DRAWDOWN */
+        .drawdown-box { background: white; border-radius: 12px; padding: 18px 20px;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 30px;
+                        border-left: 5px solid #4ecdc4; }
+        .drawdown-box.advarsel { border-left-color: #d93025; background: #fffaf9; }
+        .drawdown-box h3 { margin: 0 0 14px 0; font-size: 16px; color: #2c3e50; }
+        .drawdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 12px; }
+        .dd-stat { background: #f8f9fa; border-radius: 8px; padding: 10px 12px; }
+        .dd-label { font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 3px; }
+        .dd-value { font-size: 20px; font-weight: 700; color: #333; }
+        .dd-value.pos { color: #28a745; }
+        .dd-value.neg { color: #d93025; }
+        .dd-value.neutral { color: #1a73e8; }
+        .drawdown-bar-wrap { background: #f0f0f0; border-radius: 6px; height: 8px; margin-top: 8px; overflow: hidden; }
+        .drawdown-bar { height: 8px; border-radius: 6px; background: #28a745; transition: width 0.3s; }
+        .drawdown-bar.neg { background: #d93025; }
         .trades-section { background: white; border-radius: 12px; border-left: 5px solid #2c3e50;
                           box-shadow: 0 4px 12px rgba(0,0,0,0.05);
                           margin-bottom: 30px; padding: 20px; }
@@ -124,7 +139,7 @@
     <header class="header">
         <div>
             <h1 style="margin:0; font-size: 28px;">📊 PFA Monthly Deep Dive</h1>
-            <p style="color: #666; margin: 5px 0;">Strategisk status opdateret 08-05-2026 06:42 (Uge 19)</p>
+            <p style="color: #666; margin: 5px 0;">Strategisk status opdateret 08-05-2026 07:45 (Uge 19)</p>
         </div>
         <div style="text-align: right;">
             <span style="background: #2c3e50; color: white; padding: 5px 12px; border-radius: 20px;
@@ -171,6 +186,41 @@
             med stærkt 1M afkast på 9.55%.</span>
         </div>
         
+    </div>
+    
+
+    <!-- PORTEFØLJE DRAWDOWN -->
+    
+    <div class="drawdown-box ">
+        <h3>📉 Portefølje Drawdown</h3>
+        <div class="drawdown-grid">
+            <div class="dd-stat">
+                <div class="dd-label">Aktuel portefølje</div>
+                <div class="dd-value pos">
+                    +8.21%
+                </div>
+            </div>
+            <div class="dd-stat">
+                <div class="dd-label">Peak afkast</div>
+                <div class="dd-value pos">+8.21%</div>
+                <div style="font-size:11px; color:#888; margin-top:2px;">2026-05-07</div>
+            </div>
+            <div class="dd-stat">
+                <div class="dd-label">Drawdown fra peak</div>
+                <div class="dd-value pos">
+                    — ved peak
+                </div>
+            </div>
+            <div class="dd-stat">
+                <div class="dd-label">Dage siden peak</div>
+                <div class="dd-value neutral">1</div>
+            </div>
+        </div>
+        <div style="font-size:12px; color:#888; margin-top:4px;">
+            
+            ✅ Porteføljen er ved sit historiske toppunkt.
+            
+        </div>
     </div>
     
 
@@ -513,6 +563,13 @@
                     <tr><td>Snit holdperiode</td><td>Gennemsnitligt antal dage fra køb til salg på tværs af lukkede handler.</td></tr>
                     <tr><td>Afkast/måned</td><td>Normaliseret afkast til 30-dages rate: (afkast % / holdperiode dage) × 30. Gør korte og lange handler sammenlignelige.</td></tr>
                     <tr><td>Segment-analyse</td><td>Win-rate og snit afkast opdelt på PFA og ETF — viser om du er bedre i ét segment end det andet.</td></tr>
+                </table>
+                <h4>📉 Portefølje Drawdown</h4>
+                <table class="def-table">
+                    <tr><td>Peak afkast</td><td>Det højeste samlede porteføljeafkast opnået siden systemet startede med at tracke. Opdateres automatisk ved ny top.</td></tr>
+                    <tr><td>Drawdown fra peak</td><td>Aktuel portefølje minus peak: (aktuel − peak). Negativt tal = du er under dit historiske toppunkt.</td></tr>
+                    <tr><td>Advarsel</td><td>Vises når drawdown overstiger 5% — signal om at porteføljen er under pres og eksponering bør overvejes.</td></tr>
+                    <tr><td>Dage siden peak</td><td>Antal dage siden porteføljen sidst var på sit toppunkt. Lang periode kan indikere vedvarende svaghed.</td></tr>
                 </table>
             </div>
             <div class="method-section">
