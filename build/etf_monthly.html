@@ -65,6 +65,19 @@
     .shift-bull { background: #e6f4ea; color: #1e8e3e; padding: 1px 6px; border-radius: 6px; font-size: 10px; font-weight: 700; margin-left: 4px; }
     .shift-bear { background: #fce8e6; color: #d93025; padding: 1px 6px; border-radius: 6px; font-size: 10px; font-weight: 700; margin-left: 4px; }
 
+    /* HEATMAP */
+    .heatmap-card-etf { background: white; border-radius: 10px; padding: 14px 16px;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 16px; border-left: 4px solid #4ecdc4; }
+    .heatmap-grid-etf { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 10px; }
+    .hm-cat { border-radius: 8px; padding: 10px 12px; background: #f8fbff; border-left: 3px solid #4ecdc4; }
+    .hm-cat-title { font-size: 11px; font-weight: 700; margin-bottom: 4px; }
+    .hm-cat-andel { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .hm-fond { font-size: 11px; color: #555; display: flex; justify-content: space-between;
+               padding: 3px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+    .hm-fond:last-child { border-bottom: none; }
+    .hm-warn { background: #fffdf0; border: 1px solid #f59c00; border-radius: 6px;
+               padding: 6px 10px; font-size: 11px; color: #856404; margin-bottom: 10px; }
+
     /* HANDELSHISTORIK */
     .trades-card { background: white; border-radius: 10px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 16px; border-left: 4px solid #4ecdc4; }
     .trades-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
@@ -115,7 +128,7 @@
 <div class="header">
   <div>
     <h1>📡 ETF <span>Monthly Deep Dive</span></h1>
-    <div class="header-meta">Uge 19 | Opdateret: 08-05-2026 07:43 | Benchmark: iShares Core MSCI World UCITS ETF</div>
+    <div class="header-meta">Uge 19 | Opdateret: 08-05-2026 09:13 | Benchmark: iShares Core MSCI World UCITS ETF</div>
   </div>
   <div class="badge-afkast">
     <div class="lbl">PORTEFØLJE SNIT</div>
@@ -391,6 +404,41 @@
     </table>
   </div>
 
+  <!-- SEKTOR HEATMAP -->
+  
+  <div class="heatmap-card-etf">
+    <div style="font-size:14px; font-weight:700; color:#1a1a2e; margin-bottom:8px;">🗺️ Sektor-eksponering — ETF</div>
+    
+    <div class="hm-warn">⚠️ Koncentration: <strong>Lande — Korea</strong> = 50% — overvej diversificering.</div>
+    
+    <div class="heatmap-grid-etf">
+      
+      <div class="hm-cat" style="border-left-color: #7b1fa2;">
+        <div class="hm-cat-title" style="color: #7b1fa2;">Lande — Korea</div>
+        <div class="hm-cat-andel" style="color: #7b1fa2;">50%</div>
+        
+        <div class="hm-fond">
+          <span>FLXK.DE</span>
+          <span class="pos" style="font-weight:700;">+9.2%</span>
+        </div>
+        
+      </div>
+      
+      <div class="hm-cat" style="border-left-color: #1e8e3e;">
+        <div class="hm-cat-title" style="color: #1e8e3e;">Sektor — Halvledere</div>
+        <div class="hm-cat-andel" style="color: #1e8e3e;">50%</div>
+        
+        <div class="hm-fond">
+          <span>VVSM.DE</span>
+          <span class="pos" style="font-weight:700;">+7.7%</span>
+        </div>
+        
+      </div>
+      
+    </div>
+  </div>
+  
+
   <!-- HANDELSHISTORIK — vises kun når der er lukkede ETF-handler -->
   
 
@@ -445,6 +493,13 @@
           <li><strong>Drawdown:</strong> Aktuel minus peak — negativt = under historisk top</li>
           <li><strong>Advarsel ved -5%:</strong> Signal om at porteføljen er under pres</li>
           <li><strong>Dage siden peak:</strong> Lang periode indikerer vedvarende svaghed</li>
+        </ul>
+        <h4>🗺️ Sektor-eksponering</h4>
+        <ul>
+          <li><strong>Kategori:</strong> Fra etf_watchlist.json — Sektor, Lande, Tema, Råvarer</li>
+          <li><strong>Andel %:</strong> Antal fonde i kategorien / totalt aktive × 100</li>
+          <li><strong>Koncentration:</strong> Advarsel ved 50%+ i én kategori</li>
+          <li><strong>Afkast:</strong> Total afkast fra køb pr. fond i kategorien</li>
         </ul>
         <h4>⚙️ Datakilder</h4>
         <ul>
