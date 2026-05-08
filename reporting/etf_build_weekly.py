@@ -25,6 +25,7 @@ from utils import (
     get_cross_signal, get_trend_state,
     check_trail_stop, is_trading_day,
 )
+from sector_heatmap import build_heatmap, get_concentration_warning
 
 # ==========================================
 # KONFIGURATION & STIER
@@ -273,6 +274,11 @@ def build_weekly():
     template_text  = TEMPLATE_FILE.read_text(encoding="utf-8")
     jinja_template = Template(template_text)
 
+    # --- SEKTOR HEATMAP ---
+    active_fund_data = [r for r in rows if r['is_active']]
+    heatmap_data     = build_heatmap(portfolio, active_fund_data, watchlist=watchlist)
+    heatmap_warning  = get_concentration_warning(heatmap_data)
+
     html = jinja_template.render(
         week_number          = datetime.now().isocalendar()[1],
         report_date          = datetime.now().strftime("%d. %B %Y"),
@@ -289,6 +295,8 @@ def build_weekly():
         rows                 = sorted(rows, key=lambda x: (not x['is_active'], -x['momentum'])),
         chart_labels         = [r['name'][:20] for r in chart_data],
         chart_values         = [r['momentum'] for r in chart_data],
+        heatmap_data         = heatmap_data,
+        heatmap_warning      = heatmap_warning,
     )
 
     REPORT_FILE.parent.mkdir(parents=True, exist_ok=True)
