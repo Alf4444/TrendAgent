@@ -33,7 +33,18 @@
     .trail-icon { color: #d93025; font-weight: bold; margin-right: 8px; }
 
     /* Footer */
-    .footer { margin-top: 40px; padding: 30px; background: #f8f9fa; border-radius: 12px; border-top: 2px solid #eee; }
+    .heatmap-weekly { background: white; border-radius: 10px; padding: 16px 20px;
+                      box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px;
+                      border-left: 4px solid #4ecdc4; }
+    .heatmap-weekly h3 { margin: 0 0 12px 0; font-size: 16px; color: #2c3e50; }
+    .hm-warn-w { background: #fef3cd; border-radius: 6px; padding: 6px 10px;
+                 font-size: 12px; color: #856404; margin-bottom: 10px; }
+    .hm-grid-w { display: flex; gap: 10px; flex-wrap: wrap; }
+    .hm-cat-w { background: #f8f9fa; border-radius: 8px; padding: 10px 14px;
+                border-left: 3px solid #4ecdc4; min-width: 160px; flex: 1; }
+    .hm-cat-w .cat-titel { font-size: 11px; font-weight: 700; margin-bottom: 3px; }
+    .hm-cat-w .cat-andel { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .hm-cat-w .cat-fond { font-size: 11px; color: #666; padding: 2px 0; }
     .footer h2 { margin-top: 0; color: #2c3e50; border-bottom: 1px solid #ddd; padding-bottom: 10px; font-size: 22px; }
     .footer h3 { color: #333; font-size: 16px; margin-top: 25px; margin-bottom: 8px;
                  border-left: 4px solid #22c55e; padding-left: 10px; }
@@ -56,7 +67,7 @@
     <div class="header">
       <div>
         <h1>📈 PFA Weekly</h1>
-        <small>Uge 19 | Dato: 07. May 2026</small>
+        <small>Uge 19 | Dato: 08. May 2026</small>
       </div>
       <div class="score-box">
         <small>UGENS AFKAST (⭐)</small><br>
@@ -2080,6 +2091,45 @@
         
       </tbody>
     </table>
+
+    <!-- SEKTOR HEATMAP -->
+    
+    <div class="heatmap-weekly">
+      <h3>🗺️ Sektor-eksponering — PFA</h3>
+      
+      <div class="hm-warn-w">⚠️ Koncentration: <strong>Region — Emerging Markets</strong> = 50% — overvej diversificering.</div>
+      
+      <div class="hm-grid-w">
+        
+        <div class="hm-cat-w" style="border-left-color: #1a73e8;">
+          <div class="cat-titel" style="color: #1a73e8;">Region — Emerging Markets</div>
+          <div class="cat-andel" style="color: #1a73e8;">50%</div>
+          
+          <div class="cat-fond">Lazard Emerging Markets Equ… <span class="pos" style="font-weight:600;">+6.7%</span></div>
+          
+          <div class="cat-fond">Sydinvest Globale EM-aktier <span class="pos" style="font-weight:600;">+9.8%</span></div>
+          
+        </div>
+        
+        <div class="hm-cat-w" style="border-left-color: #1a73e8;">
+          <div class="cat-titel" style="color: #1a73e8;">Region — Asien</div>
+          <div class="cat-andel" style="color: #1a73e8;">25%</div>
+          
+          <div class="cat-fond">C WorldWide Asien <span class="pos" style="font-weight:600;">+14.3%</span></div>
+          
+        </div>
+        
+        <div class="hm-cat-w" style="border-left-color: #f59c00;">
+          <div class="cat-titel" style="color: #f59c00;">Tema — Cirkulær Økonomi</div>
+          <div class="cat-andel" style="color: #f59c00;">25%</div>
+          
+          <div class="cat-fond">Robeco Circular Economy Equities <span class="pos" style="font-weight:600;">+2.0%</span></div>
+          
+        </div>
+        
+      </div>
+    </div>
+    
 
     <!-- METODIK & DEFINITIONER -->
     <div class="footer">
