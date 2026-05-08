@@ -83,7 +83,22 @@
         .def-table td:first-child { font-weight: bold; color: #2c3e50; white-space: nowrap;
                                     width: 170px; padding-right: 12px; }
 
-        /* Handelshistorik */
+        /* DRAWDOWN */
+        .drawdown-box { background: white; border-radius: 12px; padding: 18px 20px;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 30px;
+                        border-left: 5px solid #4ecdc4; }
+        .drawdown-box.advarsel { border-left-color: #d93025; background: #fffaf9; }
+        .drawdown-box h3 { margin: 0 0 14px 0; font-size: 16px; color: #2c3e50; }
+        .drawdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 12px; }
+        .dd-stat { background: #f8f9fa; border-radius: 8px; padding: 10px 12px; }
+        .dd-label { font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 3px; }
+        .dd-value { font-size: 20px; font-weight: 700; color: #333; }
+        .dd-value.pos { color: #28a745; }
+        .dd-value.neg { color: #d93025; }
+        .dd-value.neutral { color: #1a73e8; }
+        .drawdown-bar-wrap { background: #f0f0f0; border-radius: 6px; height: 8px; margin-top: 8px; overflow: hidden; }
+        .drawdown-bar { height: 8px; border-radius: 6px; background: #28a745; transition: width 0.3s; }
+        .drawdown-bar.neg { background: #d93025; }
         .trades-section { background: white; border-radius: 12px; border-left: 5px solid #2c3e50;
                           box-shadow: 0 4px 12px rgba(0,0,0,0.05);
                           margin-bottom: 30px; padding: 20px; }
@@ -187,6 +202,45 @@
             med stærkt 1M afkast på {{ "%.2f"|format(o.return_1m) }}%.</span>
         </div>
         {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- PORTEFØLJE DRAWDOWN -->
+    {% if drawdown_data %}
+    <div class="drawdown-box {{ 'advarsel' if drawdown_data.advarsel else '' }}">
+        <h3>📉 Portefølje Drawdown{% if drawdown_data.advarsel %} — ⚠️ Over 5% fra peak{% endif %}</h3>
+        <div class="drawdown-grid">
+            <div class="dd-stat">
+                <div class="dd-label">Aktuel portefølje</div>
+                <div class="dd-value {{ 'pos' if drawdown_data.aktuel.startswith('+') else 'neg' if drawdown_data.aktuel.startswith('-') else 'neutral' }}">
+                    {{ drawdown_data.aktuel }}
+                </div>
+            </div>
+            <div class="dd-stat">
+                <div class="dd-label">Peak afkast</div>
+                <div class="dd-value pos">{{ drawdown_data.peak }}</div>
+                <div style="font-size:11px; color:#888; margin-top:2px;">{{ drawdown_data.peak_dato }}</div>
+            </div>
+            <div class="dd-stat">
+                <div class="dd-label">Drawdown fra peak</div>
+                <div class="dd-value {{ 'pos' if drawdown_data.er_ved_peak else 'neg' }}">
+                    {{ '— ved peak' if drawdown_data.er_ved_peak else drawdown_data.drawdown }}
+                </div>
+            </div>
+            <div class="dd-stat">
+                <div class="dd-label">Dage siden peak</div>
+                <div class="dd-value neutral">{{ drawdown_data.dage_siden_peak }}</div>
+            </div>
+        </div>
+        <div style="font-size:12px; color:#888; margin-top:4px;">
+            {% if drawdown_data.er_ved_peak %}
+            ✅ Porteføljen er ved sit historiske toppunkt.
+            {% elif drawdown_data.advarsel %}
+            ⚠️ Over 5% fra peak — overvej om eksponeringen er for høj.
+            {% else %}
+            Normal korrektion under 5% fra peak — ingen handling nødvendig.
+            {% endif %}
+        </div>
     </div>
     {% endif %}
 
@@ -426,6 +480,13 @@
                     <tr><td>Snit holdperiode</td><td>Gennemsnitligt antal dage fra køb til salg på tværs af lukkede handler.</td></tr>
                     <tr><td>Afkast/måned</td><td>Normaliseret afkast til 30-dages rate: (afkast % / holdperiode dage) × 30. Gør korte og lange handler sammenlignelige.</td></tr>
                     <tr><td>Segment-analyse</td><td>Win-rate og snit afkast opdelt på PFA og ETF — viser om du er bedre i ét segment end det andet.</td></tr>
+                </table>
+                <h4>📉 Portefølje Drawdown</h4>
+                <table class="def-table">
+                    <tr><td>Peak afkast</td><td>Det højeste samlede porteføljeafkast opnået siden systemet startede med at tracke. Opdateres automatisk ved ny top.</td></tr>
+                    <tr><td>Drawdown fra peak</td><td>Aktuel portefølje minus peak: (aktuel − peak). Negativt tal = du er under dit historiske toppunkt.</td></tr>
+                    <tr><td>Advarsel</td><td>Vises når drawdown overstiger 5% — signal om at porteføljen er under pres og eksponering bør overvejes.</td></tr>
+                    <tr><td>Dage siden peak</td><td>Antal dage siden porteføljen sidst var på sit toppunkt. Lang periode kan indikere vedvarende svaghed.</td></tr>
                 </table>
             </div>
             <div class="method-section">
