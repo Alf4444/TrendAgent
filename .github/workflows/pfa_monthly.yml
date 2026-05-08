@@ -44,7 +44,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add build/pfa_monthly.html data/pfa_hwm.json
+          git add build/pfa_monthly.html data/pfa_hwm.json data/portfolio_hwm.json
           git commit -m "PFA Monthly Deep Dive + HWM opdateret [skip ci]" || echo "Ingen ændringer"
           # Stash utrackede filer så rebase kan køre
           git stash --include-untracked || true
