@@ -164,19 +164,4 @@
     "lukket_kurs": 328.1,
     "afkast_pct": 47.2
   },
-  {
-    "id": "trade_012",
-    "type": "ETF",
-    "isin": "IE0002RPS3K2",
-    "ticker": "HYCN.DE",
-    "navn": "Global X Hydrogen ETF USD Acc",
-    "handling": "KØB",
-    "dato": "2026-05-08",
-    "kurs": 13.56,
-    "antal": null,
-    "status": "ÅBEN",
-    "lukket_dato": null,
-    "lukket_kurs": null,
-    "afkast_pct": null
-  }
 ]
