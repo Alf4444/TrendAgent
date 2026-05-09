@@ -1,6 +1,6 @@
 {
-  "_scanned_at": "2026-05-08 07:29",
-  "_total_scanned": 142,
+  "_scanned_at": "2026-05-08 09:12",
+  "_total_scanned": 143,
   "_total_hits": 60,
   "_stabile_hits": 43,
   "_hurtige_hits": 17,
@@ -22,10 +22,10 @@
       "weighted_momentum": 212.74,
       "consistency_bonus": 3,
       "kategori": "hurtig",
-      "momentum": 74.86,
+      "momentum": 75.7,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 81.3,
+      "rsi": 81.7,
       "cross": "–",
       "return_1m": 39.98,
       "return_1y": 211.72,
@@ -33,12 +33,12 @@
       "is_owned": true,
       "is_watchlist": true,
       "reasons": [
-        "Momentum +74.9% over MA200",
+        "Momentum +75.7% over MA200",
         "1M afkast: +40.0%",
         "Konsistent positiv på alle tidshorisonter",
         "Accelererende trend: 17.0% → 17.9% → 40.0% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:12",
       "is_new_this_week": false
     },
     {
@@ -49,10 +49,10 @@
       "weighted_momentum": 191.64,
       "consistency_bonus": 3,
       "kategori": "hurtig",
-      "momentum": 54.92,
+      "momentum": 55.43,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 81.6,
+      "rsi": 82.3,
       "cross": "–",
       "return_1m": 38.5,
       "return_1y": 154.44,
@@ -60,12 +60,12 @@
       "is_owned": true,
       "is_watchlist": true,
       "reasons": [
-        "Momentum +54.9% over MA200",
+        "Momentum +55.4% over MA200",
         "1M afkast: +38.5%",
         "Konsistent positiv på alle tidshorisonter",
         "Accelererende trend: 10.6% → 13.5% → 38.5% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     },
     {
@@ -76,10 +76,10 @@
       "weighted_momentum": 123.83,
       "consistency_bonus": 3,
       "kategori": "hurtig",
-      "momentum": 22.59,
+      "momentum": 22.87,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 82.3,
+      "rsi": 82.6,
       "cross": "–",
       "return_1m": 26.36,
       "return_1y": 44.81,
@@ -87,12 +87,12 @@
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +22.6% over MA200",
+        "Momentum +22.9% over MA200",
         "1M afkast: +26.4%",
         "Konsistent positiv på alle tidshorisonter",
         "Accelererende trend: 3.6% → 7.4% → 26.4% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:12",
       "is_new_this_week": false
     },
     {
@@ -103,10 +103,10 @@
       "weighted_momentum": 109.99,
       "consistency_bonus": 3,
       "kategori": "hurtig",
-      "momentum": 21.49,
+      "momentum": 21.57,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 81.1,
+      "rsi": 81.4,
       "cross": "–",
       "return_1m": 22.97,
       "return_1y": 52.13,
@@ -114,12 +114,12 @@
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +21.5% over MA200",
+        "Momentum +21.6% over MA200",
         "1M afkast: +23.0%",
         "Konsistent positiv på alle tidshorisonter",
         "Accelererende trend: 3.2% → 7.4% → 23.0% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     },
     {
@@ -130,10 +130,10 @@
       "weighted_momentum": 99.48,
       "consistency_bonus": 3,
       "kategori": "hurtig",
-      "momentum": 29.12,
+      "momentum": 29.19,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 75.5,
+      "rsi": 75.7,
       "cross": "–",
       "return_1m": 19.82,
       "return_1y": 65.24,
@@ -141,12 +141,12 @@
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +29.1% over MA200",
+        "Momentum +29.2% over MA200",
         "1M afkast: +19.8%",
         "Konsistent positiv på alle tidshorisonter",
         "Accelererende trend: 6.1% → 7.1% → 19.8% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     },
     {
@@ -157,10 +157,10 @@
       "weighted_momentum": 97.73,
       "consistency_bonus": 3,
       "kategori": "hurtig",
-      "momentum": 29.07,
+      "momentum": 28.89,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 76.7,
+      "rsi": 75.9,
       "cross": "–",
       "return_1m": 19.45,
       "return_1y": 64.9,
@@ -168,12 +168,12 @@
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +29.1% over MA200",
+        "Momentum +28.9% over MA200",
         "1M afkast: +19.4%",
         "Konsistent positiv på alle tidshorisonter",
         "Accelererende trend: 6.0% → 7.0% → 19.4% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     },
     {
@@ -184,10 +184,10 @@
       "weighted_momentum": 92.22,
       "consistency_bonus": 3,
       "kategori": "hurtig",
-      "momentum": 22.69,
+      "momentum": 22.62,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 75.9,
+      "rsi": 75.6,
       "cross": "–",
       "return_1m": 18.92,
       "return_1y": 52.84,
@@ -195,12 +195,12 @@
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +22.7% over MA200",
+        "Momentum +22.6% over MA200",
         "1M afkast: +18.9%",
         "Konsistent positiv på alle tidshorisonter",
         "Accelererende trend: 4.2% → 6.2% → 18.9% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     },
     {
@@ -211,10 +211,10 @@
       "weighted_momentum": 91.54,
       "consistency_bonus": 2,
       "kategori": "hurtig",
-      "momentum": 29.06,
+      "momentum": 29.35,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 86.9,
+      "rsi": 88.3,
       "cross": "–",
       "return_1m": 18.62,
       "return_1y": 66.9,
@@ -222,12 +222,12 @@
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +29.1% over MA200",
+        "Momentum +29.4% over MA200",
         "1M afkast: +18.6%",
         "Konsistent positiv på alle tidshorisonter",
         "Momentum tiltagende: 5.7% → 18.6% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     },
     {
@@ -238,10 +238,10 @@
       "weighted_momentum": 78.85,
       "consistency_bonus": 3,
       "kategori": "hurtig",
-      "momentum": 20.49,
+      "momentum": 20.54,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 71.6,
+      "rsi": 71.9,
       "cross": "–",
       "return_1m": 16.18,
       "return_1y": 49.31,
@@ -254,7 +254,7 @@
         "Konsistent positiv på alle tidshorisonter",
         "Accelererende trend: 3.9% → 5.1% → 16.2% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     },
     {
@@ -265,10 +265,10 @@
       "weighted_momentum": 77.84,
       "consistency_bonus": 3,
       "kategori": "hurtig",
-      "momentum": 20.29,
+      "momentum": 20.27,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 71.5,
+      "rsi": 71.4,
       "cross": "–",
       "return_1m": 15.99,
       "return_1y": 49.13,
@@ -281,8 +281,36 @@
         "Konsistent positiv på alle tidshorisonter",
         "Accelererende trend: 3.9% → 5.0% → 16.0% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": true
+    },
+    {
+      "isin": "",
+      "name": "HSBC MSCI Emerging Markets UCITS ETF USD",
+      "ticker": "H410.DE",
+      "score": 7,
+      "weighted_momentum": 75.69,
+      "consistency_bonus": 3,
+      "kategori": "stabil",
+      "momentum": 19.62,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 69.0,
+      "cross": "–",
+      "return_1m": 15.5,
+      "return_1y": 48.46,
+      "ter": 0.15,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +19.6% over MA200",
+        "RSI 69 — ikke overkøbt",
+        "1M afkast: +15.5%",
+        "Konsistent positiv på alle tidshorisonter",
+        "Accelererende trend: 3.8% → 4.9% → 15.5% pr. md."
+      ],
+      "scanned_at": "2026-05-08 09:12",
+      "is_new_this_week": false
     },
     {
       "isin": "",
@@ -292,10 +320,10 @@
       "weighted_momentum": 75.39,
       "consistency_bonus": 3,
       "kategori": "stabil",
-      "momentum": 19.03,
+      "momentum": 19.06,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 68.6,
+      "rsi": 68.7,
       "cross": "–",
       "return_1m": 15.56,
       "return_1y": 47.43,
@@ -303,13 +331,13 @@
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +19.0% over MA200",
+        "Momentum +19.1% over MA200",
         "RSI 69 — ikke overkøbt",
         "1M afkast: +15.6%",
         "Konsistent positiv på alle tidshorisonter",
         "Accelererende trend: 3.6% → 4.8% → 15.6% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     },
     {
@@ -320,10 +348,10 @@
       "weighted_momentum": 66.0,
       "consistency_bonus": 3,
       "kategori": "stabil",
-      "momentum": 14.12,
+      "momentum": 14.34,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 68.8,
+      "rsi": 69.5,
       "cross": "–",
       "return_1m": 13.75,
       "return_1y": 29.16,
@@ -331,41 +359,13 @@
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +14.1% over MA200",
-        "RSI 69 — ikke overkøbt",
+        "Momentum +14.3% over MA200",
+        "RSI 70 — ikke overkøbt",
         "1M afkast: +13.8%",
         "Konsistent positiv på alle tidshorisonter",
         "Accelererende trend: 2.7% → 4.2% → 13.8% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
-      "is_new_this_week": false
-    },
-    {
-      "isin": "",
-      "name": "UBS MSCI World Socially Responsible UCITS ETF USD dis",
-      "ticker": "UIMM.DE",
-      "score": 7,
-      "weighted_momentum": 44.06,
-      "consistency_bonus": 3,
-      "kategori": "stabil",
-      "momentum": 6.56,
-      "ma_label": "MA200",
-      "trend": "BULL",
-      "rsi": 69.3,
-      "cross": "–",
-      "return_1m": 9.87,
-      "return_1y": 18.17,
-      "ter": 0.22,
-      "is_owned": false,
-      "is_watchlist": false,
-      "reasons": [
-        "Momentum +6.6% over MA200",
-        "RSI 69 — ikke overkøbt",
-        "1M afkast: +9.9%",
-        "Konsistent positiv på alle tidshorisonter",
-        "Accelererende trend: 1.1% → 1.7% → 9.9% pr. md."
-      ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:12",
       "is_new_this_week": false
     },
     {
@@ -376,10 +376,10 @@
       "weighted_momentum": 41.32,
       "consistency_bonus": 3,
       "kategori": "stabil",
-      "momentum": 7.93,
+      "momentum": 7.95,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 67.2,
+      "rsi": 67.4,
       "cross": "–",
       "return_1m": 9.14,
       "return_1y": 27.24,
@@ -387,13 +387,13 @@
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +7.9% over MA200",
+        "Momentum +8.0% over MA200",
         "RSI 67 — ikke overkøbt",
         "1M afkast: +9.1%",
         "Konsistent positiv på alle tidshorisonter",
         "Accelererende trend: 1.5% → 1.6% → 9.1% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     },
     {
@@ -404,10 +404,10 @@
       "weighted_momentum": 38.9,
       "consistency_bonus": 3,
       "kategori": "stabil",
-      "momentum": 7.72,
+      "momentum": 7.69,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 68.3,
+      "rsi": 67.9,
       "cross": "–",
       "return_1m": 8.6,
       "return_1y": 20.24,
@@ -421,7 +421,7 @@
         "Konsistent positiv på alle tidshorisonter",
         "Accelererende trend: 1.4% → 1.5% → 8.6% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     },
     {
@@ -432,10 +432,10 @@
       "weighted_momentum": 51.14,
       "consistency_bonus": 2,
       "kategori": "stabil",
-      "momentum": 13.15,
+      "momentum": 13.33,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 65.8,
+      "rsi": 67.1,
       "cross": "–",
       "return_1m": 10.77,
       "return_1y": 40.55,
@@ -443,13 +443,13 @@
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +13.2% over MA200",
-        "RSI 66 — ikke overkøbt",
+        "Momentum +13.3% over MA200",
+        "RSI 67 — ikke overkøbt",
         "1M afkast: +10.8%",
         "Konsistent positiv på alle tidshorisonter",
         "Momentum tiltagende: 2.7% → 10.8% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     },
     {
@@ -460,10 +460,10 @@
       "weighted_momentum": 34.6,
       "consistency_bonus": 2,
       "kategori": "stabil",
-      "momentum": 11.27,
+      "momentum": 11.17,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 61.0,
+      "rsi": 60.1,
       "cross": "–",
       "return_1m": 7.16,
       "return_1y": 32.72,
@@ -471,13 +471,13 @@
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +11.3% over MA200",
-        "RSI 61 — ikke overkøbt",
+        "Momentum +11.2% over MA200",
+        "RSI 60 — ikke overkøbt",
         "1M afkast: +7.2%",
         "Konsistent positiv på alle tidshorisonter",
         "Momentum tiltagende: 1.7% → 7.2% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     },
     {
@@ -488,10 +488,10 @@
       "weighted_momentum": 30.87,
       "consistency_bonus": 2,
       "kategori": "stabil",
-      "momentum": 6.64,
+      "momentum": 6.59,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 45.0,
+      "rsi": 44.9,
       "cross": "–",
       "return_1m": 6.92,
       "return_1y": 19.93,
@@ -505,7 +505,7 @@
         "Konsistent positiv på alle tidshorisonter",
         "Momentum tiltagende: 0.7% → 6.9% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     },
     {
@@ -516,7 +516,7 @@
       "weighted_momentum": 30.55,
       "consistency_bonus": 2,
       "kategori": "stabil",
-      "momentum": 5.43,
+      "momentum": 5.41,
       "ma_label": "MA200",
       "trend": "BULL",
       "rsi": 43.9,
@@ -533,7 +533,7 @@
         "Konsistent positiv på alle tidshorisonter",
         "Momentum tiltagende: 0.3% → 7.1% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:29",
+      "scanned_at": "2026-05-08 09:12",
       "is_new_this_week": false
     },
     {
@@ -544,10 +544,10 @@
       "weighted_momentum": 30.5,
       "consistency_bonus": 2,
       "kategori": "stabil",
-      "momentum": 5.32,
+      "momentum": 5.41,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 44.0,
+      "rsi": 44.2,
       "cross": "–",
       "return_1m": 7.1,
       "return_1y": 17.58,
@@ -555,29 +555,57 @@
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +5.3% over MA200",
+        "Momentum +5.4% over MA200",
         "RSI 44 — ikke overkøbt",
         "1M afkast: +7.1%",
         "Konsistent positiv på alle tidshorisonter",
         "Momentum tiltagende: 0.3% → 7.1% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     }
   ],
   "hits_stabile": [
     {
       "isin": "",
+      "name": "HSBC MSCI Emerging Markets UCITS ETF USD",
+      "ticker": "H410.DE",
+      "score": 7,
+      "weighted_momentum": 75.69,
+      "consistency_bonus": 3,
+      "kategori": "stabil",
+      "momentum": 19.62,
+      "ma_label": "MA200",
+      "trend": "BULL",
+      "rsi": 69.0,
+      "cross": "–",
+      "return_1m": 15.5,
+      "return_1y": 48.46,
+      "ter": 0.15,
+      "is_owned": false,
+      "is_watchlist": false,
+      "reasons": [
+        "Momentum +19.6% over MA200",
+        "RSI 69 — ikke overkøbt",
+        "1M afkast: +15.5%",
+        "Konsistent positiv på alle tidshorisonter",
+        "Accelererende trend: 3.8% → 4.9% → 15.5% pr. md."
+      ],
+      "scanned_at": "2026-05-08 09:12",
+      "is_new_this_week": false
+    },
+    {
+      "isin": "",
       "name": "iShares MSCI EM ESG Enhanced CTB UCITS ETF USD (Acc)",
       "ticker": "EDM2.DE",
       "score": 7,
       "weighted_momentum": 75.39,
       "consistency_bonus": 3,
       "kategori": "stabil",
-      "momentum": 19.03,
+      "momentum": 19.06,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 68.6,
+      "rsi": 68.7,
       "cross": "–",
       "return_1m": 15.56,
       "return_1y": 47.43,
@@ -585,13 +613,13 @@
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +19.0% over MA200",
+        "Momentum +19.1% over MA200",
         "RSI 69 — ikke overkøbt",
         "1M afkast: +15.6%",
         "Konsistent positiv på alle tidshorisonter",
         "Accelererende trend: 3.6% → 4.8% → 15.6% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     },
     {
@@ -602,10 +630,10 @@
       "weighted_momentum": 66.0,
       "consistency_bonus": 3,
       "kategori": "stabil",
-      "momentum": 14.12,
+      "momentum": 14.34,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 68.8,
+      "rsi": 69.5,
       "cross": "–",
       "return_1m": 13.75,
       "return_1y": 29.16,
@@ -613,41 +641,13 @@
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +14.1% over MA200",
-        "RSI 69 — ikke overkøbt",
+        "Momentum +14.3% over MA200",
+        "RSI 70 — ikke overkøbt",
         "1M afkast: +13.8%",
         "Konsistent positiv på alle tidshorisonter",
         "Accelererende trend: 2.7% → 4.2% → 13.8% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
-      "is_new_this_week": false
-    },
-    {
-      "isin": "",
-      "name": "UBS MSCI World Socially Responsible UCITS ETF USD dis",
-      "ticker": "UIMM.DE",
-      "score": 7,
-      "weighted_momentum": 44.06,
-      "consistency_bonus": 3,
-      "kategori": "stabil",
-      "momentum": 6.56,
-      "ma_label": "MA200",
-      "trend": "BULL",
-      "rsi": 69.3,
-      "cross": "–",
-      "return_1m": 9.87,
-      "return_1y": 18.17,
-      "ter": 0.22,
-      "is_owned": false,
-      "is_watchlist": false,
-      "reasons": [
-        "Momentum +6.6% over MA200",
-        "RSI 69 — ikke overkøbt",
-        "1M afkast: +9.9%",
-        "Konsistent positiv på alle tidshorisonter",
-        "Accelererende trend: 1.1% → 1.7% → 9.9% pr. md."
-      ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:12",
       "is_new_this_week": false
     },
     {
@@ -658,10 +658,10 @@
       "weighted_momentum": 41.32,
       "consistency_bonus": 3,
       "kategori": "stabil",
-      "momentum": 7.93,
+      "momentum": 7.95,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 67.2,
+      "rsi": 67.4,
       "cross": "–",
       "return_1m": 9.14,
       "return_1y": 27.24,
@@ -669,13 +669,13 @@
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +7.9% over MA200",
+        "Momentum +8.0% over MA200",
         "RSI 67 — ikke overkøbt",
         "1M afkast: +9.1%",
         "Konsistent positiv på alle tidshorisonter",
         "Accelererende trend: 1.5% → 1.6% → 9.1% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     },
     {
@@ -686,10 +686,10 @@
       "weighted_momentum": 38.9,
       "consistency_bonus": 3,
       "kategori": "stabil",
-      "momentum": 7.72,
+      "momentum": 7.69,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 68.3,
+      "rsi": 67.9,
       "cross": "–",
       "return_1m": 8.6,
       "return_1y": 20.24,
@@ -703,7 +703,7 @@
         "Konsistent positiv på alle tidshorisonter",
         "Accelererende trend: 1.4% → 1.5% → 8.6% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     },
     {
@@ -714,10 +714,10 @@
       "weighted_momentum": 51.14,
       "consistency_bonus": 2,
       "kategori": "stabil",
-      "momentum": 13.15,
+      "momentum": 13.33,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 65.8,
+      "rsi": 67.1,
       "cross": "–",
       "return_1m": 10.77,
       "return_1y": 40.55,
@@ -725,13 +725,13 @@
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +13.2% over MA200",
-        "RSI 66 — ikke overkøbt",
+        "Momentum +13.3% over MA200",
+        "RSI 67 — ikke overkøbt",
         "1M afkast: +10.8%",
         "Konsistent positiv på alle tidshorisonter",
         "Momentum tiltagende: 2.7% → 10.8% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     },
     {
@@ -742,10 +742,10 @@
       "weighted_momentum": 34.6,
       "consistency_bonus": 2,
       "kategori": "stabil",
-      "momentum": 11.27,
+      "momentum": 11.17,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 61.0,
+      "rsi": 60.1,
       "cross": "–",
       "return_1m": 7.16,
       "return_1y": 32.72,
@@ -753,13 +753,13 @@
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +11.3% over MA200",
-        "RSI 61 — ikke overkøbt",
+        "Momentum +11.2% over MA200",
+        "RSI 60 — ikke overkøbt",
         "1M afkast: +7.2%",
         "Konsistent positiv på alle tidshorisonter",
         "Momentum tiltagende: 1.7% → 7.2% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     },
     {
@@ -770,10 +770,10 @@
       "weighted_momentum": 30.87,
       "consistency_bonus": 2,
       "kategori": "stabil",
-      "momentum": 6.64,
+      "momentum": 6.59,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 45.0,
+      "rsi": 44.9,
       "cross": "–",
       "return_1m": 6.92,
       "return_1y": 19.93,
@@ -787,7 +787,7 @@
         "Konsistent positiv på alle tidshorisonter",
         "Momentum tiltagende: 0.7% → 6.9% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     },
     {
@@ -798,7 +798,7 @@
       "weighted_momentum": 30.55,
       "consistency_bonus": 2,
       "kategori": "stabil",
-      "momentum": 5.43,
+      "momentum": 5.41,
       "ma_label": "MA200",
       "trend": "BULL",
       "rsi": 43.9,
@@ -815,7 +815,7 @@
         "Konsistent positiv på alle tidshorisonter",
         "Momentum tiltagende: 0.3% → 7.1% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:29",
+      "scanned_at": "2026-05-08 09:12",
       "is_new_this_week": false
     },
     {
@@ -826,10 +826,10 @@
       "weighted_momentum": 30.5,
       "consistency_bonus": 2,
       "kategori": "stabil",
-      "momentum": 5.32,
+      "momentum": 5.41,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 44.0,
+      "rsi": 44.2,
       "cross": "–",
       "return_1m": 7.1,
       "return_1y": 17.58,
@@ -837,13 +837,13 @@
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +5.3% over MA200",
+        "Momentum +5.4% over MA200",
         "RSI 44 — ikke overkøbt",
         "1M afkast: +7.1%",
         "Konsistent positiv på alle tidshorisonter",
         "Momentum tiltagende: 0.3% → 7.1% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     }
   ],
@@ -856,10 +856,10 @@
       "weighted_momentum": 212.74,
       "consistency_bonus": 3,
       "kategori": "hurtig",
-      "momentum": 74.86,
+      "momentum": 75.7,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 81.3,
+      "rsi": 81.7,
       "cross": "–",
       "return_1m": 39.98,
       "return_1y": 211.72,
@@ -867,12 +867,12 @@
       "is_owned": true,
       "is_watchlist": true,
       "reasons": [
-        "Momentum +74.9% over MA200",
+        "Momentum +75.7% over MA200",
         "1M afkast: +40.0%",
         "Konsistent positiv på alle tidshorisonter",
         "Accelererende trend: 17.0% → 17.9% → 40.0% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:12",
       "is_new_this_week": false
     },
     {
@@ -883,10 +883,10 @@
       "weighted_momentum": 191.64,
       "consistency_bonus": 3,
       "kategori": "hurtig",
-      "momentum": 54.92,
+      "momentum": 55.43,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 81.6,
+      "rsi": 82.3,
       "cross": "–",
       "return_1m": 38.5,
       "return_1y": 154.44,
@@ -894,12 +894,12 @@
       "is_owned": true,
       "is_watchlist": true,
       "reasons": [
-        "Momentum +54.9% over MA200",
+        "Momentum +55.4% over MA200",
         "1M afkast: +38.5%",
         "Konsistent positiv på alle tidshorisonter",
         "Accelererende trend: 10.6% → 13.5% → 38.5% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     },
     {
@@ -910,10 +910,10 @@
       "weighted_momentum": 123.83,
       "consistency_bonus": 3,
       "kategori": "hurtig",
-      "momentum": 22.59,
+      "momentum": 22.87,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 82.3,
+      "rsi": 82.6,
       "cross": "–",
       "return_1m": 26.36,
       "return_1y": 44.81,
@@ -921,12 +921,12 @@
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +22.6% over MA200",
+        "Momentum +22.9% over MA200",
         "1M afkast: +26.4%",
         "Konsistent positiv på alle tidshorisonter",
         "Accelererende trend: 3.6% → 7.4% → 26.4% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:12",
       "is_new_this_week": false
     },
     {
@@ -937,10 +937,10 @@
       "weighted_momentum": 109.99,
       "consistency_bonus": 3,
       "kategori": "hurtig",
-      "momentum": 21.49,
+      "momentum": 21.57,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 81.1,
+      "rsi": 81.4,
       "cross": "–",
       "return_1m": 22.97,
       "return_1y": 52.13,
@@ -948,12 +948,12 @@
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +21.5% over MA200",
+        "Momentum +21.6% over MA200",
         "1M afkast: +23.0%",
         "Konsistent positiv på alle tidshorisonter",
         "Accelererende trend: 3.2% → 7.4% → 23.0% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     },
     {
@@ -964,10 +964,10 @@
       "weighted_momentum": 99.48,
       "consistency_bonus": 3,
       "kategori": "hurtig",
-      "momentum": 29.12,
+      "momentum": 29.19,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 75.5,
+      "rsi": 75.7,
       "cross": "–",
       "return_1m": 19.82,
       "return_1y": 65.24,
@@ -975,12 +975,12 @@
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +29.1% over MA200",
+        "Momentum +29.2% over MA200",
         "1M afkast: +19.8%",
         "Konsistent positiv på alle tidshorisonter",
         "Accelererende trend: 6.1% → 7.1% → 19.8% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     },
     {
@@ -991,10 +991,10 @@
       "weighted_momentum": 97.73,
       "consistency_bonus": 3,
       "kategori": "hurtig",
-      "momentum": 29.07,
+      "momentum": 28.89,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 76.7,
+      "rsi": 75.9,
       "cross": "–",
       "return_1m": 19.45,
       "return_1y": 64.9,
@@ -1002,12 +1002,12 @@
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +29.1% over MA200",
+        "Momentum +28.9% over MA200",
         "1M afkast: +19.4%",
         "Konsistent positiv på alle tidshorisonter",
         "Accelererende trend: 6.0% → 7.0% → 19.4% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     },
     {
@@ -1018,10 +1018,10 @@
       "weighted_momentum": 92.22,
       "consistency_bonus": 3,
       "kategori": "hurtig",
-      "momentum": 22.69,
+      "momentum": 22.62,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 75.9,
+      "rsi": 75.6,
       "cross": "–",
       "return_1m": 18.92,
       "return_1y": 52.84,
@@ -1029,12 +1029,12 @@
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +22.7% over MA200",
+        "Momentum +22.6% over MA200",
         "1M afkast: +18.9%",
         "Konsistent positiv på alle tidshorisonter",
         "Accelererende trend: 4.2% → 6.2% → 18.9% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     },
     {
@@ -1045,10 +1045,10 @@
       "weighted_momentum": 91.54,
       "consistency_bonus": 2,
       "kategori": "hurtig",
-      "momentum": 29.06,
+      "momentum": 29.35,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 86.9,
+      "rsi": 88.3,
       "cross": "–",
       "return_1m": 18.62,
       "return_1y": 66.9,
@@ -1056,12 +1056,12 @@
       "is_owned": false,
       "is_watchlist": false,
       "reasons": [
-        "Momentum +29.1% over MA200",
+        "Momentum +29.4% over MA200",
         "1M afkast: +18.6%",
         "Konsistent positiv på alle tidshorisonter",
         "Momentum tiltagende: 5.7% → 18.6% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     },
     {
@@ -1072,10 +1072,10 @@
       "weighted_momentum": 78.85,
       "consistency_bonus": 3,
       "kategori": "hurtig",
-      "momentum": 20.49,
+      "momentum": 20.54,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 71.6,
+      "rsi": 71.9,
       "cross": "–",
       "return_1m": 16.18,
       "return_1y": 49.31,
@@ -1088,7 +1088,7 @@
         "Konsistent positiv på alle tidshorisonter",
         "Accelererende trend: 3.9% → 5.1% → 16.2% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": false
     },
     {
@@ -1099,10 +1099,10 @@
       "weighted_momentum": 77.84,
       "consistency_bonus": 3,
       "kategori": "hurtig",
-      "momentum": 20.29,
+      "momentum": 20.27,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 71.5,
+      "rsi": 71.4,
       "cross": "–",
       "return_1m": 15.99,
       "return_1y": 49.13,
@@ -1115,7 +1115,7 @@
         "Konsistent positiv på alle tidshorisonter",
         "Accelererende trend: 3.9% → 5.0% → 16.0% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": true
     }
   ],
@@ -1128,10 +1128,10 @@
       "weighted_momentum": 77.84,
       "consistency_bonus": 3,
       "kategori": "hurtig",
-      "momentum": 20.29,
+      "momentum": 20.27,
       "ma_label": "MA200",
       "trend": "BULL",
-      "rsi": 71.5,
+      "rsi": 71.4,
       "cross": "–",
       "return_1m": 15.99,
       "return_1y": 49.13,
@@ -1144,7 +1144,7 @@
         "Konsistent positiv på alle tidshorisonter",
         "Accelererende trend: 3.9% → 5.0% → 16.0% pr. md."
       ],
-      "scanned_at": "2026-05-08 07:28",
+      "scanned_at": "2026-05-08 09:11",
       "is_new_this_week": true
     }
   ]
