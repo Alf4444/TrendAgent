@@ -24,13 +24,13 @@ jobs:
           pip install requests
 
       - name: Run Nordnet Sync
-        run: python reporting/update_nordnet_inventory.py
+        run: python reporting/etf_nordnet_inventory.py
 
       - name: Commit and Push changes
         run: |
           git config --global user.name "TrendAgent Bot"
           git config --global user.email "bot@trendagent.ai"
-          git add data/nordnet_inventory.json
+          git add data/etf_nordnet_inventory.json
           # Vi tjekker om der rent faktisk er ændringer før vi committer
           if git diff --staged --quiet; then
             echo "Ingen ændringer fundet i Nordnet listen."
