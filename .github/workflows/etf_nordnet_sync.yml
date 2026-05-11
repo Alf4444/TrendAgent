@@ -1,4 +1,4 @@
-name: Nordnet Inventory Sync
+name: ETF Nordnet Inventory Sync
 
 on:
   workflow_dispatch: # Giver dig "Run workflow" knappen i UI
