@@ -1,0 +1,32 @@
+name: Nordnet Inventory Sync
+
+on:
+  workflow_dispatch: # Giver dig "Run workflow" knappen i UI
+  schedule:
+    - cron: '0 0 1 * *' # Kører automatisk den 1. i hver måned
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run Nordnet Sync
+        run: python reporting/update_nordnet_inventory.py
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "TrendAgent Bot"
+          git config --global user.email "bot@trendagent.ai"
+          git add data/nordnet_inventory.json
+          git commit -m "🤖 Auto-update: Nordnet Inventory [skip ci]" || echo "No changes to commit"
+          git push
