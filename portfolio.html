@@ -340,7 +340,11 @@
   // ── POSITIONSLISTE ─────────────────────────────────────────
   function renderPositions(trades) {
     const el = document.getElementById('positionsList');
-    const aktive = trades.filter(t => t.status === 'ÅBEN');
+    // Robust matching — håndterer både korrekt UTF-8 og korrupt encoding
+    function erÅben(t)   { return t.status && (t.status === 'ÅBEN'   || t.status.startsWith('Ã') && !t.lukket_dato); }
+    function erLukket(t) { return t.status && (t.status === 'LUKKET' || !!t.lukket_dato); }
+
+    const aktive = trades.filter(erÅben);
 
     if (!aktive.length) {
       el.innerHTML = '<div class="empty-msg">Ingen aktive positioner</div>';
@@ -569,14 +573,14 @@
     const el = document.getElementById('tradesList');
     if (!trades.length) { el.innerHTML = '<div class="empty-msg">Ingen handler endnu</div>'; return; }
     el.innerHTML = [...trades].reverse().map(t => {
-      const erLukket = t.status === 'LUKKET';
-      const afkastHtml = erLukket && t.afkast_pct != null
+      const erLukketT = t.status === 'LUKKET' || !!t.lukket_dato;
+      const afkastHtml = erLukketT && t.afkast_pct != null
         ? `<div class="trade-afkast ${t.afkast_pct >= 0 ? 'pos' : 'neg'}">${t.afkast_pct >= 0 ? '+' : ''}${t.afkast_pct.toFixed(1)}%</div>`
         : `<div style="color:#aaa;font-size:12px;">Åben</div>`;
       return `<div class="trade-row">
         <div>
-          <div class="trade-name">${t.navn} <span class="tag-${t.type.toLowerCase()}">${t.type}</span> <span class="tag-${erLukket ? 'salg' : 'køb'}">${erLukket ? 'LUKKET' : 'ÅBEN'}</span></div>
-          <div class="trade-meta">${t.isin}${t.ticker ? ' · ' + t.ticker : ''} · Købt ${t.dato} @ ${t.kurs}${erLukket ? ' → Solgt ' + t.lukket_dato + ' @ ' + t.lukket_kurs : ''}</div>
+          <div class="trade-name">${t.navn} <span class="tag-${t.type.toLowerCase()}">${t.type}</span> <span class="tag-${erLukketT ? 'salg' : 'køb'}">${erLukketT ? 'LUKKET' : 'ÅBEN'}</span></div>
+          <div class="trade-meta">${t.isin}${t.ticker ? ' · ' + t.ticker : ''} · Købt ${t.dato} @ ${t.kurs}${erLukketT ? ' → Solgt ' + t.lukket_dato + ' @ ' + t.lukket_kurs : ''}</div>
         </div>
         ${afkastHtml}
       </div>`;
