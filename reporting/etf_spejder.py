@@ -501,6 +501,7 @@ def main():
     processed  = 0
     skipped    = 0
     errors     = 0
+    nordnet_filtered = 0  # Fonde med signal men ikke på Nordnet
 
     # Sorter: ejede og watchlist-fonde scannes altid
     # Resten sorteres på 1Y afkast så vi scanner de stærkeste først
@@ -547,12 +548,6 @@ def main():
         row['_isin']           = effective_isin
         row['_effective_isin'] = effective_isin
 
-        # Nordnet pre-filter — spring yfinance-kald over for ikke-handlbare fonde
-        # Ejede og watchlist-fonde er undtaget og scannes altid
-        if not is_nordnet_available(effective_isin, nordnet_isins, is_owned, is_watchlist):
-            skipped += 1
-            continue
-
         # Hent kurser
         prices = fetch_prices(ticker, months=12)
         if len(prices) < 20:
@@ -564,6 +559,11 @@ def main():
         # Score
         result = score_etf(effective_isin, name, row, prices, is_owned, is_watchlist)
         if result:
+            # Nordnet-filter: efter scoring — vi har nu bekræftet ISIN og kursdata
+            # Ejede og watchlist-fonde er altid undtaget
+            if not is_nordnet_available(effective_isin, nordnet_isins, is_owned, is_watchlist):
+                nordnet_filtered += 1
+                continue
             candidates.append(result)
 
         processed += 1
@@ -634,8 +634,9 @@ def main():
     print(f"\n{'='*55}")
     print(f"✅ Spejder færdig")
     print(f"   Scannet: {processed} ETF'er")
-    print(f"   Sprunget over: {skipped} (ingen ticker / ikke på Nordnet)")
+    print(f"   Sprunget over: {skipped} (ingen ticker/kursdata)")
     print(f"   Nordnet-filter: {'✅ Aktiv (' + str(len(nordnet_isins)) + ' ISINs)' if nordnet_isins else '⚠️  Deaktiveret (fil mangler)'}")
+    print(f"   Nordnet-afvist (signal men ikke handlbar): {nordnet_filtered}")
     print(f"   Kandidater: {len(candidates)}")
     print(f"   Top {len(top_hurtige) + len(top_stabile)} gemt til {HITS_FILE.name}")
     print()
