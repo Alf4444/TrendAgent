@@ -544,6 +544,12 @@ def main():
             skipped += 1
             continue
 
+        # Spring ugyldige justETF placeholder-tickers over ($IBC1.DE, $VZLD.DE osv.)
+        # Disse starter med '$' og findes aldrig i yfinance — sparer mange forgæves kald
+        if ticker.startswith('$'):
+            skipped += 1
+            continue
+
         row['_ticker']         = ticker
         row['_isin']           = effective_isin
         row['_effective_isin'] = effective_isin
