@@ -53,6 +53,7 @@ WATCHLIST_FILE   = ROOT / "config/etf_watchlist.json"
 PORTFOLIO_FILE   = ROOT / "config/etf_portfolio.json"
 HITS_FILE        = ROOT / "data/etf_spejder_hits.json"
 PREV_HITS_FILE   = ROOT / "data/etf_spejder_prev.json"  # Forrige uges hits
+NORDNET_FILE     = ROOT / "data/etf_nordnet_inventory.json"
 
 # Filtre
 MIN_AUM_EUR      = 50_000_000   # Min 50M EUR
@@ -96,6 +97,49 @@ def save_json(path, data):
     path.parent.mkdir(exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
+
+def load_nordnet_inventory():
+    """
+    Indlæser Nordnet-inventory fra data/etf_nordnet_inventory.json.
+    Returnerer et set af ISINs der kan handles på Nordnet,
+    eller None hvis filen ikke eksisterer (filteret deaktiveres da).
+
+    Format: {"ISIN": {"name": "...", "isin": "..."}, ...}
+    """
+    if not NORDNET_FILE.exists():
+        print(f"⚠️  Nordnet-inventory ikke fundet: {NORDNET_FILE.name}")
+        print(f"   Nordnet-filter deaktiveret — alle ISINs scannes.")
+        return None
+    try:
+        with open(NORDNET_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        isins = set(data.keys())
+        print(f"✅ Nordnet-inventory indlæst: {len(isins):,} handlbare ETF'er")
+        return isins
+    except Exception as e:
+        print(f"⚠️  Kunne ikke læse Nordnet-inventory: {e}")
+        print(f"   Nordnet-filter deaktiveret — alle ISINs scannes.")
+        return None
+
+
+def is_nordnet_available(isin, nordnet_isins, is_owned, is_watchlist):
+    """
+    Returnerer True hvis fonden må vises i Spejder-output.
+
+    Regler (i prioriteret rækkefølge):
+      1. Fonde vi ejer → ALTID vis (uanset inventory)
+      2. Fonde på watchlist → ALTID vis (de er verificerede)
+      3. Nordnet-filter aktivt → kun hvis ISIN er i inventory
+      4. Nordnet-filter ikke aktivt (fil mangler) → vis alle
+    """
+    if is_owned:
+        return True
+    if is_watchlist:
+        return True
+    if nordnet_isins is None:
+        return True  # Filter deaktiveret
+    return isin in nordnet_isins
+
 
 def get_yfinance_ticker(isin, name):
     """
@@ -381,6 +425,9 @@ def main():
     owned_isins     = {isin for isin, p in portfolio.items() if p.get('active', False)}
     watchlist_isins = set(watchlist.keys())
 
+    # Indlæs Nordnet-inventory (None = filter deaktiveret)
+    nordnet_isins = load_nordnet_inventory()
+
     # Byg ticker→ISIN mapping fra watchlist
     # justETF returnerer tickers — vi skal matche dem mod ISIN fra portfolio
     ticker_to_isin = {
@@ -491,6 +538,11 @@ def main():
         # Score
         result = score_etf(effective_isin, name, row, prices, is_owned, is_watchlist)
         if result:
+            # Nordnet-filter: vis kun fonde der kan købes på Nordnet
+            # (ejede og watchlist-fonde er undtaget)
+            if not is_nordnet_available(effective_isin, nordnet_isins, is_owned, is_watchlist):
+                skipped += 1
+                continue
             candidates.append(result)
 
         processed += 1
@@ -542,6 +594,8 @@ def main():
             "min_momentum_hurtig": HURTIG_MIN_MOMENTUM,
             "min_1y_hurtig":       HURTIG_MIN_1Y,
             "min_score":           MIN_SCORE,
+            "nordnet_filter":      nordnet_isins is not None,
+            "nordnet_inventory_size": len(nordnet_isins) if nordnet_isins else 0,
         },
         "hits":         top_alle,
         "hits_stabile": top_stabile,
@@ -559,7 +613,8 @@ def main():
     print(f"\n{'='*55}")
     print(f"✅ Spejder færdig")
     print(f"   Scannet: {processed} ETF'er")
-    print(f"   Sprunget over: {skipped} (ingen ticker)")
+    print(f"   Sprunget over: {skipped} (ingen ticker / ikke på Nordnet)")
+    print(f"   Nordnet-filter: {'✅ Aktiv (' + str(len(nordnet_isins)) + ' ISINs)' if nordnet_isins else '⚠️  Deaktiveret (fil mangler)'}")
     print(f"   Kandidater: {len(candidates)}")
     print(f"   Top {len(top_hurtige) + len(top_stabile)} gemt til {HITS_FILE.name}")
     print()
