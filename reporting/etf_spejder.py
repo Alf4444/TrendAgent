@@ -293,6 +293,26 @@ def fetch_universe():
         df = df[df['incomeType'].str.lower().str.contains('acc|accumul', na=False)]
         print(f"   Efter akkumulerende-filter: {len(df)} ETF'er")
 
+    # Xetra-filter — kun ETF'er noteret på Xetra (.DE tickers)
+    # Nordnet handler primært Xetra-listede ETF'er, og dette skærer
+    # universet markant ned og sikrer vi kun får handlbare tickers
+    ticker_col_check = next((c for c in ['ticker', 'Ticker'] if c in df.columns), None)
+    exchange_col = next((c for c in ['exchange', 'exchanges', 'primaryExchange', 'listingExchange'] if c in df.columns), None)
+    if exchange_col:
+        before = len(df)
+        df = df[df[exchange_col].str.upper().str.contains('XETRA|XETR|GER|ETR', na=False)]
+        print(f"   Efter Xetra-filter (exchange): {len(df)} ETF'er (fra {before})")
+    elif ticker_col_check:
+        before = len(df)
+        mask = (
+            df[ticker_col_check].str.upper().str.endswith('.DE') |
+            ~df[ticker_col_check].str.contains('.', regex=False, na=True)
+        )
+        df = df[mask]
+        print(f"   Efter Xetra-filter (ticker .DE): {len(df)} ETF'er (fra {before})")
+    else:
+        print(f"   ⚠️  Xetra-filter: ingen exchange/ticker-kolonne — filter sprunget over")
+
     print(f"   Endeligt univers: {len(df)} ETF'er")
     return df
 
@@ -527,6 +547,12 @@ def main():
         row['_isin']           = effective_isin
         row['_effective_isin'] = effective_isin
 
+        # Nordnet pre-filter — spring yfinance-kald over for ikke-handlbare fonde
+        # Ejede og watchlist-fonde er undtaget og scannes altid
+        if not is_nordnet_available(effective_isin, nordnet_isins, is_owned, is_watchlist):
+            skipped += 1
+            continue
+
         # Hent kurser
         prices = fetch_prices(ticker, months=12)
         if len(prices) < 20:
@@ -538,11 +564,6 @@ def main():
         # Score
         result = score_etf(effective_isin, name, row, prices, is_owned, is_watchlist)
         if result:
-            # Nordnet-filter: vis kun fonde der kan købes på Nordnet
-            # (ejede og watchlist-fonde er undtaget)
-            if not is_nordnet_available(effective_isin, nordnet_isins, is_owned, is_watchlist):
-                skipped += 1
-                continue
             candidates.append(result)
 
         processed += 1
