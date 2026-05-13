@@ -1,9 +1,9 @@
 # 📈 TrendAgent Fokus
-**Opdateret:** 12-05-2026 21:05
+**Opdateret:** 13-05-2026 21:03
 
 | | Fond | Signal | RSI | Afkast % | Trend | MA % | Cross |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| ⭐ | C WorldWide Asien | – | 80 | +16.4% | BULL | +16.0% | – |
-| ⭐ | Lazard Emerging Markets E | – | 74 | +7.8% | BULL | +8.7% | – |
-| ⭐ | Robeco Circular Economy E | – | 76 | +3.7% | BULL | +12.6% | – |
-| ⭐ | Sydinvest Globale EM-akti | – | 75 | +11.2% | BULL | +12.3% | – |
+| ⭐ | C WorldWide Asien | – | 74 | +14.8% | BULL | +14.1% | – |
+| ⭐ | Lazard Emerging Markets E | – | 65 | +6.8% | BULL | +7.6% | – |
+| ⭐ | Robeco Circular Economy E | – | 76 | +3.4% | BULL | +12.0% | – |
+| ⭐ | Sydinvest Globale EM-akti | – | 71 | +10.0% | BULL | +10.9% | – |
