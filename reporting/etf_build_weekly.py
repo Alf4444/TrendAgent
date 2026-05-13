@@ -304,7 +304,7 @@ def build_weekly():
 
     print(f"✅ ETF Ugerapport genereret: {REPORT_FILE}")
     print(f"   {len(rows)} ETF'er analyseret")
-    print(f"   {len(spejder_hits)} Spejder-kandidater")
+    print(f"   {len(spejder_hurtige)} hurtige + {len(spejder_stabile)} stabile Spejder-kandidater")
     if trail_stop_alerts:
         print(f"   ⚠️  {len(trail_stop_alerts)} trail stop-advarsel(er)")
 
