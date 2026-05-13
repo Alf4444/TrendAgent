@@ -422,6 +422,7 @@ def score_etf(isin, name, row, prices, is_owned, is_watchlist):
         "cross":       cross,
         "return_1m":   round(return_1m, 2) if return_1m is not None else None,
         "return_1y":   return_1y_val if return_1y_raw is not None else None,
+        "short_history": return_1y_raw is None,  # Mangler 1Y data — for ny fond
         "ter":         round(float(ter_raw), 2) if ter_raw else None,
         "is_owned":    is_owned,
         "is_watchlist": is_watchlist,
@@ -593,10 +594,9 @@ def main():
         # Score
         result = score_etf(effective_isin, name, row, prices, is_owned, is_watchlist)
         if result:
-            # Nordnet-filter: efter scoring
-            # Ejede og watchlist-fonde er altid undtaget (haandteres i is_nordnet_available)
-            # Hvis vi ikke har et ISIN kan vi ikke tjekke — lad fonden igennem
-            if effective_isin and not is_nordnet_available(effective_isin, nordnet_isins, is_owned, is_watchlist):
+            # Nordnet-filter: efter scoring — vi har nu bekræftet ISIN og kursdata
+            # Ejede og watchlist-fonde er altid undtaget
+            if not is_nordnet_available(effective_isin, nordnet_isins, is_owned, is_watchlist):
                 nordnet_filtered += 1
                 continue
             candidates.append(result)
@@ -681,14 +681,16 @@ def main():
         for h in top_hurtige[:5]:
             owned_tag = " ⭐" if h['is_owned'] else ""
             print(f"  [{h['score']}pt] {h['name'][:40]}{owned_tag}")
-            print(f"       Momentum: +{h['momentum']}%, RSI: {h['rsi']}, 1Y: {h['return_1y']}%")
+            hist_warn = " ⚠️ kort historik" if h.get('short_history') else ""
+            print(f"       Momentum: +{h['momentum']}%, RSI: {h['rsi']}, 1Y: {h['return_1y']}%{hist_warn}")
 
     if top_stabile:
         print(f"\n📈 Stabile Trendere ({len(top_stabile)}):")
         for h in top_stabile[:5]:
             owned_tag = " ⭐" if h['is_owned'] else ""
             print(f"  [{h['score']}pt] {h['name'][:40]}{owned_tag}")
-            print(f"       Momentum: +{h['momentum']}%, RSI: {h['rsi']}, 1Y: {h['return_1y']}%")
+            hist_warn = " ⚠️ kort historik" if h.get('short_history') else ""
+            print(f"       Momentum: +{h['momentum']}%, RSI: {h['rsi']}, 1Y: {h['return_1y']}%{hist_warn}")
 
     print(f"{'='*55}\n")
 
