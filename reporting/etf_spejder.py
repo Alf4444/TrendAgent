@@ -565,9 +565,10 @@ def main():
         # Score
         result = score_etf(effective_isin, name, row, prices, is_owned, is_watchlist)
         if result:
-            # Nordnet-filter: efter scoring — vi har nu bekræftet ISIN og kursdata
-            # Ejede og watchlist-fonde er altid undtaget
-            if not is_nordnet_available(effective_isin, nordnet_isins, is_owned, is_watchlist):
+            # Nordnet-filter: efter scoring
+            # Ejede og watchlist-fonde er altid undtaget (håndteres i is_nordnet_available)
+            # Hvis vi ikke har et ISIN kan vi ikke tjekke — lad fonden igennem
+            if effective_isin and not is_nordnet_available(effective_isin, nordnet_isins, is_owned, is_watchlist):
                 nordnet_filtered += 1
                 continue
             candidates.append(result)
