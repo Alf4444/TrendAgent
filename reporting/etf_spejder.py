@@ -23,6 +23,7 @@ Scoring (0-6 point):
 """
 
 import json
+import random
 import sys
 import time
 from pathlib import Path
@@ -503,14 +504,41 @@ def main():
     errors     = 0
     nordnet_filtered = 0  # Fonde med signal men ikke på Nordnet
 
-    # Sorter: ejede og watchlist-fonde scannes altid
-    # Resten sorteres på 1Y afkast så vi scanner de stærkeste først
-    year1_col = next((c for c in ['year1', 'return1year', '1y'] if c in df.columns), None)
-    if year1_col:
-        try:
-            records = sorted(records, key=lambda x: float(x.get(year1_col) or 0), reverse=True)
-        except Exception:
-            pass
+    # -----------------------------------------------------------------------
+    # Prioriteret scanning-raekkefoelge
+    # 1. Ejede fonde          - scannes altid
+    # 2. Watchlist-fonde      - scannes altid
+    # 3. Forrige uges top-20  - fastholder gode fonde
+    # 4. Resten               - shuffles tilfaeldigt (roterer over uger)
+    # -----------------------------------------------------------------------
+
+    # Hent forrige uges hits - max top 20 for at undga voksevaerk
+    prev_data_prio = load_json(PREV_HITS_FILE, {})
+    prev_hit_tickers = {
+        h.get('ticker', '').upper()
+        for h in (prev_data_prio.get('hits', []))[:20]
+        if h.get('ticker')
+    }
+    print(f"   Prioriterede fra forrige uge: {len(prev_hit_tickers)} tickers")
+
+    def record_priority(row):
+        t = str(row.get(ticker_col, '')).strip().upper() if ticker_col else ''
+        for isin_p, p in portfolio.items():
+            if p.get('active') and p.get('ticker', '').upper() == t:
+                return 0  # ejet
+        for isin_w, w in watchlist.items():
+            if w.get('ticker', '').upper() == t:
+                return 1  # watchlist
+        if t in prev_hit_tickers:
+            return 2  # forrige uges hit
+        return 3  # resten
+
+    # Shuffle resten tilfaeldigt saa universet roterer over tid
+    random.shuffle(records)
+    # Stabil sort paa prioritet - shuffle bevares inden for gruppe 3
+    records.sort(key=record_priority)
+
+    print(f"   Scanning-raekkefoelge: ejede -> watchlist -> prev_hits -> shufflet univers")
 
     for i, row in enumerate(records):
         isin = str(row.get(isin_col, '')).strip()
@@ -565,10 +593,9 @@ def main():
         # Score
         result = score_etf(effective_isin, name, row, prices, is_owned, is_watchlist)
         if result:
-            # Nordnet-filter: efter scoring
-            # Ejede og watchlist-fonde er altid undtaget (håndteres i is_nordnet_available)
-            # Hvis vi ikke har et ISIN kan vi ikke tjekke — lad fonden igennem
-            if effective_isin and not is_nordnet_available(effective_isin, nordnet_isins, is_owned, is_watchlist):
+            # Nordnet-filter: efter scoring — vi har nu bekræftet ISIN og kursdata
+            # Ejede og watchlist-fonde er altid undtaget
+            if not is_nordnet_available(effective_isin, nordnet_isins, is_owned, is_watchlist):
                 nordnet_filtered += 1
                 continue
             candidates.append(result)
@@ -580,7 +607,7 @@ def main():
             print(f"   [{i+1}/{len(records)}] Scannet: {processed}, Kandidater: {len(candidates)}")
 
         # Stop tidligt hvis vi har nok kandidater og har scannet alle prioriterede
-        if len(candidates) >= (MAX_CANDIDATES_STABIL + MAX_CANDIDATES_HURTIG) * 3 and i > 100:
+        if len(candidates) >= (MAX_CANDIDATES_STABIL + MAX_CANDIDATES_HURTIG) * 10 and i > 100:
             print(f"   Nok kandidater fundet — stopper tidligt ved {i+1} ETF'er")
             break
 
