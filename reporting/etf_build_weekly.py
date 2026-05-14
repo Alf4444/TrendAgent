@@ -242,6 +242,8 @@ def build_weekly():
             'return_1m':       item.get('return_1m'),
             'return_1y':       item.get('return_1y'),
             'return_ytd':      item.get('return_ytd'),
+            'depot':           portfolio.get(isin, {}).get('depot') if is_active else None,
+            'ask_eligible':    portfolio.get(isin, {}).get('ask_eligible') if is_active else None,
         }
         rows.append(row)
 
