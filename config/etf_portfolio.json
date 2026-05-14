@@ -5,7 +5,7 @@
     "active": true,
     "buy_date": "2026-05-05",
     "buy_price": 78.04,
-    "depot": "AKT",
+    "depot": "Nordnet-AKT",
     "ask_eligible": true,
     "ask_note": "ASK-egnet — bør flyttes til ASK ved næste indskud"
   },
@@ -15,7 +15,7 @@
     "active": true,
     "buy_date": "2026-05-05",
     "buy_price": 76.81,
-    "depot": "AOP",
+    "depot": "Nordnet-AOP",
     "ask_eligible": false,
     "ask_note": "Ikke ASK-egnet — korrekt i AOP"
   },
@@ -25,7 +25,7 @@
     "active": true,
     "buy_date": "2026-05-08",
     "buy_price": 13.564,
-    "depot": "AKT",
+    "depot": "Nordnet-AKT",
     "ask_eligible": false,
     "ask_note": "Ikke ASK-egnet — korrekt i AKT"
   },
@@ -35,7 +35,7 @@
     "active": true,
     "buy_date": "2026-05-11",
     "buy_price": 16.7,
-    "depot": "AOP",
+    "depot": "Nordnet-AOP",
     "ask_eligible": true,
     "ask_note": "ASK-egnet — OK i AOP (0% skat ved udbetaling)"
   }
