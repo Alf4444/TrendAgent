@@ -190,6 +190,9 @@ def build_monthly():
             "t_state":        t_state,
             "trend_shift":    trend_shift,
             "is_active":      is_active,
+            "depot":          p_info.get('depot'),
+            "ask_eligible":   p_info.get('ask_eligible'),
+            "ask_note":       p_info.get('ask_note'),
         }
 
         if is_active:
