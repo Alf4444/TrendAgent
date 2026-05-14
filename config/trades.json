@@ -12,7 +12,8 @@
     "status": "LUKKET",
     "lukket_dato": "2026-03-02",
     "lukket_kurs": 150.69,
-    "afkast_pct": 16.65
+    "afkast_pct": 16.65,
+    "depot": null
   },
   {
     "id": "trade_002",
@@ -27,7 +28,8 @@
     "status": "LUKKET",
     "lukket_dato": "2026-05-05",
     "lukket_kurs": 114.08,
-    "afkast_pct": -22.34
+    "afkast_pct": -22.34,
+    "depot": null
   },
   {
     "id": "trade_003",
@@ -42,7 +44,8 @@
     "status": "ÅBEN",
     "lukket_dato": null,
     "lukket_kurs": null,
-    "afkast_pct": null
+    "afkast_pct": null,
+    "depot": null
   },
   {
     "id": "trade_004",
@@ -57,7 +60,8 @@
     "status": "ÅBEN",
     "lukket_dato": null,
     "lukket_kurs": null,
-    "afkast_pct": null
+    "afkast_pct": null,
+    "depot": null
   },
   {
     "id": "trade_005",
@@ -72,7 +76,8 @@
     "status": "ÅBEN",
     "lukket_dato": null,
     "lukket_kurs": null,
-    "afkast_pct": null
+    "afkast_pct": null,
+    "depot": null
   },
   {
     "id": "trade_006",
@@ -87,7 +92,8 @@
     "status": "ÅBEN",
     "lukket_dato": null,
     "lukket_kurs": null,
-    "afkast_pct": null
+    "afkast_pct": null,
+    "depot": null
   },
   {
     "id": "trade_007",
@@ -102,7 +108,8 @@
     "status": "ÅBEN",
     "lukket_dato": null,
     "lukket_kurs": null,
-    "afkast_pct": null
+    "afkast_pct": null,
+    "depot": "AKT"
   },
   {
     "id": "trade_008",
@@ -117,7 +124,8 @@
     "status": "ÅBEN",
     "lukket_dato": null,
     "lukket_kurs": null,
-    "afkast_pct": null
+    "afkast_pct": null,
+    "depot": "AOP"
   },
   {
     "id": "trade_009",
@@ -132,7 +140,8 @@
     "status": "ÅBEN",
     "lukket_dato": null,
     "lukket_kurs": null,
-    "afkast_pct": null
+    "afkast_pct": null,
+    "depot": "AKT"
   },
   {
     "id": "trade_010",
@@ -147,7 +156,8 @@
     "status": "LUKKET",
     "lukket_dato": "2026-05-09",
     "lukket_kurs": 328.1,
-    "afkast_pct": 47.2
+    "afkast_pct": 47.2,
+    "depot": "AKT"
   },
   {
     "id": "trade_011",
@@ -162,6 +172,7 @@
     "status": "ÅBEN",
     "lukket_dato": null,
     "lukket_kurs": null,
-    "afkast_pct": null
+    "afkast_pct": null,
+    "depot": "AOP"
   }
 ]
