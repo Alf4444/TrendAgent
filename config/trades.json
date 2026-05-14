@@ -109,7 +109,7 @@
     "lukket_dato": null,
     "lukket_kurs": null,
     "afkast_pct": null,
-    "depot": "AKT"
+    "depot": "Nordnet-AKT"
   },
   {
     "id": "trade_008",
@@ -125,7 +125,7 @@
     "lukket_dato": null,
     "lukket_kurs": null,
     "afkast_pct": null,
-    "depot": "AOP"
+    "depot": "Nordnet-AOP"
   },
   {
     "id": "trade_009",
@@ -141,7 +141,7 @@
     "lukket_dato": null,
     "lukket_kurs": null,
     "afkast_pct": null,
-    "depot": "AKT"
+    "depot": "Nordnet-AKT"
   },
   {
     "id": "trade_010",
@@ -157,7 +157,7 @@
     "lukket_dato": "2026-05-09",
     "lukket_kurs": 328.1,
     "afkast_pct": 47.2,
-    "depot": "AKT"
+    "depot": "Nordnet-AKT"
   },
   {
     "id": "trade_011",
@@ -173,6 +173,6 @@
     "lukket_dato": null,
     "lukket_kurs": null,
     "afkast_pct": null,
-    "depot": "AOP"
+    "depot": "Nordnet-AOP"
   }
 ]
