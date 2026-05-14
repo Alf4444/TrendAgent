@@ -242,6 +242,14 @@
           <label>Ticker</label>
           <input type="text" id="fieldTicker" placeholder="fx VVSM.DE">
         </div>
+        <div class="form-group" id="depotGroup" style="display:none;">
+          <label>Depot</label>
+          <select id="fieldDepot" style="width:100%; padding:8px 10px; border:1px solid #d0d7de; border-radius:6px; font-size:13px; background:white;">
+            <option value="AKT">AKT — Aktiedepot (frie midler)</option>
+            <option value="ASK">ASK — Aktiesparekonto (17% skat)</option>
+            <option value="AOP">AOP — Aldersopsparing</option>
+          </select>
+        </div>
         <div class="form-group">
           <label>Dato</label>
           <input type="date" id="fieldDato">
@@ -459,6 +467,7 @@
     document.getElementById('btnPFA').className = 'fund-btn' + (type === 'PFA' ? ' active' : '');
     document.getElementById('btnETF').className = 'fund-btn' + (type === 'ETF' ? ' active' : '');
     document.getElementById('tickerGroup').style.display = type === 'ETF' ? 'flex' : 'none';
+    document.getElementById('depotGroup').style.display = type === 'ETF' ? 'flex' : 'none';
     document.getElementById('fieldIsin').placeholder = type === 'PFA' ? 'fx PFA000002703' : 'fx IE00BMC38736';
   }
 
@@ -495,6 +504,9 @@
   // ── BYGG TRADE-OBJEKT ──────────────────────────────────────
   function buildTradeObject(trades) {
     const nextId = 'trade_' + String(trades.length + 1).padStart(3, '0');
+    const depot  = currentFundType === 'ETF'
+      ? (document.getElementById('fieldDepot').value || 'AKT')
+      : null;
     const navn   = document.getElementById('fieldNavn').value.trim();
     const isin   = document.getElementById('fieldIsin').value.trim().toUpperCase();
     const dato   = document.getElementById('fieldDato').value;
@@ -504,7 +516,8 @@
     if (currentHandling === 'KØB') {
       return { id: nextId, type: currentFundType, isin, ticker, navn, handling: 'KØB',
                dato, kurs, antal: null, status: 'ÅBEN',
-               lukket_dato: null, lukket_kurs: null, afkast_pct: null };
+               lukket_dato: null, lukket_kurs: null, afkast_pct: null,
+               depot: depot };
     } else {
       const købtKurs = parseFloat(parseFloat(document.getElementById('fieldKøbtKurs').value).toFixed(3));
       const købtDato = document.getElementById('fieldKøbtDato').value;
@@ -675,7 +688,7 @@
       return `<div class="trade-row">
         <div>
           <div class="trade-name">${t.navn} <span class="tag-${t.type.toLowerCase()}">${t.type}</span> <span class="tag-${erLukketT ? 'salg' : 'køb'}">${erLukketT ? 'LUKKET' : 'ÅBEN'}</span></div>
-          <div class="trade-meta">${t.isin}${t.ticker ? ' · ' + t.ticker : ''} · Købt ${t.dato} @ ${t.kurs}${erLukketT ? ' → Solgt ' + t.lukket_dato + ' @ ' + t.lukket_kurs : ''}</div>
+          <div class="trade-meta">${t.isin}${t.ticker ? ' · ' + t.ticker : ''} · Købt ${t.dato} @ ${t.kurs}${erLukketT ? ' → Solgt ' + t.lukket_dato + ' @ ' + t.lukket_kurs : ''}${t.depot ? ` · <span style="padding:1px 6px;border-radius:6px;font-size:10px;font-weight:700;background:${t.depot==='ASK'?'#e6f4ea':t.depot==='AOP'?'#e8f0fe':'#fff3e0'};color:${t.depot==='ASK'?'#1e6e34':t.depot==='AOP'?'#1967d2':'#e65100'};">${t.depot}</span>` : ''}</div>
         </div>
         ${afkastHtml}
       </div>`;
