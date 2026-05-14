@@ -4,13 +4,39 @@
     "ticker": "VVSM.DE",
     "active": true,
     "buy_date": "2026-05-05",
-    "buy_price": 78.04
+    "buy_price": 78.04,
+    "depot": "AKT",
+    "ask_eligible": true,
+    "ask_note": "ASK-egnet — bør flyttes til ASK ved næste indskud"
   },
   "IE00BHZRR030": {
     "name": "Franklin FTSE Korea UCITS ETF",
     "ticker": "FLXK.DE",
     "active": true,
     "buy_date": "2026-05-05",
-    "buy_price": 76.81
+    "buy_price": 76.81,
+    "depot": "AOP",
+    "ask_eligible": false,
+    "ask_note": "Ikke ASK-egnet — korrekt i AOP"
+  },
+  "IE0002RPS3K2": {
+    "name": "Global X Hydrogen UCITS ETF USD Acc",
+    "ticker": "HYCN.DE",
+    "active": true,
+    "buy_date": "2026-05-08",
+    "buy_price": 13.564,
+    "depot": "AKT",
+    "ask_eligible": false,
+    "ask_note": "Ikke ASK-egnet — korrekt i AKT"
+  },
+  "IE000I8KRLL9": {
+    "name": "iShares MSCI Global Semiconductors UCITS ETF USD Acc",
+    "ticker": "SEC0.DE",
+    "active": true,
+    "buy_date": "2026-05-11",
+    "buy_price": 16.7,
+    "depot": "AOP",
+    "ask_eligible": true,
+    "ask_note": "ASK-egnet — OK i AOP (0% skat ved udbetaling)"
   }
 }
