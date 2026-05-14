@@ -596,7 +596,8 @@ def main():
         if result:
             # Nordnet-filter: efter scoring — vi har nu bekræftet ISIN og kursdata
             # Ejede og watchlist-fonde er altid undtaget
-            if not is_nordnet_available(effective_isin, nordnet_isins, is_owned, is_watchlist):
+            # Hvis effective_isin er tom kan vi ikke tjekke — lad fonden igennem
+            if effective_isin and not is_nordnet_available(effective_isin, nordnet_isins, is_owned, is_watchlist):
                 nordnet_filtered += 1
                 continue
             candidates.append(result)
