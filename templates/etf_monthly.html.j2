@@ -245,6 +245,7 @@
         <tr>
           <th>Rank</th>
           <th>Fond</th>
+          <th>Depot</th>
           <th>Trend Velocity</th>
           <th>Momentum Status</th>
           <th>Trend</th>
@@ -263,6 +264,18 @@
             {% if f.category %}<span class="cat-tag" style="margin-left:4px;">{{ f.category }}</span>{% endif %}
             {% if f.trend_shift %}
               <span class="{{ 'shift-bear' if 'BULL→BEAR' in f.trend_shift else 'shift-bull' }}">{{ f.trend_shift }}</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if f.depot %}
+              <span style="padding:2px 8px; border-radius:8px; font-size:11px; font-weight:700;
+                background:{{ '#e6f4ea' if f.depot == 'ASK' else '#fff3e0' if f.depot == 'AKT' else '#e8f0fe' }};
+                color:{{ '#1e6e34' if f.depot == 'ASK' else '#e65100' if f.depot == 'AKT' else '#1967d2' }};">
+                {{ f.depot }}
+              </span>
+            {% else %}—{% endif %}
+            {% if f.ask_eligible and f.depot != 'ASK' %}
+              <br><span style="font-size:10px; color:#c62828;">⚠️ Flyt til ASK</span>
             {% endif %}
           </td>
           <td><span class="{{ f.trend_class }}">{{ f.trend_label }}</span></td>
