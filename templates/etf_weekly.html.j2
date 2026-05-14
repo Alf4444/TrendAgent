@@ -40,6 +40,10 @@
     .spejder-stat .val { font-weight: 700; color: #1e8e3e; }
     .spejder-reasons { font-size: 11px; color: #666; }
     .spejder-reasons span { display: block; }
+    .ask-badge { display: inline-block; padding: 1px 7px; border-radius: 8px; font-size: 10px; font-weight: 700; margin-left: 4px; }
+    .ask-badge.ask  { background: #e6f4ea; color: #1e6e34; border: 1px solid #a8d5b5; }
+    .ask-badge.akt  { background: #fff3e0; color: #e65100; border: 1px solid #ffcc80; }
+    .ask-badge.warn { background: #fce8e6; color: #c62828; border: 1px solid #f5c6c6; }
 
     /* TOP/BUND */
     .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
@@ -175,6 +179,14 @@
           <span style="margin-left:6px; background:#fce8e6; color:#c62828; padding:1px 6px; border-radius:8px; font-size:10px;">
             Score: {{ s.score }}pt
           </span>
+          {% if s.ask_eligible == true %}
+          <span class="ask-badge ask" title="Godkendt til Aktiesparekonto (17% skat)">ASK ✓</span>
+          {% elif s.ask_eligible == false %}
+          <span class="ask-badge akt" title="Ikke godkendt til ASK — køb i almindeligt depot">AKT</span>
+          {% endif %}
+          {% if s.depot == 'AKT' and s.ask_eligible == true %}
+          <span class="ask-badge warn" title="Fonden er ASK-egnet men ligger i AKT — overvej flytning">⚠️ Flyt til ASK</span>
+          {% endif %}
           {% if s.rsi and s.rsi >= 70 %}
           <span style="margin-left:4px; background:#d93025; color:white; padding:1px 6px; border-radius:8px; font-size:10px;" title="RSI ≥70 — overkøbt. Overvej at vente på tilbagefald.">RSI {{ '%.0f'|format(s.rsi) }} ⚠️</span>
           {% endif %}
@@ -201,6 +213,8 @@
         </div>
         <div class="spejder-ticker">{{ s.ticker }}
           <span style="margin-left:6px; background:#fce8e6; color:#c62828; padding:1px 6px; border-radius:8px; font-size:10px;">Score: {{ s.score }}pt</span>
+          {% if s.ask_eligible == true %}<span class="ask-badge ask" title="Godkendt til ASK">ASK ✓</span>
+          {% elif s.ask_eligible == false %}<span class="ask-badge akt" title="Ikke ASK-egnet">AKT</span>{% endif %}
           {% if s.rsi and s.rsi >= 70 %}
           <span style="margin-left:4px; background:#d93025; color:white; padding:1px 6px; border-radius:8px; font-size:10px;" title="RSI ≥70 — overkøbt">RSI {{ '%.0f'|format(s.rsi) }} ⚠️</span>
           {% endif %}
@@ -241,6 +255,8 @@
           <span style="margin-left:6px; background:#e0f2f1; color:#00695c; padding:1px 6px; border-radius:8px; font-size:10px;">
             Score: {{ s.score }}pt
           </span>
+          {% if s.ask_eligible == true %}<span class="ask-badge ask" title="Godkendt til Aktiesparekonto (17% skat)">ASK ✓</span>
+          {% elif s.ask_eligible == false %}<span class="ask-badge akt" title="Ikke ASK-egnet — køb i AKT">AKT</span>{% endif %}
         </div>
         <div class="spejder-stats">
           <div class="spejder-stat">Momentum: <span class="val">+{{ s.momentum }}%</span></div>
@@ -263,6 +279,8 @@
         </div>
         <div class="spejder-ticker">{{ s.ticker }}
           <span style="margin-left:6px; background:#e0f2f1; color:#00695c; padding:1px 6px; border-radius:8px; font-size:10px;">Score: {{ s.score }}pt</span>
+          {% if s.ask_eligible == true %}<span class="ask-badge ask" title="ASK-egnet">ASK ✓</span>
+          {% elif s.ask_eligible == false %}<span class="ask-badge akt" title="Ikke ASK-egnet">AKT</span>{% endif %}
         </div>
         <div class="spejder-stats">
           <div class="spejder-stat">Momentum: <span class="val">+{{ s.momentum }}%</span></div>
