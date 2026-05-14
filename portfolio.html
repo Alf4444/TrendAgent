@@ -245,9 +245,12 @@
         <div class="form-group" id="depotGroup" style="display:none;">
           <label>Depot</label>
           <select id="fieldDepot" style="width:100%; padding:8px 10px; border:1px solid #d0d7de; border-radius:6px; font-size:13px; background:white;">
-            <option value="AKT">AKT — Aktiedepot (frie midler)</option>
-            <option value="ASK">ASK — Aktiesparekonto (17% skat)</option>
-            <option value="AOP">AOP — Aldersopsparing</option>
+            <option value="Nordnet-AKT">Nordnet — AKT (Aktiedepot)</option>
+            <option value="Nordnet-ASK">Nordnet — ASK (Aktiesparekonto)</option>
+            <option value="Nordnet-AOP">Nordnet — AOP (Aldersopsparing)</option>
+            <option value="Nordnet-KPP">Nordnet — KPP (Kapitalpension)</option>
+            <option value="SpSj-RTP">SpSj — RTP (Ratepension, privat)</option>
+            <option value="SpSj-INV">SpSj — INV (Investering)</option>
           </select>
         </div>
         <div class="form-group">
@@ -505,7 +508,7 @@
   function buildTradeObject(trades) {
     const nextId = 'trade_' + String(trades.length + 1).padStart(3, '0');
     const depot  = currentFundType === 'ETF'
-      ? (document.getElementById('fieldDepot').value || 'AKT')
+      ? (document.getElementById('fieldDepot').value || 'Nordnet-AKT')
       : null;
     const navn   = document.getElementById('fieldNavn').value.trim();
     const isin   = document.getElementById('fieldIsin').value.trim().toUpperCase();
@@ -609,7 +612,7 @@
             active:       isActive,
             buy_date:     t.dato,
             buy_price:    t.kurs,
-            depot:        existing.depot || wl.depot || 'AKT',
+            depot:        existing.depot || wl.depot || 'Nordnet-AKT',
             ask_eligible: existing.ask_eligible !== undefined
                             ? existing.ask_eligible
                             : (wl.ask_eligible || false),
@@ -672,7 +675,6 @@
       if (el) { el.value = ''; el.classList.remove('prefilled'); }
     });
     document.getElementById('fieldDato').value = new Date().toISOString().split('T')[0];
-    // ETF er default — vis ticker og depot fra start
     document.getElementById('tickerGroup').style.display = 'flex';
     document.getElementById('depotGroup').style.display = 'flex';
     document.getElementById('afkastPreview').className = 'afkast-preview';
@@ -691,7 +693,7 @@
       return `<div class="trade-row">
         <div>
           <div class="trade-name">${t.navn} <span class="tag-${t.type.toLowerCase()}">${t.type}</span> <span class="tag-${erLukketT ? 'salg' : 'køb'}">${erLukketT ? 'LUKKET' : 'ÅBEN'}</span></div>
-          <div class="trade-meta">${t.isin}${t.ticker ? ' · ' + t.ticker : ''} · Købt ${t.dato} @ ${t.kurs}${erLukketT ? ' → Solgt ' + t.lukket_dato + ' @ ' + t.lukket_kurs : ''}${t.depot ? ` · <span style="padding:1px 6px;border-radius:6px;font-size:10px;font-weight:700;background:${t.depot==='ASK'?'#e6f4ea':t.depot==='AOP'?'#e8f0fe':'#fff3e0'};color:${t.depot==='ASK'?'#1e6e34':t.depot==='AOP'?'#1967d2':'#e65100'};">${t.depot}</span>` : ''}</div>
+          <div class="trade-meta">${t.isin}${t.ticker ? ' · ' + t.ticker : ''} · Købt ${t.dato} @ ${t.kurs}${erLukketT ? ' → Solgt ' + t.lukket_dato + ' @ ' + t.lukket_kurs : ''}${t.depot ? ` · <span style="padding:1px 6px;border-radius:6px;font-size:10px;font-weight:700;background:${t.depot.includes('ASK')?'#e6f4ea':t.depot.includes('AOP')||t.depot.includes('RTP')||t.depot.includes('KPP')?'#e8f0fe':'#fff3e0'};color:${t.depot.includes('ASK')?'#1e6e34':t.depot.includes('AOP')||t.depot.includes('RTP')||t.depot.includes('KPP')?'#1967d2':'#e65100'};">${t.depot}</span>` : ''}</div>
         </div>
         ${afkastHtml}
       </div>`;
@@ -719,7 +721,6 @@
   // ── INIT ───────────────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('fieldDato').value = new Date().toISOString().split('T')[0];
-    // ETF er default — vis ticker og depot fra start
     document.getElementById('tickerGroup').style.display = 'flex';
     document.getElementById('depotGroup').style.display = 'flex';
     document.getElementById('fieldKurs').addEventListener('input', beregnAfkast);
