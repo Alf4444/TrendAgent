@@ -1,10 +1,12 @@
 {
   "IE00BHZRR030": {
     "hwm": 89.0,
-    "hwm_date": "2026-05-14"
+    "hwm_date": "2026-05-14",
+    "trend_state": "BULL"
   },
   "IE00BMC38736": {
     "hwm": 89.6,
-    "hwm_date": "2026-05-13"
+    "hwm_date": "2026-05-13",
+    "trend_state": "BULL"
   }
 }
