@@ -633,12 +633,44 @@ def main():
     prev_data    = load_json(PREV_HITS_FILE, {})
     prev_tickers = {h.get('ticker', '') for h in prev_data.get('hits_hurtige', [])}
 
-    # Marker nye hurtige heste (ikke set forrige uge)
+    # Byg lookup af forrige uges momentum per ticker
+    prev_momentum_map = {
+        h.get('ticker', ''): h.get('momentum', 0)
+        for h in prev_data.get('hits', [])
+        if h.get('ticker')
+    }
+
+    # Marker nye hurtige heste og beregn momentum-pile
     for c in candidates:
+        ticker = c.get('ticker', '')
         c['is_new_this_week'] = (
             c['kategori'] == 'hurtig' and
-            c.get('ticker', '') not in prev_tickers
+            ticker not in prev_tickers
         )
+        # Momentum-pile: sammenlign denne uges vs forrige uges momentum
+        curr_mom = c.get('momentum', 0) or 0
+        prev_mom = prev_momentum_map.get(ticker)
+        if prev_mom is None:
+            # Ikke set forrige uge — kan ikke beregne retning
+            c['momentum_pile'] = '—'
+        else:
+            prev_mom = float(prev_mom) if prev_mom else 0
+            if curr_mom > prev_mom:
+                c['momentum_pile'] = '↑↑' if prev_mom > 0 else '↓↑'
+            else:
+                c['momentum_pile'] = '↑↓' if curr_mom > 0 else '↓↓' 
+
+    # Find svageste ejede fond til sammenligning i detaljer
+    owned_candidates = [c for c in candidates if c.get('is_owned')]
+    if owned_candidates:
+        weakest = min(owned_candidates, key=lambda x: x.get('score', 0))
+        weakest_info = {'ticker': weakest.get('ticker', ''), 'score': weakest.get('score', 0), 'name': weakest.get('name', '')}
+    else:
+        weakest_info = None
+
+    # Tilfoej svageste til alle kandidater
+    for c in candidates:
+        c['weakest_owned'] = weakest_info
 
     # Del i to kategorier
     stabile = [c for c in candidates if c['kategori'] == 'stabil']
