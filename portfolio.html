@@ -290,7 +290,9 @@
 <script>
   const REPO_OWNER = 'alf4444';
   const REPO_NAME  = 'TrendAgent';
-  const FILE_PATH  = 'config/trades.json';
+  const FILE_PATH       = 'config/trades.json';
+  const PORTFOLIO_FILE  = 'config/etf_portfolio.json';
+  const WATCHLIST_FILE  = 'config/etf_watchlist.json';
 
   let currentHandling = 'KØB';
   let currentFundType = 'PFA';
@@ -554,8 +556,100 @@
       renderPositions(existing);
       renderTrades(existing);
 
+      // Synkroniser etf_portfolio.json automatisk (kører i baggrunden)
+      syncEtfPortfolio(existing, token);
+
     } catch(e) { showStatus('❌ Fejl: ' + e.message, 'error'); }
     finally { document.getElementById('submitBtn').disabled = false; }
+  }
+
+
+  // ── SYNC etf_portfolio.json fra trades.json ──────────────────
+  // Kaldes automatisk efter hvert KØB/SALG er gemt
+  async function syncEtfPortfolio(trades, token) {
+    try {
+      // Hent watchlist for at få ticker og metadata
+      let watchlist = {};
+      try {
+        const wlRes = await fetch(
+          `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${WATCHLIST_FILE}`,
+          { headers: { 'Authorization': `token ${token}` } });
+        if (wlRes.ok) {
+          const wlData = await wlRes.json();
+          watchlist = JSON.parse(atob(wlData.content.replace(/\n/g, '')));
+        }
+      } catch(e) { /* watchlist fejler ikke kritisk */ }
+
+      // Byg etf_portfolio.json fra aktive ETF-handler
+      const portfolio = {};
+      trades
+        .filter(t => t.type === 'ETF' && t.handling === 'KØB')
+        .forEach(t => {
+          const isin = t.isin;
+          const isActive = t.status === 'ÅBEN';
+          const wl = watchlist[isin] || {};
+          // Bevar eksisterende depot/ask_eligible hvis de allerede er sat
+          const existing = portfolio[isin] || {};
+          portfolio[isin] = {
+            name:         t.navn,
+            ticker:       t.ticker || wl.ticker || '',
+            active:       isActive,
+            buy_date:     t.dato,
+            buy_price:    t.kurs,
+            depot:        existing.depot || wl.depot || 'AKT',
+            ask_eligible: existing.ask_eligible !== undefined
+                            ? existing.ask_eligible
+                            : (wl.ask_eligible || false),
+          };
+          if (!isActive && t.lukket_dato) {
+            portfolio[isin].sell_date  = t.lukket_dato;
+            portfolio[isin].sell_price = t.lukket_kurs;
+            portfolio[isin].afkast_pct = t.afkast_pct;
+          }
+        });
+
+      // Hent eksisterende etf_portfolio.json for sha
+      let sha = undefined;
+      try {
+        const getRes = await fetch(
+          `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${PORTFOLIO_FILE}`,
+          { headers: { 'Authorization': `token ${token}` } });
+        if (getRes.ok) {
+          const d = await getRes.json();
+          sha = d.sha;
+          // Bevar depot og ask_eligible fra eksisterende fil
+          const existing = JSON.parse(atob(d.content.replace(/\n/g, '')));
+          Object.keys(portfolio).forEach(isin => {
+            if (existing[isin]) {
+              if (existing[isin].depot)        portfolio[isin].depot = existing[isin].depot;
+              if (existing[isin].ask_eligible !== undefined)
+                portfolio[isin].ask_eligible = existing[isin].ask_eligible;
+              if (existing[isin].ask_note)     portfolio[isin].ask_note = existing[isin].ask_note;
+            }
+          });
+        }
+      } catch(e) { /* fil eksisterer ikke endnu */ }
+
+      // Gem opdateret etf_portfolio.json
+      const body = {
+        message: '🔄 Sync etf_portfolio.json fra trades.json [skip ci]',
+        content: btoa(unescape(encodeURIComponent(JSON.stringify(portfolio, null, 2)))),
+      };
+      if (sha) body.sha = sha;
+
+      const putRes = await fetch(
+        `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${PORTFOLIO_FILE}`,
+        { method: 'PUT', headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify(body) });
+
+      if (putRes.ok) {
+        console.log('etf_portfolio.json synkroniseret OK');
+      } else {
+        console.warn('etf_portfolio.json sync fejlede:', putRes.status);
+      }
+    } catch(e) {
+      console.warn('etf_portfolio.json sync fejl:', e.message);
+    }
   }
 
   // ── RESET ──────────────────────────────────────────────────
