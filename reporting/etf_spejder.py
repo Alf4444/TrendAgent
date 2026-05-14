@@ -445,6 +445,19 @@ def main():
     portfolio = load_json(PORTFOLIO_FILE, {})
 
     owned_isins     = {isin for isin, p in portfolio.items() if p.get('active', False)}
+
+    # Byg ASK-egnethed og depot lookup fra watchlist og portfolio
+    ask_eligible_map = {}
+    depot_map        = {}
+    for isin, w in watchlist.items():
+        if isin.startswith('_'):
+            continue
+        ask_eligible_map[isin] = w.get('ask_eligible', None)
+    for isin, p in portfolio.items():
+        if p.get('ask_eligible') is not None:
+            ask_eligible_map[isin] = p['ask_eligible']
+        if p.get('depot'):
+            depot_map[isin] = p['depot']
     watchlist_isins = set(watchlist.keys())
 
     # Indlæs Nordnet-inventory (None = filter deaktiveret)
@@ -594,6 +607,9 @@ def main():
         # Score
         result = score_etf(effective_isin, name, row, prices, is_owned, is_watchlist)
         if result:
+            # Berig med ASK-info fra watchlist og portfolio
+            result['ask_eligible'] = ask_eligible_map.get(effective_isin, None)
+            result['depot']        = depot_map.get(effective_isin, None)
             # Nordnet-filter: efter scoring — vi har nu bekræftet ISIN og kursdata
             # Ejede og watchlist-fonde er altid undtaget
             # Hvis effective_isin er tom kan vi ikke tjekke — lad fonden igennem
