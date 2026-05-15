@@ -44,6 +44,31 @@
     .ask-badge.ask  { background: #e6f4ea; color: #1e6e34; border: 1px solid #a8d5b5; }
     .ask-badge.akt  { background: #fff3e0; color: #e65100; border: 1px solid #ffcc80; }
     .ask-badge.warn { background: #fce8e6; color: #c62828; border: 1px solid #f5c6c6; }
+    .s-card { background: var(--bg, #fff5f5); border: 1px solid var(--bc, #e53935); border-radius: 10px; padding: 12px 14px; }
+    .s-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
+    .s-name { font-weight: 700; font-size: 13px; color: #1a1a2e; line-height: 1.3; }
+    .s-ticker { font-size: 11px; color: #888; margin-top: 2px; }
+    .s-pile { font-size: 20px; font-weight: 700; min-width: 32px; text-align: right; }
+    .s-badges { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 8px; align-items: center; }
+    .s-badge { font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 6px; border: 1px solid; }
+    .s-badge-score { background: #f5f5f5; color: #333; border-color: #ddd; }
+    .s-badge-new { background: #e6f1fb; color: #0c447c; border-color: #85b7eb; }
+    .s-badge-rsi { background: #fce8e6; color: #c62828; border-color: #f5c6c6; }
+    .s-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 8px; }
+    .s-stat { background: rgba(0,0,0,0.03); border-radius: 6px; padding: 5px 8px; }
+    .s-stat-label { font-size: 10px; color: #888; margin-bottom: 1px; }
+    .s-stat-value { font-size: 13px; font-weight: 700; }
+    .s-detail-btn { font-size: 11px; color: #1976d2; cursor: pointer; background: none; border: none; padding: 0; text-decoration: underline; }
+    .s-detail { display: none; margin-top: 10px; border-top: 1px solid rgba(0,0,0,0.07); padding-top: 10px; }
+    .s-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 8px; }
+    .s-detail-item { font-size: 11px; }
+    .s-detail-label { color: #888; }
+    .s-detail-value { color: #1a1a2e; font-weight: 600; }
+    .s-compare { background: #e8f0fe; border: 1px solid #90b4f5; border-radius: 6px; padding: 6px 10px; font-size: 11px; color: #1a56c4; }
+    .ask-badge { display: inline-block; padding: 1px 7px; border-radius: 8px; font-size: 10px; font-weight: 700; margin-left: 4px; }
+    .ask-badge.ask  { background: #e6f4ea; color: #1e6e34; border: 1px solid #a8d5b5; }
+    .ask-badge.akt  { background: #fff3e0; color: #e65100; border: 1px solid #ffcc80; }
+    .ask-badge.warn { background: #fce8e6; color: #c62828; border: 1px solid #f5c6c6; }
 
     /* TOP/BUND */
     .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
@@ -157,6 +182,53 @@
   {% endif %}
 
   <!-- SPEJDER: HURTIGE HESTE -->
+{% macro spejder_kort(s, accent_color, accent_bg, score_bg, score_color) %}
+<div class="s-card" style="--bg: {{ accent_bg }}; --bc: {{ accent_color }};">
+  <div class="s-header">
+    <div>
+      <div class="s-name">{{ '⭐ ' if s.is_owned else '👁 ' if s.is_watchlist else '' }}{{ s.name[:50] }}</div>
+      <div class="s-ticker">{{ s.ticker }}</div>
+    </div>
+    <div class="s-pile" style="color: {{ '#27ae60' if s.momentum_pile in ['↑↑','↓↑'] else '#e53935' if s.momentum_pile == '↓↓' else '#f39c12' }}">
+      {{ s.momentum_pile if s.momentum_pile else '—' }}
+    </div>
+  </div>
+  <div class="s-badges">
+    <span class="s-badge s-badge-score" style="background:{{ score_bg }}; color:{{ score_color }}; border-color:{{ accent_color }};">{{ s.score }}pt</span>
+    {% if s.is_new_this_week %}<span class="s-badge s-badge-new">✦ Ny denne uge</span>{% endif %}
+    {% if s.rsi and s.rsi >= 70 %}<span class="s-badge s-badge-rsi">RSI {{ '%.0f'|format(s.rsi) }} ⚠</span>{% endif %}
+  </div>
+  <div class="s-stats">
+    <div class="s-stat">
+      <div class="s-stat-label">Momentum</div>
+      <div class="s-stat-value" style="color:{{ accent_color }};">+{{ s.momentum }}%</div>
+    </div>
+    <div class="s-stat">
+      <div class="s-stat-label">1M afkast</div>
+      <div class="s-stat-value">{{ '%+.1f'|format(s.return_1m) if s.return_1m is not none else '—' }}%</div>
+    </div>
+    <div class="s-stat">
+      <div class="s-stat-label">1Y afkast</div>
+      <div class="s-stat-value">{% if s.short_history %}— (ny){% elif s.return_1y is not none %}{{ '%+.1f'|format(s.return_1y) }}%{% else %}—{% endif %}</div>
+    </div>
+  </div>
+  <button class="s-detail-btn" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.textContent = this.textContent.includes('▾') ? '▸ Detaljer ved handel' : '▾ Detaljer ved handel';">▾ Detaljer ved handel</button>
+  <div class="s-detail">
+    <div class="s-detail-grid">
+      <div class="s-detail-item"><div class="s-detail-label">Depot</div><div class="s-detail-value">{% if s.ask_eligible == true %}<span class="ask-badge ask">ASK ✓</span>{% elif s.ask_eligible == false %}<span class="ask-badge akt">AKT</span>{% else %}—{% endif %}</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Sektor</div><div class="s-detail-value">{{ s.category or '—' }}</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">{{ '%+.1f'|format(s.weighted_momentum) if s.weighted_momentum else '—' }}</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">{{ s.ter }}%</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">{% if s.reasons %}{{ s.reasons[-1][:30] }}{% else %}—{% endif %}</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">{{ '%.0f'|format(s.rsi) if s.rsi else '—' }}</div></div>
+    </div>
+    {% if s.weakest_owned and not s.is_owned %}
+    <div class="s-compare">⇄ Stærkere end din svageste fond — {{ s.weakest_owned.ticker }} {{ s.weakest_owned.score }}pt</div>
+    {% endif %}
+  </div>
+</div>
+{% endmacro %}
+
   {% if spejder_hurtige %}
   <div class="spejder-box" style="border-left-color: #e53935; background: white;">
     <div class="spejder-title" style="color: #e53935;">
@@ -170,62 +242,13 @@
     </div>
     <div class="spejder-grid" id="spejder-hurtige">
       {% for s in spejder_hurtige[:5] %}
-      <div class="spejder-card" style="border-color: #e53935; background: #fff5f5;">
-        <div class="spejder-name">
-          {{ '⭐ ' if s.is_owned else '👁 ' if s.is_watchlist else '🆕 ' }}
-          {{ '🚀 ' if s.cross == '🚀 GOLDEN' else '' }}{{ s.name[:45] }}
-        </div>
-        <div class="spejder-ticker">{{ s.ticker }}
-          <span style="margin-left:6px; background:#fce8e6; color:#c62828; padding:1px 6px; border-radius:8px; font-size:10px;">
-            Score: {{ s.score }}pt
-          </span>
-          {% if s.ask_eligible == true %}
-          <span class="ask-badge ask" title="Godkendt til Aktiesparekonto (17% skat)">ASK ✓</span>
-          {% elif s.ask_eligible == false %}
-          <span class="ask-badge akt" title="Ikke godkendt til ASK — køb i almindeligt depot">AKT</span>
-          {% endif %}
-          {% if s.depot == 'AKT' and s.ask_eligible == true %}
-          <span class="ask-badge warn" title="Fonden er ASK-egnet men ligger i AKT — overvej flytning">⚠️ Flyt til ASK</span>
-          {% endif %}
-          {% if s.rsi and s.rsi >= 70 %}
-          <span style="margin-left:4px; background:#d93025; color:white; padding:1px 6px; border-radius:8px; font-size:10px;" title="RSI ≥70 — overkøbt. Overvej at vente på tilbagefald.">RSI {{ '%.0f'|format(s.rsi) }} ⚠️</span>
-          {% endif %}
-        </div>
-        <div class="spejder-stats">
-          <div class="spejder-stat">Momentum: <span class="val" style="color:#e53935;">+{{ s.momentum }}%</span></div>
-          {% if s.weighted_momentum %}<div class="spejder-stat">Vægtet: <span class="val" style="color:#e53935;">{{ '%+.1f'|format(s.weighted_momentum) }}</span></div>{% endif %}
-          <div class="spejder-stat">1Y: <span class="val" style="color:#e53935;">{{ '%+.1f'|format(s.return_1y) if s.return_1y is not none else '–' }}%</span></div>
-          <div class="spejder-stat">1M: <span class="val">{{ '%+.1f'|format(s.return_1m) if s.return_1m is not none else '–' }}%</span></div>
-          {% if s.rsi %}<div class="spejder-stat">RSI: <span class="val" style="color: {{ '#d93025' if s.rsi >= 70 else '#555' }}">{{ '%.0f'|format(s.rsi) }}</span></div>{% endif %}
-        </div>
-        <div class="spejder-reasons">{% for r in s.reasons %}<span>✓ {{ r }}</span>{% endfor %}</div>
-        {% if s.ter %}<div style="font-size:10px; color:#aaa; margin-top:4px;">TER: {{ s.ter }}%</div>{% endif %}
-      </div>
+      {{ spejder_kort(s, '#e53935', '#fff5f5', '#fce8e6', '#c62828') }}
       {% endfor %}
     </div>
     {% if spejder_hurtige|length > 5 %}
     <div class="spejder-grid" id="spejder-hurtige-rest" style="display:none; margin-top:10px;">
       {% for s in spejder_hurtige[5:] %}
-      <div class="spejder-card" style="border-color: #e53935; background: #fff5f5;">
-        <div class="spejder-name">
-          {{ '⭐ ' if s.is_owned else '👁 ' if s.is_watchlist else '🆕 ' }}
-          {{ s.name[:45] }}
-        </div>
-        <div class="spejder-ticker">{{ s.ticker }}
-          <span style="margin-left:6px; background:#fce8e6; color:#c62828; padding:1px 6px; border-radius:8px; font-size:10px;">Score: {{ s.score }}pt</span>
-          {% if s.ask_eligible == true %}<span class="ask-badge ask" title="Godkendt til ASK">ASK ✓</span>
-          {% elif s.ask_eligible == false %}<span class="ask-badge akt" title="Ikke ASK-egnet">AKT</span>{% endif %}
-          {% if s.rsi and s.rsi >= 70 %}
-          <span style="margin-left:4px; background:#d93025; color:white; padding:1px 6px; border-radius:8px; font-size:10px;" title="RSI ≥70 — overkøbt">RSI {{ '%.0f'|format(s.rsi) }} ⚠️</span>
-          {% endif %}
-        </div>
-        <div class="spejder-stats">
-          <div class="spejder-stat">Momentum: <span class="val" style="color:#e53935;">+{{ s.momentum }}%</span></div>
-          <div class="spejder-stat">1M: <span class="val">{{ '%+.1f'|format(s.return_1m) if s.return_1m is not none else '–' }}%</span></div>
-          {% if s.rsi %}<div class="spejder-stat">RSI: <span class="val" style="color: {{ '#d93025' if s.rsi >= 70 else '#555' }}">{{ '%.0f'|format(s.rsi) }}</span></div>{% endif %}
-        </div>
-        <div class="spejder-reasons">{% for r in s.reasons %}<span>✓ {{ r }}</span>{% endfor %}</div>
-      </div>
+      {{ spejder_kort(s, '#e53935', '#fff5f5', '#fce8e6', '#c62828') }}
       {% endfor %}
     </div>
     {% endif %}
@@ -246,48 +269,13 @@
     </div>
     <div class="spejder-grid" id="spejder-stabile">
       {% for s in spejder_stabile[:5] %}
-      <div class="spejder-card" style="border-color: #4ecdc4; background: #f0fdfa;">
-        <div class="spejder-name">
-          {{ '⭐ ' if s.is_owned else '👁 ' if s.is_watchlist else '🆕 ' }}
-          {{ '🚀 ' if s.cross == '🚀 GOLDEN' else '' }}{{ s.name[:45] }}
-        </div>
-        <div class="spejder-ticker">{{ s.ticker }}
-          <span style="margin-left:6px; background:#e0f2f1; color:#00695c; padding:1px 6px; border-radius:8px; font-size:10px;">
-            Score: {{ s.score }}pt
-          </span>
-          {% if s.ask_eligible == true %}<span class="ask-badge ask" title="Godkendt til Aktiesparekonto (17% skat)">ASK ✓</span>
-          {% elif s.ask_eligible == false %}<span class="ask-badge akt" title="Ikke ASK-egnet — køb i AKT">AKT</span>{% endif %}
-        </div>
-        <div class="spejder-stats">
-          <div class="spejder-stat">Momentum: <span class="val">+{{ s.momentum }}%</span></div>
-          {% if s.weighted_momentum %}<div class="spejder-stat">Vægtet: <span class="val">{{ '%+.1f'|format(s.weighted_momentum) }}</span></div>{% endif %}
-          <div class="spejder-stat">1M: <span class="val">{{ '%+.1f'|format(s.return_1m) if s.return_1m is not none else '–' }}%</span></div>
-          <div class="spejder-stat">1Y: <span class="val">{{ '%+.1f'|format(s.return_1y) if s.return_1y is not none else '–' }}%</span></div>
-          {% if s.rsi %}<div class="spejder-stat">RSI: <span class="val">{{ '%.0f'|format(s.rsi) }}</span></div>{% endif %}
-        </div>
-        <div class="spejder-reasons">{% for r in s.reasons %}<span>✓ {{ r }}</span>{% endfor %}</div>
-        {% if s.ter %}<div style="font-size:10px; color:#aaa; margin-top:4px;">TER: {{ s.ter }}%</div>{% endif %}
-      </div>
+      {{ spejder_kort(s, '#0d9488', '#f0fdfa', '#e0f2f1', '#00695c') }}
       {% endfor %}
     </div>
     {% if spejder_stabile|length > 5 %}
     <div class="spejder-grid" id="spejder-stabile-rest" style="display:none; margin-top:10px;">
       {% for s in spejder_stabile[5:] %}
-      <div class="spejder-card" style="border-color: #4ecdc4; background: #f0fdfa;">
-        <div class="spejder-name">
-          {{ '⭐ ' if s.is_owned else '👁 ' if s.is_watchlist else '🆕 ' }}{{ s.name[:45] }}
-        </div>
-        <div class="spejder-ticker">{{ s.ticker }}
-          <span style="margin-left:6px; background:#e0f2f1; color:#00695c; padding:1px 6px; border-radius:8px; font-size:10px;">Score: {{ s.score }}pt</span>
-          {% if s.ask_eligible == true %}<span class="ask-badge ask" title="ASK-egnet">ASK ✓</span>
-          {% elif s.ask_eligible == false %}<span class="ask-badge akt" title="Ikke ASK-egnet">AKT</span>{% endif %}
-        </div>
-        <div class="spejder-stats">
-          <div class="spejder-stat">Momentum: <span class="val">+{{ s.momentum }}%</span></div>
-          <div class="spejder-stat">1M: <span class="val">{{ '%+.1f'|format(s.return_1m) if s.return_1m is not none else '–' }}%</span></div>
-          {% if s.rsi %}<div class="spejder-stat">RSI: <span class="val">{{ '%.0f'|format(s.rsi) }}</span></div>{% endif %}
-        </div>
-      </div>
+      {{ spejder_kort(s, '#0d9488', '#f0fdfa', '#e0f2f1', '#00695c') }}
       {% endfor %}
     </div>
     {% endif %}
