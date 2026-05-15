@@ -353,3 +353,23 @@ def get_momentum_status(return_1m, rank, total_funds=47):
     if rank <= 5 and r1m > 0:
         return "🚀 Top Performer", "momentum-fast"
     return "✅ Stabil", "momentum-stable"
+
+
+def get_trail_stop_pct(volatility):
+    """
+    Beregner variabelt Trail Stop baseret på fondens volatilitet.
+    Enkelt kilde til sandhed — bruges af etf_build_weekly.py og etf_send_alert.py.
+
+    Volatilitet er 20-dages standardafvigelse af daglige afkast i %.
+      < 1.0%  → 3% stop  (fx obligationer, lav-vol fonde)
+      1-2%    → 5% stop  (fx brede aktieindeks)
+      > 2.0%  → 7% stop  (fx Korea, Hydrogen, Halvledere)
+    """
+    if volatility is None:
+        return 3.0
+    if volatility < 1.0:
+        return 3.0
+    elif volatility < 2.0:
+        return 5.0
+    else:
+        return 7.0
