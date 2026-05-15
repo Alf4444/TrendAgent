@@ -24,6 +24,7 @@ from utils import (
     calculate_drawdown, calculate_ytd,
     get_cross_signal, get_trend_state,
     check_trail_stop, is_trading_day,
+    get_trail_stop_pct,
 )
 from sector_heatmap import build_heatmap, get_concentration_warning
 
@@ -39,28 +40,6 @@ HWM_FILE       = ROOT / "data/etf_hwm.json"
 SPEJDER_FILE   = ROOT / "data/etf_spejder_hits.json"
 TEMPLATE_FILE  = ROOT / "templates/etf_weekly.html.j2"
 REPORT_FILE    = ROOT / "build/etf_weekly.html"
-
-TRAIL_STOP_PCT = 3.0  # Default — overrides af volatilitet per fond
-
-def get_trail_stop_pct(volatility):
-    """
-    Beregner variabelt Trail Stop baseret på fondens volatilitet.
-    Høj volatilitet = løsere stop (undgår falske alarmer).
-    Lav volatilitet = strammere stop (beskytter gevinster tæt).
-
-    Volatilitet er 20-dages standardafvigelse af daglige afkast i %.
-      < 1.0%  → 3% stop  (fx obligationer, lav-vol fonde)
-      1-2%    → 5% stop  (fx brede aktieindeks)
-      > 2.0%  → 7% stop  (fx Korea, Hydrogen, Halvledere)
-    """
-    if volatility is None:
-        return TRAIL_STOP_PCT
-    if volatility < 1.0:
-        return 3.0
-    elif volatility < 2.0:
-        return 5.0
-    else:
-        return 7.0
 
 # Spejder-filtre
 
@@ -287,7 +266,7 @@ def build_weekly():
         avg_portfolio_return = round(avg_portfolio_return, 2),
         portfolio_alerts     = portfolio_alerts,
         trail_stop_alerts    = trail_stop_alerts,
-        trail_stop_pct       = TRAIL_STOP_PCT,
+        trail_stop_pct       = 3.0,
         spejder_hits         = spejder_hits_all,
         spejder_hurtige      = spejder_hurtige,
         spejder_stabile      = spejder_stabile,
