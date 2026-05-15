@@ -1,5 +1,5 @@
 # 📈 TrendAgent Fokus
-**Opdateret:** 14-05-2026 21:01
+**Opdateret:** 15-05-2026 20:29
 
 | | Fond | Signal | RSI | Afkast % | Trend | MA % | Cross |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
