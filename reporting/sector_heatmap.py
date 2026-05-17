@@ -181,3 +181,155 @@ if __name__ == "__main__":
         print(f"  {kat['kategori']} ({kat['andel_pct']}% — {kat['antal']} fonde):")
         for f in kat['fonde']:
             print(f"    - {f['navn']} ({f['ticker']}): {f['total_return']}")
+
+
+# ============================================================
+# KORRELATIONSBEREGNING
+# ============================================================
+
+def _daily_returns(isin, history, days=90):
+    """Beregner daglige afkast i % for de seneste 'days' handelsdage."""
+    prices = history.get(isin, {})
+    dates  = sorted(prices.keys())[-days-1:]
+    vals   = [prices[d] for d in dates]
+    if len(vals) < 2:
+        return []
+    return [(vals[i] - vals[i-1]) / vals[i-1] * 100 for i in range(1, len(vals))]
+
+
+def _pearson(a, b):
+    """Beregner Pearson korrelationskoefficient. Returnerer None hvis ikke nok data."""
+    n = min(len(a), len(b))
+    if n < 20:
+        return None
+    a, b   = a[-n:], b[-n:]
+    mean_a = sum(a) / n
+    mean_b = sum(b) / n
+    num    = sum((a[i] - mean_a) * (b[i] - mean_b) for i in range(n))
+    den_a  = sum((x - mean_a) ** 2 for x in a) ** 0.5
+    den_b  = sum((x - mean_b) ** 2 for x in b) ** 0.5
+    if den_a == 0 or den_b == 0:
+        return None
+    return round(num / (den_a * den_b), 2)
+
+
+def _corr_label(corr):
+    """Returnerer (periode_tekst, vurdering_tekst, css_klasse) ud fra korrelationstal."""
+    if corr is None:
+        return "Ikke nok data", "— Ukendt", "corr-unknown"
+    if corr > 0.85:
+        return "Bevæger sig næsten identisk", "Ingen reel spredning", "corr-none"
+    if corr > 0.70:
+        return "Falder ofte sammen", "Begrænset spredning", "corr-low"
+    if corr > 0.50:
+        return "Falder af og til sammen", "Nogen spredning", "corr-ok"
+    return "Bevæger sig uafhængigt", "God spredning", "corr-good"
+
+
+def build_correlation_table(portfolio, history, days=90):
+    """
+    Beregner korrelation mellem alle par af aktive positioner.
+
+    Returnerer:
+      - pairs: liste af dicts klar til Jinja2-template
+      - summary: opsummeringstekst til visning under tabellen
+    """
+    aktive = [
+        (isin, info)
+        for isin, info in portfolio.items()
+        if info.get('active', False)
+    ]
+
+    if len(aktive) < 2:
+        return [], ""
+
+    returns = {
+        isin: _daily_returns(isin, history, days)
+        for isin, _ in aktive
+    }
+
+    pairs = []
+    for i in range(len(aktive)):
+        for j in range(i + 1, len(aktive)):
+            isin_a, info_a = aktive[i]
+            isin_b, info_b = aktive[j]
+            corr           = _pearson(returns[isin_a], returns[isin_b])
+            periode, vurdering, css = _corr_label(corr)
+            pairs.append({
+                "navn_a":    info_a.get('name', isin_a),
+                "ticker_a":  info_a.get('ticker', ''),
+                "navn_b":    info_b.get('name', isin_b),
+                "ticker_b":  info_b.get('ticker', ''),
+                "korr":      corr,
+                "korr_str":  f"{corr:.2f}" if corr is not None else "—",
+                "periode":   periode,
+                "vurdering": vurdering,
+                "css":       css,
+                "advarsel":  corr is not None and corr > 0.70,
+            })
+
+    # Sortér: højest korrelation øverst
+    pairs.sort(key=lambda x: -(x['korr'] or 0))
+
+    # Byg opsummeringstekst
+    ingen_spredning   = [p for p in pairs if p['css'] == 'corr-none']
+    begraenset        = [p for p in pairs if p['css'] == 'corr-low']
+
+    if ingen_spredning:
+        navne = " og ".join(
+            f"{p['ticker_a']} + {p['ticker_b']}" for p in ingen_spredning
+        )
+        summary = (
+            f"{len(ingen_spredning)} par har ingen reel spredning ({navne}) — "
+            f"de bevæger sig næsten identisk. Overvej om du reelt har "
+            f"{'én position i stedet for to' if len(ingen_spredning) == 1 else 'færre positioner end du tror'}."
+        )
+    elif begraenset:
+        navne = " og ".join(
+            f"{p['ticker_a']} + {p['ticker_b']}" for p in begraenset
+        )
+        summary = (
+            f"{len(begraenset)} par har begrænset spredning ({navne}) — "
+            f"de falder ofte sammen i urolige markeder."
+        )
+    else:
+        summary = (
+            "God spredning på tværs af alle positioner — "
+            "ingen par bevæger sig konsistent sammen."
+        )
+
+    return pairs, summary
+
+
+def build_portfolio_correlation(isin_candidate, history, portfolio, days=90):
+    """
+    Beregner en kandidat-fonds gennemsnitlige korrelation mod porteføljen.
+    Bruges af etf_spejder.py til at vise spredningsindikator på Spejder-kort.
+
+    Returnerer: (korrelation_float_eller_None, label_str, css_str)
+    """
+    aktive_isins = [
+        isin for isin, info in portfolio.items()
+        if info.get('active', False) and isin != isin_candidate
+    ]
+
+    if not aktive_isins:
+        return None, "—", "corr-unknown"
+
+    cand_returns = _daily_returns(isin_candidate, history, days)
+    if not cand_returns:
+        return None, "—", "corr-unknown"
+
+    korrelationer = []
+    for isin in aktive_isins:
+        port_returns = _daily_returns(isin, history, days)
+        corr         = _pearson(cand_returns, port_returns)
+        if corr is not None:
+            korrelationer.append(corr)
+
+    if not korrelationer:
+        return None, "—", "corr-unknown"
+
+    avg_corr = round(sum(korrelationer) / len(korrelationer), 2)
+    _, vurdering, css = _corr_label(avg_corr)
+    return avg_corr, vurdering, css
