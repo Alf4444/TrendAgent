@@ -355,21 +355,45 @@ def get_momentum_status(return_1m, rank, total_funds=47):
     return "✅ Stabil", "momentum-stable"
 
 
-def get_trail_stop_pct(volatility):
+def get_trail_stop_pct(volatility, rsi=None):
     """
-    Beregner variabelt Trail Stop baseret på fondens volatilitet.
+    Beregner variabelt Trail Stop baseret på volatilitet og RSI.
     Enkelt kilde til sandhed — bruges af etf_build_weekly.py og etf_send_alert.py.
 
-    Volatilitet er 20-dages standardafvigelse af daglige afkast i %.
-      < 1.0%  → 3% stop  (fx obligationer, lav-vol fonde)
-      1-2%    → 5% stop  (fx brede aktieindeks)
-      > 2.0%  → 7% stop  (fx Korea, Hydrogen, Halvledere)
+    Trin 1 — Basisstop fra volatilitet (20-dages std. af daglige afkast i %):
+      < 1.0%  -> 3%  (fx obligationer, lav-vol fonde)
+      1-2%    -> 5%  (fx brede aktieindeks)
+      > 2.0%  -> 7%  (fx Korea, Hydrogen, Halvledere)
+
+    Trin 2 — RSI-stramning (relativ til basisstop):
+      RSI >= 70  -> -0.5%
+      RSI >= 75  -> -1.0%
+      RSI >= 80  -> -1.5%
+
+    Volatile fonde har stadig mere plads end lav-vol fonde selv ved hoj RSI.
+    Minimum: 1.5% — undgar udstopning pa hverdagsst\u00f8j.
+
+    Eksempler ved RSI 80:
+      Lav-vol:  3.0% - 1.5% = 1.5%
+      Mellem:   5.0% - 1.5% = 3.5%
+      Hoj-vol:  7.0% - 1.5% = 5.5%
     """
-    if volatility is None:
-        return 3.0
-    if volatility < 1.0:
-        return 3.0
+    # Trin 1 — basisstop fra volatilitet
+    if volatility is None or volatility < 1.0:
+        base = 3.0
     elif volatility < 2.0:
-        return 5.0
+        base = 5.0
     else:
-        return 7.0
+        base = 7.0
+
+    # Trin 2 — RSI-stramning
+    if rsi is not None:
+        if rsi >= 80:
+            base -= 1.5
+        elif rsi >= 75:
+            base -= 1.0
+        elif rsi >= 70:
+            base -= 0.5
+
+    # Minimum 1.5% uanset volatilitet og RSI
+    return max(round(base, 1), 1.5)
