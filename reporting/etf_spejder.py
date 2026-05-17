@@ -45,6 +45,7 @@ except ImportError:
     sys.exit(1)
 
 from utils import get_ma, get_best_ma, get_rsi, get_cross_signal, get_trend_state
+from sector_heatmap import build_portfolio_correlation
 
 # ==========================================
 # KONFIGURATION
@@ -55,6 +56,7 @@ PORTFOLIO_FILE   = ROOT / "config/etf_portfolio.json"
 HITS_FILE        = ROOT / "data/etf_spejder_hits.json"
 PREV_HITS_FILE   = ROOT / "data/etf_spejder_prev.json"  # Forrige uges hits
 SOLD_FILE        = ROOT / "data/etf_sold.json"           # Solgte fonde — cool-off filter
+HISTORY_FILE     = ROOT / "data/etf_history.json"        # Kurshistorik til korrelationsberegning
 NORDNET_FILE     = ROOT / "data/etf_nordnet_inventory.json"
 
 # Filtre
@@ -773,9 +775,24 @@ def main():
     else:
         weakest_info = None
 
-    # Tilfoej svageste til alle kandidater
+    # Indlæs history til korrelationsberegning
+    history_data = load_json(HISTORY_FILE, {})
+
+    # Tilfoej svageste og portfolio_correlation til alle kandidater
     for c in candidates:
         c['weakest_owned'] = weakest_info
+        # Spredningsindikator — kandidatens korrelation mod porteføljen
+        if history_data and not c.get('is_owned'):
+            corr_val, corr_label, corr_css = build_portfolio_correlation(
+                c['isin'], history_data, portfolio, days=90
+            )
+            c['portfolio_corr']       = corr_val
+            c['portfolio_corr_label'] = corr_label
+            c['portfolio_corr_css']   = corr_css
+        else:
+            c['portfolio_corr']       = None
+            c['portfolio_corr_label'] = '—'
+            c['portfolio_corr_css']   = 'corr-unknown'
 
     # Del i to kategorier
     stabile = [c for c in candidates if c['kategori'] == 'stabil']
