@@ -54,6 +54,7 @@ WATCHLIST_FILE   = ROOT / "config/etf_watchlist.json"
 PORTFOLIO_FILE   = ROOT / "config/etf_portfolio.json"
 HITS_FILE        = ROOT / "data/etf_spejder_hits.json"
 PREV_HITS_FILE   = ROOT / "data/etf_spejder_prev.json"  # Forrige uges hits
+SOLD_FILE        = ROOT / "data/etf_sold.json"           # Solgte fonde — cool-off filter
 NORDNET_FILE     = ROOT / "data/etf_nordnet_inventory.json"
 
 # Filtre
@@ -121,6 +122,66 @@ def load_nordnet_inventory():
         print(f"⚠️  Kunne ikke læse Nordnet-inventory: {e}")
         print(f"   Nordnet-filter deaktiveret — alle ISINs scannes.")
         return None
+
+
+def load_sold_funds():
+    """
+    Indlæser etf_sold.json — liste af solgte fonde til cool-off filter.
+
+    Format:
+      { "ISIN": { "sold_date": "YYYY-MM-DD", "sold_price": 123.45 }, ... }
+
+    Returnerer dict eller {} hvis filen ikke eksisterer.
+    """
+    if not SOLD_FILE.exists():
+        return {}
+    try:
+        with open(SOLD_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            return {k: v for k, v in data.items() if not k.startswith("_")}
+    except Exception:
+        return {}
+
+
+def is_sold_cooloff(isin, ticker, sold_funds, prices):
+    """
+    Returnerer True hvis fonden er i cool-off efter salg og skal filtreres fra.
+
+    Cool-off ophører når BEGGE betingelser er opfyldt:
+      1. Kursen er tilbage i BULL-trend (over MA)
+      2. Kursen er højere end salgskursen
+
+    Logik:
+      - Ejede fonde (is_owned=True) er aldrig i cool-off
+      - Fonde ikke i sold_funds er aldrig i cool-off
+      - Fonde der mangler prisdata filtreres ikke (vi kan ikke vurdere)
+    """
+    if not isin or isin not in sold_funds:
+        return False
+
+    entry      = sold_funds[isin]
+    sold_price = entry.get("sold_price", 0)
+
+    if not prices or not sold_price:
+        return False
+
+    curr_price = prices[-1]
+
+    # Betingelse 1: BULL-trend (kurs over MA)
+    from utils import get_best_ma
+    ma_val, _ = get_best_ma(prices)
+    if ma_val is None or curr_price <= ma_val:
+        print(f"   ⏳ Cool-off: {isin} — under MA ({curr_price:.2f} <= {ma_val:.2f if ma_val else '?'})")
+        return True
+
+    # Betingelse 2: Kurs højere end salgskurs
+    if curr_price <= sold_price:
+        print(f"   ⏳ Cool-off: {isin} — under salgskurs ({curr_price:.2f} <= {sold_price:.2f})")
+        return True
+
+    # Begge betingelser opfyldt — cool-off ophørt
+    print(f"   ✅ Cool-off ophørt: {isin} — BULL og over salgskurs ({curr_price:.2f} > {sold_price:.2f})")
+    return False
 
 
 def is_nordnet_available(isin, nordnet_isins, is_owned, is_watchlist):
@@ -446,6 +507,40 @@ def main():
 
     owned_isins     = {isin for isin, p in portfolio.items() if p.get('active', False)}
 
+    # Auto-opdater etf_sold.json når fonde går fra active→inactive i portfolio
+    # Salgsdato = i dag, salgskurs = seneste kendte kurs fra etf_latest.json
+    sold_funds = load_sold_funds()
+    latest_for_sold = load_json(ROOT / "data/etf_latest.json", [])
+    latest_sold_map = {item['isin']: item for item in latest_for_sold} if isinstance(latest_for_sold, list) else {}
+
+    newly_sold = 0
+    for isin, p in portfolio.items():
+        if p.get('active', False):
+            # Aktiv fond — fjern fra sold hvis den er der (købt igen)
+            if isin in sold_funds:
+                del sold_funds[isin]
+                print(f"   ✅ {p.get('name', isin)} fjernet fra cool-off (aktiv igen)")
+        else:
+            # Inaktiv fond — registrér salg hvis ikke allerede i sold
+            if isin not in sold_funds:
+                item       = latest_sold_map.get(isin, {})
+                sold_price = item.get('nav') or p.get('buy_price', 0)
+                sold_funds[isin] = {
+                    "sold_date":  datetime.now().strftime('%Y-%m-%d'),
+                    "sold_price": sold_price,
+                    "name":       p.get('name', isin),
+                }
+                newly_sold += 1
+                print(f"   📝 Auto-registreret salg: {p.get('name', isin)} @ {sold_price}")
+
+    if newly_sold > 0 or any(
+        isin not in portfolio or not portfolio[isin].get('active', False)
+        for isin in list(sold_funds.keys())
+        if not isin.startswith('_')
+    ):
+        save_json(SOLD_FILE, sold_funds)
+        print(f"   💾 etf_sold.json opdateret ({len(sold_funds)} fonde i cool-off)")
+
     # Byg ASK-egnethed og depot lookup fra watchlist og portfolio
     ask_eligible_map = {}
     depot_map        = {}
@@ -462,6 +557,10 @@ def main():
 
     # Indlæs Nordnet-inventory (None = filter deaktiveret)
     nordnet_isins = load_nordnet_inventory()
+
+    # Cool-off filter — sold_funds allerede indlæst og auto-opdateret ovenfor
+    if sold_funds:
+        print(f"   Cool-off filter: {len(sold_funds)} solgte fonde overvåges")
 
     # Byg ticker→ISIN mapping fra watchlist
     # justETF returnerer tickers — vi skal matche dem mod ISIN fra portfolio
@@ -603,6 +702,12 @@ def main():
             continue
 
         time.sleep(YFINANCE_DELAY)
+
+        # Cool-off filter — skip solgte fonde der ikke er vendt til BULL over salgskurs
+        # Ejede fonde (is_owned=True) er altid undtaget — de scannes altid
+        if not is_owned and is_sold_cooloff(effective_isin, ticker, sold_funds, prices):
+            skipped += 1
+            continue
 
         # Score
         result = score_etf(effective_isin, name, row, prices, is_owned, is_watchlist)
