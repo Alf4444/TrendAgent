@@ -118,6 +118,29 @@
     .hm-cat-etf .cat-t { font-size: 11px; font-weight: 700; margin-bottom: 3px; }
     .hm-cat-etf .cat-a { font-size: 19px; font-weight: 800; margin-bottom: 5px; }
     .hm-cat-etf .cat-f { font-size: 11px; color: #666; display: flex; justify-content: space-between; padding: 2px 0; }
+    /* KORRELATIONSTABEL */
+    .corr-w { background: white; border-radius: 10px; padding: 14px 16px;
+               box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 16px;
+               border-left: 4px solid #7b1fa2; }
+    .corr-w table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; }
+    .corr-w th { font-size: 11px; font-weight: 700; color: #888; padding: 5px 8px;
+                 border-bottom: 1px solid #eee; text-align: left; }
+    .corr-w td { padding: 7px 8px; border-bottom: 1px solid #f5f5f5; vertical-align: middle; }
+    .corr-w tr:last-child td { border-bottom: none; }
+    .corr-pair { font-size: 12px; font-weight: 600; color: #1a1a2e; }
+    .corr-ticker { font-size: 10px; color: #aaa; font-family: monospace; }
+    .corr-num { font-weight: 700; font-size: 13px; }
+    .corr-none  .corr-num { color: #d93025; }
+    .corr-low   .corr-num { color: #f59c00; }
+    .corr-ok    .corr-num { color: #1e8e3e; }
+    .corr-good  .corr-num { color: #1e8e3e; }
+    .corr-badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; }
+    .corr-none  .corr-badge { background: #fce8e6; color: #d93025; }
+    .corr-low   .corr-badge { background: #fff3e0; color: #f59c00; }
+    .corr-ok    .corr-badge { background: #e8f5e9; color: #1e8e3e; }
+    .corr-good  .corr-badge { background: #e8f5e9; color: #1e8e3e; }
+    .corr-summary { font-size: 11px; color: #555; background: #f9f9f9; border-radius: 6px;
+                    padding: 8px 10px; margin-top: 10px; line-height: 1.5; }
   </style>
 </head>
 <body>
@@ -224,6 +247,17 @@
     </div>
     {% if s.weakest_owned and not s.is_owned %}
     <div class="s-compare">⇄ Stærkere end din svageste fond — {{ s.weakest_owned.ticker }} {{ s.weakest_owned.score }}pt</div>
+    {% endif %}
+    {% if s.portfolio_corr_label and s.portfolio_corr_label != '—' and not s.is_owned %}
+    <div style="font-size:11px; margin-top:6px; padding-top:6px; border-top:1px solid rgba(0,0,0,0.05);">
+      {% if s.portfolio_corr_css == 'corr-none' %}
+      <span style="color:#d93025;">⚠️ Spredning mod din portefølje: {{ s.portfolio_corr_label }}</span>
+      {% elif s.portfolio_corr_css == 'corr-low' %}
+      <span style="color:#f59c00;">⚠️ Spredning mod din portefølje: {{ s.portfolio_corr_label }}</span>
+      {% else %}
+      <span style="color:#1e8e3e;">✅ Spredning mod din portefølje: {{ s.portfolio_corr_label }}</span>
+      {% endif %}
+    </div>
     {% endif %}
   </div>
 </div>
@@ -430,6 +464,46 @@
       </div>
       {% endfor %}
     </div>
+  </div>
+  {% endif %}
+
+  <!-- KORRELATIONSTABEL -->
+  {% if corr_pairs %}
+  <div class="corr-w">
+    <div style="font-size:13px; font-weight:700; color:#1a1a2e; margin-bottom:4px;">🔗 Spredning mellem positioner</div>
+    <div style="font-size:11px; color:#888; margin-bottom:4px;">Beregnet på 90 dages daglige afkast</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:38%">Par</th>
+          <th style="width:12%">Korrelation</th>
+          <th style="width:28%">Seneste 90 dage</th>
+          <th>Vurdering</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in corr_pairs %}
+        <tr class="{{ p.css }}">
+          <td>
+            <div class="corr-pair">{{ p.ticker_a }} + {{ p.ticker_b }}</div>
+            <div class="corr-ticker">{{ p.navn_a | truncate(22, true, '…') }} + {{ p.navn_b | truncate(22, true, '…') }}</div>
+          </td>
+          <td><span class="corr-num">{{ p.korr_str }}</span></td>
+          <td style="font-size:11px; color:#555;">{{ p.periode }}</td>
+          <td>
+            {% if p.advarsel %}
+            <span class="corr-badge">⚠️ {{ p.vurdering }}</span>
+            {% else %}
+            <span class="corr-badge">✅ {{ p.vurdering }}</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% if corr_summary %}
+    <div class="corr-summary">{{ corr_summary }}</div>
+    {% endif %}
   </div>
   {% endif %}
 
