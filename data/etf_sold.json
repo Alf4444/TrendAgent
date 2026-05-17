@@ -1,0 +1,11 @@
+{
+  "_info": "Solgte ETF-positioner — bruges af etf_spejder.py til cool-off filter",
+  "_format": "{ ISIN: { sold_date: YYYY-MM-DD, sold_price: float, name: str } }",
+  "_eksempel": {
+    "IE000I8KRLL9": {
+      "sold_date": "2026-05-20",
+      "sold_price": 16.48,
+      "name": "iShares MSCI Global Semiconductors UCITS ETF USD Acc"
+    }
+  }
+}
