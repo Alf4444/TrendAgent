@@ -26,7 +26,7 @@ from utils import (
     check_trail_stop, is_trading_day,
     get_trail_stop_pct,
 )
-from sector_heatmap import build_heatmap, get_concentration_warning
+from sector_heatmap import build_heatmap, get_concentration_warning, build_correlation_table
 
 # ==========================================
 # KONFIGURATION & STIER
@@ -184,8 +184,8 @@ def build_weekly():
         # --- TRAIL STOP (kun aktive) ---
         trail_alert = None
         if is_active and buy_price and cur_nav:
-            etf_vol    = item.get('volatility') if 'item' in dir() else None
-            trail_pct  = get_trail_stop_pct(etf_vol)
+            etf_vol    = item.get('volatility')
+            trail_pct  = get_trail_stop_pct(etf_vol, rsi)
             hwm_entry, trail_alert = check_trail_stop(
                 isin, cur_nav, buy_price, hwm_data, today_str, trail_pct
             )
@@ -260,6 +260,9 @@ def build_weekly():
     heatmap_data     = build_heatmap(portfolio, active_fund_data, watchlist=watchlist)
     heatmap_warning  = get_concentration_warning(heatmap_data)
 
+    # Korrelationstabel — par-vis korrelation mellem aktive positioner
+    corr_pairs, corr_summary = build_correlation_table(portfolio, history, days=90)
+
     html = jinja_template.render(
         week_number          = datetime.now().isocalendar()[1],
         report_date          = datetime.now().strftime("%d. %B %Y"),
@@ -278,6 +281,8 @@ def build_weekly():
         chart_values         = [r['momentum'] for r in chart_data],
         heatmap_data         = heatmap_data,
         heatmap_warning      = heatmap_warning,
+        corr_pairs           = corr_pairs,
+        corr_summary         = corr_summary,
     )
 
     REPORT_FILE.parent.mkdir(parents=True, exist_ok=True)
