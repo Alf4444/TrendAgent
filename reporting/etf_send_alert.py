@@ -30,7 +30,9 @@ PORTFOLIO_FILE = ROOT / "config/etf_portfolio.json"
 LATEST_FILE    = ROOT / "data/etf_latest.json"
 
 # Momentum-pile der signalerer aftagende momentum for ejede fonde
-MOMENTUM_WARN_PILES = {'↑↓', '↓↓'}
+MOMENTUM_WARN_PILES  = {'↑↓', '↓↓'}
+MOMENTUM_FILE        = ROOT / "data/etf_momentum_alerts.json"
+MOMENTUM_DOWN_PCT    = 10.0   # K2: momentum under denne % → signal
 
 
 # ==========================================
@@ -86,8 +88,10 @@ def get_trail_alerts(portfolio, latest_map, hwm_data):
         if not curr_price:
             continue
 
-        volatility = latest_map[isin].get('volatility')
-        trail_pct  = get_trail_stop_pct(volatility)
+        volatility     = latest_map[isin].get('volatility')
+        total_ret_pct  = round(((curr_price / buy_price) - 1) * 100, 2) if buy_price else None
+        rsi            = rsi_map.get(isin) if 'rsi_map' in dir() else None
+        trail_pct      = get_trail_stop_pct(volatility, rsi, total_return_pct=total_ret_pct)
 
         hwm_entry, alert = check_trail_stop(
             isin, curr_price, buy_price, hwm_data, today_str, trail_pct
@@ -107,6 +111,124 @@ def get_trail_alerts(portfolio, latest_map, hwm_data):
             )
 
     return trail_alerts, hwm_data
+
+
+# ==========================================
+# MOMENTUM SVÆKKES — K1/K2/K3 signal for ejede fonde
+# ==========================================
+
+def load_momentum_alerts():
+    """Indlæser anti-spam fil. Format: {isin: {kriterium: dato}}"""
+    if not MOMENTUM_FILE.exists():
+        return {}
+    try:
+        with open(MOMENTUM_FILE, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+def save_momentum_alerts(data):
+    """Gemmer anti-spam fil."""
+    MOMENTUM_FILE.parent.mkdir(exist_ok=True)
+    with open(MOMENTUM_FILE, 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+
+def get_momentum_svækkes_alerts(portfolio, hits_data, prev_data, latest_map):
+    """
+    Detekterer ejede fonde der mister momentum via tre kriterier.
+    Første kriterium der rammes sender signalet — ikke alle tre.
+
+    K1 — Pile: consecutive_down=True i hits (↓↓ to kørsler i træk)
+    K2 — Momentum: momentum % under MOMENTUM_DOWN_PCT (10%)
+    K3 — Univers: fond ikke i Spejderens top-200 (hits)
+
+    Anti-spam: samme fond + samme kriterium sender ikke igen
+    før kriteriet har ændret sig (gemmes i etf_momentum_alerts.json).
+
+    Returnerer: (alerts, opdateret_spam_data)
+    """
+    today_str  = datetime.now().strftime('%Y-%m-%d')
+    spam_data  = load_momentum_alerts()
+    alerts     = []
+
+    owned_isins = {
+        isin: p for isin, p in portfolio.items()
+        if p.get('active', False)
+    }
+    if not owned_isins:
+        return [], spam_data
+
+    # Byg lookup fra alle hits (200 fonde)
+    all_hits_isins = {
+        h.get('isin') for h in (
+            hits_data.get('hits', []) +
+            hits_data.get('hits_hurtige', []) +
+            hits_data.get('hits_stabile', [])
+        ) if h.get('isin')
+    }
+
+    # Byg ISIN → hit-data map for ejede fonde
+    all_hits_map = {}
+    for h in (hits_data.get('hits', []) + hits_data.get('hits_hurtige', []) + hits_data.get('hits_stabile', [])):
+        if h.get('isin') and h['isin'] not in all_hits_map:
+            all_hits_map[h['isin']] = h
+
+    for isin, p_info in owned_isins.items():
+        hit       = all_hits_map.get(isin)
+        item      = latest_map.get(isin, {})
+        navn      = p_info.get('name', isin)
+        ticker    = p_info.get('ticker', '')
+        depot     = p_info.get('depot', '')
+        momentum  = (hit or {}).get('momentum') or item.get('return_1m')
+
+        # Find kriterium — første der rammer
+        kriterium = None
+        detalje   = ''
+
+        # K1: consecutive_down i hits
+        if hit and hit.get('consecutive_down'):
+            kriterium = 'K1'
+            detalje   = f'pile ↓↓ to kørsler i træk (momentum: {momentum:+.1f}%)' if momentum is not None else 'pile ↓↓ to kørsler i træk'
+
+        # K2: momentum under grænse
+        elif momentum is not None and momentum < MOMENTUM_DOWN_PCT:
+            kriterium = 'K2'
+            detalje   = f'momentum {momentum:+.1f}% — under {MOMENTUM_DOWN_PCT}% over MA'
+
+        # K3: ude af top-200
+        elif isin not in all_hits_isins:
+            kriterium = 'K3'
+            detalje   = 'ikke længere i Spejderens top-200 kandidater'
+
+        if not kriterium:
+            # Ingen kriterium ramt — nulstil evt. spam-registrering
+            if isin in spam_data:
+                spam_data.pop(isin, None)
+            continue
+
+        # Anti-spam: tjek om samme fond + kriterium allerede er sendt
+        prev_alert = spam_data.get(isin, {})
+        if prev_alert.get('kriterium') == kriterium:
+            print(f"   ⏭️  {navn}: K{kriterium[-1]} allerede sendt — springer over")
+            continue
+
+        # Nyt signal — registrér og tilføj
+        spam_data[isin] = {'kriterium': kriterium, 'dato': today_str}
+        alerts.append({
+            'isin':      isin,
+            'name':      navn,
+            'ticker':    ticker,
+            'depot':     depot,
+            'kriterium': kriterium,
+            'detalje':   detalje,
+            'momentum':  momentum,
+        })
+        print(f"   📉 MOMENTUM SVÆKKES: {navn} — {kriterium}: {detalje}")
+
+    # Sortér K1 øverst, K2 midt, K3 nederst
+    alerts.sort(key=lambda x: x['kriterium'])
+
+    return alerts, spam_data
 
 
 # ==========================================
@@ -261,7 +383,7 @@ def _pile_html(pile):
     return f'<span style="font-weight:700; color:{color};">{pile}</span>' if pile and pile != '—' else '<span style="color:#ccc;">—</span>'
 
 
-def build_email_html(trail_alerts, momentum_alerts, nye_hits, nye_stabile,
+def build_email_html(trail_alerts, momentum_alerts, momentum_svækkes, nye_hits, nye_stabile,
                      rotation_weakest, rotation_best_new, hits_data):
     """Bygger HTML-indhold til alarm-mailen."""
     now = datetime.now().strftime('%d-%m-%Y %H:%M')
@@ -321,6 +443,39 @@ def build_email_html(trail_alerts, momentum_alerts, nye_hits, nye_stabile,
           </table>
         </div>"""
 
+    # ---- 📉 Momentum svækkes ----
+    svækkes_html = ""
+    if momentum_svækkes:
+        rows = ""
+        for a in momentum_svækkes:
+            mom_str = f"{a['momentum']:+.1f}%" if a.get('momentum') is not None else "–"
+            k_color = {"K1": "#d93025", "K2": "#f59c00", "K3": "#888"}.get(a['kriterium'], "#888")
+            rows += f"""
+            <tr>
+              <td style="padding:8px; border-bottom:1px solid #fdebd0;">{a['name']}<br>
+                <small style="color:#888;">{a['ticker']} · {a.get('depot','')}</small></td>
+              <td style="padding:8px; border-bottom:1px solid #fdebd0;">
+                <span style="font-weight:700; color:{k_color};">{a['kriterium']}</span></td>
+              <td style="padding:8px; border-bottom:1px solid #fdebd0; font-size:11px; color:#555;">
+                {a['detalje']}</td>
+              <td style="padding:8px; border-bottom:1px solid #fdebd0; color:#888;">
+                {mom_str}</td>
+            </tr>"""
+        svækkes_html = f"""
+        <div style="margin-bottom:20px;">
+          <h3 style="color:#e67e22; margin:0 0 8px;">📉 Momentum svækkes — overvej rotation ({len(momentum_svækkes)})</h3>
+          <table style="width:100%; border-collapse:collapse; font-size:13px; background:#fef9f0; border-radius:6px;">
+            <tr style="background:#fdebd0;"><th style="padding:8px; text-align:left;">Fond</th>
+              <th style="padding:8px; text-align:left;">Kriterium</th>
+              <th style="padding:8px; text-align:left;">Detalje</th>
+              <th style="padding:8px; text-align:left;">Momentum</th></tr>
+            {rows}
+          </table>
+          <div style="font-size:11px; color:#888; margin-top:6px; padding:6px 8px; background:#fef9f0; border-radius:4px;">
+            K1 = ↓↓ to kørsler i træk · K2 = momentum under 10% · K3 = ude af Spejderens top-200 · Information — ingen handling påkrævet
+          </div>
+        </div>"""
+
     # ---- 🟢 Nye Spejder-hits ----
     hits_html = ""
     alle_nye = list(nye_hits) + list(nye_stabile)
@@ -375,7 +530,7 @@ def build_email_html(trail_alerts, momentum_alerts, nye_hits, nye_stabile,
           <small style="color:#888;">Tjek RSI og Trail Stop inden handel. En advarsel er ikke automatisk et signal.</small>
         </div>"""
 
-    has_content = trail_html or momentum_html or hits_html
+    has_content = trail_html or momentum_html or svækkes_html or hits_html
 
     return f"""
     <html><body style="font-family: Arial, sans-serif; max-width:700px; margin:0 auto; color:#2c3e50;">
@@ -387,6 +542,7 @@ def build_email_html(trail_alerts, momentum_alerts, nye_hits, nye_stabile,
         {"<p style='color:#888;'>Ingen aktuelle advarsler.</p>" if not has_content else ""}
         {trail_html}
         {momentum_html}
+        {svækkes_html}
         {hits_html}
         {rotation_html}
         <hr style="margin:20px 0; border:none; border-top:1px solid #eee;">
@@ -456,6 +612,12 @@ def main():
     # ---- 🟡 Momentum-advarsler for ejede fonde ----
     momentum_alerts = get_momentum_alerts(portfolio, hits_data, prev_data)
 
+    # ---- 📉 Momentum svækkes (K1/K2/K3) ----
+    momentum_svækkes, spam_data = get_momentum_svækkes_alerts(
+        portfolio, hits_data, prev_data, latest_map
+    )
+    save_momentum_alerts(spam_data)
+
     # ---- 🟢 Nye Spejder-hits ----
     # Nye hurtige heste
     nye_hits    = hits_data.get('hits_nye', []) if isinstance(hits_data, dict) else []
@@ -471,7 +633,7 @@ def main():
     )
 
     # Ingen mail hvis ingenting at rapportere
-    if not trail_alerts and not momentum_alerts and not nye_hits and not nye_stabile:
+    if not trail_alerts and not momentum_alerts and not momentum_svækkes and not nye_hits and not nye_stabile:
         print("✅ Ingen advarsler eller nye hits — ingen mail sendes")
         return
 
@@ -481,6 +643,8 @@ def main():
         subject_parts.append(f"🔴 {len(trail_alerts)} Trail Stop")
     if momentum_alerts:
         subject_parts.append(f"🟡 {len(momentum_alerts)} Momentum")
+    if momentum_svækkes:
+        subject_parts.append(f"📉 {len(momentum_svækkes)} Svækkes")
     if nye_hits or nye_stabile:
         n = len(nye_hits) + len(nye_stabile)
         subject_parts.append(f"🟢 {n} nye hits")
@@ -488,13 +652,14 @@ def main():
     subject = f"📡 TrendAgent ETF — {' · '.join(subject_parts)}"
 
     html = build_email_html(
-        trail_alerts, momentum_alerts, nye_hits, nye_stabile,
+        trail_alerts, momentum_alerts, momentum_svækkes, nye_hits, nye_stabile,
         rotation_weakest, rotation_best_new, hits_data
     )
     send_mail(subject, html)
 
     print(f"   Trail Stop:        {len(trail_alerts)}")
     print(f"   Momentum-advarsler:{len(momentum_alerts)}")
+    print(f"   Momentum svækkes:  {len(momentum_svækkes)}")
     print(f"   Nye hurtige hits:  {len(nye_hits)}")
     print(f"   Nye stabile hits:  {len(nye_stabile)}")
     print("="*50)
