@@ -354,30 +354,48 @@ def get_momentum_status(return_1m, rank, total_funds=47):
         return "🚀 Top Performer", "momentum-fast"
     return "✅ Stabil", "momentum-stable"
 
+# Fase 1 stop — ny position uden etableret gevinst.
+# Sat til 5% som startværdi — justeres når data fra egne handler er tilgængeligt.
+# Gælder uanset volatilitet for at undgå stort tab på nyindkøbte fonde.
+# Se Resume 18 afsnit "Fase-baseret Trail Stop" for baggrund og beslutning.
+FASE1_TRAIL_STOP_PCT = 5.0
 
-def get_trail_stop_pct(volatility, rsi=None):
+
+def get_trail_stop_pct(volatility, rsi=None, total_return_pct=None):
     """
-    Beregner variabelt Trail Stop baseret på volatilitet og RSI.
+    Beregner variabelt Trail Stop baseret på volatilitet, RSI og fase.
     Enkelt kilde til sandhed — bruges af etf_build_weekly.py og etf_send_alert.py.
+
+    Fase 1 — Kapital-beskyttelse (ny position, ingen etableret gevinst):
+      Aktiveres når total_return_pct < 0 eller None.
+      Stop: FASE1_TRAIL_STOP_PCT (5.0%) uanset volatilitet.
+      Startværdi 5% — justeres når data fra egne handler er tilgængeligt.
+
+    Fase 2 — Gevinst-beskyttelse (etableret position, afkast fra køb >= 0):
+      Stop beregnes fra volatilitet + RSI-stramning.
 
     Trin 1 — Basisstop fra volatilitet (20-dages std. af daglige afkast i %):
       < 1.0%  -> 3%  (fx obligationer, lav-vol fonde)
       1-2%    -> 5%  (fx brede aktieindeks)
       > 2.0%  -> 7%  (fx Korea, Hydrogen, Halvledere)
 
-    Trin 2 — RSI-stramning (relativ til basisstop):
+    Trin 2 — RSI-stramning (relativ til basisstop, kun Fase 2):
       RSI >= 70  -> -0.5%
       RSI >= 75  -> -1.0%
       RSI >= 80  -> -1.5%
 
-    Volatile fonde har stadig mere plads end lav-vol fonde selv ved hoj RSI.
-    Minimum: 1.5% — undgar udstopning pa hverdagsst\u00f8j.
+    Minimum: 1.5% uanset fase, volatilitet og RSI.
 
-    Eksempler ved RSI 80:
-      Lav-vol:  3.0% - 1.5% = 1.5%
-      Mellem:   5.0% - 1.5% = 3.5%
-      Hoj-vol:  7.0% - 1.5% = 5.5%
+    Args:
+      volatility:        20-dages standardafvigelse af daglige afkast i %
+      rsi:               RSI-14 (None = ingen stramning)
+      total_return_pct:  Afkast fra køb i % (None = antages Fase 1)
     """
+    # Fase 1 — ny position uden gevinst
+    if total_return_pct is None or total_return_pct < 0:
+        return FASE1_TRAIL_STOP_PCT
+
+    # Fase 2 — etableret position
     # Trin 1 — basisstop fra volatilitet
     if volatility is None or volatility < 1.0:
         base = 3.0
