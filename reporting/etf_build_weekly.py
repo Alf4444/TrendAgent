@@ -185,7 +185,7 @@ def build_weekly():
         trail_alert = None
         if is_active and buy_price and cur_nav:
             etf_vol    = item.get('volatility')
-            trail_pct  = get_trail_stop_pct(etf_vol, rsi)
+            trail_pct  = get_trail_stop_pct(etf_vol, rsi, total_return_pct=total_ret)
             hwm_entry, trail_alert = check_trail_stop(
                 isin, cur_nav, buy_price, hwm_data, today_str, trail_pct
             )
