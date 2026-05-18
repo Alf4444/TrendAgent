@@ -746,6 +746,14 @@ def main():
         for h in prev_data.get('hits', [])
         if h.get('ticker')
     }
+    # K1: prev_pile_map — forrige uges momentum-pile per ticker
+    # Bruges til consecutive_down detektering (↓↓ to kørsler i træk)
+    prev_pile_map = {
+        h.get('ticker', ''): h.get('momentum_pile', '—')
+        for h in prev_data.get('hits', [])
+        if h.get('ticker')
+    }
+
 
     # Marker nye hurtige heste og beregn momentum-pile
     for c in candidates:
@@ -766,6 +774,12 @@ def main():
                 c['momentum_pile'] = '↑↑' if prev_mom > 0 else '↓↑'
             else:
                 c['momentum_pile'] = '↑↓' if curr_mom > 0 else '↓↓' 
+
+        # K1: consecutive_down — True hvis ↓↓ denne OG forrige kørsel
+        # Bruges af etf_send_alert.py til "Momentum svækkes" signal
+        curr_pile = c.get('momentum_pile', '—')
+        prev_pile = prev_pile_map.get(ticker, '—')
+        c['consecutive_down'] = (curr_pile == '↓↓' and prev_pile == '↓↓')
 
     # Find svageste ejede fond til sammenligning i detaljer
     owned_candidates = [c for c in candidates if c.get('is_owned')]
