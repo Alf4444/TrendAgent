@@ -3,7 +3,7 @@ name: ETF Alert
 on:
   schedule:
     # Mandag, onsdag, fredag kl. 08:00 DK (06:00 UTC)
-    - cron: '0 6 * * 1-5'  # Hverdage kl. 08:00 DK (06:00 UTC)
+    - cron: '0 6 * * 1,3,5'
   workflow_dispatch:
 
 permissions:
@@ -49,6 +49,7 @@ jobs:
           git add data/etf_latest.json data/etf_history.json data/etf_hwm.json
           git add data/etf_spejder_hits.json 2>/dev/null || true
           git add data/etf_spejder_prev.json 2>/dev/null || true
+          git add data/etf_momentum_alerts.json 2>/dev/null || true
           git commit -m "ETF Alert + Spejder opdateret [skip ci]" || echo "Ingen ændringer"
           git pull --rebase origin main
           git push
