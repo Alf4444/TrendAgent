@@ -114,6 +114,73 @@ def get_trail_alerts(portfolio, latest_map, hwm_data):
 
 
 # ==========================================
+# ROTATION-ALTERNATIVER — til K2/K3 signaler
+# ==========================================
+
+def get_rotation_alternatives(isin, portfolio, hits_data, latest_map, n=3):
+    """
+    Finder top-N Spejder-kandidater som rotationsalternativer.
+    Sorteret på momentum (stærkest først).
+    Tilføjer sektor og eksponerings-note (ny eksponering / samme sektor som X).
+
+    Returnerer liste af dicts med: name, ticker, momentum, category, exposure_note
+    """
+    owned_isins = {i for i, p in portfolio.items() if p.get('active', False)}
+    # Byg kategori-map for ejede fonde fra latest_map
+    owned_category_map = {}
+    for i, p in portfolio.items():
+        if p.get('active', False):
+            cat = latest_map.get(i, {}).get('category', '') or p.get('category', '')
+            if cat:
+                owned_category_map[i] = cat
+
+    # Saml alle hits — sortér på momentum
+    all_hits = (
+        hits_data.get('hits_hurtige', []) +
+        hits_data.get('hits_stabile', []) +
+        hits_data.get('hits', [])
+    )
+    # Deduplikér på ISIN
+    seen = set()
+    unique_hits = []
+    for h in all_hits:
+        h_isin = h.get('isin')
+        if h_isin and h_isin not in seen and h_isin not in owned_isins:
+            seen.add(h_isin)
+            unique_hits.append(h)
+
+    # Sortér på momentum — stærkest først
+    unique_hits.sort(key=lambda x: x.get('momentum', 0), reverse=True)
+
+    alternatives = []
+    for h in unique_hits[:n]:
+        h_isin    = h.get('isin', '')
+        h_cat     = latest_map.get(h_isin, {}).get('category', '') or h.get('category', '')
+
+        # Find ejede fonde i samme kategori
+        same_cat_owned = []
+        if h_cat:
+            for oi, oc in owned_category_map.items():
+                if oi != isin and h_cat and oc and h_cat.lower() in oc.lower():
+                    same_cat_owned.append(portfolio[oi].get('ticker', oi))
+
+        if same_cat_owned:
+            exposure_note = f"samme sektor som {' og '.join(same_cat_owned)}"
+        else:
+            exposure_note = "ny eksponering"
+
+        alternatives.append({
+            'name':          h.get('name', ''),
+            'ticker':        h.get('ticker', ''),
+            'momentum':      h.get('momentum', 0),
+            'category':      h_cat or '—',
+            'exposure_note': exposure_note,
+        })
+
+    return alternatives
+
+
+# ==========================================
 # MOMENTUM SVÆKKES — K1/K2/K3 signal for ejede fonde
 # ==========================================
 
@@ -133,7 +200,7 @@ def save_momentum_alerts(data):
     with open(MOMENTUM_FILE, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
 
-def get_momentum_svækkes_alerts(portfolio, hits_data, prev_data, latest_map):
+def get_momentum_svækkes_alerts(portfolio, hits_data, prev_data, latest_map, n_alternatives=3):
     """
     Detekterer ejede fonde der mister momentum via tre kriterier.
     Første kriterium der rammes sender signalet — ikke alle tre.
@@ -209,19 +276,27 @@ def get_momentum_svækkes_alerts(portfolio, hits_data, prev_data, latest_map):
         # Anti-spam: tjek om samme fond + kriterium allerede er sendt
         prev_alert = spam_data.get(isin, {})
         if prev_alert.get('kriterium') == kriterium:
-            print(f"   ⏭️  {navn}: K{kriterium[-1]} allerede sendt — springer over")
+            print(f"   ⏭️  {navn}: {kriterium} allerede sendt — springer over")
             continue
+
+        # Rotation-alternativer til K2 og K3
+        alternatives = []
+        if kriterium in ('K2', 'K3'):
+            alternatives = get_rotation_alternatives(
+                isin, portfolio, hits_data, latest_map, n=n_alternatives
+            )
 
         # Nyt signal — registrér og tilføj
         spam_data[isin] = {'kriterium': kriterium, 'dato': today_str}
         alerts.append({
-            'isin':      isin,
-            'name':      navn,
-            'ticker':    ticker,
-            'depot':     depot,
-            'kriterium': kriterium,
-            'detalje':   detalje,
-            'momentum':  momentum,
+            'isin':         isin,
+            'name':         navn,
+            'ticker':       ticker,
+            'depot':        depot,
+            'kriterium':    kriterium,
+            'detalje':      detalje,
+            'momentum':     momentum,
+            'alternatives': alternatives,
         })
         print(f"   📉 MOMENTUM SVÆKKES: {navn} — {kriterium}: {detalje}")
 
@@ -446,33 +521,44 @@ def build_email_html(trail_alerts, momentum_alerts, momentum_svækkes, nye_hits,
     # ---- 📉 Momentum svækkes ----
     svækkes_html = ""
     if momentum_svækkes:
-        rows = ""
+        items_html = ""
         for a in momentum_svækkes:
-            mom_str = f"{a['momentum']:+.1f}%" if a.get('momentum') is not None else "–"
-            k_color = {"K1": "#d93025", "K2": "#f59c00", "K3": "#888"}.get(a['kriterium'], "#888")
-            rows += f"""
-            <tr>
-              <td style="padding:8px; border-bottom:1px solid #fdebd0;">{a['name']}<br>
-                <small style="color:#888;">{a['ticker']} · {a.get('depot','')}</small></td>
-              <td style="padding:8px; border-bottom:1px solid #fdebd0;">
-                <span style="font-weight:700; color:{k_color};">{a['kriterium']}</span></td>
-              <td style="padding:8px; border-bottom:1px solid #fdebd0; font-size:11px; color:#555;">
-                {a['detalje']}</td>
-              <td style="padding:8px; border-bottom:1px solid #fdebd0; color:#888;">
-                {mom_str}</td>
-            </tr>"""
+            mom_str  = f"{a['momentum']:+.1f}%" if a.get('momentum') is not None else "–"
+            k_color  = {"K1": "#d93025", "K2": "#f59c00", "K3": "#888"}.get(a['kriterium'], "#888")
+            k_badge  = f'<span style="font-weight:700; color:{k_color}; background:#f5f5f5; padding:1px 6px; border-radius:4px; font-size:12px;">{a["kriterium"]}</span>'
+
+            # Hoved-linje
+            items_html += f"""
+            <div style="margin-bottom:14px; padding:10px 12px; background:#fef9f0; border-left:3px solid {k_color}; border-radius:0 4px 4px 0;">
+              <div style="font-size:13px; font-weight:600;">{k_badge}&nbsp; {a['name']} <span style="color:#888; font-weight:400;">({a['ticker']} · {a.get('depot','')})</span></div>
+              <div style="font-size:12px; color:#555; margin-top:3px;">{a['detalje']}</div>"""
+
+            # K1: kun advarselstekst
+            if a['kriterium'] == 'K1':
+                items_html += """
+              <div style="font-size:11px; color:#888; margin-top:4px; font-style:italic;">Ingen handling endnu — hold ekstra øje de næste dage.</div>"""
+
+            # K2/K3: rotation-alternativer
+            elif a.get('alternatives'):
+                items_html += """
+              <div style="font-size:11px; color:#555; margin-top:6px; font-weight:600;">Mulige alternativer:</div>"""
+                for alt in a['alternatives']:
+                    exp_color = "#888" if "samme sektor" in alt['exposure_note'] else "#1e8e3e"
+                    items_html += f"""
+              <div style="font-size:12px; color:#333; margin-top:3px; padding-left:8px;">
+                · <strong>{alt['name']}</strong> ({alt['ticker']}) <span style="color:#1e8e3e; font-weight:700;">{alt['momentum']:+.1f}%</span>
+                · <span style="color:#555;">{alt['category']}</span>
+                — <span style="color:{exp_color}; font-size:11px;">{alt['exposure_note']}</span>
+              </div>"""
+
+            items_html += "\n            </div>"
+
         svækkes_html = f"""
         <div style="margin-bottom:20px;">
           <h3 style="color:#e67e22; margin:0 0 8px;">📉 Momentum svækkes — overvej rotation ({len(momentum_svækkes)})</h3>
-          <table style="width:100%; border-collapse:collapse; font-size:13px; background:#fef9f0; border-radius:6px;">
-            <tr style="background:#fdebd0;"><th style="padding:8px; text-align:left;">Fond</th>
-              <th style="padding:8px; text-align:left;">Kriterium</th>
-              <th style="padding:8px; text-align:left;">Detalje</th>
-              <th style="padding:8px; text-align:left;">Momentum</th></tr>
-            {rows}
-          </table>
-          <div style="font-size:11px; color:#888; margin-top:6px; padding:6px 8px; background:#fef9f0; border-radius:4px;">
-            K1 = ↓↓ to kørsler i træk · K2 = momentum under 10% · K3 = ude af Spejderens top-200 · Information — ingen handling påkrævet
+          {items_html}
+          <div style="font-size:11px; color:#888; margin-top:4px; padding:4px 8px; background:#fef9f0; border-radius:4px;">
+            K1 = ↓↓ to kørsler i træk · K2 = momentum under 10% · K3 = ude af top-200 · Information — ingen handling påkrævet
           </div>
         </div>"""
 
