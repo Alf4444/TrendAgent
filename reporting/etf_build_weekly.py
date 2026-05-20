@@ -38,6 +38,7 @@ WATCHLIST_FILE = ROOT / "config/etf_watchlist.json"
 PORTFOLIO_FILE = ROOT / "config/etf_portfolio.json"
 HWM_FILE       = ROOT / "data/etf_hwm.json"
 SPEJDER_FILE   = ROOT / "data/etf_spejder_hits.json"
+MOMENTUM_FILE  = ROOT / "data/etf_momentum_alerts.json"
 TEMPLATE_FILE  = ROOT / "templates/etf_weekly.html.j2"
 REPORT_FILE    = ROOT / "build/etf_weekly.html"
 
@@ -57,7 +58,54 @@ def load_hwm():
             pass
     return {}
 
-def save_hwm(hwm_data):
+def build_fonde_under_pres(portfolio, latest_map_or_rows):
+    """
+    Bygger 'Fonde under pres'-listen til ETF Weekly.
+    Læser etf_momentum_alerts.json og returnerer alle ejede fonde
+    der har haft K1/K2/K3 signal i løbet af ugen.
+
+    Format pr. fond:
+      { ticker, name, kriterium, momentum, category, dato_range }
+    """
+    if not MOMENTUM_FILE.exists():
+        return []
+
+    try:
+        with open(MOMENTUM_FILE, 'r', encoding='utf-8') as f:
+            spam_data = json.load(f)
+    except Exception:
+        return []
+
+    # Byg kategori/momentum lookup fra rows (liste af row-dicts)
+    row_map = {}
+    if isinstance(latest_map_or_rows, list):
+        for r in latest_map_or_rows:
+            row_map[r.get('isin', '')] = r
+    else:
+        row_map = latest_map_or_rows
+
+    result = []
+    for isin, alert_info in spam_data.items():
+        p_info = portfolio.get(isin, {})
+        if not p_info.get('active', False):
+            continue
+        r        = row_map.get(isin, {})
+        momentum = r.get('momentum') or r.get('return_1m')
+        category = r.get('category', '—')
+
+        result.append({
+            'isin':       isin,
+            'ticker':     p_info.get('ticker', isin),
+            'name':       p_info.get('name', isin),
+            'kriterium':  alert_info.get('kriterium', '?'),
+            'momentum':   momentum,
+            'category':   category,
+            'dato':       alert_info.get('dato', ''),
+        })
+
+    # Sortér K1 øverst, K2 midt, K3 nederst
+    result.sort(key=lambda x: x['kriterium'])
+    return result
     HWM_FILE.parent.mkdir(exist_ok=True)
     with open(HWM_FILE, "w", encoding="utf-8") as f:
         json.dump(hwm_data, f, indent=2)
@@ -263,6 +311,9 @@ def build_weekly():
     # Korrelationstabel — par-vis korrelation mellem aktive positioner
     corr_pairs, corr_summary = build_correlation_table(portfolio, history, days=90)
 
+    # Fonde under pres — K1/K2/K3 signaler i ugen
+    fonde_under_pres = build_fonde_under_pres(portfolio, rows)
+
     html = jinja_template.render(
         week_number          = datetime.now().isocalendar()[1],
         report_date          = datetime.now().strftime("%d. %B %Y"),
@@ -283,6 +334,7 @@ def build_weekly():
         heatmap_warning      = heatmap_warning,
         corr_pairs           = corr_pairs,
         corr_summary         = corr_summary,
+        fonde_under_pres     = fonde_under_pres,
     )
 
     REPORT_FILE.parent.mkdir(parents=True, exist_ok=True)
