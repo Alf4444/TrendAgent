@@ -98,14 +98,16 @@ def update_rank_history(rank_map, rank_history):
         if isin not in rank_history:
             rank_history[isin] = {}
         rank_history[isin][today_str] = rank
-    # Behold kun seneste 7 dage
-    cutoff = sorted(rank_history.get(list(rank_history.keys())[0], {}).keys())[-7] \
-        if rank_history else None
-    if cutoff:
-        for isin in rank_history:
-            rank_history[isin] = {
-                d: r for d, r in rank_history[isin].items() if d >= cutoff
-            }
+    # Behold kun seneste 7 dage — kun trim hvis vi har mere end 7 datoer
+    if rank_history:
+        first_isin = list(rank_history.keys())[0]
+        all_dates  = sorted(rank_history[first_isin].keys())
+        if len(all_dates) > 7:
+            cutoff = all_dates[-7]
+            for isin in rank_history:
+                rank_history[isin] = {
+                    d: r for d, r in rank_history[isin].items() if d >= cutoff
+                }
     return rank_history
 
 
