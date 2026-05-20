@@ -287,132 +287,201 @@ def build_html_email(alerts, trail_pct, report_type, portfolio, latest_list,
     # --- TEST BANNER ---
     test_banner = ""
     if trail_pct < 1.0:
-        test_banner = f"""
+        test_banner = """
         <div style="background:#fff3cd; border:1px solid #ffeeba; border-radius:8px;
                     padding:10px 15px; margin-bottom:20px; color:#856404; font-size:13px;">
-            🧪 <strong>TESTKØRSEL</strong> — Tærsklen er sat til {trail_pct:.1f}%.
+            🧪 <strong>TESTKØRSEL</strong> — Tærsklen er sat til midlertidigt lav værdi
+            for at verificere at e-mail notifikationen virker korrekt.
         </div>"""
 
-    def fmt_ret(val, suffix=""):
-        if val is None: return "N/A"
-        sign = "+" if val >= 0 else ""
+    def fmt_ret(val):
+        if val is None: return "<span style='color:#aaa;'>N/A</span>"
+        sign  = "+" if val >= 0 else ""
         color = "#28a745" if val >= 0 else "#d93025"
-        return f'<span style="color:{color}; font-weight:700;">{sign}{val:.2f}%{suffix}</span>'
+        return f'<span style="color:{color}; font-weight:700;">{sign}{val:.2f}%</span>'
 
     def rank_badge(rank, arrow, total):
         if rank is None: return "—"
         arrow_color = {"↑": "#28a745", "↓": "#d93025", "→": "#888"}.get(arrow, "#888")
         return (f'#{rank} / {total} '
-                f'<span style="color:{arrow_color}; font-weight:700;">{arrow}</span>')
+                f'<span style="color:{arrow_color}; font-weight:700; font-size:14px;">{arrow}</span>')
+
+    def fund_url(isin):
+        return f"https://pfapension.os.fundconnect.com/solutions/default/fundinfo-overview?language=en-GB&currency=DKK&isin={isin}"
 
     # --- FOND-KORT PER ALERT ---
     alerts_html = ""
     for a in alerts:
-        fund_url  = f"https://pfapension.os.fundconnect.com/solutions/default/fundinfo-overview?language=en-GB&currency=DKK&isin={a['isin']}"
-        days_str  = f"{a['days_hwm']} dage siden" if a.get('days_hwm') is not None else "?"
+        days_str   = f"{a['days_hwm']} dage siden" if a.get('days_hwm') is not None else "?"
         vurd_color = {"✅": "#28a745", "👀": "#f59c00", "🔴": "#d93025"}.get(a.get("emoji",""), "#555")
+        vurd_bg    = {"✅": "#f0fff4", "👀": "#fffdf0", "🔴": "#fff5f5"}.get(a.get("emoji",""), "#fafafa")
 
         # Øvrige positioner
-        others       = get_other_positions(a["isin"], portfolio, latest_list, rank_map, rank_history)
-        others_rows  = ""
+        others      = get_other_positions(a["isin"], portfolio, latest_list, rank_map, rank_history)
+        others_rows = ""
         for o in others:
-            o_url = f"https://pfapension.os.fundconnect.com/solutions/default/fundinfo-overview?language=en-GB&currency=DKK&isin={o['isin']}"
             others_rows += f"""
-              <div style="padding:5px 0; border-bottom:1px solid #f0f0f0; font-size:12px;">
-                · <a href="{o_url}" style="color:#1a73e8; text-decoration:none; font-weight:600;">{o['name']} →</a>
-                &nbsp; {rank_badge(o['rank'], o['arrow'], o['total'])}
-                &nbsp; 1M: {fmt_ret(o['return_1m'])}
-                &nbsp; 3M: {fmt_ret(o['return_3m'])}
-              </div>"""
+              <tr>
+                <td style="padding:6px 12px 6px 0; font-size:13px;">
+                  <a href="{fund_url(o['isin'])}" style="color:#1a73e8; text-decoration:none; font-weight:600;">{o['name']} →</a>
+                </td>
+                <td style="padding:6px 12px 6px 0; font-size:13px;">{rank_badge(o['rank'], o['arrow'], o['total'])}</td>
+                <td style="padding:6px 12px 6px 0; font-size:13px;">{fmt_ret(o['return_1m'])}</td>
+                <td style="padding:6px 0; font-size:13px;">{fmt_ret(o['return_3m'])}</td>
+              </tr>"""
 
         # Top 3 alternativer
-        alternatives  = get_rotation_alternatives(portfolio, latest_list, rank_map, rank_history)
-        alt_rows      = ""
+        alternatives = get_rotation_alternatives(portfolio, latest_list, rank_map, rank_history)
+        alt_rows     = ""
         for alt in alternatives:
-            alt_url = f"https://pfapension.os.fundconnect.com/solutions/default/fundinfo-overview?language=en-GB&currency=DKK&isin={alt['isin']}"
             alt_rows += f"""
-              <div style="padding:5px 0; border-bottom:1px solid #f0f0f0; font-size:12px;">
-                · <a href="{alt_url}" style="color:#1a73e8; text-decoration:none; font-weight:600;">{alt['name']} →</a>
-                &nbsp; {rank_badge(alt['rank'], alt['arrow'], alt['total'])}
-                &nbsp; 1M: {fmt_ret(alt['return_1m'])}
-                &nbsp; 3M: {fmt_ret(alt['return_3m'])}
-              </div>"""
+              <tr>
+                <td style="padding:6px 12px 6px 0; font-size:13px;">
+                  <a href="{fund_url(alt['isin'])}" style="color:#1a73e8; text-decoration:none; font-weight:600;">{alt['name']} →</a>
+                </td>
+                <td style="padding:6px 12px 6px 0; font-size:13px;">{rank_badge(alt['rank'], alt['arrow'], alt['total'])}</td>
+                <td style="padding:6px 12px 6px 0; font-size:13px;">{fmt_ret(alt['return_1m'])}</td>
+                <td style="padding:6px 0; font-size:13px;">{fmt_ret(alt['return_3m'])}</td>
+              </tr>"""
 
         alerts_html += f"""
-        <div style="background:white; border-radius:10px; margin-bottom:20px;
-                    box-shadow:0 2px 8px rgba(0,0,0,0.08); overflow:hidden;
-                    border-left:4px solid {vurd_color};">
+        <!-- FONDKORT -->
+        <div style="background:white; border-radius:10px; margin-bottom:24px;
+                    box-shadow:0 2px 8px rgba(0,0,0,0.08); overflow:hidden;">
 
-          <!-- FOND TITEL -->
-          <div style="padding:16px 20px; border-bottom:1px solid #f0f0f0;">
+          <!-- TITEL -->
+          <div style="padding:16px 20px; border-bottom:2px solid {vurd_color};">
             <div style="font-size:16px; font-weight:700;">
-              <a href="{fund_url}" style="color:#1a1a2e; text-decoration:none;">
+              <a href="{fund_url(a['isin'])}" style="color:#1a1a2e; text-decoration:none;">
                 {a['name']} →
               </a>
-              <span style="color:#d93025; font-size:14px; font-weight:700; margin-left:12px;">
-                Trail Stop udløst ({a['fall_pct']:+.2f}% fra top)
-              </span>
+            </div>
+            <div style="color:#d93025; font-size:13px; font-weight:600; margin-top:4px;">
+              Trail Stop udløst ({a['fall_pct']:+.2f}% fra top)
             </div>
           </div>
 
           <!-- NØGLETAL -->
-          <div style="padding:14px 20px; border-bottom:1px solid #f0f0f0;">
+          <div style="padding:16px 20px; border-bottom:1px solid #f0f0f0;">
             <table style="font-size:13px; border-collapse:collapse; width:100%;">
               <tr>
-                <td style="padding:4px 16px 4px 0; color:#666; white-space:nowrap;">Rank i dag</td>
-                <td style="padding:4px 0; font-weight:600;">{rank_badge(a['rank'], a['arrow'], a['total_funds'])}</td>
+                <td style="padding:5px 20px 5px 0; color:#666; width:140px;">Rank i dag</td>
+                <td style="padding:5px 0; font-weight:600;">{rank_badge(a['rank'], a['arrow'], a['total_funds'])}</td>
+              </tr>
+              <tr style="background:#fafafa;">
+                <td style="padding:5px 20px 5px 0; color:#666;">1M afkast</td>
+                <td style="padding:5px 0;">{fmt_ret(a['return_1m'])}</td>
               </tr>
               <tr>
-                <td style="padding:4px 16px 4px 0; color:#666;">1M afkast</td>
-                <td style="padding:4px 0;">{fmt_ret(a['return_1m'])}</td>
+                <td style="padding:5px 20px 5px 0; color:#666;">3M afkast</td>
+                <td style="padding:5px 0;">{fmt_ret(a['return_3m'])}</td>
+              </tr>
+              <tr style="background:#fafafa;">
+                <td style="padding:5px 20px 5px 0; color:#666;">Afkast fra køb</td>
+                <td style="padding:5px 0;">{fmt_ret(a['total_ret'])}</td>
               </tr>
               <tr>
-                <td style="padding:4px 16px 4px 0; color:#666;">3M afkast</td>
-                <td style="padding:4px 0;">{fmt_ret(a['return_3m'])}</td>
+                <td style="padding:5px 20px 5px 0; color:#666;">HWM</td>
+                <td style="padding:5px 0; color:#555;">{a['hwm']} {a['currency']} · {days_str}</td>
               </tr>
-              <tr>
-                <td style="padding:4px 16px 4px 0; color:#666;">Afkast fra køb</td>
-                <td style="padding:4px 0;">{fmt_ret(a['total_ret'])}</td>
-              </tr>
-              <tr>
-                <td style="padding:4px 16px 4px 0; color:#666;">HWM</td>
-                <td style="padding:4px 0; color:#555;">{a['hwm']} {a['currency']} ({days_str})</td>
+              <tr style="background:#fafafa;">
+                <td style="padding:5px 20px 5px 0; color:#666;">Købspris</td>
+                <td style="padding:5px 0; color:#555;">{a['buy_price']} {a['currency']}</td>
               </tr>
             </table>
           </div>
 
           <!-- VURDERING -->
-          <div style="padding:12px 20px; border-bottom:1px solid #f0f0f0;
-                      background:#fafafa;">
-            <span style="font-weight:700; color:{vurd_color};">
+          <div style="padding:14px 20px; border-bottom:1px solid #f0f0f0; background:{vurd_bg};">
+            <div style="font-weight:700; color:{vurd_color}; font-size:14px;">
               {a.get('emoji','')} {a.get('vurd_titel','')}
-            </span>
-            <div style="font-size:12px; color:#555; margin-top:4px;">
+            </div>
+            <div style="font-size:13px; color:#555; margin-top:5px; line-height:1.6;">
               {a.get('vurd_tekst','')}
             </div>
           </div>
 
-          <!-- ØVRIGE POSITIONER -->
           {"" if not others_rows else f'''
-          <div style="padding:12px 20px; border-bottom:1px solid #f0f0f0;">
-            <div style="font-size:11px; font-weight:700; color:#888; margin-bottom:6px;
-                        text-transform:uppercase; letter-spacing:0.5px;">
-              Dine øvrige positioner
-            </div>
-            {others_rows}
+          <!-- ØVRIGE POSITIONER -->
+          <div style="padding:14px 20px; border-bottom:1px solid #f0f0f0;">
+            <div style="font-size:11px; font-weight:700; color:#888; margin-bottom:8px;
+                        text-transform:uppercase; letter-spacing:0.5px;">Dine øvrige positioner</div>
+            <table style="width:100%; border-collapse:collapse;">
+              <tr style="font-size:11px; color:#aaa;">
+                <th style="text-align:left; padding:0 12px 4px 0; font-weight:600;">Fond</th>
+                <th style="text-align:left; padding:0 12px 4px 0; font-weight:600;">Rank</th>
+                <th style="text-align:left; padding:0 12px 4px 0; font-weight:600;">1M</th>
+                <th style="text-align:left; padding:0 0 4px 0; font-weight:600;">3M</th>
+              </tr>
+              {others_rows}
+            </table>
           </div>'''}
 
-          <!-- TOP 3 ALTERNATIVER -->
           {"" if not alt_rows else f'''
-          <div style="padding:12px 20px;">
-            <div style="font-size:11px; font-weight:700; color:#888; margin-bottom:6px;
-                        text-transform:uppercase; letter-spacing:0.5px;">
-              Top 3 alternativer du ikke ejer
-            </div>
-            {alt_rows}
+          <!-- TOP 3 ALTERNATIVER -->
+          <div style="padding:14px 20px;">
+            <div style="font-size:11px; font-weight:700; color:#888; margin-bottom:8px;
+                        text-transform:uppercase; letter-spacing:0.5px;">Top 3 alternativer du ikke ejer</div>
+            <table style="width:100%; border-collapse:collapse;">
+              <tr style="font-size:11px; color:#aaa;">
+                <th style="text-align:left; padding:0 12px 4px 0; font-weight:600;">Fond</th>
+                <th style="text-align:left; padding:0 12px 4px 0; font-weight:600;">Rank</th>
+                <th style="text-align:left; padding:0 12px 4px 0; font-weight:600;">1M</th>
+                <th style="text-align:left; padding:0 0 4px 0; font-weight:600;">3M</th>
+              </tr>
+              {alt_rows}
+            </table>
           </div>'''}
 
         </div>"""
+
+    # --- HVAD GØR DU NU ---
+    hvad_nu = f"""
+    <div style="margin-bottom:24px; padding:18px 20px; background:#fce8e6;
+                border-radius:8px; border-left:4px solid #d93025;">
+      <strong style="color:#c5221f; font-size:14px;">⚡ Hvad gør du nu?</strong>
+      <p style="margin:10px 0 0; color:#555; font-size:13px; line-height:1.7;">
+        En Trail Stop advarsel betyder at fonden har mistet momentum fra sit toppunkt.
+        Det er ikke automatisk et salgssignal — men et signal om at du skal handle aktivt.<br><br>
+        <strong>Tjek følgende:</strong><br>
+        1. Er <strong>1M afkast</strong> stadig positivt? Hvis ja, kan det være et midlertidigt tilbagefald.<br>
+        2. Er <strong>Rank</strong> stadig i top 10 ud af {total_funds}? Hvis fonden er faldet ud af top 10, løber andre fonde hurtigere.<br>
+        3. Er <strong>Fald fra top</strong> accelererende (mere end 5-7%)? Overvej at sælge og rotere til en stærkere fond.<br><br>
+        Gennemgå fonden i din næste Deep Dive rapport for det fulde billede.
+      </p>
+    </div>"""
+
+    # --- DEFINITIONER ---
+    definitioner = f"""
+    <div style="padding:18px 20px; background:#f8f9fa; border-radius:8px; border:1px solid #e8e8e8;">
+      <strong style="color:#2c3e50; font-size:14px;">📖 Definitioner</strong>
+      <table style="width:100%; margin-top:12px; font-size:12px; color:#555; border-collapse:collapse;">
+        <tr>
+          <td style="padding:7px 12px 7px 0; font-weight:bold; color:#333; white-space:nowrap; vertical-align:top; width:150px;">Rank</td>
+          <td style="padding:7px 0; line-height:1.6;">Fondens placering i hele PFA-universet ({total_funds} fonde) rangeret efter 1M afkast. Rank #1 er den stærkeste fond. Pil ↑ = rank forbedret siden i går, ↓ = forværret.</td>
+        </tr>
+        <tr style="border-top:1px solid #eee;">
+          <td style="padding:7px 12px 7px 0; font-weight:bold; color:#333; white-space:nowrap; vertical-align:top;">HWM</td>
+          <td style="padding:7px 0; line-height:1.6;">High Water Mark — den højeste kurs fonden har haft siden du købte den. Opdateres automatisk hver gang fonden sætter ny top.</td>
+        </tr>
+        <tr style="border-top:1px solid #eee;">
+          <td style="padding:7px 12px 7px 0; font-weight:bold; color:#333; white-space:nowrap; vertical-align:top;">Fald fra top</td>
+          <td style="padding:7px 0; line-height:1.6;">Procentvis fald fra HWM til aktuel kurs: (aktuel / HWM − 1) × 100. Du modtager denne advarsel når faldet overstiger {trail_pct}%.</td>
+        </tr>
+        <tr style="border-top:1px solid #eee;">
+          <td style="padding:7px 12px 7px 0; font-weight:bold; color:#333; white-space:nowrap; vertical-align:top;">1M / 3M afkast</td>
+          <td style="padding:7px 0; line-height:1.6;">Fondens officielle afkast de seneste 30 / 90 dage fra PFA's faktaark. Positivt 1M afkast trods Trail Stop kan betyde en normal korrektion i en ellers stigende fond.</td>
+        </tr>
+        <tr style="border-top:1px solid #eee;">
+          <td style="padding:7px 12px 7px 0; font-weight:bold; color:#333; white-space:nowrap; vertical-align:top;">Afkast fra køb</td>
+          <td style="padding:7px 0; line-height:1.6;">Dit samlede afkast siden købsdato: (aktuel kurs / købspris − 1) × 100.</td>
+        </tr>
+        <tr style="border-top:1px solid #eee;">
+          <td style="padding:7px 12px 7px 0; font-weight:bold; color:#333; white-space:nowrap; vertical-align:top;">Trail Stop tærskel</td>
+          <td style="padding:7px 0; line-height:1.6;">Aktuelt sat til {trail_pct}%. Tærsklen er valgt til at fange reelle momentum-skift uden at generere for mange falske alarmer.</td>
+        </tr>
+      </table>
+    </div>"""
 
     html = f"""<!DOCTYPE html>
 <html lang="da">
@@ -422,23 +491,25 @@ def build_html_email(alerts, trail_pct, report_type, portfolio, latest_list,
   <div style="max-width:700px; margin:auto;">
 
     <!-- HEADER -->
-    <div style="background:#d93025; padding:20px 24px; color:white;
-                border-radius:10px 10px 0 0;">
+    <div style="background:#d93025; padding:20px 24px; color:white; border-radius:10px 10px 0 0;">
       <h1 style="margin:0; font-size:20px;">⚠️ Trail Stop Advarsel</h1>
       <p style="margin:4px 0 0; opacity:0.9; font-size:13px;">
         {report_type} · {now} · Tærskel: {trail_pct}%
       </p>
     </div>
 
-    <div style="background:white; padding:20px 24px; border:1px solid #eee;
+    <div style="background:white; padding:24px; border:1px solid #eee;
                 border-radius:0 0 10px 10px; margin-bottom:16px;">
       {test_banner}
-      <p style="color:#333; font-size:14px; margin:0 0 20px;">
+      <p style="color:#333; font-size:14px; margin:0 0 24px;">
         <strong>{len(alerts)} fond{"e" if len(alerts) > 1 else ""}</strong>
         har udløst Trail Stop og er faldet mere end <strong>{trail_pct}%</strong>
         fra sit High Water Mark:
       </p>
+
       {alerts_html}
+      {hvad_nu}
+      {definitioner}
     </div>
 
     <!-- FOOTER -->
