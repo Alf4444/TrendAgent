@@ -99,10 +99,11 @@ def get_trail_alerts(portfolio, latest_map, hwm_data):
         hwm_data[isin] = hwm_entry
 
         if alert:
-            alert['name']      = p_info.get('name', isin)
-            alert['ticker']    = p_info.get('ticker', '')
-            alert['depot']     = p_info.get('depot', '')
-            alert['trail_pct'] = trail_pct
+            alert['name']         = p_info.get('name', isin)
+            alert['ticker']       = p_info.get('ticker', '')
+            alert['depot']        = p_info.get('depot', '')
+            alert['ask_eligible'] = p_info.get('ask_eligible')
+            alert['trail_pct']    = trail_pct
             trail_alerts.append(alert)
             print(
                 f"🔔 TRAIL STOP: {alert['name']} faldet {alert['fall_pct']}% "
@@ -293,6 +294,7 @@ def get_momentum_svækkes_alerts(portfolio, hits_data, prev_data, latest_map, n_
             'name':         navn,
             'ticker':       ticker,
             'depot':        depot,
+            'ask_eligible': p_info.get('ask_eligible'),
             'kriterium':    kriterium,
             'detalje':      detalje,
             'momentum':     momentum,
@@ -458,6 +460,21 @@ def _pile_html(pile):
     return f'<span style="font-weight:700; color:{color};">{pile}</span>' if pile and pile != '—' else '<span style="color:#ccc;">—</span>'
 
 
+def _depot_badges(ask_eligible):
+    """Returnerer HTML med depot-egnethedsbadges for alle 6 depoter."""
+    badge_style = "display:inline-block; padding:1px 6px; border-radius:8px; font-size:10px; font-weight:700; margin-right:3px; margin-top:2px;"
+    ask_ok  = f'background:#e6f4ea; color:#1e6e34; border:1px solid #a8d5b5; {badge_style}'
+    ask_no  = f'background:#fff3e0; color:#e65100; border:1px solid #ffcc80; {badge_style}'
+
+    ask_badge = (f'<span style="{ask_ok}">ASK ✓</span>' if ask_eligible
+                 else f'<span style="{ask_no}">ASK ✗</span>')
+    always = ''.join([
+        f'<span style="{ask_ok}">{d} ✓</span>'
+        for d in ['AKT', 'AOP', 'KPP', 'SpSj-RTP', 'SpSj-INV']
+    ])
+    return ask_badge + always
+
+
 def build_email_html(trail_alerts, momentum_alerts, momentum_svækkes, nye_hits, nye_stabile,
                      rotation_weakest, rotation_best_new, hits_data):
     """Bygger HTML-indhold til alarm-mailen."""
@@ -471,7 +488,8 @@ def build_email_html(trail_alerts, momentum_alerts, momentum_svækkes, nye_hits,
             rows += f"""
             <tr>
               <td style="padding:8px; border-bottom:1px solid #fde;">{a.get('name','?')}<br>
-                <small style="color:#888;">{a.get('ticker','')} · {a.get('depot','')}</small></td>
+                <small style="color:#888;">{a.get('ticker','')} · {a.get('depot','')}</small><br>
+                {_depot_badges(a.get('ask_eligible'))}</td>
               <td style="padding:8px; border-bottom:1px solid #fde; color:#d93025; font-weight:700;">{a['fall_pct']:+.1f}%</td>
               <td style="padding:8px; border-bottom:1px solid #fde;">HWM: {a['hwm']} → Nu: {a['curr']}</td>
               <td style="padding:8px; border-bottom:1px solid #fde; color:#888;">
@@ -531,7 +549,8 @@ def build_email_html(trail_alerts, momentum_alerts, momentum_svækkes, nye_hits,
             items_html += f"""
             <div style="margin-bottom:14px; padding:10px 12px; background:#fef9f0; border-left:3px solid {k_color}; border-radius:0 4px 4px 0;">
               <div style="font-size:13px; font-weight:600;">{k_badge}&nbsp; {a['name']} <span style="color:#888; font-weight:400;">({a['ticker']} · {a.get('depot','')})</span></div>
-              <div style="font-size:12px; color:#555; margin-top:3px;">{a['detalje']}</div>"""
+              <div style="font-size:12px; color:#555; margin-top:3px;">{a['detalje']}</div>
+              <div style="margin-top:5px;">{_depot_badges(a.get('ask_eligible'))}</div>"""
 
             # K1: kun advarselstekst
             if a['kriterium'] == 'K1':
