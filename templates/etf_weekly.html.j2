@@ -258,7 +258,18 @@
   <button class="s-detail-btn" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.textContent = this.textContent.includes('▾') ? '▸ Detaljer ved handel' : '▾ Detaljer ved handel';">▾ Detaljer ved handel</button>
   <div class="s-detail">
     <div class="s-detail-grid">
-      <div class="s-detail-item"><div class="s-detail-label">Depot</div><div class="s-detail-value">{% if s.ask_eligible == true %}<span class="ask-badge ask">ASK ✓</span>{% elif s.ask_eligible == false %}<span class="ask-badge akt">AKT</span>{% else %}—{% endif %}</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Depot-egnethed</div><div class="s-detail-value">
+        {% if s.ask_eligible == true %}
+          <span class="ask-badge ask">ASK ✓</span>
+        {% else %}
+          <span class="ask-badge akt">ASK ✗</span>
+        {% endif %}
+        <span class="ask-badge ask">AKT ✓</span>
+        <span class="ask-badge ask">AOP ✓</span>
+        <span class="ask-badge ask">KPP ✓</span>
+        <span class="ask-badge ask">SpSj-RTP ✓</span>
+        <span class="ask-badge ask">SpSj-INV ✓</span>
+      </div></div>
       <div class="s-detail-item"><div class="s-detail-label">Sektor</div><div class="s-detail-value">{{ s.category or '—' }}</div></div>
       <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">{{ '%+.1f'|format(s.weighted_momentum) if s.weighted_momentum else '—' }}</div></div>
       <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">{{ s.ter }}%</div></div>
@@ -381,6 +392,7 @@
           <th>1Y %</th>
           <th>Drawdown</th>
           <th>Trail Stop</th>
+          <th>Depot</th>
         </tr>
       </thead>
       <tbody>
@@ -453,6 +465,19 @@
             {% else %}
               <span style="color:#ddd;">—</span>
             {% endif %}
+          </td>
+
+          <td style="white-space:nowrap;">
+            {% if row.ask_eligible == true %}
+              <span class="ask-badge ask">ASK ✓</span>
+            {% else %}
+              <span class="ask-badge akt">ASK ✗</span>
+            {% endif %}
+            <span class="ask-badge ask" style="margin-top:2px; display:inline-block;">AKT ✓</span>
+            <span class="ask-badge ask" style="margin-top:2px; display:inline-block;">AOP ✓</span>
+            <span class="ask-badge ask" style="margin-top:2px; display:inline-block;">KPP ✓</span>
+            <span class="ask-badge ask" style="margin-top:2px; display:inline-block;">SpSj-RTP ✓</span>
+            <span class="ask-badge ask" style="margin-top:2px; display:inline-block;">SpSj-INV ✓</span>
           </td>
 
         </tr>
