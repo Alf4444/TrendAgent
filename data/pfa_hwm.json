@@ -6,7 +6,8 @@
   },
   "PFA000002726": {
     "hwm": 234.42,
-    "hwm_date": "2026-05-18"
+    "hwm_date": "2026-05-18",
+    "trend_state": "BULL"
   },
   "PFA000002732": {
     "hwm": 457.97,
@@ -14,13 +15,14 @@
     "trend_state": "BULL"
   },
   "PFA000002761": {
-    "trend_state": "BULL"
+    "trend_state": "BEAR"
   },
   "PFA000002735": {
     "trend_state": "BULL"
   },
   "PFA000002753": {
     "hwm": 150.76,
-    "hwm_date": "2026-05-18"
+    "hwm_date": "2026-05-18",
+    "trend_state": "BULL"
   }
 }
