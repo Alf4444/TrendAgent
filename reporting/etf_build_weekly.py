@@ -58,6 +58,11 @@ def load_hwm():
             pass
     return {}
 
+def save_hwm(hwm_data):
+    HWM_FILE.parent.mkdir(exist_ok=True)
+    with open(HWM_FILE, "w", encoding="utf-8") as f:
+        json.dump(hwm_data, f, indent=2)
+
 def build_fonde_under_pres(portfolio, latest_map_or_rows):
     """
     Bygger 'Fonde under pres'-listen til ETF Weekly.
