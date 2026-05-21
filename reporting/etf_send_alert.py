@@ -593,7 +593,8 @@ def build_email_html(trail_alerts, momentum_alerts, momentum_svækkes, nye_hits,
             rows += f"""
             <tr>
               <td style="padding:8px; border-bottom:1px solid #eee;">{kat} <strong>{h['name']}</strong><br>
-                <small style="color:#888;">{h.get('ticker','')} · Score: {h.get('score','–')}pt</small></td>
+                <small style="color:#888;">{h.get('ticker','')} · Score: {h.get('score','–')}pt</small><br>
+                {_depot_badges(h.get('ask_eligible'))}</td>
               <td style="padding:8px; border-bottom:1px solid #eee; font-weight:700; color:#1e8e3e;">
                 +{h['momentum']:.1f}%</td>
               <td style="padding:8px; border-bottom:1px solid #eee;">
