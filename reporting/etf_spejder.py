@@ -1,87 +1,43 @@
 """
-etf_spejder.py — Automatisk ETF-screener for TrendAgent
-=========================================================
-Henter alle UCITS ETF'er fra justETF, filtrerer og scorer dem
-baseret på momentum-signaler. Gemmer top-kandidater til
-data/etf_spejder_hits.json som bruges af etf_weekly.html.
+etf_send_alert.py — Mail-alarm for ETF Spejder
+================================================
+Sendes på hverdage hvis der er:
+  🔴 Trail Stop-advarsler (fald fra HWM over tærskel)
+  🟡 Momentum-advarsler  (ejede fonde med aftagende momentum: ↑↓ eller ↓↓)
+  🟢 Nye Spejder-hits    (nye hurtige eller stabile kandidater)
 
-Køres som del af etf_weekly workflow (lørdag).
-
-Krav til en kandidat:
-  - UCITS long-only ETF handlet på Xetra
-  - Akkumulerende (ingen løbende udbytteskat)
-  - Min. 50M EUR AUM (likviditet)
-  - Maks 1.0% TER
-  - BULL-trend (kurs over MA)
-  - Positiv momentum
-
-Scoring (0-6 point):
-  +2  Momentum > 5% over bedste MA
-  +2  Golden Cross (MA20 krydser MA50 opad)
-  +1  RSI under 70 (ikke overkøbt)
-  +1  1M afkast positiv
+Køres af .github/workflows/etf_alert.yml
 """
 
 import json
-import random
+import os
 import sys
-import time
+import smtplib
 from pathlib import Path
 from datetime import datetime
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
+# Tilføj reporting/ til Python-stien så utils.py kan importeres
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from utils import check_trail_stop, get_trail_stop_pct
 
-try:
-    import justetf_scraping
-except ImportError:
-    print("❌ justetf_scraping ikke installeret.")
-    print("   Kør: pip install git+https://github.com/druzsan/justetf-scraping.git")
-    sys.exit(1)
+ROOT           = Path(__file__).resolve().parents[1]
+HITS_FILE      = ROOT / "data/etf_spejder_hits.json"
+PREV_FILE      = ROOT / "data/etf_spejder_prev.json"
+HWM_FILE       = ROOT / "data/etf_hwm.json"
+PORTFOLIO_FILE = ROOT / "config/etf_portfolio.json"
+LATEST_FILE    = ROOT / "data/etf_latest.json"
 
-try:
-    import yfinance as yf
-except ImportError:
-    print("❌ yfinance ikke installeret. Kør: pip install yfinance")
-    sys.exit(1)
-
-from utils import get_ma, get_best_ma, get_rsi, get_cross_signal, get_trend_state
-from sector_heatmap import build_portfolio_correlation
-
-# ==========================================
-# KONFIGURATION
-# ==========================================
-ROOT             = Path(__file__).resolve().parents[1]
-WATCHLIST_FILE   = ROOT / "config/etf_watchlist.json"
-PORTFOLIO_FILE   = ROOT / "config/etf_portfolio.json"
-HITS_FILE        = ROOT / "data/etf_spejder_hits.json"
-PREV_HITS_FILE   = ROOT / "data/etf_spejder_prev.json"  # Forrige uges hits
-SOLD_FILE        = ROOT / "data/etf_sold.json"           # Solgte fonde — cool-off filter
-HISTORY_FILE     = ROOT / "data/etf_history.json"        # Kurshistorik til korrelationsberegning
-NORDNET_FILE     = ROOT / "data/etf_nordnet_inventory.json"
-ASK_ELIGIBLE_FILE = ROOT / "config/etf_ask_eligible.json"  # Skats positivliste — opdateres maj hvert år
-
-# Filtre
-MIN_AUM_EUR      = 50_000_000   # Min 50M EUR
-MAX_TER          = 1.0          # Maks 1% TER
-REQUIRE_ACC      = True         # Kun akkumulerende
-
-# Scoring
-MIN_SCORE             = 2     # Minimum score for at komme med
-MIN_MOMENTUM_PCT      = 5.0   # Min % over MA (stabile)
-MAX_RSI               = 70    # Ikke overkøbt (stabile)
-MAX_CANDIDATES_STABIL = 10    # Max stabile trendere
-MAX_CANDIDATES_HURTIG = 10    # Max hurtige heste
-
-# Hurtig hest grænser
-HURTIG_MIN_MOMENTUM   = 20.0  # Min % over MA
-HURTIG_MIN_1Y         = 50.0  # Min 1-årsafkast
-
-# Pause mellem yfinance-kald for at undgå rate limiting
-YFINANCE_DELAY   = 0.3
+# Momentum-pile der signalerer aftagende momentum for ejede fonde
+MOMENTUM_WARN_PILES  = {'↑↓', '↓↓'}
+MOMENTUM_FILE        = ROOT / "data/etf_momentum_alerts.json"
+ASK_ELIGIBLE_FILE    = ROOT / "config/etf_ask_eligible.json"  # Skats positivliste
+MOMENTUM_DOWN_PCT    = 10.0   # K2: momentum under denne % → signal
 
 
 # ==========================================
-# HJÆLPEFUNKTIONER
+# FIL-HJÆLPEFUNKTIONER
 # ==========================================
 
 def load_json(path, default):
@@ -90,12 +46,10 @@ def load_json(path, default):
     try:
         with open(path, "r", encoding="utf-8") as f:
             data = json.load(f)
-            # Filtrer kommentar-felter
             if isinstance(data, dict):
                 return {k: v for k, v in data.items() if not k.startswith('_')}
             return data
-    except Exception as e:
-        print(f"⚠️  Kunne ikke læse {path}: {e}")
+    except Exception:
         return default
 
 def save_json(path, data):
@@ -103,418 +57,702 @@ def save_json(path, data):
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
 
-def load_nordnet_inventory():
+
+# ==========================================
+# TRAIL STOP — via utils (enkelt kilde til sandhed)
+# ==========================================
+
+def get_trail_alerts(portfolio, latest_map, hwm_data):
     """
-    Indlæser Nordnet-inventory fra data/etf_nordnet_inventory.json.
-    Returnerer et set af ISINs der kan handles på Nordnet,
-    eller None hvis filen ikke eksisterer (filteret deaktiveres da).
+    Gennemgår aktive positioner og finder trail stop-brud.
+    Bruger utils.check_trail_stop() og utils.get_trail_stop_pct()
+    så logikken er identisk med etf_build_weekly.py.
 
-    Format: {"ISIN": {"name": "...", "isin": "..."}, ...}
+    Opdaterer HWM-data in-place og returnerer:
+      (trail_alerts, opdateret hwm_data)
     """
-    if not NORDNET_FILE.exists():
-        print(f"⚠️  Nordnet-inventory ikke fundet: {NORDNET_FILE.name}")
-        print(f"   Nordnet-filter deaktiveret — alle ISINs scannes.")
-        return None
-    try:
-        with open(NORDNET_FILE, "r", encoding="utf-8") as f:
-            data = json.load(f)
-        isins = set(data.keys())
-        print(f"✅ Nordnet-inventory indlæst: {len(isins):,} handlbare ETF'er")
-        return isins
-    except Exception as e:
-        print(f"⚠️  Kunne ikke læse Nordnet-inventory: {e}")
-        print(f"   Nordnet-filter deaktiveret — alle ISINs scannes.")
-        return None
+    today_str    = datetime.now().strftime('%Y-%m-%d')
+    trail_alerts = []
+
+    for isin, p_info in portfolio.items():
+        if not p_info.get('active', False):
+            continue
+
+        buy_price = p_info.get('buy_price', 0)
+        if not buy_price:
+            continue
+
+        if isin not in latest_map:
+            continue
+
+        curr_price = latest_map[isin].get('nav', 0)
+        if not curr_price:
+            continue
+
+        volatility     = latest_map[isin].get('volatility')
+        total_ret_pct  = round(((curr_price / buy_price) - 1) * 100, 2) if buy_price else None
+        rsi            = rsi_map.get(isin) if 'rsi_map' in dir() else None
+        trail_pct      = get_trail_stop_pct(volatility, rsi, total_return_pct=total_ret_pct)
+
+        hwm_entry, alert = check_trail_stop(
+            isin, curr_price, buy_price, hwm_data, today_str, trail_pct
+        )
+        hwm_data[isin] = hwm_entry
+
+        if alert:
+            alert['name']         = p_info.get('name', isin)
+            alert['ticker']       = p_info.get('ticker', '')
+            alert['depot']        = p_info.get('depot', '')
+            alert['ask_eligible'] = p_info.get('ask_eligible')
+            alert['trail_pct']    = trail_pct
+            trail_alerts.append(alert)
+            print(
+                f"🔔 TRAIL STOP: {alert['name']} faldet {alert['fall_pct']}% "
+                f"fra top {alert['hwm']} → nu {alert['curr']} "
+                f"(tærskel: {trail_pct}%)"
+            )
+
+    return trail_alerts, hwm_data
 
 
-def load_sold_funds():
+# ==========================================
+# ROTATION-ALTERNATIVER — til K2/K3 signaler
+# ==========================================
+
+def get_rotation_alternatives(isin, portfolio, hits_data, latest_map, n=3):
     """
-    Indlæser etf_sold.json — liste af solgte fonde til cool-off filter.
+    Finder top-N Spejder-kandidater som rotationsalternativer.
+    Sorteret på momentum (stærkest først).
+    Tilføjer sektor og eksponerings-note (ny eksponering / samme sektor som X).
 
-    Format:
-      { "ISIN": { "sold_date": "YYYY-MM-DD", "sold_price": 123.45 }, ... }
-
-    Returnerer dict eller {} hvis filen ikke eksisterer.
+    Returnerer liste af dicts med: name, ticker, momentum, category, exposure_note
     """
-    if not SOLD_FILE.exists():
+    owned_isins = {i for i, p in portfolio.items() if p.get('active', False)}
+    # Byg kategori-map for ejede fonde fra latest_map
+    owned_category_map = {}
+    for i, p in portfolio.items():
+        if p.get('active', False):
+            cat = latest_map.get(i, {}).get('category', '') or p.get('category', '')
+            if cat:
+                owned_category_map[i] = cat
+
+    # Saml alle hits — sortér på momentum
+    all_hits = (
+        hits_data.get('hits_hurtige', []) +
+        hits_data.get('hits_stabile', []) +
+        hits_data.get('hits', [])
+    )
+    # Deduplikér på ISIN
+    seen = set()
+    unique_hits = []
+    for h in all_hits:
+        h_isin = h.get('isin')
+        if h_isin and h_isin not in seen and h_isin not in owned_isins:
+            seen.add(h_isin)
+            unique_hits.append(h)
+
+    # Sortér på momentum — stærkest først
+    unique_hits.sort(key=lambda x: x.get('momentum', 0), reverse=True)
+
+    alternatives = []
+    for h in unique_hits[:n]:
+        h_isin    = h.get('isin', '')
+        h_cat     = latest_map.get(h_isin, {}).get('category', '') or h.get('category', '')
+
+        # Find ejede fonde i samme kategori
+        same_cat_owned = []
+        if h_cat:
+            for oi, oc in owned_category_map.items():
+                if oi != isin and h_cat and oc and h_cat.lower() in oc.lower():
+                    same_cat_owned.append(portfolio[oi].get('ticker', oi))
+
+        if same_cat_owned:
+            exposure_note = f"samme sektor som {' og '.join(same_cat_owned)}"
+        else:
+            exposure_note = "ny eksponering"
+
+        alternatives.append({
+            'name':          h.get('name', ''),
+            'ticker':        h.get('ticker', ''),
+            'momentum':      h.get('momentum', 0),
+            'category':      h_cat or '—',
+            'exposure_note': exposure_note,
+        })
+
+    return alternatives
+
+
+# ==========================================
+# MOMENTUM SVÆKKES — K1/K2/K3 signal for ejede fonde
+# ==========================================
+
+def load_momentum_alerts():
+    """Indlæser anti-spam fil. Format: {isin: {kriterium: dato}}"""
+    if not MOMENTUM_FILE.exists():
         return {}
     try:
-        with open(SOLD_FILE, "r", encoding="utf-8") as f:
-            data = json.load(f)
-            return {k: v for k, v in data.items() if not k.startswith("_")}
+        with open(MOMENTUM_FILE, 'r', encoding='utf-8') as f:
+            return json.load(f)
     except Exception:
         return {}
 
+def save_momentum_alerts(data):
+    """Gemmer anti-spam fil."""
+    MOMENTUM_FILE.parent.mkdir(exist_ok=True)
+    with open(MOMENTUM_FILE, 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
 
-def is_sold_cooloff(isin, ticker, sold_funds, prices):
+def get_momentum_svækkes_alerts(portfolio, hits_data, prev_data, latest_map, n_alternatives=3):
     """
-    Returnerer True hvis fonden er i cool-off efter salg og skal filtreres fra.
+    Detekterer ejede fonde der mister momentum via tre kriterier.
+    Første kriterium der rammes sender signalet — ikke alle tre.
 
-    Cool-off ophører når BEGGE betingelser er opfyldt:
-      1. Kursen er tilbage i BULL-trend (over MA)
-      2. Kursen er højere end salgskursen
+    K1 — Pile: consecutive_down=True i hits (↓↓ to kørsler i træk)
+    K2 — Momentum: momentum % under MOMENTUM_DOWN_PCT (10%)
+    K3 — Univers: fond ikke i Spejderens top-200 (hits)
 
-    Logik:
-      - Ejede fonde (is_owned=True) er aldrig i cool-off
-      - Fonde ikke i sold_funds er aldrig i cool-off
-      - Fonde der mangler prisdata filtreres ikke (vi kan ikke vurdere)
+    Anti-spam: samme fond + samme kriterium sender ikke igen
+    før kriteriet har ændret sig (gemmes i etf_momentum_alerts.json).
+
+    Returnerer: (alerts, opdateret_spam_data)
     """
-    if not isin or isin not in sold_funds:
-        return False
+    today_str  = datetime.now().strftime('%Y-%m-%d')
+    spam_data  = load_momentum_alerts()
+    alerts     = []
 
-    entry      = sold_funds[isin]
-    sold_price = entry.get("sold_price", 0)
-
-    if not prices or not sold_price:
-        return False
-
-    curr_price = prices[-1]
-
-    # Betingelse 1: BULL-trend (kurs over MA)
-    from utils import get_best_ma
-    ma_val, _ = get_best_ma(prices)
-    if ma_val is None or curr_price <= ma_val:
-        print(f"   ⏳ Cool-off: {isin} — under MA ({curr_price:.2f} <= {ma_val:.2f if ma_val else '?'})")
-        return True
-
-    # Betingelse 2: Kurs højere end salgskurs
-    if curr_price <= sold_price:
-        print(f"   ⏳ Cool-off: {isin} — under salgskurs ({curr_price:.2f} <= {sold_price:.2f})")
-        return True
-
-    # Begge betingelser opfyldt — cool-off ophørt
-    print(f"   ✅ Cool-off ophørt: {isin} — BULL og over salgskurs ({curr_price:.2f} > {sold_price:.2f})")
-    return False
-
-
-def load_ask_eligible():
-    """
-    Indlæser Skats positivliste fra config/etf_ask_eligible.json.
-    Returnerer et set af ISINs der er ASK-egnede, eller tomt set hvis filen mangler.
-    Filen opdateres manuelt én gang om året (typisk maj).
-    """
-    if not ASK_ELIGIBLE_FILE.exists():
-        print(f"⚠️  ASK-positivliste ikke fundet: {ASK_ELIGIBLE_FILE.name}")
-        print(f"   ASK-egnethed sættes til None for alle kandidater.")
-        return set()
-    try:
-        with open(ASK_ELIGIBLE_FILE, "r", encoding="utf-8") as f:
-            data = json.load(f)
-        isins = set(data.get("isins", []))
-        updated = data.get("_opdateret", "ukendt")
-        print(f"✅ ASK-positivliste indlæst: {len(isins):,} ISINs (opdateret: {updated})")
-        return isins
-    except Exception as e:
-        print(f"⚠️  Kunne ikke læse ASK-positivliste: {e}")
-        return set()
-
-
-def is_nordnet_available(isin, nordnet_isins, is_owned, is_watchlist):
-    """
-    Returnerer True hvis fonden må vises i Spejder-output.
-
-    Regler (i prioriteret rækkefølge):
-      1. Fonde vi ejer → ALTID vis (uanset inventory)
-      2. Fonde på watchlist → ALTID vis (de er verificerede)
-      3. Nordnet-filter aktivt → kun hvis ISIN er i inventory
-      4. Nordnet-filter ikke aktivt (fil mangler) → vis alle
-    """
-    if is_owned:
-        return True
-    if is_watchlist:
-        return True
-    if nordnet_isins is None:
-        return True  # Filter deaktiveret
-    return isin in nordnet_isins
-
-
-def get_yfinance_ticker(isin, name):
-    """
-    Konverterer ISIN til yfinance ticker.
-    Forsøger først ISIN direkte, derefter navnesøgning.
-    Returnerer ticker-streng eller None.
-    """
-    # Strategi 1: Søg via yfinance search
-    try:
-        results = yf.Search(isin, max_results=3)
-        if hasattr(results, 'quotes') and results.quotes:
-            for q in results.quotes:
-                ticker = q.get('symbol', '')
-                # Foretræk .DE (Xetra) tickers
-                if ticker.endswith('.DE'):
-                    return ticker
-            # Tag første resultat hvis ingen .DE
-            return results.quotes[0].get('symbol')
-    except Exception:
-        pass
-
-    # Strategi 2: Konstruer ticker fra ISIN via justETF
-    # justETF ISIN-profil indeholder typisk ticker-info
-    return None
-
-
-def calculate_weighted_momentum(row):
-    """
-    Beregner tidsvægtet momentum-score baseret på afkast over
-    flere tidshorisonter. Nyere perioder vægtes tungere.
-
-    Normaliseret til månedligt afkast for fair sammenligning:
-      1M afkast           → ganges med 4 (høj vægt — nuværende momentum)
-      3M afkast / 3       → ganges med 2 (middel vægt)
-      6M afkast / 6       → ganges med 1 (lav vægt — historisk)
-
-    Returnerer (weighted_score, consistency_bonus, details_dict)
-    """
-    r1m = row.get('last_month')   or row.get('month1')
-    r3m = row.get('last_three_months') or row.get('month3')
-    r6m = row.get('last_six_months')   or row.get('month6')
-
-    try:
-        r1m = float(r1m) if r1m is not None else None
-        r3m = float(r3m) if r3m is not None else None
-        r6m = float(r6m) if r6m is not None else None
-    except Exception:
-        r1m = r3m = r6m = None
-
-    # Normaliser til månedligt afkast
-    r1m_monthly = r1m                    if r1m is not None else None
-    r3m_monthly = (r3m / 3)              if r3m is not None else None
-    r6m_monthly = (r6m / 6)              if r6m is not None else None
-
-    # Vejede score — kræver mindst 1M data
-    if r1m_monthly is None:
-        return 0, 0, {}
-
-    weighted = r1m_monthly * 4
-    if r3m_monthly is not None:
-        weighted += r3m_monthly * 2
-    if r6m_monthly is not None:
-        weighted += r6m_monthly * 1
-
-    # Konsistens-bonus
-    consistency_bonus = 0
-    reasons_bonus = []
-    available = [x for x in [r1m_monthly, r3m_monthly, r6m_monthly] if x is not None]
-
-    # Bonus A: Alle tilgaengelige perioder er positive
-    if available and all(x > 0 for x in available):
-        consistency_bonus += 1
-        reasons_bonus.append("Konsistent positiv på alle tidshorisonter")
-
-    # Bonus B: Acceleration — nyere periode er bedre end aeldre
-    if r1m_monthly is not None and r3m_monthly is not None and r6m_monthly is not None:
-        if r1m_monthly > r3m_monthly > r6m_monthly:
-            consistency_bonus += 2
-            reasons_bonus.append(f"Accelererende trend: {r6m_monthly:.1f}% → {r3m_monthly:.1f}% → {r1m_monthly:.1f}% pr. md.")
-        elif r1m_monthly > r3m_monthly:
-            consistency_bonus += 1
-            reasons_bonus.append(f"Momentum tiltagende: {r3m_monthly:.1f}% → {r1m_monthly:.1f}% pr. md.")
-
-    details = {
-        "r1m_monthly": round(r1m_monthly, 2) if r1m_monthly else None,
-        "r3m_monthly": round(r3m_monthly, 2) if r3m_monthly else None,
-        "r6m_monthly": round(r6m_monthly, 2) if r6m_monthly else None,
-        "weighted":    round(weighted, 2),
-        "bonus":       consistency_bonus,
-        "bonus_reasons": reasons_bonus,
+    owned_isins = {
+        isin: p for isin, p in portfolio.items()
+        if p.get('active', False)
     }
-    return weighted, consistency_bonus, details
+    if not owned_isins:
+        return [], spam_data
+
+    # Byg lookup fra alle hits (200 fonde)
+    all_hits_isins = {
+        h.get('isin') for h in (
+            hits_data.get('hits', []) +
+            hits_data.get('hits_hurtige', []) +
+            hits_data.get('hits_stabile', [])
+        ) if h.get('isin')
+    }
+
+    # Byg ISIN → hit-data map for ejede fonde
+    all_hits_map = {}
+    for h in (hits_data.get('hits', []) + hits_data.get('hits_hurtige', []) + hits_data.get('hits_stabile', [])):
+        if h.get('isin') and h['isin'] not in all_hits_map:
+            all_hits_map[h['isin']] = h
+
+    for isin, p_info in owned_isins.items():
+        hit       = all_hits_map.get(isin)
+        item      = latest_map.get(isin, {})
+        navn      = p_info.get('name', isin)
+        ticker    = p_info.get('ticker', '')
+        depot     = p_info.get('depot', '')
+        momentum  = (hit or {}).get('momentum') or item.get('return_1m')
+
+        # Find kriterium — første der rammer
+        kriterium = None
+        detalje   = ''
+
+        # K1: consecutive_down i hits
+        if hit and hit.get('consecutive_down'):
+            kriterium = 'K1'
+            detalje   = f'pile ↓↓ to kørsler i træk (momentum: {momentum:+.1f}%)' if momentum is not None else 'pile ↓↓ to kørsler i træk'
+
+        # K2: momentum under grænse
+        elif momentum is not None and momentum < MOMENTUM_DOWN_PCT:
+            kriterium = 'K2'
+            detalje   = f'momentum {momentum:+.1f}% — under {MOMENTUM_DOWN_PCT}% over MA'
+
+        # K3: ude af top-200
+        elif isin not in all_hits_isins:
+            kriterium = 'K3'
+            detalje   = 'ikke længere i Spejderens top-200 kandidater'
+
+        if not kriterium:
+            # Ingen kriterium ramt — nulstil evt. spam-registrering
+            if isin in spam_data:
+                spam_data.pop(isin, None)
+            continue
+
+        # Anti-spam: tjek om samme fond + kriterium allerede er sendt
+        prev_alert = spam_data.get(isin, {})
+        if prev_alert.get('kriterium') == kriterium:
+            print(f"   ⏭️  {navn}: {kriterium} allerede sendt — springer over")
+            continue
+
+        # Rotation-alternativer til K2 og K3
+        alternatives = []
+        if kriterium in ('K2', 'K3'):
+            alternatives = get_rotation_alternatives(
+                isin, portfolio, hits_data, latest_map, n=n_alternatives
+            )
+
+        # Nyt signal — registrér og tilføj
+        spam_data[isin] = {'kriterium': kriterium, 'dato': today_str}
+        alerts.append({
+            'isin':         isin,
+            'name':         navn,
+            'ticker':       ticker,
+            'depot':        depot,
+            'ask_eligible': p_info.get('ask_eligible'),
+            'kriterium':    kriterium,
+            'detalje':      detalje,
+            'momentum':     momentum,
+            'alternatives': alternatives,
+        })
+        print(f"   📉 MOMENTUM SVÆKKES: {navn} — {kriterium}: {detalje}")
+
+    # Sortér K1 øverst, K2 midt, K3 nederst
+    alerts.sort(key=lambda x: x['kriterium'])
+
+    return alerts, spam_data
 
 
-def fetch_prices(ticker, months=12):
+# ==========================================
+# MOMENTUM-ALARM — ejede fonde med aftagende momentum
+# ==========================================
+
+def get_momentum_alerts(portfolio, hits_data, prev_data):
     """
-    Henter historiske kurser via yfinance.
-    Returnerer liste af daglige lukningskurser (nyeste sidst).
+    Finder ejede fonde med aftagende momentum (↑↓ eller ↓↓).
+
+    Strategi:
+      1. Byg et map over ejede tickers fra portfolio
+      2. Søg i hits (alle 200) + prev hits for ejede fonde
+      3. Sammenlign momentum_pile — advar hvis ↑↓ eller ↓↓
+
+    Returnerer liste af alert-dicts.
     """
-    try:
-        t = yf.Ticker(ticker)
-        hist = t.history(period=f"{months}mo", auto_adjust=True)
-        if hist.empty:
-            return []
-        return [round(float(p), 4) for p in hist['Close'].dropna().tolist()]
-    except Exception:
+    owned_ticker_map = {
+        p.get('ticker', '').upper(): (isin, p)
+        for isin, p in portfolio.items()
+        if p.get('active', False) and p.get('ticker')
+    }
+
+    if not owned_ticker_map:
         return []
 
+    # Saml alle hits (top 10 + resten af de 200) fra begge filer
+    all_curr = hits_data.get('hits', []) + hits_data.get('hits_hurtige', []) + hits_data.get('hits_stabile', [])
+    all_prev = prev_data.get('hits', []) + prev_data.get('hits_hurtige', []) + prev_data.get('hits_stabile', [])
 
-# ==========================================
-# HENT UNIVERSE FRA JUSTÉTF
-# ==========================================
+    # Deduplikér på ticker
+    curr_map = {}
+    for h in all_curr:
+        t = h.get('ticker', '').upper()
+        if t and t not in curr_map:
+            curr_map[t] = h
 
-def fetch_universe():
-    """
-    Henter alle relevante ETF'er fra justETF.
-    Filtrerer på AUM, TER og type.
-    Returnerer DataFrame med ISIN, navn, afkast, TER osv.
-    """
-    print("📡 Henter ETF-univers fra justETF...")
+    prev_map = {}
+    for h in all_prev:
+        t = h.get('ticker', '').upper()
+        if t and t not in prev_map:
+            prev_map[t] = h
 
-    try:
-        df = justetf_scraping.load_overview(strategy="epg-longOnly")
-        print(f"   Hentet {len(df)} ETF'er i alt")
-    except Exception as e:
-        print(f"❌ justETF fejlede: {e}")
-        return None
+    alerts = []
+    for ticker, (isin, p_info) in owned_ticker_map.items():
+        curr = curr_map.get(ticker)
+        prev = prev_map.get(ticker)
 
-    # Filtrer på tilgængelige kolonner
-    print(f"   Tilgængelige kolonner: {list(df.columns)}")
+        if not curr and not prev:
+            # Fonden er ikke i Spejderens univers denne kørsel
+            continue
 
-    # AUM filter
-    if 'fundSize' in df.columns:
-        df = df[df['fundSize'] >= MIN_AUM_EUR]
-        print(f"   Efter AUM-filter (>{MIN_AUM_EUR/1e6:.0f}M EUR): {len(df)} ETF'er")
-    elif 'aum' in df.columns:
-        df = df[df['aum'] >= MIN_AUM_EUR]
-        print(f"   Efter AUM-filter: {len(df)} ETF'er")
+        pile = (curr or prev or {}).get('momentum_pile', '—')
 
-    # TER filter
-    ter_col = next((c for c in ['ter', 'totalExpenseRatio'] if c in df.columns), None)
-    if ter_col:
-        df = df[df[ter_col].notna() & (df[ter_col] <= MAX_TER)]
-        print(f"   Efter TER-filter (<={MAX_TER}%): {len(df)} ETF'er")
+        if pile in MOMENTUM_WARN_PILES:
+            curr_mom  = (curr or {}).get('momentum')
+            prev_mom  = (prev or {}).get('momentum')
+            curr_score = (curr or {}).get('score')
 
-    # Akkumulerende filter
-    if REQUIRE_ACC and 'distributionPolicy' in df.columns:
-        df = df[df['distributionPolicy'].str.lower().str.contains('acc|accumul', na=False)]
-        print(f"   Efter akkumulerende-filter: {len(df)} ETF'er")
-    elif REQUIRE_ACC and 'incomeType' in df.columns:
-        df = df[df['incomeType'].str.lower().str.contains('acc|accumul', na=False)]
-        print(f"   Efter akkumulerende-filter: {len(df)} ETF'er")
+            alerts.append({
+                'isin':       isin,
+                'name':       p_info.get('name', isin),
+                'ticker':     ticker,
+                'depot':      p_info.get('depot', ''),
+                'pile':       pile,
+                'momentum':   curr_mom,
+                'prev_momentum': prev_mom,
+                'score':      curr_score,
+                'rsi':        (curr or {}).get('rsi'),
+                'return_1m':  (curr or {}).get('return_1m'),
+            })
+            print(
+                f"🟡 MOMENTUM ADVARSEL: {p_info.get('name', isin)} "
+                f"pile={pile} momentum={curr_mom} (prev={prev_mom})"
+            )
 
-    # Xetra-filter — kun ETF'er noteret på Xetra (.DE tickers)
-    # Nordnet handler primært Xetra-listede ETF'er, og dette skærer
-    # universet markant ned og sikrer vi kun får handlbare tickers
-    ticker_col_check = next((c for c in ['ticker', 'Ticker'] if c in df.columns), None)
-    exchange_col = next((c for c in ['exchange', 'exchanges', 'primaryExchange', 'listingExchange'] if c in df.columns), None)
-    if exchange_col:
-        before = len(df)
-        df = df[df[exchange_col].str.upper().str.contains('XETRA|XETR|GER|ETR', na=False)]
-        print(f"   Efter Xetra-filter (exchange): {len(df)} ETF'er (fra {before})")
-    elif ticker_col_check:
-        before = len(df)
-        mask = (
-            df[ticker_col_check].str.upper().str.endswith('.DE') |
-            ~df[ticker_col_check].str.contains('.', regex=False, na=True)
-        )
-        df = df[mask]
-        print(f"   Efter Xetra-filter (ticker .DE): {len(df)} ETF'er (fra {before})")
-    else:
-        print(f"   ⚠️  Xetra-filter: ingen exchange/ticker-kolonne — filter sprunget over")
-
-    print(f"   Endeligt univers: {len(df)} ETF'er")
-    return df
+    return alerts
 
 
 # ==========================================
-# SCORE EN ETF
+# ROTATIONSFORSLAG — baseret på score + momentum
 # ==========================================
 
-def score_etf(isin, name, row, prices, is_owned, is_watchlist):
+def get_rotation_suggestion(portfolio, latest_map, hits_data, momentum_alerts, trail_alerts):
     """
-    Beregner Spejder-score baseret på tekniske signaler.
-    Returnerer score-dict eller None hvis ikke kvalificeret.
+    Finder det bedste rotationsforslag:
+      Sælg: svagest ejet fond (lavest score/momentum, eller dem med advarsel)
+      Køb:  bedste nye hurtige kandidat der ikke allerede ejes
+
+    Returnerer (weakest_dict, best_new_dict) eller (None, None).
     """
-    if len(prices) < 20:
-        return None
+    active_isins = {isin for isin, p in portfolio.items() if p.get('active', False)}
+    owned_tickers = {p.get('ticker', '').upper() for isin, p in portfolio.items() if p.get('active', False)}
 
-    ma_val, ma_label = get_best_ma(prices)
-    if not ma_val:
-        return None
+    # Svagest ejet: prioritér trail stop > momentum-advarsel > lavest 1M
+    trail_isins    = {a['isin'] for a in trail_alerts}
+    momentum_isins = {a['isin'] for a in momentum_alerts}
 
-    curr = prices[-1]
-    momentum = round(((curr / ma_val) - 1) * 100, 2)
-    trend    = get_trend_state(prices)
-    rsi      = get_rsi(prices, 14)
-    cross    = get_cross_signal(prices)
+    candidates = []
+    for isin, p_info in portfolio.items():
+        if not p_info.get('active', False):
+            continue
+        item      = latest_map.get(isin, {})
+        return_1m = item.get('return_1m') or 0
 
-    # Hurtige heste: ingen RSI-krav, høj momentum er nok
-    # Stabile trendere: kræver RSI < 70 og momentum 5-20%
-    is_hurtig = momentum >= HURTIG_MIN_MOMENTUM or (
-        rsi is not None and False  # 1Y tjekkes i return-blokken
+        # Prioritetsscore: trail=0, momentum=1, resten=2+
+        if isin in trail_isins:
+            prio = 0
+        elif isin in momentum_isins:
+            prio = 1
+        else:
+            prio = 2
+
+        candidates.append({
+            'isin':      isin,
+            'name':      p_info.get('name', isin),
+            'ticker':    p_info.get('ticker', ''),
+            'return_1m': return_1m,
+            'prio':      prio,
+        })
+
+    if not candidates:
+        return None, None
+
+    weakest = sorted(candidates, key=lambda x: (x['prio'], x['return_1m']))[0]
+
+    # Bedste nye hurtige hest der ikke ejes
+    nye_hits = hits_data.get('hits_nye', [])
+    best_new = next(
+        (h for h in nye_hits if h.get('ticker', '').upper() not in owned_tickers),
+        None
     )
+    # Fallback: bedste hurtige hit overhovedet der ikke ejes
+    if not best_new:
+        best_new = next(
+            (h for h in hits_data.get('hits_hurtige', [])
+             if h.get('ticker', '').upper() not in owned_tickers),
+            None
+        )
 
-    # Kræv BULL-trend og minimum momentum
-    if trend != "BULL" or momentum < MIN_MOMENTUM_PCT:
-        return None
+    return weakest, best_new
 
-    # Stabile: fjern overkøbte
-    if not is_hurtig and rsi is not None and rsi >= MAX_RSI:
-        return None
 
-    # Beregn score
-    score   = 0
-    reasons = []
+# ==========================================
+# HTML-MAIL BYGNING
+# ==========================================
 
-    # Momentum
-    score += 2
-    reasons.append(f"Momentum +{momentum:.1f}% over {ma_label}")
+def _pile_html(pile):
+    """Returnerer farvet pile-html."""
+    colors = {'↑↑': '#1e8e3e', '↓↑': '#1e8e3e', '↑↓': '#f59c00', '↓↓': '#d93025'}
+    color  = colors.get(pile, '#888')
+    return f'<span style="font-weight:700; color:{color};">{pile}</span>' if pile and pile != '—' else '<span style="color:#ccc;">—</span>'
 
-    # Golden Cross
-    if cross == "🚀 GOLDEN":
-        score += 2
-        reasons.append("Golden Cross — MA20 krydser MA50 opad")
 
-    # RSI ikke overkøbt
-    if rsi is not None and rsi < MAX_RSI:
-        score += 1
-        reasons.append(f"RSI {rsi:.0f} — ikke overkøbt")
-    elif rsi is None:
-        score += 1  # Ingen data er ikke diskvalificerende
+def _depot_badges(ask_eligible):
+    """Returnerer HTML med depot-egnethedsbadges for alle 6 depoter."""
+    badge_style = "display:inline-block; padding:1px 6px; border-radius:8px; font-size:10px; font-weight:700; margin-right:3px; margin-top:2px;"
+    ask_ok  = f'background:#e6f4ea; color:#1e6e34; border:1px solid #a8d5b5; {badge_style}'
+    ask_no  = f'background:#fff3e0; color:#e65100; border:1px solid #ffcc80; {badge_style}'
 
-    # 1M afkast
-    # Afkast fra justETF kolonner
-    return_1m_raw = row.get('last_month') or row.get('month1') or row.get('return1month') or row.get('1m')
-    return_1y_raw = row.get('last_year')  or row.get('year1')  or row.get('return1year')  or row.get('1y')
-    ter_raw       = row.get('ter') or row.get('totalExpenseRatio') or 0
+    ask_badge = (f'<span style="{ask_ok}">ASK ✓</span>' if ask_eligible
+                 else f'<span style="{ask_no}">ASK ✗</span>')
+    always = ''.join([
+        f'<span style="{ask_ok}">{d} ✓</span>'
+        for d in ['AKT', 'AOP', 'KPP', 'SpSj-RTP', 'SpSj-INV']
+    ])
+    return ask_badge + always
+
+
+def check_ask_reminder():
+    """
+    Tjekker om ASK-positivlisten skal opdateres.
+    Returnerer HTML-advarsel hvis _opdateret ikke er fra indeværende år,
+    eller hvis filen mangler. Vises altid i alarm-mailen i maj måned
+    uanset hvornår listen sidst blev opdateret.
+    """
+    now = datetime.now()
+    current_year = str(now.year)
+    is_may = now.month == 5
+
+    if not ASK_ELIGIBLE_FILE.exists():
+        return f"""
+        <div style="margin-bottom:16px; padding:12px 16px; background:#fff8e1;
+                    border-left:4px solid #f9a825; border-radius:4px;">
+          <strong>⚠️ ASK-positivliste mangler</strong><br>
+          <span style="font-size:12px; color:#555;">
+            Filen <code>config/etf_ask_eligible.json</code> findes ikke — ASK-egnethed kan ikke beregnes.<br>
+            Download ny liste fra Skat og kør opdateringsscript.<br>
+            <a href="https://skat.dk/erhverv/ekapital/vaerdipapirer/beviser-og-aktier-i-investeringsforeninger-og-selskaber-ifpa"
+               style="color:#1a73e8;">skat.dk — Positivliste over ASK-egnede investeringsbeviser</a>
+          </span>
+        </div>"""
 
     try:
-        return_1m = float(return_1m_raw) if return_1m_raw is not None else None
+        with open(ASK_ELIGIBLE_FILE, encoding='utf-8') as f:
+            data = json.load(f)
+        opdateret = data.get('_opdateret', '')  # Format: "YYYY-MM"
+        year = opdateret[:4] if opdateret else ''
     except Exception:
-        return_1m = None
+        year = ''
 
-    if return_1m and return_1m > 0:
-        score += 1
-        reasons.append(f"1M afkast: +{return_1m:.1f}%")
+    if year != current_year:
+        return f"""
+        <div style="margin-bottom:16px; padding:12px 16px; background:#fff8e1;
+                    border-left:4px solid #f9a825; border-radius:4px;">
+          <strong>⚠️ ASK-positivliste skal opdateres</strong><br>
+          <span style="font-size:12px; color:#555;">
+            Listen er fra {opdateret or 'ukendt'} — download ny liste for {current_year}.<br>
+            <a href="https://skat.dk/erhverv/ekapital/vaerdipapirer/beviser-og-aktier-i-investeringsforeninger-og-selskaber-ifpa"
+               style="color:#1a73e8;">skat.dk — Positivliste over ASK-egnede investeringsbeviser</a>
+          </span>
+        </div>"""
 
-    # Tidsvagtet momentum + konsistens-bonus
-    weighted_score, consistency_bonus, momentum_details = calculate_weighted_momentum(row)
-    score += consistency_bonus
+    if is_may:
+        return f"""
+        <div style="margin-bottom:16px; padding:12px 16px; background:#e8f5e9;
+                    border-left:4px solid #43a047; border-radius:4px;">
+          <strong>✅ ASK-positivliste er opdateret ({opdateret})</strong><br>
+          <span style="font-size:12px; color:#555;">
+            Maj-påmindelse: Tjek om Skat har udgivet ny liste for {current_year}.<br>
+            <a href="https://skat.dk/erhverv/ekapital/vaerdipapirer/beviser-og-aktier-i-investeringsforeninger-og-selskaber-ifpa"
+               style="color:#1a73e8;">skat.dk — Positivliste over ASK-egnede investeringsbeviser</a>
+          </span>
+        </div>"""
 
-    if momentum_details.get('bonus_reasons'):
-        for br in momentum_details['bonus_reasons']:
-            reasons.append(br)
+    return ""  # Ingen påmindelse nødvendig
 
-    if score < MIN_SCORE:
-        return None
 
-    # Bestem kategori
-    return_1y_val = round(float(return_1y_raw), 2) if return_1y_raw is not None else 0
-    if momentum >= HURTIG_MIN_MOMENTUM or return_1y_val >= HURTIG_MIN_1Y:
-        kategori = "hurtig"
-    else:
-        kategori = "stabil"
+def build_email_html(trail_alerts, momentum_alerts, momentum_svækkes, nye_hits, nye_stabile,
+                     rotation_weakest, rotation_best_new, hits_data):
+    """Bygger HTML-indhold til alarm-mailen."""
+    now = datetime.now().strftime('%d-%m-%Y %H:%M')
 
-    return {
-        "isin":        row.get('_effective_isin') or row.get('_isin') or isin,
-        "name":        name,
-        "ticker":      row.get('_ticker', ''),
-        "score":       score,
-        "weighted_momentum": round(weighted_score, 2),
-        "consistency_bonus": consistency_bonus,
-        "kategori":    kategori,
-        "momentum":    momentum,
-        "ma_label":    ma_label,
-        "trend":       trend,
-        "rsi":         round(rsi, 1) if rsi else None,
-        "cross":       cross,
-        "return_1m":   round(return_1m, 2) if return_1m is not None else None,
-        "return_1y":   return_1y_val if return_1y_raw is not None else None,
-        "short_history": return_1y_raw is None,  # Mangler 1Y data — for ny fond
-        "ter":         round(float(ter_raw), 2) if ter_raw else None,
-        "is_owned":    is_owned,
-        "is_watchlist": is_watchlist,
-        "reasons":     reasons,
-        "scanned_at":  datetime.now().strftime('%Y-%m-%d %H:%M'),
-    }
+    # ---- 🔴 Trail Stop ----
+    trail_html = ""
+    if trail_alerts:
+        rows = ""
+        for a in trail_alerts:
+            rows += f"""
+            <tr>
+              <td style="padding:8px; border-bottom:1px solid #fde;">{a.get('name','?')}<br>
+                <small style="color:#888;">{a.get('ticker','')} · {a.get('depot','')}</small><br>
+                {_depot_badges(a.get('ask_eligible'))}</td>
+              <td style="padding:8px; border-bottom:1px solid #fde; color:#d93025; font-weight:700;">{a['fall_pct']:+.1f}%</td>
+              <td style="padding:8px; border-bottom:1px solid #fde;">HWM: {a['hwm']} → Nu: {a['curr']}</td>
+              <td style="padding:8px; border-bottom:1px solid #fde; color:#888;">
+                Stop ved: {a['trail_pct']}% · Afkast fra køb: {a['total_ret']:+.1f}%
+              </td>
+            </tr>"""
+        trail_html = f"""
+        <div style="margin-bottom:20px;">
+          <h3 style="color:#d93025; margin:0 0 8px;">🔴 Trail Stop — sælg overvej nu ({len(trail_alerts)})</h3>
+          <table style="width:100%; border-collapse:collapse; font-size:13px; background:#fff5f5; border-radius:6px;">
+            <tr style="background:#fde;"><th style="padding:8px; text-align:left;">Fond</th>
+              <th style="padding:8px; text-align:left;">Fald fra top</th>
+              <th style="padding:8px; text-align:left;">Kurs</th>
+              <th style="padding:8px; text-align:left;">Detaljer</th></tr>
+            {rows}
+          </table>
+        </div>"""
+
+    # ---- 🟡 Momentum-advarsler ----
+    momentum_html = ""
+    if momentum_alerts:
+        rows = ""
+        for a in momentum_alerts:
+            prev_str = f"{a['prev_momentum']:+.1f}%" if a.get('prev_momentum') is not None else "–"
+            curr_str = f"{a['momentum']:+.1f}%" if a.get('momentum') is not None else "–"
+            rsi_str  = f"{a['rsi']:.0f}" if a.get('rsi') else "–"
+            rows += f"""
+            <tr>
+              <td style="padding:8px; border-bottom:1px solid #fef3cd;">{a['name']}<br>
+                <small style="color:#888;">{a['ticker']} · {a.get('depot','')}</small></td>
+              <td style="padding:8px; border-bottom:1px solid #fef3cd;">{_pile_html(a['pile'])}</td>
+              <td style="padding:8px; border-bottom:1px solid #fef3cd;">{prev_str} → {curr_str}</td>
+              <td style="padding:8px; border-bottom:1px solid #fef3cd; color:#888;">RSI {rsi_str}</td>
+            </tr>"""
+        momentum_html = f"""
+        <div style="margin-bottom:20px;">
+          <h3 style="color:#f59c00; margin:0 0 8px;">🟡 Momentum aftager — hold øje ({len(momentum_alerts)})</h3>
+          <table style="width:100%; border-collapse:collapse; font-size:13px; background:#fffdf0; border-radius:6px;">
+            <tr style="background:#fef3cd;"><th style="padding:8px; text-align:left;">Fond</th>
+              <th style="padding:8px; text-align:left;">Pile</th>
+              <th style="padding:8px; text-align:left;">Momentum</th>
+              <th style="padding:8px; text-align:left;">RSI</th></tr>
+            {rows}
+          </table>
+        </div>"""
+
+    # ---- 📉 Momentum svækkes ----
+    svækkes_html = ""
+    if momentum_svækkes:
+        items_html = ""
+        for a in momentum_svækkes:
+            mom_str  = f"{a['momentum']:+.1f}%" if a.get('momentum') is not None else "–"
+            k_color  = {"K1": "#d93025", "K2": "#f59c00", "K3": "#888"}.get(a['kriterium'], "#888")
+            k_badge  = f'<span style="font-weight:700; color:{k_color}; background:#f5f5f5; padding:1px 6px; border-radius:4px; font-size:12px;">{a["kriterium"]}</span>'
+
+            # Hoved-linje
+            items_html += f"""
+            <div style="margin-bottom:14px; padding:10px 12px; background:#fef9f0; border-left:3px solid {k_color}; border-radius:0 4px 4px 0;">
+              <div style="font-size:13px; font-weight:600;">{k_badge}&nbsp; {a['name']} <span style="color:#888; font-weight:400;">({a['ticker']} · {a.get('depot','')})</span></div>
+              <div style="font-size:12px; color:#555; margin-top:3px;">{a['detalje']}</div>
+              <div style="margin-top:5px;">{_depot_badges(a.get('ask_eligible'))}</div>"""
+
+            # K1: kun advarselstekst
+            if a['kriterium'] == 'K1':
+                items_html += """
+              <div style="font-size:11px; color:#888; margin-top:4px; font-style:italic;">Ingen handling endnu — hold ekstra øje de næste dage.</div>"""
+
+            # K2/K3: rotation-alternativer
+            elif a.get('alternatives'):
+                items_html += """
+              <div style="font-size:11px; color:#555; margin-top:6px; font-weight:600;">Mulige alternativer:</div>"""
+                for alt in a['alternatives']:
+                    exp_color = "#888" if "samme sektor" in alt['exposure_note'] else "#1e8e3e"
+                    items_html += f"""
+              <div style="font-size:12px; color:#333; margin-top:3px; padding-left:8px;">
+                · <strong>{alt['name']}</strong> ({alt['ticker']}) <span style="color:#1e8e3e; font-weight:700;">{alt['momentum']:+.1f}%</span>
+                · <span style="color:#555;">{alt['category']}</span>
+                — <span style="color:{exp_color}; font-size:11px;">{alt['exposure_note']}</span>
+              </div>"""
+
+            items_html += "\n            </div>"
+
+        svækkes_html = f"""
+        <div style="margin-bottom:20px;">
+          <h3 style="color:#e67e22; margin:0 0 8px;">📉 Momentum svækkes — overvej rotation ({len(momentum_svækkes)})</h3>
+          {items_html}
+          <div style="font-size:11px; color:#888; margin-top:4px; padding:4px 8px; background:#fef9f0; border-radius:4px;">
+            K1 = ↓↓ to kørsler i træk · K2 = momentum under 10% · K3 = ude af top-200 · Information — ingen handling påkrævet
+          </div>
+        </div>"""
+
+    # ---- 🟢 Nye Spejder-hits ----
+    hits_html = ""
+    alle_nye = list(nye_hits) + list(nye_stabile)
+    if alle_nye:
+        rows = ""
+        for h in alle_nye:
+            kat     = "🚀" if h.get('kategori') == 'hurtig' else "📈"
+            rsi_w   = f" ⚠️" if h.get('rsi') and h['rsi'] >= 70 else ""
+            golden  = " 🚀 GOLDEN" if h.get('cross') == "🚀 GOLDEN" else ""
+            rows += f"""
+            <tr>
+              <td style="padding:8px; border-bottom:1px solid #eee;">{kat} <strong>{h['name']}</strong><br>
+                <small style="color:#888;">{h.get('ticker','')} · Score: {h.get('score','–')}pt</small><br>
+                {_depot_badges(h.get('ask_eligible'))}</td>
+              <td style="padding:8px; border-bottom:1px solid #eee; font-weight:700; color:#1e8e3e;">
+                +{h['momentum']:.1f}%</td>
+              <td style="padding:8px; border-bottom:1px solid #eee;">
+                {f"+{h['return_1y']:.1f}%" if h.get('return_1y') else '–'}</td>
+              <td style="padding:8px; border-bottom:1px solid #eee;">
+                {f"{h['rsi']:.0f}" if h.get('rsi') else '–'}{rsi_w}{golden}</td>
+              <td style="padding:8px; border-bottom:1px solid #eee; color:#888; font-size:11px;">
+                TER: {h.get('ter','–')}%</td>
+            </tr>"""
+        hits_html = f"""
+        <div style="margin-bottom:20px;">
+          <h3 style="color:#1e8e3e; margin:0 0 8px;">🟢 Nye Spejder-kandidater ({len(alle_nye)})</h3>
+          <table style="width:100%; border-collapse:collapse; font-size:13px;">
+            <tr style="background:#f5f5f5;"><th style="padding:8px; text-align:left;">Fond</th>
+              <th style="padding:8px; text-align:left;">Momentum</th>
+              <th style="padding:8px; text-align:left;">1Y afkast</th>
+              <th style="padding:8px; text-align:left;">RSI</th>
+              <th style="padding:8px; text-align:left;">TER</th></tr>
+            {rows}
+          </table>
+        </div>"""
+
+    # ---- 🔄 Rotationsforslag ----
+    rotation_html = ""
+    if rotation_weakest and rotation_best_new:
+        pile_w = rotation_weakest.get('pile', '')
+        reason = "trail stop-advarsel" if rotation_weakest.get('prio') == 0 \
+            else "aftagende momentum" if rotation_weakest.get('prio') == 1 \
+            else f"{rotation_weakest.get('return_1m', 0):+.1f}% seneste måned"
+        rotation_html = f"""
+        <div style="background:#fff8e1; border-left:4px solid #f59c00; padding:12px 16px; margin:0 0 20px; border-radius:0 4px 4px 0;">
+          <strong>🔄 Mulig rotation</strong><br>
+          <span style="font-size:13px;">
+            Overvej at sælge <strong>{rotation_weakest['name']}</strong> ({reason})
+            og købe <strong>{rotation_best_new['name']}</strong>
+            (+{rotation_best_new['momentum']:.1f}% momentum
+            {f", +{rotation_best_new['return_1y']:.1f}% 1Y" if rotation_best_new.get('return_1y') else ""}).
+          </span><br>
+          <small style="color:#888;">Tjek RSI og Trail Stop inden handel. En advarsel er ikke automatisk et signal.</small>
+        </div>"""
+
+    ask_reminder = check_ask_reminder()
+
+    has_content = trail_html or momentum_html or svækkes_html or hits_html
+
+    return f"""
+    <html><body style="font-family: Arial, sans-serif; max-width:700px; margin:0 auto; color:#2c3e50;">
+      <div style="background:linear-gradient(135deg,#1a1a2e,#16213e); color:white; padding:20px 24px; border-radius:8px 8px 0 0;">
+        <h2 style="margin:0;">📡 TrendAgent ETF Alarm</h2>
+        <p style="margin:4px 0 0; color:#aaa; font-size:12px;">{now}</p>
+      </div>
+      <div style="background:white; padding:20px 24px; border:1px solid #eee; border-radius:0 0 8px 8px;">
+        {ask_reminder}
+        {"<p style='color:#888;'>Ingen aktuelle advarsler.</p>" if not has_content else ""}
+        {trail_html}
+        {momentum_html}
+        {svækkes_html}
+        {hits_html}
+        {rotation_html}
+        <hr style="margin:20px 0; border:none; border-top:1px solid #eee;">
+        <p style="font-size:11px; color:#aaa;">
+          Se fuld rapport: <a href="https://alf4444.github.io/TrendAgent/build/etf_weekly.html">ETF Weekly</a><br>
+          Alarm-frekvens: Hverdage · Trail Stop: Variabelt 3–7% baseret på volatilitet
+        </p>
+      </div>
+    </body></html>
+    """
+
+
+# ==========================================
+# MAIL-AFSENDELSE
+# ==========================================
+
+def send_mail(subject, html_body):
+    """Sender mail via Gmail SMTP."""
+    username   = os.environ.get("MAIL_USERNAME", "")
+    password   = os.environ.get("MAIL_PASSWORD", "")
+    recipients = os.environ.get("MAIL_RECIPIENTS", username)
+
+    if not username or not password:
+        print("❌ MAIL_USERNAME eller MAIL_PASSWORD mangler i environment")
+        return False
+
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = subject
+    msg['From']    = username
+    msg['To']      = recipients
+    msg.attach(MIMEText(html_body, 'html', 'utf-8'))
+
+    try:
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+            server.login(username, password)
+            server.sendmail(username, recipients.split(','), msg.as_string())
+        print(f"✅ Mail sendt til {recipients}")
+        return True
+    except Exception as e:
+        print(f"❌ Mail fejlede: {e}")
+        return False
 
 
 # ==========================================
@@ -522,480 +760,78 @@ def score_etf(isin, name, row, prices, is_owned, is_watchlist):
 # ==========================================
 
 def main():
-    print("\n" + "="*55)
-    print("🛰️  ETF SPEJDER — Automatisk Screening")
-    print("="*55)
+    print("\n" + "="*50)
+    print("📡 ETF SEND ALERT")
+    print("="*50)
 
-    # Indlæs kendte fonde
-    watchlist = load_json(WATCHLIST_FILE, {})
+    hits_data = load_json(HITS_FILE, {})
+    prev_data = load_json(PREV_FILE, {})
     portfolio = load_json(PORTFOLIO_FILE, {})
+    latest    = load_json(LATEST_FILE, [])
+    hwm_data  = load_json(HWM_FILE, {})
 
-    owned_isins     = {isin for isin, p in portfolio.items() if p.get('active', False)}
+    latest_map = {item['isin']: item for item in latest} if isinstance(latest, list) else {}
 
-    # Auto-opdater etf_sold.json når fonde går fra active→inactive i portfolio
-    # Salgsdato = i dag, salgskurs = seneste kendte kurs fra etf_latest.json
-    sold_funds = load_sold_funds()
-    latest_for_sold = load_json(ROOT / "data/etf_latest.json", [])
-    latest_sold_map = {item['isin']: item for item in latest_for_sold} if isinstance(latest_for_sold, list) else {}
+    # ---- 🔴 Trail Stop (via utils — opdaterer HWM) ----
+    trail_alerts, hwm_data = get_trail_alerts(portfolio, latest_map, hwm_data)
 
-    newly_sold = 0
-    for isin, p in portfolio.items():
-        if p.get('active', False):
-            # Aktiv fond — fjern fra sold hvis den er der (købt igen)
-            if isin in sold_funds:
-                del sold_funds[isin]
-                print(f"   ✅ {p.get('name', isin)} fjernet fra cool-off (aktiv igen)")
-        else:
-            # Inaktiv fond — registrér salg hvis ikke allerede i sold
-            if isin not in sold_funds:
-                item       = latest_sold_map.get(isin, {})
-                sold_price = item.get('nav') or p.get('buy_price', 0)
-                sold_funds[isin] = {
-                    "sold_date":  datetime.now().strftime('%Y-%m-%d'),
-                    "sold_price": sold_price,
-                    "name":       p.get('name', isin),
-                }
-                newly_sold += 1
-                print(f"   📝 Auto-registreret salg: {p.get('name', isin)} @ {sold_price}")
+    # Gem opdateret HWM tilbage til fil
+    save_json(HWM_FILE, hwm_data)
 
-    if newly_sold > 0 or any(
-        isin not in portfolio or not portfolio[isin].get('active', False)
-        for isin in list(sold_funds.keys())
-        if not isin.startswith('_')
-    ):
-        save_json(SOLD_FILE, sold_funds)
-        print(f"   💾 etf_sold.json opdateret ({len(sold_funds)} fonde i cool-off)")
+    # ---- 🟡 Momentum-advarsler for ejede fonde ----
+    momentum_alerts = get_momentum_alerts(portfolio, hits_data, prev_data)
 
-    # Indlæs Skats ASK-positivliste (5.000+ ISINs — opdateres maj hvert år)
-    ask_eligible_isins = load_ask_eligible()
+    # ---- 📉 Momentum svækkes (K1/K2/K3) ----
+    momentum_svækkes, spam_data = get_momentum_svækkes_alerts(
+        portfolio, hits_data, prev_data, latest_map
+    )
+    save_momentum_alerts(spam_data)
 
-    # Byg ASK-egnethed og depot lookup
-    # Prioritet: 1) portfolio (eksplicit sat) 2) watchlist (eksplicit sat) 3) Skats positivliste
-    ask_eligible_map = {}
-    depot_map        = {}
-    for isin, w in watchlist.items():
-        if isin.startswith('_'):
-            continue
-        if w.get('ask_eligible') is not None:
-            ask_eligible_map[isin] = w['ask_eligible']
-    for isin, p in portfolio.items():
-        if p.get('ask_eligible') is not None:
-            ask_eligible_map[isin] = p['ask_eligible']
-        if p.get('depot'):
-            depot_map[isin] = p['depot']
-    watchlist_isins = set(watchlist.keys())
+    # ---- 🟢 Nye Spejder-hits ----
+    # Nye hurtige heste
+    nye_hits    = hits_data.get('hits_nye', []) if isinstance(hits_data, dict) else []
+    # Nye stabile: is_new_this_week=True i hits_stabile
+    nye_stabile = [
+        h for h in hits_data.get('hits_stabile', [])
+        if h.get('is_new_this_week', False)
+    ] if isinstance(hits_data, dict) else []
 
-    # Indlæs Nordnet-inventory (None = filter deaktiveret)
-    nordnet_isins = load_nordnet_inventory()
+    # ---- 🔄 Rotationsforslag ----
+    rotation_weakest, rotation_best_new = get_rotation_suggestion(
+        portfolio, latest_map, hits_data, momentum_alerts, trail_alerts
+    )
 
-    # Cool-off filter — sold_funds allerede indlæst og auto-opdateret ovenfor
-    if sold_funds:
-        print(f"   Cool-off filter: {len(sold_funds)} solgte fonde overvåges")
-
-    # Byg ticker→ISIN mapping fra watchlist
-    # justETF returnerer tickers — vi skal matche dem mod ISIN fra portfolio
-    ticker_to_isin = {
-        v.get('ticker', '').upper(): k
-        for k, v in watchlist.items()
-        if v.get('ticker')
-    }
-    # Tilfoej også portfolio tickers
-    for isin, p in portfolio.items():
-        t = p.get('ticker', '')
-        if t:
-            ticker_to_isin[t.upper()] = isin
-
-    # Omvendt: ISIN→ticker for owned check
-    owned_tickers = {
-        p.get('ticker', '').upper()
-        for isin, p in portfolio.items()
-        if p.get('active', False) and p.get('ticker')
-    }
-
-    print(f"📋 Kendte fonde: {len(watchlist_isins)} watchlist, {len(owned_isins)} ejede")
-    print(f"   Ticker→ISIN mapping: {len(ticker_to_isin)} tickers kendte")
-
-    # Hent univers
-    df = fetch_universe()
-    if df is None or len(df) == 0:
-        print("❌ Ingen ETF'er at scanne")
+    # Ingen mail hvis ingenting at rapportere
+    if not trail_alerts and not momentum_alerts and not momentum_svækkes and not nye_hits and not nye_stabile:
+        print("✅ Ingen advarsler eller nye hits — ingen mail sendes")
         return
 
-    # Konverter til liste af dicts
-    records = df.to_dict('records')
+    # Byg subject
+    subject_parts = []
+    if trail_alerts:
+        subject_parts.append(f"🔴 {len(trail_alerts)} Trail Stop")
+    if momentum_alerts:
+        subject_parts.append(f"🟡 {len(momentum_alerts)} Momentum")
+    if momentum_svækkes:
+        subject_parts.append(f"📉 {len(momentum_svækkes)} Svækkes")
+    if nye_hits or nye_stabile:
+        n = len(nye_hits) + len(nye_stabile)
+        subject_parts.append(f"🟢 {n} nye hits")
 
-    # Kolonnenavne fra justETF
-    # justETF bruger 'ticker' og 'name' — ikke 'isin'
-    isin_col   = next((c for c in ['isin', 'ISIN'] if c in df.columns), None)
-    ticker_col = next((c for c in ['ticker', 'Ticker'] if c in df.columns), None)
-    name_col   = next((c for c in ['name', 'longName', 'shortName', 'title'] if c in df.columns), None)
-    year1_col  = next((c for c in ['last_year', 'year1', 'return1year', '1y', 'last_year'] if c in df.columns), None)
-    month1_col = next((c for c in ['last_month', 'month1', 'return1month', '1m'] if c in df.columns), None)
+    subject = f"📡 TrendAgent ETF — {' · '.join(subject_parts)}"
 
-    print(f"   Kolonner: isin={isin_col}, ticker={ticker_col}, name={name_col}, 1y={year1_col}, 1m={month1_col}")
+    html = build_email_html(
+        trail_alerts, momentum_alerts, momentum_svækkes, nye_hits, nye_stabile,
+        rotation_weakest, rotation_best_new, hits_data
+    )
+    send_mail(subject, html)
 
-    if not ticker_col and not isin_col:
-        print(f"❌ Ingen ticker eller ISIN kolonne fundet. Kolonner: {list(df.columns)}")
-        return
-
-    print(f"\n🔍 Scanner {len(records)} ETF'er for signaler...")
-    print(f"   Bruger ISIN-kolonne: '{isin_col}', Navn-kolonne: '{name_col}'")
-
-    candidates = []
-    processed  = 0
-    skipped    = 0
-    errors     = 0
-    nordnet_filtered = 0  # Fonde med signal men ikke på Nordnet
-
-    # -----------------------------------------------------------------------
-    # Prioriteret scanning-raekkefoelge
-    # 1. Ejede fonde          - scannes altid
-    # 2. Watchlist-fonde      - scannes altid
-    # 3. Forrige uges top-20  - fastholder gode fonde
-    # 4. Resten               - shuffles tilfaeldigt (roterer over uger)
-    # -----------------------------------------------------------------------
-
-    # Hent forrige uges hits - max top 20 for at undga voksevaerk
-    prev_data_prio = load_json(PREV_HITS_FILE, {})
-    prev_hit_tickers = {
-        h.get('ticker', '').upper()
-        for h in (prev_data_prio.get('hits', []))[:20]
-        if h.get('ticker')
-    }
-    print(f"   Prioriterede fra forrige uge: {len(prev_hit_tickers)} tickers")
-
-    def record_priority(row):
-        t = str(row.get(ticker_col, '')).strip().upper() if ticker_col else ''
-        for isin_p, p in portfolio.items():
-            if p.get('active') and p.get('ticker', '').upper() == t:
-                return 0  # ejet
-        for isin_w, w in watchlist.items():
-            if w.get('ticker', '').upper() == t:
-                return 1  # watchlist
-        if t in prev_hit_tickers:
-            return 2  # forrige uges hit
-        return 3  # resten
-
-    # Shuffle resten tilfaeldigt saa universet roterer over tid
-    random.shuffle(records)
-    # Stabil sort paa prioritet - shuffle bevares inden for gruppe 3
-    records.sort(key=record_priority)
-
-    print(f"   Scanning-raekkefoelge: ejede -> watchlist -> prev_hits -> shufflet univers")
-
-    for i, row in enumerate(records):
-        isin = str(row.get(isin_col, '')).strip()
-        name = str(row.get(name_col, isin)).strip() if name_col else isin
-
-
-        # Hent ticker direkte fra justETF
-        ticker = str(row.get(ticker_col, '')).strip() if ticker_col else ''
-
-        # Konverter til Xetra format hvis nødvendigt
-        if ticker and not '.' in ticker:
-            ticker = ticker + '.DE'
-
-        # Brug watchlist ticker som override hvis tilgængelig
-        if isin and isin in watchlist:
-            ticker = watchlist[isin].get('ticker', ticker)
-
-        # Slå ISIN op fra ticker hvis ikke direkte tilgængeligt
-        effective_isin = isin or ticker_to_isin.get(ticker.upper(), '')
-
-        is_owned     = (
-            (effective_isin in owned_isins) or
-            (ticker.upper() in owned_tickers)
-        )
-        is_watchlist = (
-            (effective_isin in watchlist_isins) or
-            (ticker.upper() in ticker_to_isin)
-        )
-
-        if not ticker:
-            skipped += 1
-            continue
-
-        # Spring ugyldige justETF placeholder-tickers over ($IBC1.DE, $VZLD.DE osv.)
-        # Disse starter med '$' og findes aldrig i yfinance — sparer mange forgæves kald
-        if ticker.startswith('$'):
-            skipped += 1
-            continue
-
-        row['_ticker']         = ticker
-        row['_isin']           = effective_isin
-        row['_effective_isin'] = effective_isin
-
-        # Hent kurser
-        prices = fetch_prices(ticker, months=12)
-        if len(prices) < 20:
-            skipped += 1
-            continue
-
-        time.sleep(YFINANCE_DELAY)
-
-        # Cool-off filter — skip solgte fonde der ikke er vendt til BULL over salgskurs
-        # Ejede fonde (is_owned=True) er altid undtaget — de scannes altid
-        if not is_owned and is_sold_cooloff(effective_isin, ticker, sold_funds, prices):
-            skipped += 1
-            continue
-
-        # Score
-        result = score_etf(effective_isin, name, row, prices, is_owned, is_watchlist)
-        if result:
-            # Berig med ASK-info — prioritet: portfolio/watchlist → Skats positivliste
-            if effective_isin in ask_eligible_map:
-                result['ask_eligible'] = ask_eligible_map[effective_isin]
-            elif ask_eligible_isins:
-                result['ask_eligible'] = effective_isin in ask_eligible_isins
-            else:
-                result['ask_eligible'] = None
-            result['depot']        = depot_map.get(effective_isin, None)
-            # Nordnet-filter: efter scoring — vi har nu bekræftet ISIN og kursdata
-            # Ejede og watchlist-fonde er altid undtaget
-            # Hvis effective_isin er tom kan vi ikke tjekke — lad fonden igennem
-            if effective_isin and not is_nordnet_available(effective_isin, nordnet_isins, is_owned, is_watchlist):
-                nordnet_filtered += 1
-                continue
-            candidates.append(result)
-
-        processed += 1
-
-        # Status hvert 25. ETF
-        if (i + 1) % 25 == 0:
-            print(f"   [{i+1}/{len(records)}] Scannet: {processed}, Kandidater: {len(candidates)}")
-
-        # Stop tidligt hvis vi har nok kandidater og har scannet alle prioriterede
-        if len(candidates) >= (MAX_CANDIDATES_STABIL + MAX_CANDIDATES_HURTIG) * 10 and i > 100:
-            print(f"   Nok kandidater fundet — stopper tidligt ved {i+1} ETF'er")
-            break
-
-    # Indlaes forrige uges hits for at finde NYE fund
-    prev_data    = load_json(PREV_HITS_FILE, {})
-    prev_tickers = {h.get('ticker', '') for h in prev_data.get('hits_hurtige', [])}
-
-    # Byg lookup af forrige uges momentum per ticker
-    prev_momentum_map = {
-        h.get('ticker', ''): h.get('momentum', 0)
-        for h in prev_data.get('hits', [])
-        if h.get('ticker')
-    }
-    # K1: prev_pile_map — forrige uges momentum-pile per ticker
-    # Bruges til consecutive_down detektering (↓↓ to kørsler i træk)
-    prev_pile_map = {
-        h.get('ticker', ''): h.get('momentum_pile', '—')
-        for h in prev_data.get('hits', [])
-        if h.get('ticker')
-    }
-
-
-    # Marker nye hurtige heste og beregn momentum-pile
-    for c in candidates:
-        ticker = c.get('ticker', '')
-        c['is_new_this_week'] = (
-            c['kategori'] == 'hurtig' and
-            ticker not in prev_tickers
-        )
-        # Momentum-pile: sammenlign denne uges vs forrige uges momentum
-        curr_mom = c.get('momentum', 0) or 0
-        prev_mom = prev_momentum_map.get(ticker)
-        if prev_mom is None:
-            # Ikke set forrige uge — kan ikke beregne retning
-            c['momentum_pile'] = '—'
-        else:
-            prev_mom = float(prev_mom) if prev_mom else 0
-            if curr_mom > prev_mom:
-                c['momentum_pile'] = '↑↑' if prev_mom > 0 else '↓↑'
-            else:
-                c['momentum_pile'] = '↑↓' if curr_mom > 0 else '↓↓' 
-
-        # K1: consecutive_down — True hvis ↓↓ denne OG forrige kørsel
-        # Bruges af etf_send_alert.py til "Momentum svækkes" signal
-        curr_pile = c.get('momentum_pile', '—')
-        prev_pile = prev_pile_map.get(ticker, '—')
-        c['consecutive_down'] = (curr_pile == '↓↓' and prev_pile == '↓↓')
-
-    # Find svageste ejede fond til sammenligning i detaljer
-    owned_candidates = [c for c in candidates if c.get('is_owned')]
-    if owned_candidates:
-        weakest = min(owned_candidates, key=lambda x: x.get('score', 0))
-        weakest_info = {'ticker': weakest.get('ticker', ''), 'score': weakest.get('score', 0), 'name': weakest.get('name', '')}
-    else:
-        weakest_info = None
-
-    # Indlæs history til korrelationsberegning
-    history_data = load_json(HISTORY_FILE, {})
-
-    # Tilfoej svageste og portfolio_correlation til alle kandidater
-    for c in candidates:
-        c['weakest_owned'] = weakest_info
-        # Spredningsindikator — kandidatens korrelation mod porteføljen
-        if history_data and not c.get('is_owned'):
-            corr_val, corr_label, corr_css = build_portfolio_correlation(
-                c['isin'], history_data, portfolio, days=90
-            )
-            c['portfolio_corr']       = corr_val
-            c['portfolio_corr_label'] = corr_label
-            c['portfolio_corr_css']   = corr_css
-        else:
-            c['portfolio_corr']       = None
-            c['portfolio_corr_label'] = '—'
-            c['portfolio_corr_css']   = 'corr-unknown'
-
-    # Del i to kategorier
-    stabile = [c for c in candidates if c['kategori'] == 'stabil']
-    hurtige  = [c for c in candidates if c['kategori'] == 'hurtig']
-
-    # Sortér hver liste
-    stabile.sort(key=lambda x: (x['score'], x.get('weighted_momentum', 0)), reverse=True)
-    hurtige.sort(key=lambda x: (x.get('weighted_momentum', 0), x['momentum']), reverse=True)
-
-    top_stabile = stabile[:MAX_CANDIDATES_STABIL]
-    top_hurtige  = hurtige[:MAX_CANDIDATES_HURTIG]
-
-    # ── ASK-GARANTI ──────────────────────────────────────────────────────────
-    # Sikrer minimum 2 ASK-egnede kort i hver kategori.
-    # Swap-logik: hvis under 2 ASK-egnede i top-listen, erstattes de svageste
-    # ikke-ASK-egnede kort med de stærkeste ASK-egnede udenfor top-listen.
-    # Edge case (B): ingen ASK-egnede kvalificerer til kategoriens momentum-krav
-    # → bedste ASK-egnede trækkes ind alligevel med ask_garanteret=True badge.
-    ASK_GUARANTEE = 2
-
-    def apply_ask_guarantee(top_list, full_sorted_list, label):
-        """
-        Sikrer minimum ASK_GUARANTEE ASK-egnede kort i top_list.
-        full_sorted_list er den fulde sorterede liste for kategorien.
-        Returnerer opdateret top_list.
-        """
-        ask_count = sum(1 for c in top_list if c.get('ask_eligible') is True)
-        if ask_count >= ASK_GUARANTEE:
-            return top_list  # Allerede opfyldt
-
-        needed = ASK_GUARANTEE - ask_count
-
-        # Find ASK-egnede kandidater udenfor den nuværende top-liste
-        top_isins = {c['isin'] for c in top_list}
-        ask_reserve = [
-            c for c in full_sorted_list
-            if c.get('ask_eligible') is True and c['isin'] not in top_isins
-        ]
-
-        # Hvis der ikke er nok i reserve — søg i ALLE kandidater på tværs
-        # (edge case B: momentum-kategori har for få ASK-egnede)
-        if len(ask_reserve) < needed:
-            all_isins_in_top = top_isins
-            ask_reserve_all = [
-                c for c in candidates
-                if c.get('ask_eligible') is True and c['isin'] not in all_isins_in_top
-            ]
-            # Sortér på momentum så vi får de stærkeste
-            ask_reserve_all.sort(key=lambda x: x.get('momentum', 0), reverse=True)
-            # Fyld op fra den brede reserve
-            extra_isins = {c['isin'] for c in ask_reserve}
-            for c in ask_reserve_all:
-                if c['isin'] not in extra_isins:
-                    ask_reserve.append(c)
-                    extra_isins.add(c['isin'])
-
-        swapped = 0
-        new_top = list(top_list)
-        for candidate in ask_reserve:
-            if swapped >= needed:
-                break
-            # Find svageste ikke-ASK-egnede i bunden af listen og swap
-            swap_idx = None
-            for i in range(len(new_top) - 1, -1, -1):
-                if new_top[i].get('ask_eligible') is not True:
-                    swap_idx = i
-                    break
-            if swap_idx is not None:
-                # Normal swap — kandidaten er fra samme kategori
-                new_top[swap_idx] = candidate
-            else:
-                # Alle pladser er allerede ASK-egnede — tilføj ekstra
-                new_top.append(candidate)
-
-            # Marker som ASK-garanteret hvis den ikke opfylder kategoriens
-            # normale momentum-krav (edge case B)
-            if label == 'hurtig' and candidate.get('momentum', 0) < HURTIG_MIN_MOMENTUM:
-                candidate['ask_garanteret'] = True
-            elif label == 'stabil' and (
-                candidate.get('momentum', 0) < MIN_MOMENTUM_PCT or
-                (candidate.get('rsi') or 0) >= MAX_RSI
-            ):
-                candidate['ask_garanteret'] = True
-            else:
-                candidate['ask_garanteret'] = False
-
-            swapped += 1
-            print(f"   🔒 ASK-garanti ({label}): {candidate.get('ticker', candidate['isin'])} swappet ind"
-                  f"{' [ASK-garanti badge]' if candidate.get('ask_garanteret') else ''}")
-
-        return new_top
-
-    top_hurtige = apply_ask_guarantee(top_hurtige, hurtige, 'hurtig')
-    top_stabile = apply_ask_guarantee(top_stabile, stabile, 'stabil')
-    # ── SLUT ASK-GARANTI ─────────────────────────────────────────────────────
-
-    top_alle     = top_hurtige + top_stabile  # Hurtige øverst
-
-    # Gem hits
-    output = {
-        "_scanned_at":    datetime.now().strftime('%Y-%m-%d %H:%M'),
-        "_total_scanned": processed,
-        "_total_hits":    len(candidates),
-        "_stabile_hits":  len(stabile),
-        "_hurtige_hits":  len(hurtige),
-        "_filters": {
-            "min_aum_eur":         MIN_AUM_EUR,
-            "max_ter":             MAX_TER,
-            "min_momentum_stabil": MIN_MOMENTUM_PCT,
-            "max_rsi_stabil":      MAX_RSI,
-            "min_momentum_hurtig": HURTIG_MIN_MOMENTUM,
-            "min_1y_hurtig":       HURTIG_MIN_1Y,
-            "min_score":           MIN_SCORE,
-            "nordnet_filter":      nordnet_isins is not None,
-            "nordnet_inventory_size": len(nordnet_isins) if nordnet_isins else 0,
-        },
-        "hits":         top_alle,
-        "hits_stabile": top_stabile,
-        "hits_hurtige": top_hurtige,
-        "hits_nye":     [h for h in top_hurtige if h.get('is_new_this_week', False)],
-    }
-
-    # Gem nuvaerende hits som "forrige uge" til naeste kørsel
-    if HITS_FILE.exists():
-        import shutil
-        shutil.copy(HITS_FILE, PREV_HITS_FILE)
-
-    save_json(HITS_FILE, output)
-
-    print(f"\n{'='*55}")
-    print(f"✅ Spejder færdig")
-    print(f"   Scannet: {processed} ETF'er")
-    print(f"   Sprunget over: {skipped} (ingen ticker/kursdata)")
-    print(f"   Nordnet-filter: {'✅ Aktiv (' + str(len(nordnet_isins)) + ' ISINs)' if nordnet_isins else '⚠️  Deaktiveret (fil mangler)'}")
-    print(f"   Nordnet-afvist (signal men ikke handlbar): {nordnet_filtered}")
-    print(f"   Kandidater: {len(candidates)}")
-    print(f"   Top {len(top_hurtige) + len(top_stabile)} gemt til {HITS_FILE.name}")
-    print()
-
-    if top_hurtige:
-        print(f"\n🚀 Hurtige Heste ({len(top_hurtige)}):")
-        for h in top_hurtige[:5]:
-            owned_tag = " ⭐" if h['is_owned'] else ""
-            print(f"  [{h['score']}pt] {h['name'][:40]}{owned_tag}")
-            hist_warn = " ⚠️ kort historik" if h.get('short_history') else ""
-            print(f"       Momentum: +{h['momentum']}%, RSI: {h['rsi']}, 1Y: {h['return_1y']}%{hist_warn}")
-
-    if top_stabile:
-        print(f"\n📈 Stabile Trendere ({len(top_stabile)}):")
-        for h in top_stabile[:5]:
-            owned_tag = " ⭐" if h['is_owned'] else ""
-            print(f"  [{h['score']}pt] {h['name'][:40]}{owned_tag}")
-            hist_warn = " ⚠️ kort historik" if h.get('short_history') else ""
-            print(f"       Momentum: +{h['momentum']}%, RSI: {h['rsi']}, 1Y: {h['return_1y']}%{hist_warn}")
-
-    print(f"{'='*55}\n")
+    print(f"   Trail Stop:        {len(trail_alerts)}")
+    print(f"   Momentum-advarsler:{len(momentum_alerts)}")
+    print(f"   Momentum svækkes:  {len(momentum_svækkes)}")
+    print(f"   Nye hurtige hits:  {len(nye_hits)}")
+    print(f"   Nye stabile hits:  {len(nye_stabile)}")
+    print("="*50)
 
 
 if __name__ == "__main__":
