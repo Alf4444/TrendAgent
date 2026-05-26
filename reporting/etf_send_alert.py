@@ -32,6 +32,7 @@ LATEST_FILE    = ROOT / "data/etf_latest.json"
 # Momentum-pile der signalerer aftagende momentum for ejede fonde
 MOMENTUM_WARN_PILES  = {'↑↓', '↓↓'}
 MOMENTUM_FILE        = ROOT / "data/etf_momentum_alerts.json"
+ASK_ELIGIBLE_FILE    = ROOT / "config/etf_ask_eligible.json"  # Skats positivliste
 MOMENTUM_DOWN_PCT    = 10.0   # K2: momentum under denne % → signal
 
 
@@ -475,6 +476,65 @@ def _depot_badges(ask_eligible):
     return ask_badge + always
 
 
+def check_ask_reminder():
+    """
+    Tjekker om ASK-positivlisten skal opdateres.
+    Returnerer HTML-advarsel hvis _opdateret ikke er fra indeværende år,
+    eller hvis filen mangler. Vises altid i alarm-mailen i maj måned
+    uanset hvornår listen sidst blev opdateret.
+    """
+    now = datetime.now()
+    current_year = str(now.year)
+    is_may = now.month == 5
+
+    if not ASK_ELIGIBLE_FILE.exists():
+        return f"""
+        <div style="margin-bottom:16px; padding:12px 16px; background:#fff8e1;
+                    border-left:4px solid #f9a825; border-radius:4px;">
+          <strong>⚠️ ASK-positivliste mangler</strong><br>
+          <span style="font-size:12px; color:#555;">
+            Filen <code>config/etf_ask_eligible.json</code> findes ikke — ASK-egnethed kan ikke beregnes.<br>
+            Download ny liste fra Skat og kør opdateringsscript.<br>
+            <a href="https://skat.dk/erhverv/ekapital/vaerdipapirer/beviser-og-aktier-i-investeringsforeninger-og-selskaber-ifpa"
+               style="color:#1a73e8;">skat.dk — Positivliste over ASK-egnede investeringsbeviser</a>
+          </span>
+        </div>"""
+
+    try:
+        with open(ASK_ELIGIBLE_FILE, encoding='utf-8') as f:
+            data = json.load(f)
+        opdateret = data.get('_opdateret', '')  # Format: "YYYY-MM"
+        year = opdateret[:4] if opdateret else ''
+    except Exception:
+        year = ''
+
+    if year != current_year:
+        return f"""
+        <div style="margin-bottom:16px; padding:12px 16px; background:#fff8e1;
+                    border-left:4px solid #f9a825; border-radius:4px;">
+          <strong>⚠️ ASK-positivliste skal opdateres</strong><br>
+          <span style="font-size:12px; color:#555;">
+            Listen er fra {opdateret or 'ukendt'} — download ny liste for {current_year}.<br>
+            <a href="https://skat.dk/erhverv/ekapital/vaerdipapirer/beviser-og-aktier-i-investeringsforeninger-og-selskaber-ifpa"
+               style="color:#1a73e8;">skat.dk — Positivliste over ASK-egnede investeringsbeviser</a>
+          </span>
+        </div>"""
+
+    if is_may:
+        return f"""
+        <div style="margin-bottom:16px; padding:12px 16px; background:#e8f5e9;
+                    border-left:4px solid #43a047; border-radius:4px;">
+          <strong>✅ ASK-positivliste er opdateret ({opdateret})</strong><br>
+          <span style="font-size:12px; color:#555;">
+            Maj-påmindelse: Tjek om Skat har udgivet ny liste for {current_year}.<br>
+            <a href="https://skat.dk/erhverv/ekapital/vaerdipapirer/beviser-og-aktier-i-investeringsforeninger-og-selskaber-ifpa"
+               style="color:#1a73e8;">skat.dk — Positivliste over ASK-egnede investeringsbeviser</a>
+          </span>
+        </div>"""
+
+    return ""  # Ingen påmindelse nødvendig
+
+
 def build_email_html(trail_alerts, momentum_alerts, momentum_svækkes, nye_hits, nye_stabile,
                      rotation_weakest, rotation_best_new, hits_data):
     """Bygger HTML-indhold til alarm-mailen."""
@@ -636,6 +696,8 @@ def build_email_html(trail_alerts, momentum_alerts, momentum_svækkes, nye_hits,
           <small style="color:#888;">Tjek RSI og Trail Stop inden handel. En advarsel er ikke automatisk et signal.</small>
         </div>"""
 
+    ask_reminder = check_ask_reminder()
+
     has_content = trail_html or momentum_html or svækkes_html or hits_html
 
     return f"""
@@ -645,6 +707,7 @@ def build_email_html(trail_alerts, momentum_alerts, momentum_svækkes, nye_hits,
         <p style="margin:4px 0 0; color:#aaa; font-size:12px;">{now}</p>
       </div>
       <div style="background:white; padding:20px 24px; border:1px solid #eee; border-radius:0 0 8px 8px;">
+        {ask_reminder}
         {"<p style='color:#888;'>Ingen aktuelle advarsler.</p>" if not has_content else ""}
         {trail_html}
         {momentum_html}
