@@ -818,6 +818,91 @@ def main():
 
     top_stabile = stabile[:MAX_CANDIDATES_STABIL]
     top_hurtige  = hurtige[:MAX_CANDIDATES_HURTIG]
+
+    # ── ASK-GARANTI ──────────────────────────────────────────────────────────
+    # Sikrer minimum 2 ASK-egnede kort i hver kategori.
+    # Swap-logik: hvis under 2 ASK-egnede i top-listen, erstattes de svageste
+    # ikke-ASK-egnede kort med de stærkeste ASK-egnede udenfor top-listen.
+    # Edge case (B): ingen ASK-egnede kvalificerer til kategoriens momentum-krav
+    # → bedste ASK-egnede trækkes ind alligevel med ask_garanteret=True badge.
+    ASK_GUARANTEE = 2
+
+    def apply_ask_guarantee(top_list, full_sorted_list, label):
+        """
+        Sikrer minimum ASK_GUARANTEE ASK-egnede kort i top_list.
+        full_sorted_list er den fulde sorterede liste for kategorien.
+        Returnerer opdateret top_list.
+        """
+        ask_count = sum(1 for c in top_list if c.get('ask_eligible') is True)
+        if ask_count >= ASK_GUARANTEE:
+            return top_list  # Allerede opfyldt
+
+        needed = ASK_GUARANTEE - ask_count
+
+        # Find ASK-egnede kandidater udenfor den nuværende top-liste
+        top_isins = {c['isin'] for c in top_list}
+        ask_reserve = [
+            c for c in full_sorted_list
+            if c.get('ask_eligible') is True and c['isin'] not in top_isins
+        ]
+
+        # Hvis der ikke er nok i reserve — søg i ALLE kandidater på tværs
+        # (edge case B: momentum-kategori har for få ASK-egnede)
+        if len(ask_reserve) < needed:
+            all_isins_in_top = top_isins
+            ask_reserve_all = [
+                c for c in candidates
+                if c.get('ask_eligible') is True and c['isin'] not in all_isins_in_top
+            ]
+            # Sortér på momentum så vi får de stærkeste
+            ask_reserve_all.sort(key=lambda x: x.get('momentum', 0), reverse=True)
+            # Fyld op fra den brede reserve
+            extra_isins = {c['isin'] for c in ask_reserve}
+            for c in ask_reserve_all:
+                if c['isin'] not in extra_isins:
+                    ask_reserve.append(c)
+                    extra_isins.add(c['isin'])
+
+        swapped = 0
+        new_top = list(top_list)
+        for candidate in ask_reserve:
+            if swapped >= needed:
+                break
+            # Find svageste ikke-ASK-egnede i bunden af listen og swap
+            swap_idx = None
+            for i in range(len(new_top) - 1, -1, -1):
+                if new_top[i].get('ask_eligible') is not True:
+                    swap_idx = i
+                    break
+            if swap_idx is not None:
+                # Normal swap — kandidaten er fra samme kategori
+                new_top[swap_idx] = candidate
+            else:
+                # Alle pladser er allerede ASK-egnede — tilføj ekstra
+                new_top.append(candidate)
+
+            # Marker som ASK-garanteret hvis den ikke opfylder kategoriens
+            # normale momentum-krav (edge case B)
+            if label == 'hurtig' and candidate.get('momentum', 0) < HURTIG_MIN_MOMENTUM:
+                candidate['ask_garanteret'] = True
+            elif label == 'stabil' and (
+                candidate.get('momentum', 0) < MIN_MOMENTUM_PCT or
+                (candidate.get('rsi') or 0) >= MAX_RSI
+            ):
+                candidate['ask_garanteret'] = True
+            else:
+                candidate['ask_garanteret'] = False
+
+            swapped += 1
+            print(f"   🔒 ASK-garanti ({label}): {candidate.get('ticker', candidate['isin'])} swappet ind"
+                  f"{' [ASK-garanti badge]' if candidate.get('ask_garanteret') else ''}")
+
+        return new_top
+
+    top_hurtige = apply_ask_guarantee(top_hurtige, hurtige, 'hurtig')
+    top_stabile = apply_ask_guarantee(top_stabile, stabile, 'stabil')
+    # ── SLUT ASK-GARANTI ─────────────────────────────────────────────────────
+
     top_alle     = top_hurtige + top_stabile  # Hurtige øverst
 
     # Gem hits
