@@ -622,6 +622,9 @@ def main():
         return
 
     # Konverter til liste af dicts
+    # ISIN er DataFrame-index i justetf-scraping — reset_index() gør det til en kolonne
+    if df.index.name == 'isin' or (hasattr(df.index, 'name') and str(df.index.name).lower() == 'isin'):
+        df = df.reset_index()
     records = df.to_dict('records')
 
     # Kolonnenavne fra justETF
@@ -746,7 +749,7 @@ def main():
             if effective_isin in ask_eligible_map:
                 result['ask_eligible'] = ask_eligible_map[effective_isin]
             elif ask_eligible_isins:
-                result['ask_eligible'] = effective_isin in ask_eligible_isins
+                result['ask_eligible'] = effective_isin in ask_eligible_isins if effective_isin else None
             else:
                 result['ask_eligible'] = None
             result['depot']        = depot_map.get(effective_isin, None)
