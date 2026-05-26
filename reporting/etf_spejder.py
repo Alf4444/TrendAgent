@@ -58,6 +58,7 @@ PREV_HITS_FILE   = ROOT / "data/etf_spejder_prev.json"  # Forrige uges hits
 SOLD_FILE        = ROOT / "data/etf_sold.json"           # Solgte fonde — cool-off filter
 HISTORY_FILE     = ROOT / "data/etf_history.json"        # Kurshistorik til korrelationsberegning
 NORDNET_FILE     = ROOT / "data/etf_nordnet_inventory.json"
+ASK_ELIGIBLE_FILE = ROOT / "config/etf_ask_eligible.json"  # Skats positivliste — opdateres maj hvert år
 
 # Filtre
 MIN_AUM_EUR      = 50_000_000   # Min 50M EUR
@@ -184,6 +185,28 @@ def is_sold_cooloff(isin, ticker, sold_funds, prices):
     # Begge betingelser opfyldt — cool-off ophørt
     print(f"   ✅ Cool-off ophørt: {isin} — BULL og over salgskurs ({curr_price:.2f} > {sold_price:.2f})")
     return False
+
+
+def load_ask_eligible():
+    """
+    Indlæser Skats positivliste fra config/etf_ask_eligible.json.
+    Returnerer et set af ISINs der er ASK-egnede, eller tomt set hvis filen mangler.
+    Filen opdateres manuelt én gang om året (typisk maj).
+    """
+    if not ASK_ELIGIBLE_FILE.exists():
+        print(f"⚠️  ASK-positivliste ikke fundet: {ASK_ELIGIBLE_FILE.name}")
+        print(f"   ASK-egnethed sættes til None for alle kandidater.")
+        return set()
+    try:
+        with open(ASK_ELIGIBLE_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        isins = set(data.get("isins", []))
+        updated = data.get("_opdateret", "ukendt")
+        print(f"✅ ASK-positivliste indlæst: {len(isins):,} ISINs (opdateret: {updated})")
+        return isins
+    except Exception as e:
+        print(f"⚠️  Kunne ikke læse ASK-positivliste: {e}")
+        return set()
 
 
 def is_nordnet_available(isin, nordnet_isins, is_owned, is_watchlist):
@@ -543,13 +566,18 @@ def main():
         save_json(SOLD_FILE, sold_funds)
         print(f"   💾 etf_sold.json opdateret ({len(sold_funds)} fonde i cool-off)")
 
-    # Byg ASK-egnethed og depot lookup fra watchlist og portfolio
+    # Indlæs Skats ASK-positivliste (5.000+ ISINs — opdateres maj hvert år)
+    ask_eligible_isins = load_ask_eligible()
+
+    # Byg ASK-egnethed og depot lookup
+    # Prioritet: 1) portfolio (eksplicit sat) 2) watchlist (eksplicit sat) 3) Skats positivliste
     ask_eligible_map = {}
     depot_map        = {}
     for isin, w in watchlist.items():
         if isin.startswith('_'):
             continue
-        ask_eligible_map[isin] = w.get('ask_eligible', None)
+        if w.get('ask_eligible') is not None:
+            ask_eligible_map[isin] = w['ask_eligible']
     for isin, p in portfolio.items():
         if p.get('ask_eligible') is not None:
             ask_eligible_map[isin] = p['ask_eligible']
@@ -714,8 +742,13 @@ def main():
         # Score
         result = score_etf(effective_isin, name, row, prices, is_owned, is_watchlist)
         if result:
-            # Berig med ASK-info fra watchlist og portfolio
-            result['ask_eligible'] = ask_eligible_map.get(effective_isin, None)
+            # Berig med ASK-info — prioritet: portfolio/watchlist → Skats positivliste
+            if effective_isin in ask_eligible_map:
+                result['ask_eligible'] = ask_eligible_map[effective_isin]
+            elif ask_eligible_isins:
+                result['ask_eligible'] = effective_isin in ask_eligible_isins
+            else:
+                result['ask_eligible'] = None
             result['depot']        = depot_map.get(effective_isin, None)
             # Nordnet-filter: efter scoring — vi har nu bekræftet ISIN og kursdata
             # Ejede og watchlist-fonde er altid undtaget
