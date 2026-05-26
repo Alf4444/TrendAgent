@@ -54,6 +54,7 @@
     .s-badge-score { background: #f5f5f5; color: #333; border-color: #ddd; }
     .s-badge-new { background: #e6f1fb; color: #0c447c; border-color: #85b7eb; }
     .s-badge-rsi { background: #fce8e6; color: #c62828; border-color: #f5c6c6; }
+    .s-badge-ask-garanti { background: #e8f5e9; color: #1b5e20; border-color: #a5d6a7; }
     .s-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 8px; }
     .s-stat { background: rgba(0,0,0,0.03); border-radius: 6px; padding: 5px 8px; }
     .s-stat-label { font-size: 10px; color: #888; margin-bottom: 1px; }
@@ -239,6 +240,7 @@
   <div class="s-badges">
     <span class="s-badge s-badge-score" style="background:{{ score_bg }}; color:{{ score_color }}; border-color:{{ accent_color }};">{{ s.score }}pt</span>
     {% if s.is_new_this_week %}<span class="s-badge s-badge-new">✦ Ny denne uge</span>{% endif %}
+    {% if s.ask_garanteret %}<span class="s-badge s-badge-ask-garanti">🔒 ASK-garanti</span>{% endif %}
     {% if s.rsi and s.rsi >= 70 %}<span class="s-badge s-badge-rsi">RSI {{ '%.0f'|format(s.rsi) }} ⚠</span>{% endif %}
   </div>
   <div class="s-stats">
