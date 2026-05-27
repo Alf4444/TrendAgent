@@ -329,6 +329,7 @@ def build_weekly():
         hwm_data     = hwm_data,
         corr_pairs   = corr_pairs,
         heatmap_data = heatmap_data,
+        rows         = rows,
     )
 
     html = jinja_template.render(
