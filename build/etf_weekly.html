@@ -55,6 +55,26 @@
     .s-badge-new { background: #e6f1fb; color: #0c447c; border-color: #85b7eb; }
     .s-badge-rsi { background: #fce8e6; color: #c62828; border-color: #f5c6c6; }
     .s-badge-ask-garanti { background: #e8f5e9; color: #1b5e20; border-color: #a5d6a7; }
+
+    /* Markedskontekst sektion */
+    .markedskontekst {
+      margin: 0 0 28px 0;
+      padding: 16px 20px;
+      background: var(--card-bg, #f0fff4);
+      border-left: 4px solid #1e8e3e;
+      border-radius: 6px;
+    }
+    .markedskontekst-header {
+      font-weight: 700;
+      color: #1e8e3e;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    .markedskontekst-tekst {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text, #333);
+    }
     .s-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 8px; }
     .s-stat { background: rgba(0,0,0,0.03); border-radius: 6px; padding: 5px 8px; }
     .s-stat-label { font-size: 10px; color: #888; margin-bottom: 1px; }
@@ -211,7 +231,7 @@
   <!-- SPEJDER META -->
   
   <div style="font-size:11px; color:#888; margin-bottom:8px; padding: 6px 0;">
-    🛰️ Spejder scannede 556 ETF'er · 29 hurtige · 171 stabile · 2026-05-27 10:16
+    🛰️ Spejder scannede 528 ETF'er · 36 hurtige · 164 stabile · 2026-05-27 14:49
     &nbsp;·&nbsp; ⭐ ejet &nbsp;·&nbsp; 👁 watchlist &nbsp;·&nbsp; 🆕 ny
   </div>
   
@@ -236,139 +256,23 @@
 <div class="s-card" style="--bg: #fff5f5; --bc: #e53935;">
   <div class="s-header">
     <div>
-      <div class="s-name">VanEck Hydrogen Economy UCITS ETF</div>
-      <div class="s-ticker">HDR0.DE</div>
+      <div class="s-name">Global X AI Semiconductor & Quantum UCITS ETF USD </div>
+      <div class="s-ticker">C8PX.DE</div>
     </div>
     <div class="s-pile" style="color: #f39c12">
-      —
+      ↑↓
     </div>
   </div>
   <div class="s-badges">
     <span class="s-badge s-badge-score" style="background:#fce8e6; color:#c62828; border-color:#e53935;">7pt</span>
-    <span class="s-badge s-badge-new">✦ Ny denne uge</span>
+    
     
     
   </div>
   <div class="s-stats">
     <div class="s-stat">
       <div class="s-stat-label">Momentum</div>
-      <div class="s-stat-value" style="color:#e53935;">+60.75%</div>
-    </div>
-    <div class="s-stat">
-      <div class="s-stat-label">1M afkast</div>
-      <div class="s-stat-value">+30.7%</div>
-    </div>
-    <div class="s-stat">
-      <div class="s-stat-label">1Y afkast</div>
-      <div class="s-stat-value">+153.1%</div>
-    </div>
-  </div>
-  <button class="s-detail-btn" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.textContent = this.textContent.includes('▾') ? '▸ Detaljer ved handel' : '▾ Detaljer ved handel';">▾ Detaljer ved handel</button>
-  <div class="s-detail">
-    <div class="s-detail-grid">
-      <div class="s-detail-item"><div class="s-detail-label">Depot-egnethed</div><div class="s-detail-value">
-        
-          <span class="ask-badge ask">ASK ✓</span>
-        
-        <span class="ask-badge ask">AKT ✓</span>
-        <span class="ask-badge ask">AOP ✓</span>
-        <span class="ask-badge ask">KPP ✓</span>
-        <span class="ask-badge ask">SpSj-RTP ✓</span>
-        <span class="ask-badge ask">SpSj-INV ✓</span>
-      </div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Sektor</div><div class="s-detail-value">—</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+173.0</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.55%</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 11.8% → 1</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">67</div></div>
-    </div>
-    
-    <div class="s-compare">⇄ Stærkere end din svageste fond — AIFS.DE 7pt</div>
-    
-    
-  </div>
-</div>
-
-      
-      
-<div class="s-card" style="--bg: #fff5f5; --bc: #e53935;">
-  <div class="s-header">
-    <div>
-      <div class="s-name">YieldMax Semiconductor Option Income UCITS ETF Dis</div>
-      <div class="s-ticker">YCHP.DE</div>
-    </div>
-    <div class="s-pile" style="color: #f39c12">
-      —
-    </div>
-  </div>
-  <div class="s-badges">
-    <span class="s-badge s-badge-score" style="background:#fce8e6; color:#c62828; border-color:#e53935;">4pt</span>
-    <span class="s-badge s-badge-new">✦ Ny denne uge</span>
-    
-    <span class="s-badge s-badge-rsi">RSI 75 ⚠</span>
-  </div>
-  <div class="s-stats">
-    <div class="s-stat">
-      <div class="s-stat-label">Momentum</div>
-      <div class="s-stat-value" style="color:#e53935;">+34.21%</div>
-    </div>
-    <div class="s-stat">
-      <div class="s-stat-label">1M afkast</div>
-      <div class="s-stat-value">+24.4%</div>
-    </div>
-    <div class="s-stat">
-      <div class="s-stat-label">1Y afkast</div>
-      <div class="s-stat-value">+nan%</div>
-    </div>
-  </div>
-  <button class="s-detail-btn" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.textContent = this.textContent.includes('▾') ? '▸ Detaljer ved handel' : '▾ Detaljer ved handel';">▾ Detaljer ved handel</button>
-  <div class="s-detail">
-    <div class="s-detail-grid">
-      <div class="s-detail-item"><div class="s-detail-label">Depot-egnethed</div><div class="s-detail-value">
-        
-          <span class="ask-badge akt">ASK ✗</span>
-        
-        <span class="ask-badge ask">AKT ✓</span>
-        <span class="ask-badge ask">AOP ✓</span>
-        <span class="ask-badge ask">KPP ✓</span>
-        <span class="ask-badge ask">SpSj-RTP ✓</span>
-        <span class="ask-badge ask">SpSj-INV ✓</span>
-      </div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Sektor</div><div class="s-detail-value">—</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+nan</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.99%</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Momentum tiltagende: 18.5% → 2</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">75</div></div>
-    </div>
-    
-    <div class="s-compare">⇄ Stærkere end din svageste fond — AIFS.DE 7pt</div>
-    
-    
-  </div>
-</div>
-
-      
-      
-<div class="s-card" style="--bg: #fff5f5; --bc: #e53935;">
-  <div class="s-header">
-    <div>
-      <div class="s-name">Global X AI Semiconductor & Quantum UCITS ETF USD </div>
-      <div class="s-ticker">C8PX.DE</div>
-    </div>
-    <div class="s-pile" style="color: #27ae60">
-      ↑↑
-    </div>
-  </div>
-  <div class="s-badges">
-    <span class="s-badge s-badge-score" style="background:#fce8e6; color:#c62828; border-color:#e53935;">6pt</span>
-    
-    
-    <span class="s-badge s-badge-rsi">RSI 71 ⚠</span>
-  </div>
-  <div class="s-stats">
-    <div class="s-stat">
-      <div class="s-stat-label">Momentum</div>
-      <div class="s-stat-value" style="color:#e53935;">+38.29%</div>
+      <div class="s-stat-value" style="color:#e53935;">+32.72%</div>
     </div>
     <div class="s-stat">
       <div class="s-stat-label">1M afkast</div>
@@ -396,10 +300,8 @@
       <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+183.0</div></div>
       <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.35%</div></div>
       <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 14.9% → 2</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">71</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">65</div></div>
     </div>
-    
-    <div class="s-compare">⇄ Stærkere end din svageste fond — AIFS.DE 7pt</div>
     
     
   </div>
@@ -410,31 +312,31 @@
 <div class="s-card" style="--bg: #fff5f5; --bc: #e53935;">
   <div class="s-header">
     <div>
-      <div class="s-name">iShares Electric Vehicles and Driving Technology U</div>
-      <div class="s-ticker">IEVD.DE</div>
+      <div class="s-name">iShares Quantum Computing UCITS ETF USD (Acc)</div>
+      <div class="s-ticker">QOMP.DE</div>
     </div>
-    <div class="s-pile" style="color: #27ae60">
-      ↑↑
+    <div class="s-pile" style="color: #f39c12">
+      —
     </div>
   </div>
   <div class="s-badges">
-    <span class="s-badge s-badge-score" style="background:#fce8e6; color:#c62828; border-color:#e53935;">6pt</span>
+    <span class="s-badge s-badge-score" style="background:#fce8e6; color:#c62828; border-color:#e53935;">5pt</span>
+    <span class="s-badge s-badge-new">✦ Ny denne uge</span>
     
     
-    <span class="s-badge s-badge-rsi">RSI 70 ⚠</span>
   </div>
   <div class="s-stats">
     <div class="s-stat">
       <div class="s-stat-label">Momentum</div>
-      <div class="s-stat-value" style="color:#e53935;">+49.47%</div>
+      <div class="s-stat-value" style="color:#e53935;">+24.79%</div>
     </div>
     <div class="s-stat">
       <div class="s-stat-label">1M afkast</div>
-      <div class="s-stat-value">+23.4%</div>
+      <div class="s-stat-value">+27.1%</div>
     </div>
     <div class="s-stat">
       <div class="s-stat-label">1Y afkast</div>
-      <div class="s-stat-value">+85.8%</div>
+      <div class="s-stat-value">+nan%</div>
     </div>
   </div>
   <button class="s-detail-btn" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.textContent = this.textContent.includes('▾') ? '▸ Detaljer ved handel' : '▾ Detaljer ved handel';">▾ Detaljer ved handel</button>
@@ -451,13 +353,11 @@
         <span class="ask-badge ask">SpSj-INV ✓</span>
       </div></div>
       <div class="s-detail-item"><div class="s-detail-label">Sektor</div><div class="s-detail-value">—</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+131.0</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.4%</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 10.1% → 1</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">70</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+nan</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.5%</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Momentum tiltagende: 13.9% → 2</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">62</div></div>
     </div>
-    
-    <div class="s-compare">⇄ Stærkere end din svageste fond — AIFS.DE 7pt</div>
     
     
   </div>
@@ -468,8 +368,8 @@
 <div class="s-card" style="--bg: #fff5f5; --bc: #e53935;">
   <div class="s-header">
     <div>
-      <div class="s-name">Invesco Artificial Intelligence Enablers UCITS ETF</div>
-      <div class="s-ticker">IVAI.DE</div>
+      <div class="s-name">👁 iShares MSCI Global Semiconductors UCITS ETF USD (</div>
+      <div class="s-ticker">SEC0.DE</div>
     </div>
     <div class="s-pile" style="color: #f39c12">
       —
@@ -484,15 +384,15 @@
   <div class="s-stats">
     <div class="s-stat">
       <div class="s-stat-label">Momentum</div>
-      <div class="s-stat-value" style="color:#e53935;">+31.11%</div>
+      <div class="s-stat-value" style="color:#e53935;">+70.57%</div>
     </div>
     <div class="s-stat">
       <div class="s-stat-label">1M afkast</div>
-      <div class="s-stat-value">+23.7%</div>
+      <div class="s-stat-value">+26.9%</div>
     </div>
     <div class="s-stat">
       <div class="s-stat-label">1Y afkast</div>
-      <div class="s-stat-value">+74.7%</div>
+      <div class="s-stat-value">+188.5%</div>
     </div>
   </div>
   <button class="s-detail-btn" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.textContent = this.textContent.includes('▾') ? '▸ Detaljer ved handel' : '▾ Detaljer ved handel';">▾ Detaljer ved handel</button>
@@ -500,7 +400,7 @@
     <div class="s-detail-grid">
       <div class="s-detail-item"><div class="s-detail-label">Depot-egnethed</div><div class="s-detail-value">
         
-          <span class="ask-badge akt">ASK ✗</span>
+          <span class="ask-badge ask">ASK ✓</span>
         
         <span class="ask-badge ask">AKT ✓</span>
         <span class="ask-badge ask">AOP ✓</span>
@@ -509,13 +409,123 @@
         <span class="ask-badge ask">SpSj-INV ✓</span>
       </div></div>
       <div class="s-detail-item"><div class="s-detail-label">Sektor</div><div class="s-detail-value">—</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+125.0</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+160.5</div></div>
       <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.35%</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 5.4% → 12</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">69</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 16.3% → 1</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">64</div></div>
     </div>
     
-    <div class="s-compare">⇄ Stærkere end din svageste fond — AIFS.DE 7pt</div>
+    
+  </div>
+</div>
+
+      
+      
+<div class="s-card" style="--bg: #fff5f5; --bc: #e53935;">
+  <div class="s-header">
+    <div>
+      <div class="s-name">L&G Cyber Security UCITS ETF</div>
+      <div class="s-ticker">USPY.DE</div>
+    </div>
+    <div class="s-pile" style="color: #f39c12">
+      —
+    </div>
+  </div>
+  <div class="s-badges">
+    <span class="s-badge s-badge-score" style="background:#fce8e6; color:#c62828; border-color:#e53935;">6pt</span>
+    <span class="s-badge s-badge-new">✦ Ny denne uge</span>
+    
+    <span class="s-badge s-badge-rsi">RSI 83 ⚠</span>
+  </div>
+  <div class="s-stats">
+    <div class="s-stat">
+      <div class="s-stat-label">Momentum</div>
+      <div class="s-stat-value" style="color:#e53935;">+24.66%</div>
+    </div>
+    <div class="s-stat">
+      <div class="s-stat-label">1M afkast</div>
+      <div class="s-stat-value">+27.0%</div>
+    </div>
+    <div class="s-stat">
+      <div class="s-stat-label">1Y afkast</div>
+      <div class="s-stat-value">+28.4%</div>
+    </div>
+  </div>
+  <button class="s-detail-btn" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.textContent = this.textContent.includes('▾') ? '▸ Detaljer ved handel' : '▾ Detaljer ved handel';">▾ Detaljer ved handel</button>
+  <div class="s-detail">
+    <div class="s-detail-grid">
+      <div class="s-detail-item"><div class="s-detail-label">Depot-egnethed</div><div class="s-detail-value">
+        
+          <span class="ask-badge ask">ASK ✓</span>
+        
+        <span class="ask-badge ask">AKT ✓</span>
+        <span class="ask-badge ask">AOP ✓</span>
+        <span class="ask-badge ask">KPP ✓</span>
+        <span class="ask-badge ask">SpSj-RTP ✓</span>
+        <span class="ask-badge ask">SpSj-INV ✓</span>
+      </div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Sektor</div><div class="s-detail-value">—</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+141.2</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.69%</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 4.4% → 14</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">83</div></div>
+    </div>
+    
+    
+  </div>
+</div>
+
+      
+      
+<div class="s-card" style="--bg: #fff5f5; --bc: #e53935;">
+  <div class="s-header">
+    <div>
+      <div class="s-name">L&G Artificial Intelligence UCITS ETF</div>
+      <div class="s-ticker">XMLD.DE</div>
+    </div>
+    <div class="s-pile" style="color: #f39c12">
+      —
+    </div>
+  </div>
+  <div class="s-badges">
+    <span class="s-badge s-badge-score" style="background:#fce8e6; color:#c62828; border-color:#e53935;">7pt</span>
+    <span class="s-badge s-badge-new">✦ Ny denne uge</span>
+    
+    
+  </div>
+  <div class="s-stats">
+    <div class="s-stat">
+      <div class="s-stat-label">Momentum</div>
+      <div class="s-stat-value" style="color:#e53935;">+31.09%</div>
+    </div>
+    <div class="s-stat">
+      <div class="s-stat-label">1M afkast</div>
+      <div class="s-stat-value">+20.5%</div>
+    </div>
+    <div class="s-stat">
+      <div class="s-stat-label">1Y afkast</div>
+      <div class="s-stat-value">+68.5%</div>
+    </div>
+  </div>
+  <button class="s-detail-btn" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.textContent = this.textContent.includes('▾') ? '▸ Detaljer ved handel' : '▾ Detaljer ved handel';">▾ Detaljer ved handel</button>
+  <div class="s-detail">
+    <div class="s-detail-grid">
+      <div class="s-detail-item"><div class="s-detail-label">Depot-egnethed</div><div class="s-detail-value">
+        
+          <span class="ask-badge ask">ASK ✓</span>
+        
+        <span class="ask-badge ask">AKT ✓</span>
+        <span class="ask-badge ask">AOP ✓</span>
+        <span class="ask-badge ask">KPP ✓</span>
+        <span class="ask-badge ask">SpSj-RTP ✓</span>
+        <span class="ask-badge ask">SpSj-INV ✓</span>
+      </div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Sektor</div><div class="s-detail-value">—</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+111.8</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.49%</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 5.8% → 12</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">64</div></div>
+    </div>
     
     
   </div>
@@ -530,8 +540,8 @@
 <div class="s-card" style="--bg: #fff5f5; --bc: #e53935;">
   <div class="s-header">
     <div>
-      <div class="s-name">⭐ iShares AI Infrastructure UCITS ETF USD (Acc)</div>
-      <div class="s-ticker">AIFS.DE</div>
+      <div class="s-name">Amundi MSCI Semiconductors UCITS ETF Acc</div>
+      <div class="s-ticker">LSMC.DE</div>
     </div>
     <div class="s-pile" style="color: #f39c12">
       —
@@ -546,15 +556,15 @@
   <div class="s-stats">
     <div class="s-stat">
       <div class="s-stat-label">Momentum</div>
-      <div class="s-stat-value" style="color:#e53935;">+46.25%</div>
+      <div class="s-stat-value" style="color:#e53935;">+48.22%</div>
     </div>
     <div class="s-stat">
       <div class="s-stat-label">1M afkast</div>
-      <div class="s-stat-value">+21.9%</div>
+      <div class="s-stat-value">+17.5%</div>
     </div>
     <div class="s-stat">
       <div class="s-stat-label">1Y afkast</div>
-      <div class="s-stat-value">+106.4%</div>
+      <div class="s-stat-value">+135.8%</div>
     </div>
   </div>
   <button class="s-detail-btn" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.textContent = this.textContent.includes('▾') ? '▸ Detaljer ved handel' : '▾ Detaljer ved handel';">▾ Detaljer ved handel</button>
@@ -571,10 +581,10 @@
         <span class="ask-badge ask">SpSj-INV ✓</span>
       </div></div>
       <div class="s-detail-item"><div class="s-detail-label">Sektor</div><div class="s-detail-value">—</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+123.6</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+107.3</div></div>
       <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.35%</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 8.6% → 13</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">70</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 10.2% → 1</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">61</div></div>
     </div>
     
     
@@ -586,8 +596,8 @@
 <div class="s-card" style="--bg: #fff5f5; --bc: #e53935;">
   <div class="s-header">
     <div>
-      <div class="s-name">Global X CleanTech UCITS ETF USD Accumulating</div>
-      <div class="s-ticker">CT3C.DE</div>
+      <div class="s-name">Global X Blockchain UCITS ETF USD Accumulating</div>
+      <div class="s-ticker">BLCH.DE</div>
     </div>
     <div class="s-pile" style="color: #f39c12">
       —
@@ -602,15 +612,15 @@
   <div class="s-stats">
     <div class="s-stat">
       <div class="s-stat-label">Momentum</div>
-      <div class="s-stat-value" style="color:#e53935;">+36.23%</div>
+      <div class="s-stat-value" style="color:#e53935;">+17.9%</div>
     </div>
     <div class="s-stat">
       <div class="s-stat-label">1M afkast</div>
-      <div class="s-stat-value">+16.6%</div>
+      <div class="s-stat-value">+19.1%</div>
     </div>
     <div class="s-stat">
       <div class="s-stat-label">1Y afkast</div>
-      <div class="s-stat-value">+127.6%</div>
+      <div class="s-stat-value">+110.6%</div>
     </div>
   </div>
   <button class="s-detail-btn" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.textContent = this.textContent.includes('▾') ? '▸ Detaljer ved handel' : '▾ Detaljer ved handel';">▾ Detaljer ved handel</button>
@@ -627,13 +637,11 @@
         <span class="ask-badge ask">SpSj-INV ✓</span>
       </div></div>
       <div class="s-detail-item"><div class="s-detail-label">Sektor</div><div class="s-detail-value">—</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+94.6</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+106.6</div></div>
       <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.5%</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 7.1% → 10</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">64</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 3.2% → 13</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">51</div></div>
     </div>
-    
-    <div class="s-compare">⇄ Stærkere end din svageste fond — AIFS.DE 7pt</div>
     
     
   </div>
@@ -644,8 +652,8 @@
 <div class="s-card" style="--bg: #fff5f5; --bc: #e53935;">
   <div class="s-header">
     <div>
-      <div class="s-name">Global X Autonomous & Electric Vehicles UCITS ETF </div>
-      <div class="s-ticker">DR7E.DE</div>
+      <div class="s-name">iShares AI Innovation Active UCITS ETF USD (Acc)</div>
+      <div class="s-ticker">IART.DE</div>
     </div>
     <div class="s-pile" style="color: #f39c12">
       —
@@ -660,131 +668,15 @@
   <div class="s-stats">
     <div class="s-stat">
       <div class="s-stat-label">Momentum</div>
-      <div class="s-stat-value" style="color:#e53935;">+35.65%</div>
+      <div class="s-stat-value" style="color:#e53935;">+39.55%</div>
     </div>
     <div class="s-stat">
       <div class="s-stat-label">1M afkast</div>
-      <div class="s-stat-value">+15.9%</div>
+      <div class="s-stat-value">+17.4%</div>
     </div>
     <div class="s-stat">
       <div class="s-stat-label">1Y afkast</div>
-      <div class="s-stat-value">+85.8%</div>
-    </div>
-  </div>
-  <button class="s-detail-btn" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.textContent = this.textContent.includes('▾') ? '▸ Detaljer ved handel' : '▾ Detaljer ved handel';">▾ Detaljer ved handel</button>
-  <div class="s-detail">
-    <div class="s-detail-grid">
-      <div class="s-detail-item"><div class="s-detail-label">Depot-egnethed</div><div class="s-detail-value">
-        
-          <span class="ask-badge akt">ASK ✗</span>
-        
-        <span class="ask-badge ask">AKT ✓</span>
-        <span class="ask-badge ask">AOP ✓</span>
-        <span class="ask-badge ask">KPP ✓</span>
-        <span class="ask-badge ask">SpSj-RTP ✓</span>
-        <span class="ask-badge ask">SpSj-INV ✓</span>
-      </div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Sektor</div><div class="s-detail-value">—</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+89.0</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.5%</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 7.3% → 9.</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">62</div></div>
-    </div>
-    
-    <div class="s-compare">⇄ Stærkere end din svageste fond — AIFS.DE 7pt</div>
-    
-    
-  </div>
-</div>
-
-      
-      
-<div class="s-card" style="--bg: #fff5f5; --bc: #e53935;">
-  <div class="s-header">
-    <div>
-      <div class="s-name">Vanguard FTSE Developed Asia Pacific ex Japan UCIT</div>
-      <div class="s-ticker">VGEK.DE</div>
-    </div>
-    <div class="s-pile" style="color: #f39c12">
-      —
-    </div>
-  </div>
-  <div class="s-badges">
-    <span class="s-badge s-badge-score" style="background:#fce8e6; color:#c62828; border-color:#e53935;">6pt</span>
-    <span class="s-badge s-badge-new">✦ Ny denne uge</span>
-    
-    
-  </div>
-  <div class="s-stats">
-    <div class="s-stat">
-      <div class="s-stat-label">Momentum</div>
-      <div class="s-stat-value" style="color:#e53935;">+38.26%</div>
-    </div>
-    <div class="s-stat">
-      <div class="s-stat-label">1M afkast</div>
-      <div class="s-stat-value">+16.1%</div>
-    </div>
-    <div class="s-stat">
-      <div class="s-stat-label">1Y afkast</div>
-      <div class="s-stat-value">+81.4%</div>
-    </div>
-  </div>
-  <button class="s-detail-btn" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.textContent = this.textContent.includes('▾') ? '▸ Detaljer ved handel' : '▾ Detaljer ved handel';">▾ Detaljer ved handel</button>
-  <div class="s-detail">
-    <div class="s-detail-grid">
-      <div class="s-detail-item"><div class="s-detail-label">Depot-egnethed</div><div class="s-detail-value">
-        
-          <span class="ask-badge akt">ASK ✗</span>
-        
-        <span class="ask-badge ask">AKT ✓</span>
-        <span class="ask-badge ask">AOP ✓</span>
-        <span class="ask-badge ask">KPP ✓</span>
-        <span class="ask-badge ask">SpSj-RTP ✓</span>
-        <span class="ask-badge ask">SpSj-INV ✓</span>
-      </div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Sektor</div><div class="s-detail-value">—</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+83.2</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.15%</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Momentum tiltagende: 4.9% → 16</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">62</div></div>
-    </div>
-    
-    <div class="s-compare">⇄ Stærkere end din svageste fond — AIFS.DE 7pt</div>
-    
-    
-  </div>
-</div>
-
-      
-      
-<div class="s-card" style="--bg: #fff5f5; --bc: #e53935;">
-  <div class="s-header">
-    <div>
-      <div class="s-name">WisdomTree Renewable Energy UCITS ETF USD Unhedged</div>
-      <div class="s-ticker">WRNW.DE</div>
-    </div>
-    <div class="s-pile" style="color: #f39c12">
-      —
-    </div>
-  </div>
-  <div class="s-badges">
-    <span class="s-badge s-badge-score" style="background:#fce8e6; color:#c62828; border-color:#e53935;">7pt</span>
-    <span class="s-badge s-badge-new">✦ Ny denne uge</span>
-    
-    
-  </div>
-  <div class="s-stats">
-    <div class="s-stat">
-      <div class="s-stat-label">Momentum</div>
-      <div class="s-stat-value" style="color:#e53935;">+31.45%</div>
-    </div>
-    <div class="s-stat">
-      <div class="s-stat-label">1M afkast</div>
-      <div class="s-stat-value">+14.5%</div>
-    </div>
-    <div class="s-stat">
-      <div class="s-stat-label">1Y afkast</div>
-      <div class="s-stat-value">+119.5%</div>
+      <div class="s-stat-value">+90.9%</div>
     </div>
   </div>
   <button class="s-detail-btn" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.textContent = this.textContent.includes('▾') ? '▸ Detaljer ved handel' : '▾ Detaljer ved handel';">▾ Detaljer ved handel</button>
@@ -801,13 +693,123 @@
         <span class="ask-badge ask">SpSj-INV ✓</span>
       </div></div>
       <div class="s-detail-item"><div class="s-detail-label">Sektor</div><div class="s-detail-value">—</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+77.0</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.45%</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 6.1% → 6.</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">63</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+106.1</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.73%</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 7.9% → 14</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">61</div></div>
     </div>
     
-    <div class="s-compare">⇄ Stærkere end din svageste fond — AIFS.DE 7pt</div>
+    
+  </div>
+</div>
+
+      
+      
+<div class="s-card" style="--bg: #fff5f5; --bc: #e53935;">
+  <div class="s-header">
+    <div>
+      <div class="s-name">State Street SPDR MSCI Europe Technology UCITS ETF</div>
+      <div class="s-ticker">SPYK.DE</div>
+    </div>
+    <div class="s-pile" style="color: #f39c12">
+      —
+    </div>
+  </div>
+  <div class="s-badges">
+    <span class="s-badge s-badge-score" style="background:#fce8e6; color:#c62828; border-color:#e53935;">7pt</span>
+    <span class="s-badge s-badge-new">✦ Ny denne uge</span>
+    
+    
+  </div>
+  <div class="s-stats">
+    <div class="s-stat">
+      <div class="s-stat-label">Momentum</div>
+      <div class="s-stat-value" style="color:#e53935;">+32.25%</div>
+    </div>
+    <div class="s-stat">
+      <div class="s-stat-label">1M afkast</div>
+      <div class="s-stat-value">+18.3%</div>
+    </div>
+    <div class="s-stat">
+      <div class="s-stat-label">1Y afkast</div>
+      <div class="s-stat-value">+53.0%</div>
+    </div>
+  </div>
+  <button class="s-detail-btn" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.textContent = this.textContent.includes('▾') ? '▸ Detaljer ved handel' : '▾ Detaljer ved handel';">▾ Detaljer ved handel</button>
+  <div class="s-detail">
+    <div class="s-detail-grid">
+      <div class="s-detail-item"><div class="s-detail-label">Depot-egnethed</div><div class="s-detail-value">
+        
+          <span class="ask-badge akt">ASK ✗</span>
+        
+        <span class="ask-badge ask">AKT ✓</span>
+        <span class="ask-badge ask">AOP ✓</span>
+        <span class="ask-badge ask">KPP ✓</span>
+        <span class="ask-badge ask">SpSj-RTP ✓</span>
+        <span class="ask-badge ask">SpSj-INV ✓</span>
+      </div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Sektor</div><div class="s-detail-value">—</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+97.9</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.18%</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 7.3% → 8.</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">64</div></div>
+    </div>
+    
+    
+  </div>
+</div>
+
+      
+      
+<div class="s-card" style="--bg: #fff5f5; --bc: #e53935;">
+  <div class="s-header">
+    <div>
+      <div class="s-name">Global X Internet of Things UCITS ETF USD Accumula</div>
+      <div class="s-ticker">SN5R.DE</div>
+    </div>
+    <div class="s-pile" style="color: #f39c12">
+      —
+    </div>
+  </div>
+  <div class="s-badges">
+    <span class="s-badge s-badge-score" style="background:#fce8e6; color:#c62828; border-color:#e53935;">7pt</span>
+    <span class="s-badge s-badge-new">✦ Ny denne uge</span>
+    
+    
+  </div>
+  <div class="s-stats">
+    <div class="s-stat">
+      <div class="s-stat-label">Momentum</div>
+      <div class="s-stat-value" style="color:#e53935;">+30.11%</div>
+    </div>
+    <div class="s-stat">
+      <div class="s-stat-label">1M afkast</div>
+      <div class="s-stat-value">+17.4%</div>
+    </div>
+    <div class="s-stat">
+      <div class="s-stat-label">1Y afkast</div>
+      <div class="s-stat-value">+44.7%</div>
+    </div>
+  </div>
+  <button class="s-detail-btn" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.textContent = this.textContent.includes('▾') ? '▸ Detaljer ved handel' : '▾ Detaljer ved handel';">▾ Detaljer ved handel</button>
+  <div class="s-detail">
+    <div class="s-detail-grid">
+      <div class="s-detail-item"><div class="s-detail-label">Depot-egnethed</div><div class="s-detail-value">
+        
+          <span class="ask-badge akt">ASK ✗</span>
+        
+        <span class="ask-badge ask">AKT ✓</span>
+        <span class="ask-badge ask">AOP ✓</span>
+        <span class="ask-badge ask">KPP ✓</span>
+        <span class="ask-badge ask">SpSj-RTP ✓</span>
+        <span class="ask-badge ask">SpSj-INV ✓</span>
+      </div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Sektor</div><div class="s-detail-value">—</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+96.0</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.6%</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 7.1% → 9.</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">69</div></div>
+    </div>
     
     
   </div>
@@ -837,11 +839,11 @@
 <div class="s-card" style="--bg: #f0fdfa; --bc: #0d9488;">
   <div class="s-header">
     <div>
-      <div class="s-name">Amundi MSCI Digital Economy UCITS ETF Acc</div>
-      <div class="s-ticker">EBUY.DE</div>
+      <div class="s-name">WisdomTree Blockchain UCITS ETF USD Acc</div>
+      <div class="s-ticker">WBKN.DE</div>
     </div>
     <div class="s-pile" style="color: #f39c12">
-      ↑↓
+      —
     </div>
   </div>
   <div class="s-badges">
@@ -853,15 +855,15 @@
   <div class="s-stats">
     <div class="s-stat">
       <div class="s-stat-label">Momentum</div>
-      <div class="s-stat-value" style="color:#0d9488;">+16.66%</div>
+      <div class="s-stat-value" style="color:#0d9488;">+5.65%</div>
     </div>
     <div class="s-stat">
       <div class="s-stat-label">1M afkast</div>
-      <div class="s-stat-value">+12.4%</div>
+      <div class="s-stat-value">+10.8%</div>
     </div>
     <div class="s-stat">
       <div class="s-stat-label">1Y afkast</div>
-      <div class="s-stat-value">+30.6%</div>
+      <div class="s-stat-value">+33.2%</div>
     </div>
   </div>
   <button class="s-detail-btn" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.textContent = this.textContent.includes('▾') ? '▸ Detaljer ved handel' : '▾ Detaljer ved handel';">▾ Detaljer ved handel</button>
@@ -878,71 +880,11 @@
         <span class="ask-badge ask">SpSj-INV ✓</span>
       </div></div>
       <div class="s-detail-item"><div class="s-detail-label">Sektor</div><div class="s-detail-value">—</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+71.0</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+59.1</div></div>
       <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.45%</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 2.6% → 9.</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">68</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 1.1% → 7.</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">52</div></div>
     </div>
-    
-    <div class="s-compare">⇄ Stærkere end din svageste fond — AIFS.DE 7pt</div>
-    
-    
-  </div>
-</div>
-
-      
-      
-<div class="s-card" style="--bg: #f0fdfa; --bc: #0d9488;">
-  <div class="s-header">
-    <div>
-      <div class="s-name">Xtrackers Nasdaq 100 Swap UCITS ETF - 1C</div>
-      <div class="s-ticker">XNDQ.DE</div>
-    </div>
-    <div class="s-pile" style="color: #f39c12">
-      —
-    </div>
-  </div>
-  <div class="s-badges">
-    <span class="s-badge s-badge-score" style="background:#e0f2f1; color:#00695c; border-color:#0d9488;">7pt</span>
-    
-    
-    
-  </div>
-  <div class="s-stats">
-    <div class="s-stat">
-      <div class="s-stat-label">Momentum</div>
-      <div class="s-stat-value" style="color:#0d9488;">+17.08%</div>
-    </div>
-    <div class="s-stat">
-      <div class="s-stat-label">1M afkast</div>
-      <div class="s-stat-value">+10.5%</div>
-    </div>
-    <div class="s-stat">
-      <div class="s-stat-label">1Y afkast</div>
-      <div class="s-stat-value">+nan%</div>
-    </div>
-  </div>
-  <button class="s-detail-btn" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.textContent = this.textContent.includes('▾') ? '▸ Detaljer ved handel' : '▾ Detaljer ved handel';">▾ Detaljer ved handel</button>
-  <div class="s-detail">
-    <div class="s-detail-grid">
-      <div class="s-detail-item"><div class="s-detail-label">Depot-egnethed</div><div class="s-detail-value">
-        
-          <span class="ask-badge akt">ASK ✗</span>
-        
-        <span class="ask-badge ask">AKT ✓</span>
-        <span class="ask-badge ask">AOP ✓</span>
-        <span class="ask-badge ask">KPP ✓</span>
-        <span class="ask-badge ask">SpSj-RTP ✓</span>
-        <span class="ask-badge ask">SpSj-INV ✓</span>
-      </div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Sektor</div><div class="s-detail-value">—</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+59.4</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.18%</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 3.1% → 7.</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">68</div></div>
-    </div>
-    
-    <div class="s-compare">⇄ Stærkere end din svageste fond — AIFS.DE 7pt</div>
     
     
   </div>
@@ -956,8 +898,8 @@
       <div class="s-name">Amundi S&P Global Information Technology ESG UCITS</div>
       <div class="s-ticker">WELL.DE</div>
     </div>
-    <div class="s-pile" style="color: #f39c12">
-      —
+    <div class="s-pile" style="color: #27ae60">
+      ↑↑
     </div>
   </div>
   <div class="s-badges">
@@ -969,7 +911,7 @@
   <div class="s-stats">
     <div class="s-stat">
       <div class="s-stat-label">Momentum</div>
-      <div class="s-stat-value" style="color:#0d9488;">+18.13%</div>
+      <div class="s-stat-value" style="color:#0d9488;">+18.85%</div>
     </div>
     <div class="s-stat">
       <div class="s-stat-label">1M afkast</div>
@@ -997,10 +939,8 @@
       <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+58.7</div></div>
       <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.18%</div></div>
       <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 2.8% → 7.</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">68</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">70</div></div>
     </div>
-    
-    <div class="s-compare">⇄ Stærkere end din svageste fond — AIFS.DE 7pt</div>
     
     
   </div>
@@ -1011,8 +951,8 @@
 <div class="s-card" style="--bg: #f0fdfa; --bc: #0d9488;">
   <div class="s-header">
     <div>
-      <div class="s-name">Xtrackers MSCI World Momentum UCITS ETF 1C</div>
-      <div class="s-ticker">XDEM.DE</div>
+      <div class="s-name">Invesco S&P World Information Technology ESG UCITS</div>
+      <div class="s-ticker">WDTE.DE</div>
     </div>
     <div class="s-pile" style="color: #f39c12">
       —
@@ -1027,15 +967,71 @@
   <div class="s-stats">
     <div class="s-stat">
       <div class="s-stat-label">Momentum</div>
-      <div class="s-stat-value" style="color:#0d9488;">+19.9%</div>
+      <div class="s-stat-value" style="color:#0d9488;">+15.37%</div>
     </div>
     <div class="s-stat">
       <div class="s-stat-label">1M afkast</div>
-      <div class="s-stat-value">+10.2%</div>
+      <div class="s-stat-value">+9.9%</div>
     </div>
     <div class="s-stat">
       <div class="s-stat-label">1Y afkast</div>
-      <div class="s-stat-value">+33.0%</div>
+      <div class="s-stat-value">+36.7%</div>
+    </div>
+  </div>
+  <button class="s-detail-btn" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.textContent = this.textContent.includes('▾') ? '▸ Detaljer ved handel' : '▾ Detaljer ved handel';">▾ Detaljer ved handel</button>
+  <div class="s-detail">
+    <div class="s-detail-grid">
+      <div class="s-detail-item"><div class="s-detail-label">Depot-egnethed</div><div class="s-detail-value">
+        
+          <span class="ask-badge akt">ASK ✗</span>
+        
+        <span class="ask-badge ask">AKT ✓</span>
+        <span class="ask-badge ask">AOP ✓</span>
+        <span class="ask-badge ask">KPP ✓</span>
+        <span class="ask-badge ask">SpSj-RTP ✓</span>
+        <span class="ask-badge ask">SpSj-INV ✓</span>
+      </div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Sektor</div><div class="s-detail-value">—</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+55.4</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.18%</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 2.6% → 6.</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">62</div></div>
+    </div>
+    
+    
+  </div>
+</div>
+
+      
+      
+<div class="s-card" style="--bg: #f0fdfa; --bc: #0d9488;">
+  <div class="s-header">
+    <div>
+      <div class="s-name">Amundi STOXX Europe 600 Technology UCITS ETF Acc</div>
+      <div class="s-ticker">LTUG.DE</div>
+    </div>
+    <div class="s-pile" style="color: #f39c12">
+      —
+    </div>
+  </div>
+  <div class="s-badges">
+    <span class="s-badge s-badge-score" style="background:#e0f2f1; color:#00695c; border-color:#0d9488;">7pt</span>
+    
+    
+    
+  </div>
+  <div class="s-stats">
+    <div class="s-stat">
+      <div class="s-stat-label">Momentum</div>
+      <div class="s-stat-value" style="color:#0d9488;">+16.05%</div>
+    </div>
+    <div class="s-stat">
+      <div class="s-stat-label">1M afkast</div>
+      <div class="s-stat-value">+10.5%</div>
+    </div>
+    <div class="s-stat">
+      <div class="s-stat-label">1Y afkast</div>
+      <div class="s-stat-value">+19.2%</div>
     </div>
   </div>
   <button class="s-detail-btn" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.textContent = this.textContent.includes('▾') ? '▸ Detaljer ved handel' : '▾ Detaljer ved handel';">▾ Detaljer ved handel</button>
@@ -1052,13 +1048,11 @@
         <span class="ask-badge ask">SpSj-INV ✓</span>
       </div></div>
       <div class="s-detail-item"><div class="s-detail-label">Sektor</div><div class="s-detail-value">—</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+55.5</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.25%</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 3.7% → 5.</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">68</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+55.2</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.3%</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 3.5% → 4.</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">63</div></div>
     </div>
-    
-    <div class="s-compare">⇄ Stærkere end din svageste fond — AIFS.DE 7pt</div>
     
     
   </div>
@@ -1072,8 +1066,8 @@
       <div class="s-name">iShares Nasdaq 100 UCITS ETF EUR Hedged Acc</div>
       <div class="s-ticker">NQSE.DE</div>
     </div>
-    <div class="s-pile" style="color: #27ae60">
-      ↑↑
+    <div class="s-pile" style="color: #f39c12">
+      ↑↓
     </div>
   </div>
   <div class="s-badges">
@@ -1085,7 +1079,7 @@
   <div class="s-stats">
     <div class="s-stat">
       <div class="s-stat-label">Momentum</div>
-      <div class="s-stat-value" style="color:#0d9488;">+18.04%</div>
+      <div class="s-stat-value" style="color:#0d9488;">+16.84%</div>
     </div>
     <div class="s-stat">
       <div class="s-stat-label">1M afkast</div>
@@ -1113,10 +1107,8 @@
       <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+53.7</div></div>
       <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.33%</div></div>
       <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 2.8% → 6.</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">65</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">62</div></div>
     </div>
-    
-    <div class="s-compare">⇄ Stærkere end din svageste fond — AIFS.DE 7pt</div>
     
     
   </div>
@@ -1131,8 +1123,8 @@
 <div class="s-card" style="--bg: #f0fdfa; --bc: #0d9488;">
   <div class="s-header">
     <div>
-      <div class="s-name">ARK Artificial Intelligence & Robotics UCITS ETF U</div>
-      <div class="s-ticker">AAKI.DE</div>
+      <div class="s-name">Invesco Nasdaq-100 UCITS ETF EUR Hedged</div>
+      <div class="s-ticker">EQEU.DE</div>
     </div>
     <div class="s-pile" style="color: #f39c12">
       —
@@ -1147,7 +1139,119 @@
   <div class="s-stats">
     <div class="s-stat">
       <div class="s-stat-label">Momentum</div>
-      <div class="s-stat-value" style="color:#0d9488;">+12.39%</div>
+      <div class="s-stat-value" style="color:#0d9488;">+16.61%</div>
+    </div>
+    <div class="s-stat">
+      <div class="s-stat-label">1M afkast</div>
+      <div class="s-stat-value">+9.5%</div>
+    </div>
+    <div class="s-stat">
+      <div class="s-stat-label">1Y afkast</div>
+      <div class="s-stat-value">+39.4%</div>
+    </div>
+  </div>
+  <button class="s-detail-btn" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.textContent = this.textContent.includes('▾') ? '▸ Detaljer ved handel' : '▾ Detaljer ved handel';">▾ Detaljer ved handel</button>
+  <div class="s-detail">
+    <div class="s-detail-grid">
+      <div class="s-detail-item"><div class="s-detail-label">Depot-egnethed</div><div class="s-detail-value">
+        
+          <span class="ask-badge akt">ASK ✗</span>
+        
+        <span class="ask-badge ask">AKT ✓</span>
+        <span class="ask-badge ask">AOP ✓</span>
+        <span class="ask-badge ask">KPP ✓</span>
+        <span class="ask-badge ask">SpSj-RTP ✓</span>
+        <span class="ask-badge ask">SpSj-INV ✓</span>
+      </div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Sektor</div><div class="s-detail-value">—</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+53.0</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.35%</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 2.8% → 6.</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">62</div></div>
+    </div>
+    
+    
+  </div>
+</div>
+
+      
+      
+<div class="s-card" style="--bg: #f0fdfa; --bc: #0d9488;">
+  <div class="s-header">
+    <div>
+      <div class="s-name">Invesco Nasdaq Next Generation 100 UCITS ETF Acc</div>
+      <div class="s-ticker">EQQJ.DE</div>
+    </div>
+    <div class="s-pile" style="color: #f39c12">
+      —
+    </div>
+  </div>
+  <div class="s-badges">
+    <span class="s-badge s-badge-score" style="background:#e0f2f1; color:#00695c; border-color:#0d9488;">7pt</span>
+    
+    
+    
+  </div>
+  <div class="s-stats">
+    <div class="s-stat">
+      <div class="s-stat-label">Momentum</div>
+      <div class="s-stat-value" style="color:#0d9488;">+17.86%</div>
+    </div>
+    <div class="s-stat">
+      <div class="s-stat-label">1M afkast</div>
+      <div class="s-stat-value">+9.2%</div>
+    </div>
+    <div class="s-stat">
+      <div class="s-stat-label">1Y afkast</div>
+      <div class="s-stat-value">+40.2%</div>
+    </div>
+  </div>
+  <button class="s-detail-btn" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.textContent = this.textContent.includes('▾') ? '▸ Detaljer ved handel' : '▾ Detaljer ved handel';">▾ Detaljer ved handel</button>
+  <div class="s-detail">
+    <div class="s-detail-grid">
+      <div class="s-detail-item"><div class="s-detail-label">Depot-egnethed</div><div class="s-detail-value">
+        
+          <span class="ask-badge akt">ASK ✗</span>
+        
+        <span class="ask-badge ask">AKT ✓</span>
+        <span class="ask-badge ask">AOP ✓</span>
+        <span class="ask-badge ask">KPP ✓</span>
+        <span class="ask-badge ask">SpSj-RTP ✓</span>
+        <span class="ask-badge ask">SpSj-INV ✓</span>
+      </div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Sektor</div><div class="s-detail-value">—</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+50.6</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.25%</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 3.3% → 5.</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">66</div></div>
+    </div>
+    
+    
+  </div>
+</div>
+
+      
+      
+<div class="s-card" style="--bg: #f0fdfa; --bc: #0d9488;">
+  <div class="s-header">
+    <div>
+      <div class="s-name">ARK Artificial Intelligence & Robotics UCITS ETF U</div>
+      <div class="s-ticker">AAKI.DE</div>
+    </div>
+    <div class="s-pile" style="color: #f39c12">
+      ↑↓
+    </div>
+  </div>
+  <div class="s-badges">
+    <span class="s-badge s-badge-score" style="background:#e0f2f1; color:#00695c; border-color:#0d9488;">7pt</span>
+    
+    
+    
+  </div>
+  <div class="s-stats">
+    <div class="s-stat">
+      <div class="s-stat-label">Momentum</div>
+      <div class="s-stat-value" style="color:#0d9488;">+10.9%</div>
     </div>
     <div class="s-stat">
       <div class="s-stat-label">1M afkast</div>
@@ -1175,10 +1279,8 @@
       <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+47.2</div></div>
       <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.75%</div></div>
       <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 2.2% → 5.</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">62</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">59</div></div>
     </div>
-    
-    <div class="s-compare">⇄ Stærkere end din svageste fond — AIFS.DE 7pt</div>
     
     
   </div>
@@ -1189,66 +1291,8 @@
 <div class="s-card" style="--bg: #f0fdfa; --bc: #0d9488;">
   <div class="s-header">
     <div>
-      <div class="s-name">Amundi MSCI Smart Mobility UCITS ETF Acc</div>
-      <div class="s-ticker">ELCR.DE</div>
-    </div>
-    <div class="s-pile" style="color: #27ae60">
-      ↑↑
-    </div>
-  </div>
-  <div class="s-badges">
-    <span class="s-badge s-badge-score" style="background:#e0f2f1; color:#00695c; border-color:#0d9488;">7pt</span>
-    
-    
-    
-  </div>
-  <div class="s-stats">
-    <div class="s-stat">
-      <div class="s-stat-label">Momentum</div>
-      <div class="s-stat-value" style="color:#0d9488;">+15.56%</div>
-    </div>
-    <div class="s-stat">
-      <div class="s-stat-label">1M afkast</div>
-      <div class="s-stat-value">+8.2%</div>
-    </div>
-    <div class="s-stat">
-      <div class="s-stat-label">1Y afkast</div>
-      <div class="s-stat-value">+42.5%</div>
-    </div>
-  </div>
-  <button class="s-detail-btn" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.textContent = this.textContent.includes('▾') ? '▸ Detaljer ved handel' : '▾ Detaljer ved handel';">▾ Detaljer ved handel</button>
-  <div class="s-detail">
-    <div class="s-detail-grid">
-      <div class="s-detail-item"><div class="s-detail-label">Depot-egnethed</div><div class="s-detail-value">
-        
-          <span class="ask-badge ask">ASK ✓</span>
-        
-        <span class="ask-badge ask">AKT ✓</span>
-        <span class="ask-badge ask">AOP ✓</span>
-        <span class="ask-badge ask">KPP ✓</span>
-        <span class="ask-badge ask">SpSj-RTP ✓</span>
-        <span class="ask-badge ask">SpSj-INV ✓</span>
-      </div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Sektor</div><div class="s-detail-value">—</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+43.7</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.45%</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 3.1% → 3.</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">60</div></div>
-    </div>
-    
-    <div class="s-compare">⇄ Stærkere end din svageste fond — AIFS.DE 7pt</div>
-    
-    
-  </div>
-</div>
-
-      
-      
-<div class="s-card" style="--bg: #f0fdfa; --bc: #0d9488;">
-  <div class="s-header">
-    <div>
-      <div class="s-name">Amundi MSCI USA Mega Cap UCITS ETF Acc</div>
-      <div class="s-ticker">MEGA.DE</div>
+      <div class="s-name">Amundi MSCI World Climate Paris Aligned Umweltzeic</div>
+      <div class="s-ticker">PABV.DE</div>
     </div>
     <div class="s-pile" style="color: #f39c12">
       —
@@ -1263,15 +1307,15 @@
   <div class="s-stats">
     <div class="s-stat">
       <div class="s-stat-label">Momentum</div>
-      <div class="s-stat-value" style="color:#0d9488;">+13.39%</div>
+      <div class="s-stat-value" style="color:#0d9488;">+13.16%</div>
     </div>
     <div class="s-stat">
       <div class="s-stat-label">1M afkast</div>
-      <div class="s-stat-value">+7.5%</div>
+      <div class="s-stat-value">+7.4%</div>
     </div>
     <div class="s-stat">
       <div class="s-stat-label">1Y afkast</div>
-      <div class="s-stat-value">+36.3%</div>
+      <div class="s-stat-value">+29.7%</div>
     </div>
   </div>
   <button class="s-detail-btn" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.textContent = this.textContent.includes('▾') ? '▸ Detaljer ved handel' : '▾ Detaljer ved handel';">▾ Detaljer ved handel</button>
@@ -1288,71 +1332,11 @@
         <span class="ask-badge ask">SpSj-INV ✓</span>
       </div></div>
       <div class="s-detail-item"><div class="s-detail-label">Sektor</div><div class="s-detail-value">—</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+41.9</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.15%</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 1.8% → 5.</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">68</div></div>
-    </div>
-    
-    <div class="s-compare">⇄ Stærkere end din svageste fond — AIFS.DE 7pt</div>
-    
-    
-  </div>
-</div>
-
-      
-      
-<div class="s-card" style="--bg: #f0fdfa; --bc: #0d9488;">
-  <div class="s-header">
-    <div>
-      <div class="s-name">Amundi MSCI World Momentum Advanced UCITS ETF Acc</div>
-      <div class="s-ticker">WMSE.DE</div>
-    </div>
-    <div class="s-pile" style="color: #f39c12">
-      —
-    </div>
-  </div>
-  <div class="s-badges">
-    <span class="s-badge s-badge-score" style="background:#e0f2f1; color:#00695c; border-color:#0d9488;">7pt</span>
-    
-    
-    
-  </div>
-  <div class="s-stats">
-    <div class="s-stat">
-      <div class="s-stat-label">Momentum</div>
-      <div class="s-stat-value" style="color:#0d9488;">+16.46%</div>
-    </div>
-    <div class="s-stat">
-      <div class="s-stat-label">1M afkast</div>
-      <div class="s-stat-value">+6.4%</div>
-    </div>
-    <div class="s-stat">
-      <div class="s-stat-label">1Y afkast</div>
-      <div class="s-stat-value">+35.3%</div>
-    </div>
-  </div>
-  <button class="s-detail-btn" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.textContent = this.textContent.includes('▾') ? '▸ Detaljer ved handel' : '▾ Detaljer ved handel';">▾ Detaljer ved handel</button>
-  <div class="s-detail">
-    <div class="s-detail-grid">
-      <div class="s-detail-item"><div class="s-detail-label">Depot-egnethed</div><div class="s-detail-value">
-        
-          <span class="ask-badge akt">ASK ✗</span>
-        
-        <span class="ask-badge ask">AKT ✓</span>
-        <span class="ask-badge ask">AOP ✓</span>
-        <span class="ask-badge ask">KPP ✓</span>
-        <span class="ask-badge ask">SpSj-RTP ✓</span>
-        <span class="ask-badge ask">SpSj-INV ✓</span>
-      </div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Sektor</div><div class="s-detail-value">—</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+36.5</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+40.3</div></div>
       <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.25%</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 3.3% → 3.</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">65</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 2.0% → 4.</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">66</div></div>
     </div>
-    
-    <div class="s-compare">⇄ Stærkere end din svageste fond — AIFS.DE 7pt</div>
     
     
   </div>
@@ -1363,8 +1347,8 @@
 <div class="s-card" style="--bg: #f0fdfa; --bc: #0d9488;">
   <div class="s-header">
     <div>
-      <div class="s-name">iShares Dow Jones Global Titans 50 UCITS ETF (DE) </div>
-      <div class="s-ticker">EXI2.DE</div>
+      <div class="s-name">iShares S&P 500 Top 20 UCITS ETF USD (Acc)</div>
+      <div class="s-ticker">IS20.DE</div>
     </div>
     <div class="s-pile" style="color: #f39c12">
       —
@@ -1379,15 +1363,15 @@
   <div class="s-stats">
     <div class="s-stat">
       <div class="s-stat-label">Momentum</div>
-      <div class="s-stat-value" style="color:#0d9488;">+12.78%</div>
+      <div class="s-stat-value" style="color:#0d9488;">+11.9%</div>
     </div>
     <div class="s-stat">
       <div class="s-stat-label">1M afkast</div>
-      <div class="s-stat-value">+6.1%</div>
+      <div class="s-stat-value">+6.6%</div>
     </div>
     <div class="s-stat">
       <div class="s-stat-label">1Y afkast</div>
-      <div class="s-stat-value">+36.5%</div>
+      <div class="s-stat-value">+32.9%</div>
     </div>
   </div>
   <button class="s-detail-btn" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; this.textContent = this.textContent.includes('▾') ? '▸ Detaljer ved handel' : '▾ Detaljer ved handel';">▾ Detaljer ved handel</button>
@@ -1404,13 +1388,11 @@
         <span class="ask-badge ask">SpSj-INV ✓</span>
       </div></div>
       <div class="s-detail-item"><div class="s-detail-label">Sektor</div><div class="s-detail-value">—</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+33.8</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.51%</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 1.8% → 3.</div></div>
-      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">65</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Vægtet momentum</div><div class="s-detail-value">+38.0</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">TER</div><div class="s-detail-value">0.2%</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">Trend</div><div class="s-detail-value">Accelererende trend: 1.3% → 5.</div></div>
+      <div class="s-detail-item"><div class="s-detail-label">RSI</div><div class="s-detail-value">66</div></div>
     </div>
-    
-    <div class="s-compare">⇄ Stærkere end din svageste fond — AIFS.DE 7pt</div>
     
     
   </div>
@@ -2647,7 +2629,19 @@
     <div class="ai-analyse-tekst">
 <div class="ai-analyse">
   <div class="ai-analyse-header">🤖 AI-analyse</div>
-  <div class="ai-analyse-tekst">Porteføljen består i øjeblikket af en enkelt position i AIFS.DE på Nordnet-AKT, som er en AI-infrastrukturfond uden opdaterede afkasttal. Med kun én holding er der betydelig koncentrationsrisiko, da hele porteføljen er afhængig af denne ene fond. Blandt kandidaterne til rotation skiller HDR0.DE sig ud med momentum på 60,75 og ASK-egnethed, mens IEVD.DE også viser interesse med momentum på 49,47 og ASK-godkendelse. De mere stabile alternativer som EBUY.DE og XNDQ.DE ligger på henholdsvis 16,66 og 17,08 i momentum, hvis der søges mindre volatilitet. Givet porteføljens nuværende enmandsopstilling ville en gradvis udbygning med AIFS.DE som ankerfond og ASK-egnede kandidater som HDR0.DE kunne reducere risikoen på sigt.</div>
+  <div class="ai-analyse-tekst">Porteføljen består i øjeblikket af én position på Nordnet-ASK: AIFS.DE, som dækker AI-infrastruktur uden oplyst afkast eller distance til højeste værdi. Sektormæssigt er hele porteføljen klassificeret som uklassificeret, hvilket betyder der ikke foreligger detaljeret sektor-mapping for denne teknologitunga samling. Der er ingen aktive signaler eller risikoindikatorer denne uge. Blandt kandidaterne skiller SEC0.DE sig ud med momentum på 70,57 pct og ASK-egnethed, hvilket gør den interessant til vurdering næste rotation. QOMP.DE og XMLD.DE er også ASK-egnede alternativer inden for henholdsvis kvantecomputing og AI-software med momentum på henholdsvis 24,79 og 31,09 pct. Hvis der ses efter diversificering ud over infrastruktur, kunne SEC0.DE eller XMLD.DE være naturlige næste skridt.</div>
+</div></div>
+  </div>
+  
+
+  <!-- MARKEDSKONTEKST -->
+  
+  <div class="markedskontekst">
+    <div class="markedskontekst-header">📰 Markedskontekst</div>
+    <div class="markedskontekst-tekst">
+<div class="markedskontekst">
+  <div class="markedskontekst-header">📰 Markedskontekst</div>
+  <div class="markedskontekst-tekst">Aktiemarkederne starter 2026 med momentum, men under stigende spændinger mellem ambitiøse vækstforventninger og høje værdiansættelser. S&P 500 forventes at nå mellem 7.500 og 8.000 ved udgangen af året, drevet primært af AI-udgifter og øget aktionærudlodning, mens amerikanske investorer fortsætter med at flytte penge til aktive ETF-strategier som tegn på øget usikkerhed omkring komplekse makroøkonomiske forhold. Din SEC0.DE har direkte eksponering mod chipindustrien, som forventes at vokse 26 procent i 2026 på baggrund af massive AI-infrastrukturinvesteringer, men sektoren handler nu til 26 gange forventet earnings og investorer bliver stadig mere skeptiske omkring værdiansættelsernes holdbarhed. Analytikere forbereder sig på mulige korrektioner inden for halvledere, selvom de teknologiske fundamendtaler omkring AI-efterspørgslen forbliver intakte. De kommende uger vil være vigtige for at afgøre, om markedet kan beholde sit momentum eller møder en periode med profit-taking på baggrund af de strakte værdiansættelser.</div>
 </div></div>
   </div>
   
