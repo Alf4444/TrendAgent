@@ -39,27 +39,51 @@ def build_payload(portfolio, latest_map, hits_data, hwm_data,
     """
 
     # --- Ejede positioner ---
+    # Hvis rows er tilgængelige (fra build_weekly) bruges de direkte — de har alle beregnede værdier
     positioner = []
-    for isin, p in portfolio.items():
-        if not p.get('active', False):
-            continue
-        latest = latest_map.get(isin, {})
-        hwm    = hwm_data.get(isin, {})
-        buy    = p.get('buy_price', 0)
-        curr   = latest.get('nav', 0)
-        afkast = round(((curr / buy) - 1) * 100, 1) if buy and curr else None
-        hwm_val = hwm.get('hwm', 0)
-        hwm_afstand = round(((curr / hwm_val) - 1) * 100, 1) if hwm_val and curr else None
+    rows = latest_map.get('__rows__', []) if isinstance(latest_map, dict) else []
+    aktive_rows = [r for r in rows if r.get('is_active')]
 
-        positioner.append({
-            'ticker':      p.get('ticker', isin),
-            'navn':        p.get('name', isin),
-            'sektor':      latest.get('category', p.get('category', '—')),
-            'depot':       p.get('depot', '—'),
-            'afkast_pct':  afkast,
-            'hwm_afstand': hwm_afstand,
-            'ask_egnet':   p.get('ask_eligible', False),
-        })
+    if aktive_rows:
+        # Brug rows direkte — har total_return, momentum, rsi, trail_alert osv.
+        for r in aktive_rows:
+            hwm     = hwm_data.get(r.get('isin', ''), {})
+            hwm_val = hwm.get('hwm', 0)
+            curr    = r.get('curr_price', 0)
+            hwm_afstand = round(((curr / hwm_val) - 1) * 100, 1) if hwm_val and curr else None
+            positioner.append({
+                'ticker':      r.get('ticker', ''),
+                'navn':        r.get('name', ''),
+                'sektor':      r.get('category', '—'),
+                'depot':       r.get('depot', '—'),
+                'afkast_pct':  r.get('total_return'),
+                'momentum':    r.get('momentum'),
+                'rsi':         r.get('rsi'),
+                'trail_alert': bool(r.get('trail_alert')),
+                'hwm_afstand': hwm_afstand,
+                'ask_egnet':   r.get('ask_eligible', False),
+            })
+    else:
+        # Fallback: byg fra portfolio + latest_map
+        for isin, p in portfolio.items():
+            if not p.get('active', False):
+                continue
+            latest_item = latest_map.get(isin, {}) if isinstance(latest_map, dict) else {}
+            hwm         = hwm_data.get(isin, {})
+            buy         = p.get('buy_price', 0)
+            curr        = latest_item.get('nav', 0)
+            afkast      = round(((curr / buy) - 1) * 100, 1) if buy and curr else None
+            hwm_val     = hwm.get('hwm', 0)
+            hwm_afstand = round(((curr / hwm_val) - 1) * 100, 1) if hwm_val and curr else None
+            positioner.append({
+                'ticker':      p.get('ticker', isin),
+                'navn':        p.get('name', isin),
+                'sektor':      latest_item.get('category', p.get('category', '—')),
+                'depot':       p.get('depot', '—'),
+                'afkast_pct':  afkast,
+                'hwm_afstand': hwm_afstand,
+                'ask_egnet':   p.get('ask_eligible', False),
+            })
 
     # --- Aktive signaler ---
     signaler = []
@@ -138,33 +162,36 @@ def build_payload(portfolio, latest_map, hits_data, hwm_data,
 # ==========================================
 
 SYSTEM_ALARM = """Du er en kortfattet, dansk porteføljeassistent for en privat investor.
-Du modtager porteføljedata og signaler i JSON-format og skriver 3-5 sætninger på dansk.
+Du modtager porteføljedata og aktuelle signaler i JSON og skriver en kort analyse på dansk.
 
-Tone skalerer med alvorlighed:
-- Ingen signaler / nye kandidater: rolig og informerende
-- K1: opmærksom, "hold øje med"
-- K2: tydelig, "bør overvejes"
-- K3 eller Trail Stop: direkte, "handling relevant"
+Tone skalerer med signalernes alvorlighed:
+- Kun nye kandidater: rolig og informerende
+- K1: opmærksom, fx "hold ekstra øje med X de næste dage"
+- K2: tydelig, fx "styrken i X er næsten væk — rotation bør overvejes"
+- K3 eller Trail Stop: direkte, fx "to signaler på X — handling er relevant"
 
 Regler:
-- Skriv kun dansk, ingen markdown, ingen bullet points
-- Nævn altid hvilken fond signalet handler om
-- Hvis der er gode ASK-egnede kandidater til rotation, nævn dem specifikt
-- Max 5 sætninger
+- Skriv kun dansk, ingen markdown, ingen bullet points, ingen linjeskift midt i teksten
+- Brug altid de konkrete ticker-navne (fx VVSM.DE) når du nævner fonde
+- Nævn altid hvilken fond signalet handler om og hvad det konkret betyder
+- Hvis der er ASK-egnede kandidater der passer til rotation, nævn den bedste specifikt
+- Max 4-5 sætninger i sammenhængende tekst
 - Undgå finansiel rådgivning — beskriv hvad dataene viser"""
 
 SYSTEM_WEEKLY = """Du er en kortfattet, dansk porteføljeassistent for en privat investor.
-Du modtager ugens porteføljedata i JSON-format og skriver et overblik på dansk.
+Du modtager porteføljedata i JSON og skriver et ugentligt overblik på dansk.
 
-Tone: rolig, analytisk, som en ugentlig status-opdatering.
+Tone: rolig, analytisk — som en ugentlig status til sig selv.
 
 Regler:
-- Skriv kun dansk, ingen markdown, ingen bullet points
-- Start med porteføljens overordnede tilstand
-- Nævn koncentrationsrisiko hvis sektorer er over 40%
-- Nævn de stærkeste og svageste positioner
-- Afslut med 1 sætning om de bedste kandidater til rotation hvis relevant
-- Max 6 sætninger
+- Skriv kun dansk, ingen markdown, ingen bullet points, ingen linjeskift midt i teksten
+- Brug altid de konkrete ticker-navne (fx VVSM.DE, FLXK.DE) når du nævner fonde
+- Start med samlet porteføljestatus: antal positioner, depottyper
+- Nævn de stærkeste og svageste positioner med afkast-tal
+- Nævn koncentrationsrisiko konkret hvis en sektor er over 40% (fx "Halvledere fylder 50%")
+- Nævn høj korrelation hvis to fonde bevæger sig identisk (korr > 0.85)
+- Afslut med de 1-2 bedste ASK-egnede kandidater til rotation hvis relevant
+- Max 5-6 sætninger i sammenhængende tekst
 - Undgå finansiel rådgivning — beskriv hvad dataene viser"""
 
 USER_ALARM = """Her er dagens porteføljedata og signaler:
@@ -253,11 +280,16 @@ def get_alarm_analyse(portfolio, latest_map, hits_data, hwm_data,
 
 
 def get_weekly_analyse(portfolio, latest_map, hits_data, hwm_data,
-                       corr_pairs=None, heatmap_data=None):
+                       corr_pairs=None, heatmap_data=None, rows=None):
     """
     Genererer AI-tekst til ETF Weekly rapporten.
     Returnerer HTML-streng klar til indsætning, eller tom streng ved fejl.
     """
+    # Injicer rows i latest_map så build_payload kan bruge dem
+    if rows is not None:
+        latest_map = dict(latest_map) if latest_map else {}
+        latest_map['__rows__'] = rows
+
     payload = build_payload(
         portfolio, latest_map, hits_data, hwm_data,
         corr_pairs=corr_pairs,
