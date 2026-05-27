@@ -82,17 +82,30 @@ def build_payload(portfolio, latest_map, hits_data, hwm_data,
     # --- Porteføljerisiko ---
     risiko = {}
     if heatmap_data:
-        sektorer = {}
-        for sektor, data in heatmap_data.items():
-            if isinstance(data, dict) and data.get('pct'):
-                sektorer[sektor] = data['pct']
-        risiko['sektor_fordeling'] = sektorer
+        try:
+            sektorer = {}
+            # build_heatmap() returnerer liste med {kategori, andel_pct, antal, fonde}
+            if isinstance(heatmap_data, list):
+                for item in heatmap_data:
+                    kat = item.get('kategori', '')
+                    pct = item.get('andel_pct', 0)
+                    if kat and pct:
+                        sektorer[kat] = pct
+            elif isinstance(heatmap_data, dict):
+                for kat, data in heatmap_data.items():
+                    if isinstance(data, dict) and data.get('andel_pct'):
+                        sektorer[kat] = data['andel_pct']
+            if sektorer:
+                risiko['sektor_fordeling'] = sektorer
+        except Exception as e:
+            print(f"⚠️  Heatmap-data kunne ikke læses: {e}")
 
     if corr_pairs:
+        # build_correlation_table() returnerer pairs med {ticker_a, ticker_b, korr, css}
         høj_korr = [
-            f"{p.get('a_ticker','')}/{p.get('b_ticker','')}: {p.get('correlation','')}"
+            f"{p.get('ticker_a','')}/{p.get('ticker_b','')}: {p.get('korr','')}"
             for p in corr_pairs
-            if isinstance(p.get('correlation'), float) and p['correlation'] >= 0.85
+            if isinstance(p.get('korr'), float) and p['korr'] >= 0.85
         ]
         if høj_korr:
             risiko['høj_korrelation'] = høj_korr
