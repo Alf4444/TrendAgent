@@ -21,6 +21,7 @@ from email.mime.text import MIMEText
 # Tilføj reporting/ til Python-stien så utils.py kan importeres
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from utils import check_trail_stop, get_trail_stop_pct
+from ai_analysis import get_alarm_analyse
 
 ROOT           = Path(__file__).resolve().parents[1]
 HITS_FILE      = ROOT / "data/etf_spejder_hits.json"
@@ -536,7 +537,7 @@ def check_ask_reminder():
 
 
 def build_email_html(trail_alerts, momentum_alerts, momentum_svækkes, nye_hits, nye_stabile,
-                     rotation_weakest, rotation_best_new, hits_data):
+                     rotation_weakest, rotation_best_new, hits_data, ai_tekst=""):
     """Bygger HTML-indhold til alarm-mailen."""
     now = datetime.now().strftime('%d-%m-%Y %H:%M')
 
@@ -708,6 +709,7 @@ def build_email_html(trail_alerts, momentum_alerts, momentum_svækkes, nye_hits,
       </div>
       <div style="background:white; padding:20px 24px; border:1px solid #eee; border-radius:0 0 8px 8px;">
         {ask_reminder}
+        {ai_tekst}
         {"<p style='color:#888;'>Ingen aktuelle advarsler.</p>" if not has_content else ""}
         {trail_html}
         {momentum_html}
@@ -820,9 +822,20 @@ def main():
 
     subject = f"📡 TrendAgent ETF — {' · '.join(subject_parts)}"
 
+    # ---- 🤖 AI-analyse ----
+    ai_tekst = get_alarm_analyse(
+        portfolio      = portfolio,
+        latest_map     = latest_map,
+        hits_data      = hits_data,
+        hwm_data       = hwm_data,
+        trail_alerts   = trail_alerts,
+        momentum_svækkes = momentum_svækkes,
+    )
+
     html = build_email_html(
         trail_alerts, momentum_alerts, momentum_svækkes, nye_hits, nye_stabile,
-        rotation_weakest, rotation_best_new, hits_data
+        rotation_weakest, rotation_best_new, hits_data,
+        ai_tekst=ai_tekst,
     )
     send_mail(subject, html)
 
