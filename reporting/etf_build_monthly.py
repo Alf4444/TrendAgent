@@ -29,6 +29,7 @@ from utils import (
 from trades_summary import load_trades, get_summary, format_for_template
 from portfolio_hwm import load_portfolio_hwm, save_portfolio_hwm, update_and_get_drawdown, format_drawdown_for_template
 from sector_heatmap import build_heatmap, get_concentration_warning
+from ai_analysis import get_weekly_analyse, get_markedskontekst
 
 # ==========================================
 # KONFIGURATION & STIER
@@ -273,6 +274,32 @@ def build_monthly():
     heatmap_data    = build_heatmap(portfolio, active_rows, watchlist=watchlist)
     heatmap_warning = get_concentration_warning(heatmap_data)
 
+    # ---- 🤖 AI-analyse Lag 1 ----
+    latest_map_for_ai = {item['isin']: item for item in latest if isinstance(item, dict)}
+    ai_analyse = get_weekly_analyse(
+        portfolio    = portfolio,
+        latest_map   = latest_map_for_ai,
+        hits_data    = {},
+        hwm_data     = hwm_data,
+        heatmap_data = heatmap_data,
+        rows         = active_rows,
+    )
+
+    # ---- 📰 Lag 2: Markedskontekst ----
+    positioner_ai = [
+        {
+            'ticker':     r.get('ticker', ''),
+            'sektor':     r.get('category', '—'),
+            'afkast_pct': r.get('total_return'),
+        }
+        for r in active_rows
+    ]
+    markedskontekst = get_markedskontekst(
+        positioner  = positioner_ai,
+        kandidater  = [],
+        mode        = "monthly",
+    )
+
     if not TEMPLATE_FILE.exists():
         print(f"❌ Template mangler: {TEMPLATE_FILE}")
         return
@@ -297,6 +324,8 @@ def build_monthly():
         drawdown_data        = drawdown_data,
         heatmap_data         = heatmap_data,
         heatmap_warning      = heatmap_warning,
+        ai_analyse           = ai_analyse,
+        markedskontekst      = markedskontekst,
     )
 
     REPORT_FILE.parent.mkdir(exist_ok=True)
