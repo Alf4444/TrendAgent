@@ -1,10 +1,10 @@
 # 📈 TrendAgent Fokus
-**Opdateret:** 26-05-2026 21:28
+**Opdateret:** 27-05-2026 21:33
 
 | | Fond | Signal | RSI | Afkast % | Trend | MA % | Cross |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| ⭐ | C WorldWide Asien | – | 59 | +14.6% | BULL | +11.0% | – |
-| ⭐ | Lazard Emerging Markets E | – | 69 | +8.9% | BULL | +8.1% | – |
-| ⭐ | Robeco Circular Economy E | – | 74 | +7.3% | BULL | +13.4% | – |
-| ⭐ | Sydinvest Globale EM-akti | – | 63 | +11.3% | BULL | +9.7% | – |
-| 🔍 | Kerne Invest Indeks Melle | 🚀 KØB | 63 | – | BULL | +0.2% | – |
+| ⭐ | C WorldWide Asien | – | 64 | +17.4% | BULL | +13.3% | – |
+| ⭐ | Lazard Emerging Markets E | – | 66 | +9.1% | BULL | +22.3% | – |
+| ⭐ | Robeco Circular Economy E | – | 77 | +7.8% | BULL | +24.8% | – |
+| ⭐ | Sydinvest Globale EM-akti | – | 68 | +13.5% | BULL | +26.4% | – |
+| 🔍 | iShares MSCI World Health | ⚠️ SALG | 61 | – | BEAR | -0.3% | – |
