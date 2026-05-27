@@ -120,6 +120,24 @@
     .metodik-col p, .metodik-col li { font-size: 11px; color: #555; line-height: 1.6; }
     .metodik-col ul { padding-left: 16px; }
     .disclaimer { background: #f0f7ff; border-left: 3px solid #4ecdc4; padding: 10px 14px; border-radius: 4px; font-size: 11px; color: #555; margin-top: 12px; font-style: italic; }
+  
+    /* AI-analyse og Markedskontekst */
+    .ai-analyse, .markedskontekst {
+      margin: 0 0 20px 0;
+      padding: 14px 18px;
+      border-radius: 6px;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .ai-analyse { background: #f0f4ff; border-left: 4px solid #3b5bdb; }
+    .markedskontekst { background: #f0fff4; border-left: 4px solid #1e8e3e; }
+    .ai-analyse-header, .markedskontekst-header {
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .ai-analyse-header { color: #3b5bdb; }
+    .markedskontekst-header { color: #1e8e3e; }
+    .ai-analyse-tekst, .markedskontekst-tekst { color: #333; }
   </style>
 </head>
 <body>
@@ -357,6 +375,22 @@
       </div>
       {% endfor %}
     </div>
+  </div>
+  {% endif %}
+
+  <!-- AI-ANALYSE -->
+  {% if ai_analyse %}
+  <div class="ai-analyse">
+    <div class="ai-analyse-header">🤖 AI-analyse</div>
+    <div class="ai-analyse-tekst">{{ ai_analyse | safe }}</div>
+  </div>
+  {% endif %}
+
+  <!-- MARKEDSKONTEKST -->
+  {% if markedskontekst %}
+  <div class="markedskontekst">
+    <div class="markedskontekst-header">📰 Markedskontekst</div>
+    <div class="markedskontekst-tekst">{{ markedskontekst | safe }}</div>
   </div>
   {% endif %}
 
