@@ -39,6 +39,8 @@ jobs:
 
       - name: Build Weekly Report
         run: python reporting/etf_build_weekly.py
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
 
       - name: Commit and Push changes
         run: |
