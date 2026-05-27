@@ -379,7 +379,7 @@ def fetch_sector_news(positioner, top_kandidater, api_key):
     news = {}
     søgninger = []
 
-    # Ejede sektorer
+    # Ejede sektorer — max 4 søgninger
     sektorer_søgt = set()
     for p in positioner:
         kat = p.get('sektor', '')
@@ -387,15 +387,16 @@ def fetch_sector_news(positioner, top_kandidater, api_key):
             term = CATEGORY_SEARCH_TERMS.get(kat, f"{kat} stocks news")
             søgninger.append((kat, term))
             sektorer_søgt.add(kat)
+            if len(søgninger) >= 4:
+                break
 
-    # Top 3 hurtige kandidater
-    for k in top_kandidater[:3]:
-        navn = k.get('navn', k.get('ticker', ''))
+    # Top 1 hurtig kandidat — kun hvis under 4 søgninger i alt
+    if len(søgninger) < 4 and top_kandidater:
+        k = top_kandidater[0]
         ticker = k.get('ticker', '')
+        navn = k.get('navn', ticker)
         if navn:
-            label = f"Kandidat: {ticker}"
-            term = f"{navn} ETF news outlook"
-            søgninger.append((label, term))
+            søgninger.append((f"Kandidat: {ticker}", f"{navn} ETF news outlook"))
 
     print(f"   📰 Lag 2: {len(søgninger)} web søgninger...")
     print(f"   ⏳ Venter 60 sek så token-vinduet nulstilles efter Lag 1...")
