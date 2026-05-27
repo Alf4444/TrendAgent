@@ -27,7 +27,7 @@ from utils import (
     get_trail_stop_pct,
 )
 from sector_heatmap import build_heatmap, get_concentration_warning, build_correlation_table
-from ai_analysis import get_weekly_analyse
+from ai_analysis import get_weekly_analyse, get_markedskontekst
 
 # ==========================================
 # KONFIGURATION & STIER
@@ -332,6 +332,24 @@ def build_weekly():
         rows         = rows,
     )
 
+    # ---- 📰 Lag 2: Markedskontekst ----
+    aktive_rows_ai    = [r for r in rows if r.get('is_active')]
+    top_kandidater_ai = spejder_data.get('hits_hurtige', [])[:3] if isinstance(spejder_data, dict) else []
+    # Byg positioner-liste til markedskontekst
+    positioner_ai = [
+        {
+            'ticker':     r.get('ticker', ''),
+            'sektor':     r.get('category', '—'),
+            'afkast_pct': r.get('total_return'),
+        }
+        for r in aktive_rows_ai
+    ]
+    markedskontekst = get_markedskontekst(
+        positioner  = positioner_ai,
+        kandidater  = top_kandidater_ai,
+        mode        = "weekly",
+    )
+
     html = jinja_template.render(
         week_number          = datetime.now().isocalendar()[1],
         report_date          = datetime.now().strftime("%d. %B %Y"),
@@ -354,6 +372,7 @@ def build_weekly():
         corr_summary         = corr_summary,
         fonde_under_pres     = fonde_under_pres,
         ai_analyse           = ai_analyse,
+        markedskontekst      = markedskontekst,
     )
 
     REPORT_FILE.parent.mkdir(parents=True, exist_ok=True)
