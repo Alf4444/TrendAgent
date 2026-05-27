@@ -55,6 +55,26 @@
     .s-badge-new { background: #e6f1fb; color: #0c447c; border-color: #85b7eb; }
     .s-badge-rsi { background: #fce8e6; color: #c62828; border-color: #f5c6c6; }
     .s-badge-ask-garanti { background: #e8f5e9; color: #1b5e20; border-color: #a5d6a7; }
+
+    /* Markedskontekst sektion */
+    .markedskontekst {
+      margin: 0 0 28px 0;
+      padding: 16px 20px;
+      background: var(--card-bg, #f0fff4);
+      border-left: 4px solid #1e8e3e;
+      border-radius: 6px;
+    }
+    .markedskontekst-header {
+      font-weight: 700;
+      color: #1e8e3e;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    .markedskontekst-tekst {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text, #333);
+    }
     .s-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 8px; }
     .s-stat { background: rgba(0,0,0,0.03); border-radius: 6px; padding: 5px 8px; }
     .s-stat-label { font-size: 10px; color: #888; margin-bottom: 1px; }
@@ -579,6 +599,14 @@
   <div class="ai-analyse">
     <div class="ai-analyse-header">🤖 AI-analyse</div>
     <div class="ai-analyse-tekst">{{ ai_analyse | safe }}</div>
+  </div>
+  {% endif %}
+
+  <!-- MARKEDSKONTEKST -->
+  {% if markedskontekst %}
+  <div class="markedskontekst">
+    <div class="markedskontekst-header">📰 Markedskontekst</div>
+    <div class="markedskontekst-tekst">{{ markedskontekst | safe }}</div>
   </div>
   {% endif %}
 
