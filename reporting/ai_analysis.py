@@ -494,6 +494,8 @@ def get_markedskontekst(positioner, kandidater, mode="weekly"):
         news=news_tekst,
     )
 
+    print(f"   ⏳ Venter 60 sek inden afsluttende kald...")
+    time.sleep(60)
     tekst = call_claude(SYSTEM_MARKEDSKONTEKST, user_prompt)
     if not tekst:
         return ""
