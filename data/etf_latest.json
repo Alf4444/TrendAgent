@@ -1,5 +1,23 @@
 [
   {
+    "isin": "IE000X59ZHE2",
+    "name": "iShares AI Infrastructure UCITS ETF USD (Acc)",
+    "ticker": "AIFS.DE",
+    "category": "Tema — AI & Infrastruktur",
+    "ter_pct": 0.35,
+    "nav": 9.236,
+    "nav_date": "2026-05-27",
+    "currency": "EUR",
+    "return_1w": 5.35,
+    "return_1m": 21.37,
+    "return_3m": 38.8,
+    "return_6m": 50.6,
+    "return_1y": 102.7,
+    "return_ytd": 47.59,
+    "volatility": 1.99,
+    "data_points": 365
+  },
+  {
     "isin": "IE0002RPS3K2",
     "name": "Global X Hydrogen UCITS ETF",
     "ticker": "HYCN.DE",
