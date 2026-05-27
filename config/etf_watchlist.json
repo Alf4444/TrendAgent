@@ -1,7 +1,15 @@
 {
-  "_comment": "TrendAgent ETF Watchlist — ask_eligible baseret på Skats positivliste april 2026",
-  "_updated": "2026-05-14",
+  "_comment": "TrendAgent ETF Watchlist — ask_eligible baseret på Skats positivliste maj 2026",
+  "_updated": "2026-05-27",
   "_format": "ISIN: { name, ticker (yfinance), category, ter_pct, nordnet_url }",
+  "IE000X59ZHE2": {
+    "name": "iShares AI Infrastructure UCITS ETF USD (Acc)",
+    "ticker": "AIFS.DE",
+    "category": "Tema — AI & Infrastruktur",
+    "ter_pct": 0.35,
+    "nordnet_url": "https://www.nordnet.dk/etf/liste/ishares-ai-infrastructure-ucits-aifs-xeta",
+    "ask_eligible": true
+  },
   "IE0002RPS3K2": {
     "name": "Global X Hydrogen UCITS ETF",
     "ticker": "HYCN.DE",
