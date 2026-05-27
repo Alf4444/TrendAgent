@@ -466,17 +466,15 @@ def get_markedskontekst(positioner, kandidater, mode="weekly"):
         return ""
 
     # Byg news-tekst til prompt
-    news_tekst = "
-
-".join(
-        f"{label}:
-{tekst}" for label, tekst in news.items()
+    sep = "\n\n"
+    nl  = "\n"
+    news_tekst = sep.join(
+        f"{label}:{nl}{tekst}" for label, tekst in news.items()
     )
 
     # Positioner-tekst til prompt
-    pos_tekst = "
-".join(
-        f"- {p.get('ticker','?')}: {p.get('sektor','—')} ({p.get('afkast_pct','?')}% afkast)"
+    pos_tekst = nl.join(
+        f"- {p.get('ticker','?')}: {p.get('sektor','--')} ({p.get('afkast_pct','?')}% afkast)"
         for p in positioner
     )
 
