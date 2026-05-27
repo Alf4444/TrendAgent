@@ -398,6 +398,8 @@ def fetch_sector_news(positioner, top_kandidater, api_key):
             søgninger.append((label, term))
 
     print(f"   📰 Lag 2: {len(søgninger)} web søgninger...")
+    print(f"   ⏳ Venter 60 sek så token-vinduet nulstilles efter Lag 1...")
+    time.sleep(60)
     for label, term in søgninger:
         # Forsøg op til 2 gange med pause ved rate limit
         result = ""
@@ -406,14 +408,14 @@ def fetch_sector_news(positioner, top_kandidater, api_key):
             if result:
                 break
             if forsøg == 0:
-                print(f"   ⏳ Rate limit — venter 15 sek...")
-                time.sleep(15)
+                print(f"   ⏳ Rate limit — venter 30 sek...")
+                time.sleep(30)
         if result:
             news[label] = result
             print(f"   ✅ {label}: {len(result)} tegn")
         else:
             print(f"   ⚠️  {label}: ingen resultater")
-        time.sleep(3)  # 3 sek pause mellem søgninger
+        time.sleep(5)  # 5 sek pause mellem søgninger
 
     return news
 
