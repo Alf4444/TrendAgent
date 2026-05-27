@@ -27,6 +27,7 @@ from utils import (
     get_trail_stop_pct,
 )
 from sector_heatmap import build_heatmap, get_concentration_warning, build_correlation_table
+from ai_analysis import get_weekly_analyse
 
 # ==========================================
 # KONFIGURATION & STIER
@@ -319,6 +320,17 @@ def build_weekly():
     # Fonde under pres — K1/K2/K3 signaler i ugen
     fonde_under_pres = build_fonde_under_pres(portfolio, rows)
 
+    # ---- 🤖 AI-analyse ----
+    latest_map_for_ai = {item['isin']: item for item in latest if isinstance(item, dict)}
+    ai_analyse = get_weekly_analyse(
+        portfolio    = portfolio,
+        latest_map   = latest_map_for_ai,
+        hits_data    = spejder_data,
+        hwm_data     = hwm_data,
+        corr_pairs   = corr_pairs,
+        heatmap_data = heatmap_data,
+    )
+
     html = jinja_template.render(
         week_number          = datetime.now().isocalendar()[1],
         report_date          = datetime.now().strftime("%d. %B %Y"),
@@ -340,6 +352,7 @@ def build_weekly():
         corr_pairs           = corr_pairs,
         corr_summary         = corr_summary,
         fonde_under_pres     = fonde_under_pres,
+        ai_analyse           = ai_analyse,
     )
 
     REPORT_FILE.parent.mkdir(parents=True, exist_ok=True)
