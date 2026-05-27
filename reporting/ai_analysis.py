@@ -326,7 +326,7 @@ def get_weekly_analyse(portfolio, latest_map, hits_data, hwm_data,
 
 SEARCH_API = "https://api.anthropic.com/v1/messages"
 SEARCH_MODEL = "claude-haiku-4-5-20251001"
-SEARCH_MAX_TOKENS = 600
+SEARCH_MAX_TOKENS = 300  # Reduceret for at undgå rate limit
 
 
 def _web_search_via_claude(query, api_key):
@@ -399,13 +399,21 @@ def fetch_sector_news(positioner, top_kandidater, api_key):
 
     print(f"   📰 Lag 2: {len(søgninger)} web søgninger...")
     for label, term in søgninger:
-        result = _web_search_via_claude(term, api_key)
+        # Forsøg op til 2 gange med pause ved rate limit
+        result = ""
+        for forsøg in range(2):
+            result = _web_search_via_claude(term, api_key)
+            if result:
+                break
+            if forsøg == 0:
+                print(f"   ⏳ Rate limit — venter 15 sek...")
+                time.sleep(15)
         if result:
             news[label] = result
             print(f"   ✅ {label}: {len(result)} tegn")
         else:
             print(f"   ⚠️  {label}: ingen resultater")
-        time.sleep(0.5)  # Undgå rate limiting
+        time.sleep(3)  # 3 sek pause mellem søgninger
 
     return news
 
