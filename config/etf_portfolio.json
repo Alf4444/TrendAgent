@@ -5,7 +5,7 @@
     "active": true,
     "buy_date": "2026-05-26",
     "buy_price": 9.2,
-    "depot": "Nordnet-AKT",
-    "ask_eligible": false
+    "depot": "Nordnet-ASK",
+    "ask_eligible": true
   }
 }
