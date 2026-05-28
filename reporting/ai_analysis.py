@@ -306,6 +306,198 @@ def get_weekly_analyse(portfolio, latest_map, hits_data, hwm_data,
 
 
 
+
+# ==========================================
+# WEB SEARCH — LAG 2
+# ==========================================
+
+SEARCH_MODEL = "claude-haiku-4-5-20251001"
+SEARCH_MAX_TOKENS = 300  # Reduceret for at undgå rate limit
+
+
+def _web_search_via_claude(query, api_key):
+    """
+    Udfører ét web search via Claude API med web_search tool.
+    Returnerer tekst-opsummering eller tom streng ved fejl.
+    """
+    body = json.dumps({
+        "model": SEARCH_MODEL,
+        "max_tokens": SEARCH_MAX_TOKENS,
+        "tools": [{"type": "web_search_20250305", "name": "web_search"}],
+        "system": "Du søger på finansielle nyheder og returnerer en kort faktuel opsummering på max 3 sætninger på dansk. Ingen markdown, ingen bullet points. Fokus på hvad der driver markedet lige nu og hvad analytikere forventer.",
+        "messages": [{"role": "user", "content": f"Søg efter aktuelle nyheder og markedsforhold: {query}"}]
+    }).encode('utf-8')
+
+    req = urllib.request.Request(
+        API_URL,
+        data=body,
+        headers={
+            "Content-Type":      "application/json",
+            "x-api-key":         api_key,
+            "anthropic-version": "2023-06-01",
+            "anthropic-beta":    "web-search-2025-03-05",
+        },
+        method="POST"
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            data = json.loads(resp.read().decode('utf-8'))
+            tekst = " ".join(
+                block.get('text', '') for block in data.get('content', [])
+                if block.get('type') == 'text'
+            ).strip()
+            return tekst if tekst else ""
+    except Exception as e:
+        print(f"⚠️  Web search fejlede for '{query}': {e}")
+        return ""
+
+
+# Mapping fra kategori-navn til web search søgeterm
+CATEGORY_SEARCH_TERMS = {
+    "Sektor — Halvledere":           "semiconductor stocks market news",
+    "Lande — Korea":                 "South Korea stock market news",
+    "Tema — Hydrogen & Clean Energy": "hydrogen clean energy stocks news",
+    "Tema — Space & Forsvar":        "space defense stocks news",
+    "Tema — Uranium & Nuklear":      "uranium nuclear energy stocks news",
+    "Tema — Batteri & Energilagring": "battery lithium stocks news",
+    "Råvarer — Sjældne jordarter":   "rare earth metals stocks news",
+    "Råvarer — Ædelmetaller":        "silver gold mining stocks news",
+    "Tema — AI & Infrastruktur":     "AI infrastructure technology stocks news",
+    "Region — EM":                   "emerging markets stocks news",
+    "Region — Asien":                "Asia stock market news",
+}
+
+
+def fetch_sector_news(positioner, top_kandidater, api_key):
+    """
+    Henter markedsnyheder for ejede sektorer + top kandidat.
+    B-model: systemet søger, Claude skriver bagefter.
+    Returnerer dict: {label: tekst}
+    """
+    søgninger = []
+    sektorer_søgt = set()
+
+    # Ejede sektorer — max 4
+    for p in positioner:
+        kat = p.get('sektor', '')
+        if kat and kat not in sektorer_søgt and kat != '—':
+            term = CATEGORY_SEARCH_TERMS.get(kat, f"{kat} stocks news")
+            søgninger.append((kat, term))
+            sektorer_søgt.add(kat)
+            if len(søgninger) >= 4:
+                break
+
+    # Top 1 kandidat hvis under 4 søgninger
+    if len(søgninger) < 4 and top_kandidater:
+        k = top_kandidater[0]
+        ticker = k.get('ticker', '')
+        navn   = k.get('navn', ticker)
+        if navn:
+            søgninger.append((f"Kandidat: {ticker}", f"{navn} ETF news outlook"))
+
+    news = {}
+    print(f"   📰 Lag 2: {len(søgninger)} web søgninger...")
+    print(f"   ⏳ Venter 60 sek så token-vinduet nulstilles efter Lag 1...")
+    time.sleep(60)
+
+    for label, term in søgninger:
+        result = ""
+        for forsøg in range(2):
+            result = _web_search_via_claude(term, api_key)
+            if result:
+                break
+            if forsøg == 0:
+                print(f"   ⏳ Rate limit — venter 30 sek...")
+                time.sleep(30)
+        if result:
+            news[label] = result
+            print(f"   ✅ {label}: {len(result)} tegn")
+        else:
+            print(f"   ⚠️  {label}: ingen resultater")
+        time.sleep(5)
+
+    return news
+
+
+SYSTEM_MARKEDSKONTEKST = """Du er en kortfattet, dansk porteføljeassistent for en privat investor.
+Du modtager markedsnyheder om investorens sektorer og top-kandidater fra Spejderen.
+Skriv et sammenhængende overblik på dansk.
+
+Regler:
+- Skriv kun dansk, ingen markdown, ingen bullet points
+- Brug konkrete ticker-navne når du nævner ejede fonde
+- Beskriv hvad der driver hver sektor lige nu og hvad markedet forventer fremadrettet
+- Kobl nyheden til den konkrete fond (fx "din VVSM.DE er eksponeret mod...")
+- Afslut med 1 sætning om de mest interessante kandidater fra Spejderen hvis relevant
+- Max 6 sætninger i sammenhængende tekst
+- Undgå finansiel rådgivning — beskriv hvad kilderne viser"""
+
+USER_MARKEDSKONTEKST_WEEKLY = """Her er markedsnyheder for dine sektorer og top-kandidater:
+
+Ejede positioner:
+{positioner}
+
+Markedsnyheder:
+{news}
+
+Skriv et kort markedsoverblik til den ugentlige rapport. Fokus på hvad der sker nu og hvad der forventes den kommende uge."""
+
+USER_MARKEDSKONTEKST_MONTHLY = """Her er markedsnyheder for dine sektorer og top-kandidater:
+
+Ejede positioner:
+{positioner}
+
+Markedsnyheder:
+{news}
+
+Skriv et kort markedsoverblik til den månedlige rapport. Fokus på hvad der drev dine sektorer denne måned og hvad der forventes de kommende måneder."""
+
+
+def get_markedskontekst(positioner, kandidater, mode="weekly"):
+    """
+    Lag 2: Henter markedsnyheder og genererer kontekst-tekst.
+    Returnerer HTML-streng eller tom streng ved fejl.
+    """
+    api_key = os.environ.get('ANTHROPIC_API_KEY', '')
+    if not api_key:
+        print("⚠️  ANTHROPIC_API_KEY mangler — Markedskontekst springes over")
+        return ""
+
+    news = fetch_sector_news(positioner, kandidater, api_key)
+    if not news:
+        print("⚠️  Ingen markedsnyheder hentet — Markedskontekst springes over")
+        return ""
+
+    sep = "\n\n"
+    nl  = "\n"
+    news_tekst = sep.join(
+        f"{label}:{nl}{tekst}" for label, tekst in news.items()
+    )
+    pos_tekst = nl.join(
+        f"- {p.get('ticker','?')}: {p.get('sektor','--')} ({p.get('afkast_pct','?')}% afkast)"
+        for p in positioner
+    )
+
+    user_prompt = (USER_MARKEDSKONTEKST_WEEKLY if mode == "weekly"
+                   else USER_MARKEDSKONTEKST_MONTHLY).format(
+        positioner=pos_tekst,
+        news=news_tekst,
+    )
+
+    print(f"   ⏳ Venter 60 sek inden afsluttende kald...")
+    time.sleep(60)
+    tekst = call_claude(SYSTEM_MARKEDSKONTEKST, user_prompt)
+    if not tekst:
+        return ""
+
+    print(f"✅ Markedskontekst genereret ({len(tekst)} tegn)")
+    return f"""
+<div class="markedskontekst">
+  <div class="markedskontekst-header">📰 Markedskontekst</div>
+  <div class="markedskontekst-tekst">{tekst}</div>
+</div>"""
+
+
 # ==========================================
 # LAG 3 — HÆNDELSESDREVET ANALYSE
 # ==========================================
