@@ -17,6 +17,7 @@ Kaldes fra:
 
 import json
 import os
+import time
 import urllib.request
 import urllib.error
 
