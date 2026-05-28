@@ -16,10 +16,11 @@
   },
   "IE000I8KRLL9": {
     "hwm": 18.47,
-    "hwm_date": "2026-05-27"
+    "hwm_date": "2026-05-28"
   },
   "IE000X59ZHE2": {
     "hwm": 9.24,
-    "hwm_date": "2026-05-27"
+    "hwm_date": "2026-05-27",
+    "trend_state": "BULL"
   }
 }
