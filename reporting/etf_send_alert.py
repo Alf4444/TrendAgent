@@ -21,7 +21,7 @@ from email.mime.text import MIMEText
 # Tilføj reporting/ til Python-stien så utils.py kan importeres
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from utils import check_trail_stop, get_trail_stop_pct
-from ai_analysis import get_alarm_analyse
+from ai_analysis import get_alarm_analyse, get_all_signal_analyser
 
 ROOT           = Path(__file__).resolve().parents[1]
 HITS_FILE      = ROOT / "data/etf_spejder_hits.json"
@@ -537,7 +537,9 @@ def check_ask_reminder():
 
 
 def build_email_html(trail_alerts, momentum_alerts, momentum_svækkes, nye_hits, nye_stabile,
-                     rotation_weakest, rotation_best_new, hits_data, ai_tekst=""):
+                     rotation_weakest, rotation_best_new, hits_data, ai_tekst="", signal_analyser=None):
+    if signal_analyser is None:
+        signal_analyser = {}
     """Bygger HTML-indhold til alarm-mailen."""
     now = datetime.now().strftime('%d-%m-%Y %H:%M')
 
@@ -557,6 +559,11 @@ def build_email_html(trail_alerts, momentum_alerts, momentum_svækkes, nye_hits,
                 Stop ved: {a['trail_pct']}% · Afkast fra køb: {a['total_ret']:+.1f}%
               </td>
             </tr>"""
+            # Lag 3 AI-kontekst
+            lag3 = signal_analyser.get(a.get('ticker', ''), '')
+            if lag3:
+                rows += f'''<tr><td colspan="4" style="padding:0 8px 8px;">{lag3}</td></tr>'''
+
         trail_html = f"""
         <div style="margin-bottom:20px;">
           <h3 style="color:#d93025; margin:0 0 8px;">🔴 Trail Stop — sælg overvej nu ({len(trail_alerts)})</h3>
@@ -630,6 +637,12 @@ def build_email_html(trail_alerts, momentum_alerts, momentum_svækkes, nye_hits,
                 · <span style="color:#555;">{alt['category']}</span>
                 — <span style="color:{exp_color}; font-size:11px;">{alt['exposure_note']}</span>
               </div>"""
+
+            # Lag 3 AI-kontekst under K2/K3 (ikke K1)
+            if a.get('kriterium') in ('K2', 'K3'):
+                lag3 = signal_analyser.get(a.get('ticker', ''), '')
+                if lag3:
+                    items_html += lag3
 
             items_html += "\n            </div>"
 
@@ -822,7 +835,7 @@ def main():
 
     subject = f"📡 TrendAgent ETF — {' · '.join(subject_parts)}"
 
-    # ---- 🤖 AI-analyse ----
+    # ---- 🤖 AI-analyse Lag 1 ----
     ai_tekst = get_alarm_analyse(
         portfolio      = portfolio,
         latest_map     = latest_map,
@@ -832,10 +845,32 @@ def main():
         momentum_svækkes = momentum_svækkes,
     )
 
+    # ---- 🔍 AI-analyse Lag 3 — hændelsesdrevet ----
+    # Byg signal-liste til Lag 3 (Trail Stop + K2 + K3 — ikke K1)
+    lag3_signaler = []
+    for a in trail_alerts:
+        lag3_signaler.append({
+            'ticker':    a.get('ticker', ''),
+            'navn':      a.get('name', ''),
+            'sektor':    watchlist.get(a.get('isin', ''), {}).get('category', '—'),
+            'kriterium': 'Trail Stop',
+        })
+    for a in momentum_svækkes:
+        if a.get('kriterium') in ('K2', 'K3'):
+            lag3_signaler.append({
+                'ticker':    a.get('ticker', ''),
+                'navn':      a.get('name', ''),
+                'sektor':    a.get('category', '—'),
+                'kriterium': a.get('kriterium', ''),
+            })
+
+    signal_analyser = get_all_signal_analyser(lag3_signaler) if lag3_signaler else {}
+
     html = build_email_html(
         trail_alerts, momentum_alerts, momentum_svækkes, nye_hits, nye_stabile,
         rotation_weakest, rotation_best_new, hits_data,
         ai_tekst=ai_tekst,
+        signal_analyser=signal_analyser,
     )
     send_mail(subject, html)
 
