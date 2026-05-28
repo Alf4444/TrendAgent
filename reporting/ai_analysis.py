@@ -17,24 +17,8 @@ Kaldes fra:
 
 import json
 import os
-import time
 import urllib.request
 import urllib.error
-
-# Mapping fra kategori-navn til web search søgeterm
-CATEGORY_SEARCH_TERMS = {
-    "Sektor — Halvledere":          "semiconductor stocks market news",
-    "Lande — Korea":                "South Korea stock market news",
-    "Tema — Hydrogen & Clean Energy":"hydrogen clean energy stocks news",
-    "Tema — Space & Forsvar":       "space defense stocks news",
-    "Tema — Uranium & Nuklear":     "uranium nuclear energy stocks news",
-    "Tema — Batteri & Energilagring":"battery lithium stocks news",
-    "Råvarer — Sjældne jordarter":  "rare earth metals stocks news",
-    "Råvarer — Ædelmetaller":       "silver gold mining stocks news",
-    "Region — EM":                  "emerging markets stocks news",
-    "Region — Asien":               "Asia stock market news",
-    "Tema — Cirkulær":              "circular economy ESG stocks news",
-}
 
 # Model — Haiku er billig og hurtig nok til denne opgave
 MODEL = "claude-haiku-4-5-20251001"
@@ -320,198 +304,141 @@ def get_weekly_analyse(portfolio, latest_map, hits_data, hwm_data,
 
 
 
-# ==========================================
-# WEB SEARCH — LAG 2
-# ==========================================
-
-SEARCH_API = "https://api.anthropic.com/v1/messages"
-SEARCH_MODEL = "claude-haiku-4-5-20251001"
-SEARCH_MAX_TOKENS = 300  # Reduceret for at undgå rate limit
-
-
-def _web_search_via_claude(query, api_key):
-    """
-    Udfører ét web search via Claude API med web_search tool.
-    Returnerer tekst-opsummering af søgeresultater eller tom streng ved fejl.
-    """
-    body = json.dumps({
-        "model": SEARCH_MODEL,
-        "max_tokens": SEARCH_MAX_TOKENS,
-        "tools": [{"type": "web_search_20250305", "name": "web_search"}],
-        "system": "Du søger på finansielle nyheder og returnerer en kort faktuel opsummering på max 3 sætninger på dansk. Ingen markdown, ingen bullet points. Fokus på hvad der driver markedet lige nu og hvad analytikere forventer.",
-        "messages": [{"role": "user", "content": f"Søg efter aktuelle nyheder og markedsforhold: {query}"}]
-    }).encode('utf-8')
-
-    req = urllib.request.Request(
-        SEARCH_API,
-        data=body,
-        headers={
-            "Content-Type":      "application/json",
-            "x-api-key":         api_key,
-            "anthropic-version": "2023-06-01",
-            "anthropic-beta":    "web-search-2025-03-05",
-        },
-        method="POST"
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=20) as resp:
-            data = json.loads(resp.read().decode('utf-8'))
-            # Saml alle text-blokke fra content
-            tekst = " ".join(
-                block.get('text', '') for block in data.get('content', [])
-                if block.get('type') == 'text'
-            ).strip()
-            return tekst if tekst else ""
-    except Exception as e:
-        print(f"⚠️  Web search fejlede for '{query}': {e}")
-        return ""
-
-
-def fetch_sector_news(positioner, top_kandidater, api_key):
-    """
-    Henter markedsnyheder for:
-    - Ejede fonde (sektor per fond)
-    - Top 3 hurtige kandidater fra Spejderen
-
-    Returnerer dict: {søgeterm: tekst}
-    Bruger B-model: systemet søger, Claude skriver bagefter.
-    """
-    news = {}
-    søgninger = []
-
-    # Ejede sektorer — max 4 søgninger
-    sektorer_søgt = set()
-    for p in positioner:
-        kat = p.get('sektor', '')
-        if kat and kat not in sektorer_søgt and kat != '—':
-            term = CATEGORY_SEARCH_TERMS.get(kat, f"{kat} stocks news")
-            søgninger.append((kat, term))
-            sektorer_søgt.add(kat)
-            if len(søgninger) >= 4:
-                break
-
-    # Top 1 hurtig kandidat — kun hvis under 4 søgninger i alt
-    if len(søgninger) < 4 and top_kandidater:
-        k = top_kandidater[0]
-        ticker = k.get('ticker', '')
-        navn = k.get('navn', ticker)
-        if navn:
-            søgninger.append((f"Kandidat: {ticker}", f"{navn} ETF news outlook"))
-
-    print(f"   📰 Lag 2: {len(søgninger)} web søgninger...")
-    print(f"   ⏳ Venter 60 sek så token-vinduet nulstilles efter Lag 1...")
-    time.sleep(60)
-    for label, term in søgninger:
-        # Forsøg op til 2 gange med pause ved rate limit
-        result = ""
-        for forsøg in range(2):
-            result = _web_search_via_claude(term, api_key)
-            if result:
-                break
-            if forsøg == 0:
-                print(f"   ⏳ Rate limit — venter 30 sek...")
-                time.sleep(30)
-        if result:
-            news[label] = result
-            print(f"   ✅ {label}: {len(result)} tegn")
-        else:
-            print(f"   ⚠️  {label}: ingen resultater")
-        time.sleep(5)  # 5 sek pause mellem søgninger
-
-    return news
-
 
 # ==========================================
-# PROMPTS — LAG 2
+# LAG 3 — HÆNDELSESDREVET ANALYSE
 # ==========================================
 
-SYSTEM_MARKEDSKONTEKST = """Du er en kortfattet, dansk porteføljeassistent for en privat investor.
-Du modtager markedsnyheder om investorens sektorer og top-kandidater fra Spejderen.
-Skriv et sammenhængende overblik på dansk.
+# Anti-spam for Lag 3 — gemmer hvornår en fond sidst blev analyseret
+# Format: {isin: {kriterium: dato}}
+_LAG3_CACHE = {}
+
+SYSTEM_LAG3 = """Du er en kortfattet, dansk porteføljeassistent for en privat investor.
+Du modtager nyheder om en specifik fond og dens sektor efter et signal om svækkelse.
+Skriv 2-3 sætninger på dansk der forklarer hvad der driver bevægelsen og om det er midlertidigt eller strukturelt.
 
 Regler:
 - Skriv kun dansk, ingen markdown, ingen bullet points
-- Brug konkrete ticker-navne når du nævner ejede fonde
-- Beskriv hvad der driver hver sektor lige nu og hvad markedet forventer fremadrettet
-- Kobl nyheden til den konkrete fond (fx "din VVSM.DE er eksponeret mod...")
-- Afslut med 1 sætning om de mest interessante kandidater fra Spejderen hvis relevant
-- Max 6 sætninger i sammenhængende tekst
-- Undgå finansiel rådgivning — beskriv hvad kilderne viser"""
+- Brug fondens ticker-navn (fx HYCN.DE)
+- Vær konkret — hvad siger kilderne præcist?
+- Afslut med én sætning: midlertidigt eller strukturelt?
+- Max 3 sætninger
+- Undgå finansiel rådgivning"""
 
-USER_MARKEDSKONTEKST_WEEKLY = """Her er markedsnyheder for dine sektorer og top-kandidater:
-
-Ejede positioner:
-{positioner}
+USER_LAG3 = """Signal: {kriterium} på {ticker} ({navn})
 
 Markedsnyheder:
 {news}
 
-Skriv et kort markedsoverblik til den ugentlige rapport. Fokus på hvad der sker nu og hvad der forventes den kommende uge."""
-
-USER_MARKEDSKONTEKST_MONTHLY = """Her er markedsnyheder for dine sektorer og top-kandidater:
-
-Ejede positioner:
-{positioner}
-
-Markedsnyheder:
-{news}
-
-Skriv et kort markedsoverblik til den månedlige rapport. Fokus på hvad der drev dine sektorer denne måned og hvad der forventes de kommende måneder."""
+Skriv en kort kontekst-analyse til alarm-mailen. Er dette midlertidigt eller strukturelt?"""
 
 
-def get_markedskontekst(positioner, kandidater, mode="weekly"):
+def get_signal_analyse(ticker, navn, sektor, kriterium, api_key=None):
     """
-    Lag 2: Henter markedsnyheder og genererer kontekst-tekst.
-    mode: "weekly" eller "monthly"
-    Returnerer HTML-streng eller tom streng ved fejl.
+    Lag 3: Hændelsesdrevet analyse for ét signal.
+    Laver 2 søgninger og skriver 2-3 sætninger om årsag + midlertidigt/strukturelt.
+
+    Returnerer HTML-streng eller tom streng ved fejl/anti-spam.
+    Anti-spam: samme fond + kriterium analyseres ikke igen inden for 3 dage.
     """
-    api_key = os.environ.get('ANTHROPIC_API_KEY', '')
     if not api_key:
-        print("⚠️  ANTHROPIC_API_KEY mangler — Markedskontekst springes over")
+        api_key = os.environ.get('ANTHROPIC_API_KEY', '')
+    if not api_key:
         return ""
 
-    # Hent nyheder (B-model: systemet søger)
-    news = fetch_sector_news(positioner, kandidater, api_key)
-    if not news:
-        print("⚠️  Ingen markedsnyheder hentet — Markedskontekst springes over")
+    # Anti-spam check
+    import datetime
+    today = datetime.date.today().isoformat()
+    cache_key = f"{ticker}_{kriterium}"
+    if _LAG3_CACHE.get(cache_key) == today:
+        print(f"   ⏭️  Lag 3 anti-spam: {ticker} {kriterium} allerede analyseret i dag")
         return ""
 
-    # Byg news-tekst til prompt
-    sep = "\n\n"
-    nl  = "\n"
-    news_tekst = sep.join(
-        f"{label}:{nl}{tekst}" for label, tekst in news.items()
-    )
+    print(f"   🔍 Lag 3: søger på {ticker} ({kriterium})...")
 
-    # Positioner-tekst til prompt
-    pos_tekst = nl.join(
-        f"- {p.get('ticker','?')}: {p.get('sektor','--')} ({p.get('afkast_pct','?')}% afkast)"
-        for p in positioner
-    )
+    # Søgning 1: fond-specifikke nyheder
+    q1 = f"{navn} ETF news"
+    # Søgning 2: sektor-outlook
+    q2 = f"{sektor} outlook 2026" if sektor and sektor != "—" else f"{ticker} sector outlook"
 
-    user_prompt = (USER_MARKEDSKONTEKST_WEEKLY if mode == "weekly"
-                   else USER_MARKEDSKONTEKST_MONTHLY).format(
-        positioner=pos_tekst,
+    news_parts = []
+    for label, query in [(ticker, q1), (sektor, q2)]:
+        result = _web_search_via_claude(query, api_key)
+        if result:
+            nl = "\n"
+            news_parts.append(f"{label}:{nl}{result}")
+            print(f"   ✅ Lag 3 søgning '{label}': {len(result)} tegn")
+        time.sleep(5)
+
+    if not news_parts:
+        print(f"   ⚠️  Lag 3: ingen søgeresultater for {ticker}")
+        return ""
+
+    # Vent så token-vinduet ikke overskrides
+    print(f"   ⏳ Lag 3: venter 30 sek inden skriv-kald...")
+    time.sleep(30)
+
+    nl = "\n\n"
+    news_tekst = nl.join(news_parts)
+    user_prompt = USER_LAG3.format(
+        kriterium=kriterium,
+        ticker=ticker,
+        navn=navn,
         news=news_tekst,
     )
 
-    print(f"   ⏳ Venter 60 sek inden afsluttende kald...")
-    time.sleep(60)
-    tekst = call_claude(SYSTEM_MARKEDSKONTEKST, user_prompt)
+    tekst = call_claude(SYSTEM_LAG3, user_prompt)
     if not tekst:
         return ""
 
-    print(f"✅ Markedskontekst genereret ({len(tekst)} tegn)")
-    return _wrap_markedskontekst_html(tekst)
+    # Opdater anti-spam cache
+    _LAG3_CACHE[cache_key] = today
+    print(f"   ✅ Lag 3 analyse: {ticker} ({len(tekst)} tegn)")
+
+    return f"""<div style="margin-top:8px; padding:8px 12px; background:#f0f4ff;
+                border-left:3px solid #3b5bdb; border-radius:0 4px 4px 0;
+                font-size:12px; color:#333; line-height:1.5;">
+      <span style="font-weight:600; color:#3b5bdb;">🤖 AI-kontekst:</span> {tekst}
+    </div>"""
 
 
-def _wrap_markedskontekst_html(tekst):
-    """Wrapper markedskontekst i HTML-boks til rapport."""
-    return f"""
-<div class="markedskontekst">
-  <div class="markedskontekst-header">📰 Markedskontekst</div>
-  <div class="markedskontekst-tekst">{tekst}</div>
-</div>"""
+def get_all_signal_analyser(signaler, watchlist=None):
+    """
+    Kører Lag 3 for en liste af signaler.
+    Prioriterer Trail Stop > K3 > K2. Max 2 signaler per kørsel.
+
+    signaler: liste af dicts med {ticker, navn, sektor, kriterium}
+    Returnerer: dict {ticker: html_tekst}
+    """
+    api_key = os.environ.get('ANTHROPIC_API_KEY', '')
+    if not api_key:
+        return {}
+
+    # Sorter efter prioritet
+    prioritet = {"Trail Stop": 0, "K3": 1, "K2": 2, "K1": 9}
+    sorterede = sorted(signaler, key=lambda x: prioritet.get(x.get("kriterium", "K1"), 9))
+
+    # Max 2 signaler — spring K1 over
+    kandidater = [s for s in sorterede if s.get("kriterium") != "K1"][:2]
+
+    if not kandidater:
+        return {}
+
+    print(f"   📰 Lag 3: analyserer {len(kandidater)} signal(er)...")
+    # Vent så Lag 1 tokens er clearet
+    time.sleep(30)
+
+    resultater = {}
+    for s in kandidater:
+        ticker   = s.get("ticker", "")
+        navn     = s.get("navn", ticker)
+        sektor   = s.get("sektor", "—")
+        kriterium = s.get("kriterium", "")
+        html = get_signal_analyse(ticker, navn, sektor, kriterium, api_key)
+        if html:
+            resultater[ticker] = html
+
+    return resultater
 
 
 # ==========================================
