@@ -248,7 +248,7 @@
   },
   {
     "isin": "PFA000002716",
-    "name": "iShares Global High Yield Corp Bond EUR Hedged UCITS ETF",
+    "name": "iShares Global HY Corp Bond EUR Hedged UCITS ETF",
     "nav": 314.86,
     "nav_date": "2026-05-27",
     "currency": "DKK",
@@ -352,7 +352,7 @@
   },
   {
     "isin": "PFA000002736",
-    "name": "Nordea Invest European High Yield Bonds",
+    "name": "Nordea Invest European High Yield Bonds KL 1",
     "nav": 215.74,
     "nav_date": "2026-05-27",
     "currency": "DKK",
@@ -521,7 +521,7 @@
   },
   {
     "isin": "PFA000002755",
-    "name": "Maj Invest UCITS ETF Defence & Cybersecurity Fund",
+    "name": "Maj Invest Defence & Cybersecurity Fund UCITS ETF",
     "nav": 119.18,
     "nav_date": "2026-05-27",
     "currency": "DKK",
@@ -560,7 +560,7 @@
   },
   {
     "isin": "PFA000002758",
-    "name": "iShares MSCI World Health Care Sector Advanced UCITS ETF",
+    "name": "iShares MSCI World Health Care Sec Adv UCITS ETF",
     "nav": 107.96,
     "nav_date": "2026-05-27",
     "currency": "EUR",
@@ -573,7 +573,7 @@
   },
   {
     "isin": "PFA000002759",
-    "name": "iShares Core MSCI Japan IMI UCITS ETF",
+    "name": "iShares Core MSCI Japan UCITS ETF",
     "nav": 119.1,
     "nav_date": "2026-05-27",
     "currency": "EUR",
