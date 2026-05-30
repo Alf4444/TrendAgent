@@ -1,7 +1,8 @@
 {
   "IE00BHZRR030": {
     "hwm": 96.93,
-    "hwm_date": "2026-05-29"
+    "hwm_date": "2026-05-29",
+    "trend_state": "BULL"
   },
   "IE00BMC38736": {
     "hwm": 96.34,
@@ -10,14 +11,17 @@
   },
   "IE0002RPS3K2": {
     "hwm": 15.52,
-    "hwm_date": "2026-05-28"
+    "hwm_date": "2026-05-28",
+    "trend_state": "BULL"
   },
   "IE000I8KRLL9": {
     "hwm": 18.49,
-    "hwm_date": "2026-05-29"
+    "hwm_date": "2026-05-29",
+    "trend_state": "BULL"
   },
   "IE000X59ZHE2": {
     "hwm": 9.71,
-    "hwm_date": "2026-05-29"
+    "hwm_date": "2026-05-29",
+    "trend_state": "BULL"
   }
 }
