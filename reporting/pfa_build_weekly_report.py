@@ -32,10 +32,56 @@ DATA_FILE      = ROOT / "data/pfa_latest.json"
 HISTORY_FILE   = ROOT / "data/pfa_history.json"
 PORTFOLIO_FILE = ROOT / "config/pfa_portfolio.json"
 HWM_FILE       = ROOT / "data/pfa_hwm.json"
+RANK_HISTORY_FILE = ROOT / "data/pfa_rank_history.json"
 TEMPLATE_FILE  = ROOT / "templates/pfa_weekly.html.j2"
 REPORT_FILE    = ROOT / "build/pfa_weekly.html"
 
 TRAIL_STOP_PCT = 3.0
+
+
+def load_rank_history():
+    if RANK_HISTORY_FILE.exists():
+        try:
+            with open(RANK_HISTORY_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {}
+
+
+def get_rank_trend(isin, rank_history):
+    """Returnerer de 5 seneste dages rang som liste med retning, label og historik-streng."""
+    isin_ranks = rank_history.get(isin, {})
+    sorted_dates = sorted(isin_ranks.keys())[-5:]
+    if not sorted_dates:
+        return None, None, None
+
+    ranks = [isin_ranks[d] for d in sorted_dates]
+
+    dots = []
+    for i, r in enumerate(ranks):
+        if i == 0:
+            dots.append({"rank": r, "direction": "flat"})
+        else:
+            prev = ranks[i - 1]
+            if r < prev:
+                dots.append({"rank": r, "direction": "up"})   # lavere tal = bedre rang
+            elif r > prev:
+                dots.append({"rank": r, "direction": "dn"})
+            else:
+                dots.append({"rank": r, "direction": "flat"})
+
+    # Trend-label baseret på første vs. sidste
+    first, last = ranks[0], ranks[-1]
+    if last < first - 1:
+        label = "Accelererer ↑"
+    elif last > first + 1:
+        label = "Falder ↓"
+    else:
+        label = "Stabil →"
+
+    hist_str = "→".join(f"#{r}" for r in ranks)
+    return dots, label, hist_str
 
 
 def load_high_water_marks():
@@ -77,6 +123,7 @@ def build_weekly():
     history   = load_json(HISTORY_FILE, {})
     portfolio = load_json(PORTFOLIO_FILE, {})
     hwm_data  = load_high_water_marks()
+    rank_history = load_rank_history()
 
     portfolio_isins = {
         isin for isin, info in portfolio.items()
@@ -153,6 +200,12 @@ def build_weekly():
                     f"fra top {trail_alert['hwm']} til {trail_alert['curr']}"
                 )
 
+        # Rang og momentum-trend fra rank_history
+        isin_ranks = rank_history.get(isin, {})
+        latest_rank_date = max(isin_ranks.keys()) if isin_ranks else None
+        rank_now = isin_ranks.get(latest_rank_date) if latest_rank_date else None
+        rank_dots, rank_trend_label, rank_history_str = get_rank_trend(isin, rank_history)
+
         rows.append({
             'isin':            isin,
             'name':            item.get('name', isin),
@@ -175,6 +228,10 @@ def build_weekly():
             'return_1m':       item.get('return_1m'),
             'return_1y':       item.get('return_1y'),
             'return_ytd':      item.get('return_ytd'),
+            'rank_now':        rank_now,
+            'rank_history':    rank_dots,
+            'rank_trend_label': rank_trend_label,
+            'rank_history_str': rank_history_str,
         })
 
     # Gem HWM — deles med pfa_daily og pfa_monthly
@@ -231,6 +288,7 @@ def build_weekly():
         chart_values         = [r['momentum'] for r in chart_data],
         heatmap_data         = heatmap_data,
         heatmap_warning      = heatmap_warning,
+        total_market_count   = len(latest),
     )
 
     REPORT_FILE.parent.mkdir(parents=True, exist_ok=True)
