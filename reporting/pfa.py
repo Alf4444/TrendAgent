@@ -13,9 +13,14 @@ def parse_pfa_from_text(pfa_id, text):
         "return_6m": None,
         "return_1y": None,
         "return_ytd": None,
+        "aop": None,
+        "sharpe_1y": None,
+        "std_afv_1y": None,
+        "top3_holdings": [],
     }
     if not text:
         return data
+
 
     lines = text.split('\n')
     if lines:
@@ -144,4 +149,106 @@ def parse_pfa_from_text(pfa_id, text):
         # et anderledes PDF-layout. Data forbliver None.
         print(f"[ADVARSEL] Ingen afkastdata fundet for {pfa_id}")
 
+    # --- AOP, SHARPE, STD.AFV, TOP-3 BEHOLDNINGER ---
+    data["aop"]           = _parse_aop(text)
+    sharpe, std           = _parse_sharpe_std(text)
+    data["sharpe_1y"]     = sharpe
+    data["std_afv_1y"]    = std
+    data["top3_holdings"] = _extract_top3_holdings(text)
+
     return data
+
+
+# ==========================================
+# NYE HJÆLPEFUNKTIONER — AOP, SHARPE, STD.AFV, TOP-3
+# ==========================================
+
+def _parse_aop(text):
+    """Parser ÅOP — det 5. tal i omkostnings-blokken efter 'AOP' linjen."""
+    m = re.search(
+        r'AOP\s*\n([\d,]+)\s*\n([\d,]+)\s*\n([\d,]+)\s*\n([\d,]+)\s*\n([\d,]+)',
+        text, re.IGNORECASE
+    )
+    if m:
+        try:
+            return round(float(m.group(5).replace(',', '.')), 2)
+        except Exception:
+            pass
+    return None
+
+
+def _parse_sharpe_std(text):
+    """Parser Sharpe 1y og Std.afv 1y fra risiko-sektionen."""
+    sharpe_1y = None
+    std_afv_1y = None
+
+    # Sharpe: første tal efter 'Sharpe\nStd. Afv.\n'
+    m_sharpe = re.search(
+        r'Sharpe\s*\n?\s*Std\.\s*Afv\.\s*\n([\d,]+)',
+        text, re.IGNORECASE
+    )
+    if m_sharpe:
+        try:
+            sharpe_1y = round(float(m_sharpe.group(1).replace(',', '.')), 2)
+        except Exception:
+            pass
+
+    # Std.afv 1y: første procent-tal på linjen efter de tre Sharpe-tal
+    m_std = re.search(
+        r'Sharpe\s*\n?\s*Std\.\s*Afv\.\s*\n[\d,]+\s+[\d,]+\s+[\d,]+\s*\n([\d,]+)%',
+        text, re.IGNORECASE
+    )
+    if m_std:
+        try:
+            std_afv_1y = round(float(m_std.group(1).replace(',', '.')), 2)
+        except Exception:
+            pass
+
+    return sharpe_1y, std_afv_1y
+
+
+def _extract_top3_holdings(text):
+    """Udtrækker de 3 største beholdninger fra faktaarkets beholdnings-sektion."""
+    block_m = re.search(
+        r'beholdninger[^\n]*\n(.+?)(?:Formuefordeling)',
+        text, re.DOTALL
+    )
+    if not block_m:
+        return []
+
+    lines = [l.strip() for l in block_m.group(1).split('\n') if l.strip()]
+    pairs = []
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+
+        # Ren tal-linje: procent for foregående navn(e)
+        if re.match(r'^\d+,\d+$', line) and i >= 1:
+            name_parts = [lines[i-1]]
+            if i >= 2:
+                prev2 = lines[i-2]
+                if not re.match(r'^\d', prev2) and not re.search(r'\d+,\d+', prev2):
+                    name_parts.insert(0, prev2)
+            pairs.append(' '.join(name_parts).strip())
+
+        # Inline: 'Navn X,XX' eller 'Navn X,XX%'
+        elif re.match(r'^.+\s+\d+,\d+%?$', line) and not re.match(r'^\d', line):
+            name = re.sub(r'\s+\d+,\d+%?$', '', line).strip()
+            # Tjek om forrige linje er del af dette navn (fx SAMSUNG NON)
+            if i >= 1:
+                prev = lines[i-1]
+                if not re.match(r'^\d', prev) and not re.search(r'\d+,\d+', prev):
+                    name = prev + ' ' + name
+            pairs.append(name.strip())
+        i += 1
+
+    # Normaliser og filtrer
+    skip = re.compile(r'(?i)(^cash|repo)')
+    normalized = []
+    for n in pairs:
+        n = re.sub(r'\s+NON\s+VOTING\s+PRE\s*$', '', n, flags=re.IGNORECASE).strip()
+        n = re.sub(r'^Ltd ADR\s*', '', n).strip()
+        if n and not skip.search(n):
+            normalized.append(n)
+
+    return normalized[:3]
