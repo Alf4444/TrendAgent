@@ -29,9 +29,81 @@ REPORT_FILE        = ROOT / "build/pfa_monthly.html"
 HWM_FILE           = ROOT / "data/pfa_hwm.json"
 TRADES_FILE        = ROOT / "config/trades.json"
 PORTFOLIO_HWM_FILE = ROOT / "data/portfolio_hwm.json"
+RANK_HISTORY_FILE  = ROOT / "data/pfa_rank_history.json"
 
 BENCHMARK_ISIN = "PFA000002233"
 TRAIL_STOP_PCT = 3.0
+
+
+def load_rank_history():
+    if RANK_HISTORY_FILE.exists():
+        try:
+            with open(RANK_HISTORY_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {}
+
+
+def build_overlap_data(active_isins, latest_map):
+    """Finder beholdninger der optræder i top-3 hos mere end én aktiv fond.
+    Bruger top3_holdings direkte fra pfa_latest.json (parset af pfa.py)."""
+    from collections import defaultdict
+    holding_map = defaultdict(list)
+    for isin in active_isins:
+        fund = latest_map.get(isin, {})
+        name = fund.get("name", isin)
+        for holding in fund.get("top3_holdings", []):
+            holding_map[holding].append(name)
+    result = []
+    for holding, funds in holding_map.items():
+        if len(funds) > 1:
+            result.append({
+                "holding": holding,
+                "count": len(funds),
+                "funds_str": ", ".join(funds),
+            })
+    result.sort(key=lambda x: x["count"], reverse=True)
+    return result
+
+
+def build_fund_risk_data(active_rows, latest_map, rank_history):
+    """Bygger risiko/omkostnings-sammenligning.
+    Bruger aop, sharpe_1y, std_afv_1y direkte fra pfa_latest.json."""
+    rows = []
+    for f in active_rows:
+        isin = f["isin"]
+        fund = latest_map.get(isin, {})
+        isin_ranks = rank_history.get(isin, {})
+        latest_date = max(isin_ranks.keys()) if isin_ranks else None
+        rank_now = isin_ranks.get(latest_date) if latest_date else None
+        rows.append({
+            "isin":       isin,
+            "name":       f["name"],
+            "aop":        fund.get("aop") or 0,
+            "sharpe_1y":  fund.get("sharpe_1y") or 0,
+            "std_afv_1y": fund.get("std_afv_1y") or 0,
+            "rank_now":   rank_now,
+            "aop_best": False, "aop_worst": False,
+            "sharpe_best": False,
+            "std_best": False, "std_worst": False,
+        })
+    if rows:
+        aop_vals    = [r["aop"] for r in rows if r["aop"]]
+        sharpe_vals = [r["sharpe_1y"] for r in rows if r["sharpe_1y"]]
+        std_vals    = [r["std_afv_1y"] for r in rows if r["std_afv_1y"]]
+        if aop_vals:
+            for r in rows:
+                r["aop_best"]  = r["aop"] == min(aop_vals)
+                r["aop_worst"] = r["aop"] == max(aop_vals)
+        if sharpe_vals:
+            for r in rows:
+                r["sharpe_best"] = r["sharpe_1y"] == max(sharpe_vals)
+        if std_vals:
+            for r in rows:
+                r["std_best"]  = r["std_afv_1y"] == min(std_vals)
+                r["std_worst"] = r["std_afv_1y"] == max(std_vals)
+    return rows
 
 
 # ==========================================
@@ -102,6 +174,7 @@ def build_monthly():
     rank_map, total_market_count = get_ranking_data(latest_list)
     latest_map = {item['isin']: item for item in latest_list}
     validation_warnings = validate_data(latest_map, portfolio)
+    rank_history = load_rank_history()
 
     now          = datetime.now()
     today_str    = now.strftime('%Y-%m-%d')
@@ -162,10 +235,15 @@ def build_monthly():
 
         t_state = "BULL" if (ma_val and curr_p > ma_val) else "BEAR" if ma_val else "N/A"
 
+        isin_ranks = rank_history.get(isin, {})
+        latest_rank_date = max(isin_ranks.keys()) if isin_ranks else None
+        rank_now = isin_ranks.get(latest_rank_date) if latest_rank_date else None
+
         fund_data = {
             "isin":           isin,
             "name":           p_info.get('name', isin),
             "rank":           rank,
+            "rank_now":       rank_now,
             "buy_date":       p_info.get('buy_date', 'N/A'),
             "buy_price":      buy_p,
             "curr_price":     curr_p,
@@ -262,6 +340,11 @@ def build_monthly():
     heatmap_data    = build_heatmap(portfolio, active_rows)
     heatmap_warning = get_concentration_warning(heatmap_data)
 
+    # --- OVERLAP & RISIKO ---
+    active_isins  = [f["isin"] for f in active_rows]
+    overlap_data  = build_overlap_data(active_isins, latest_map)
+    fund_risk_data = build_fund_risk_data(active_rows, latest_map, rank_history)
+
     if not TEMPLATE_FILE.exists():
         print(f"❌ Template mangler: {TEMPLATE_FILE}")
         return
@@ -287,6 +370,8 @@ def build_monthly():
         drawdown_data        = drawdown_data,
         heatmap_data         = heatmap_data,
         heatmap_warning      = heatmap_warning,
+        overlap_data         = overlap_data,
+        fund_risk_data       = fund_risk_data,
     )
 
     REPORT_FILE.parent.mkdir(exist_ok=True)
