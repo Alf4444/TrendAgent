@@ -115,6 +115,30 @@
         .heatmap-fond .fond-navn { flex: 1; }
         .heatmap-fond .fond-ret { font-weight: 700; margin-left: 8px; }
 
+        /* Rang & Overlap & Risiko */
+        .rank-badge-top { background: #e6f4ea; color: #1e7e34; border: 1px solid #c3e6cb;
+                          padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .rank-badge-mid { background: #e8f0fe; color: #1a56b0; border: 1px solid #c5d8f6;
+                          padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .rank-badge-low { background: #f1f3f4; color: #5f6368; border: 1px solid #dadce0;
+                          padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .overlap-section { background: white; border-radius: 12px; border-left: 5px solid #f59c00;
+                           box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 30px; padding: 20px; }
+        .overlap-section > h3 { padding: 0; margin: 0 0 14px 0; color: #2c3e50; font-size: 18px; }
+        .overlap-chip { display: inline-block; background: #fef3cd; color: #856404;
+                        border-radius: 4px; padding: 2px 8px; font-size: 12px; font-weight: bold;
+                        margin-right: 8px; white-space: nowrap; }
+        .overlap-row { display: flex; align-items: center; padding: 8px 0;
+                       border-bottom: 1px solid #f0f0f0; font-size: 13px; }
+        .overlap-row:last-child { border-bottom: none; }
+        .risk-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 4px; }
+        .risk-table th { background: #f8f9fa; padding: 10px; text-align: left; color: #666;
+                         font-size: 11px; font-weight: 600; border-bottom: 2px solid #eee;
+                         text-transform: uppercase; letter-spacing: 0.04em; }
+        .risk-table td { padding: 10px; border-bottom: 1px solid #f0f0f0; }
+        .risk-best { color: #1e7e34; font-weight: bold; }
+        .risk-worst { color: #d93025; }
+
         .trades-section { background: white; border-radius: 12px; border-left: 5px solid #2c3e50;
                           box-shadow: 0 4px 12px rgba(0,0,0,0.05);
                           margin-bottom: 30px; padding: 20px; }
@@ -155,12 +179,12 @@
     <header class="header">
         <div>
             <h1 style="margin:0; font-size: 28px;">📊 PFA Monthly Deep Dive</h1>
-            <p style="color: #666; margin: 5px 0;">Strategisk status opdateret 03-06-2026 16:38 (Uge 23)</p>
+            <p style="color: #666; margin: 5px 0;">Strategisk status opdateret 04-06-2026 04:45 (Uge 23)</p>
         </div>
         <div style="text-align: right;">
             <span style="background: #2c3e50; color: white; padding: 5px 12px; border-radius: 20px;
                          font-size: 12px; font-weight: bold;">
-                BENCHMARK: PFA Indeks Globale Aktier (6.52% sidste mdr)
+                BENCHMARK: PFA Indeks Globale Aktier (6.73% sidste mdr)
             </span>
         </div>
     </header>
@@ -175,31 +199,31 @@
         <div class="action-item">
             <span class="m-tag momentum-fast">KØBSMULIGHED</span>
             <span>&nbsp;<strong>iShares MSCI Emerging Markets UCITS ETF</strong> ligger i top 5 (Rank #4)
-            med stærkt 1M afkast på 11.93%.</span>
+            med stærkt 1M afkast på 12.58%.</span>
         </div>
         
         <div class="action-item">
             <span class="m-tag momentum-fast">KØBSMULIGHED</span>
             <span>&nbsp;<strong>Maj Invest Defence & Cybersecurity Fund UCITS ETF</strong> ligger i top 5 (Rank #6)
-            med stærkt 1M afkast på 9.29%.</span>
+            med stærkt 1M afkast på 8.69%.</span>
         </div>
         
         <div class="action-item">
             <span class="m-tag momentum-fast">KØBSMULIGHED</span>
             <span>&nbsp;<strong>UBS Globale Bæredygtige Aktier</strong> ligger i top 5 (Rank #7)
-            med stærkt 1M afkast på 8.47%.</span>
+            med stærkt 1M afkast på 7.88%.</span>
         </div>
         
         <div class="action-item">
             <span class="m-tag momentum-fast">KØBSMULIGHED</span>
             <span>&nbsp;<strong>Kerne Invest Globale Aktier</strong> ligger i top 5 (Rank #8)
-            med stærkt 1M afkast på 6.95%.</span>
+            med stærkt 1M afkast på 6.78%.</span>
         </div>
         
         <div class="action-item">
             <span class="m-tag momentum-fast">KØBSMULIGHED</span>
-            <span>&nbsp;<strong>PFA Indeks USA Aktier</strong> ligger i top 5 (Rank #9)
-            med stærkt 1M afkast på 6.68%.</span>
+            <span>&nbsp;<strong>PFA Indeks Globale Aktier</strong> ligger i top 5 (Rank #9)
+            med stærkt 1M afkast på 6.73%.</span>
         </div>
         
     </div>
@@ -213,13 +237,13 @@
             <div class="dd-stat">
                 <div class="dd-label">Aktuel portefølje</div>
                 <div class="dd-value pos">
-                    +15.04%
+                    +15.63%
                 </div>
             </div>
             <div class="dd-stat">
                 <div class="dd-label">Peak afkast</div>
-                <div class="dd-value pos">+15.04%</div>
-                <div style="font-size:11px; color:#888; margin-top:2px;">2026-06-03</div>
+                <div class="dd-value pos">+15.63%</div>
+                <div style="font-size:11px; color:#888; margin-top:2px;">2026-06-04</div>
             </div>
             <div class="dd-stat">
                 <div class="dd-label">Drawdown fra peak</div>
@@ -244,13 +268,13 @@
         <div class="score-box">
             <small>DIN PORTEFØLJE (TOTAL SNIT)</small>
             <strong class="pos">
-                15.04%
+                15.63%
             </strong>
         </div>
         <div class="score-box" style="border-top-color: #28a745;">
             <small>VS. BENCHMARK (ALPHA)</small>
             <strong class="pos">
-                +8.52%
+                +8.90%
             </strong>
         </div>
     </div>
@@ -260,7 +284,7 @@
         <table>
             <thead>
                 <tr>
-                    <th>Rank</th><th>Fond Navn</th><th>Trend Velocity</th>
+                    <th>Rank</th><th>Fond Navn</th><th>Rang i universet</th><th>Trend Velocity</th>
                     <th>Momentum Status</th><th>Sidste 1M %</th><th>ÅTD %</th>
                     <th style="text-align: right;">Total Afkast %</th>
                 </tr>
@@ -273,14 +297,21 @@
                         C WorldWide Asien
                         
                     </td>
-                    <td><span class="trend-up">🚀 Accelererer</span></td>
+                    <td>
+                        
+                          
+                            <span class="rank-badge-top">#1 af 47</span>
+                          
+                        
+                    </td>
+                    <td><span class="trend-down">📉 Bremser</span></td>
                     <td><span class="m-tag momentum-fast">🚀 Top Performer</span></td>
-                    <td class="pos">+15.42%</td>
+                    <td class="pos">+15.49%</td>
                     <td class="pos">
-                        +39.31%
+                        +39.39%
                     </td>
                     <td style="text-align: right;" class="pos">
-                        +21.64%
+                        +21.71%
                     </td>
                 </tr>
                 
@@ -290,14 +321,21 @@
                         Sydinvest Globale EM-aktier
                         
                     </td>
-                    <td><span class="trend-up">🚀 Accelererer</span></td>
+                    <td>
+                        
+                          
+                            <span class="rank-badge-top">#2 af 47</span>
+                          
+                        
+                    </td>
+                    <td><span class="trend-down">📉 Bremser</span></td>
                     <td><span class="m-tag momentum-fast">🚀 Top Performer</span></td>
-                    <td class="pos">+13.09%</td>
+                    <td class="pos">+13.47%</td>
                     <td class="pos">
-                        +33.49%
+                        +33.93%
                     </td>
                     <td style="text-align: right;" class="pos">
-                        +16.53%
+                        +16.92%
                     </td>
                 </tr>
                 
@@ -307,14 +345,21 @@
                         Robeco Circular Economy Equities
                         
                     </td>
+                    <td>
+                        
+                          
+                            <span class="rank-badge-top">#3 af 47</span>
+                          
+                        
+                    </td>
                     <td><span class="trend-down">📉 Bremser</span></td>
                     <td><span class="m-tag momentum-fast">🚀 Top Performer</span></td>
-                    <td class="pos">+12.15%</td>
+                    <td class="pos">+13.30%</td>
                     <td class="pos">
-                        +30.74%
+                        +32.08%
                     </td>
                     <td style="text-align: right;" class="pos">
-                        +10.17%
+                        +11.30%
                     </td>
                 </tr>
                 
@@ -324,20 +369,135 @@
                         Lazard Emerging Markets Equity Fund
                         
                     </td>
+                    <td>
+                        
+                          
+                            <span class="rank-badge-top">#5 af 47</span>
+                          
+                        
+                    </td>
                     <td><span class="trend-up">🚀 Accelererer</span></td>
                     <td><span class="m-tag momentum-fast">🚀 Top Performer</span></td>
-                    <td class="pos">+9.84%</td>
+                    <td class="pos">+10.62%</td>
                     <td class="pos">
-                        +27.73%
+                        +28.64%
                     </td>
                     <td style="text-align: right;" class="pos">
-                        +11.80%
+                        +12.60%
                     </td>
                 </tr>
                 
             </tbody>
         </table>
     </div>
+
+    
+
+    
+    <div class="overlap-section" style="border-left-color: #1a73e8;">
+        <h3>📊 Omkostnings- og risikosammenligning</h3>
+        <p style="font-size:13px; color:#555; margin: 0 0 14px 0;">
+            Sharpe-ratio: afkast per risikoenhed (højere = bedre). Std.afv: hvor meget kursen svinger (lavere = roligere).
+        </p>
+        <table class="risk-table">
+            <thead>
+                <tr>
+                    <th>Fond</th>
+                    <th>ÅOP %</th>
+                    <th>Sharpe 1y</th>
+                    <th>Std.afv 1y %</th>
+                    <th>Rang nu</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <tr>
+                    <td style="font-weight:600;">Lazard Emerging Markets Equity Fund</td>
+                    <td class="">
+                        0.00%
+                    </td>
+                    <td class="">
+                        0.00
+                    </td>
+                    <td class="">
+                        0.0%
+                    </td>
+                    <td>
+                        
+                          
+                            <span class="rank-badge-top">#5</span>
+                          
+                        
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td style="font-weight:600;">C WorldWide Asien</td>
+                    <td class="">
+                        0.00%
+                    </td>
+                    <td class="">
+                        0.00
+                    </td>
+                    <td class="">
+                        0.0%
+                    </td>
+                    <td>
+                        
+                          
+                            <span class="rank-badge-top">#1</span>
+                          
+                        
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td style="font-weight:600;">Sydinvest Globale EM-aktier</td>
+                    <td class="">
+                        0.00%
+                    </td>
+                    <td class="">
+                        0.00
+                    </td>
+                    <td class="">
+                        0.0%
+                    </td>
+                    <td>
+                        
+                          
+                            <span class="rank-badge-top">#2</span>
+                          
+                        
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td style="font-weight:600;">Robeco Circular Economy Equities</td>
+                    <td class="">
+                        0.00%
+                    </td>
+                    <td class="">
+                        0.00
+                    </td>
+                    <td class="">
+                        0.0%
+                    </td>
+                    <td>
+                        
+                          
+                            <span class="rank-badge-top">#3</span>
+                          
+                        
+                    </td>
+                </tr>
+                
+            </tbody>
+        </table>
+        <p style="font-size:12px; color:#888; margin:10px 0 0 0;">
+            Grøn = bedste i din portefølje på dette parameter. Rød = dyreste/mest volatil.
+        </p>
+    </div>
+    
 
     <div class="table-container" style="border-left: 5px solid #1a73e8;">
         <h3>🎯 Top 5 Markedsmuligheder (Hele PFA universet)</h3>
@@ -354,49 +514,49 @@
                     <td><span class="rank-badge">#4</span></td>
                     <td>🔍 iShares MSCI Emerging Markets UCITS ETF</td>
                     <td>🚀 Accelererer</td>
-                    <td class="pos">+11.93%</td>
+                    <td class="pos">+12.58%</td>
                     <td style="text-align: right;">
-                        +28.02%
+                        +28.75%
                     </td>
                 </tr>
                 
                 <tr>
                     <td><span class="rank-badge">#6</span></td>
                     <td>🔍 Maj Invest Defence & Cybersecurity Fund UCITS ETF</td>
-                    <td>🚀 Accelererer</td>
-                    <td class="pos">+9.29%</td>
+                    <td>📉 Bremser</td>
+                    <td class="pos">+8.69%</td>
                     <td style="text-align: right;">
-                        +11.15%
+                        +10.54%
                     </td>
                 </tr>
                 
                 <tr>
                     <td><span class="rank-badge">#7</span></td>
                     <td>🔍 UBS Globale Bæredygtige Aktier</td>
-                    <td>🚀 Accelererer</td>
-                    <td class="pos">+8.47%</td>
+                    <td>📉 Bremser</td>
+                    <td class="pos">+7.88%</td>
                     <td style="text-align: right;">
-                        +11.52%
+                        +10.92%
                     </td>
                 </tr>
                 
                 <tr>
                     <td><span class="rank-badge">#8</span></td>
                     <td>🔍 Kerne Invest Globale Aktier</td>
-                    <td>🚀 Accelererer</td>
-                    <td class="pos">+6.95%</td>
+                    <td>📉 Bremser</td>
+                    <td class="pos">+6.78%</td>
                     <td style="text-align: right;">
-                        +12.22%
+                        +12.03%
                     </td>
                 </tr>
                 
                 <tr>
                     <td><span class="rank-badge">#9</span></td>
-                    <td>🔍 PFA Indeks USA Aktier</td>
-                    <td>🚀 Accelererer</td>
-                    <td class="pos">+6.68%</td>
+                    <td>🔍 PFA Indeks Globale Aktier</td>
+                    <td>📉 Bremser</td>
+                    <td class="pos">+6.73%</td>
                     <td style="text-align: right;">
-                        +12.26%
+                        +13.42%
                     </td>
                 </tr>
                 
@@ -422,12 +582,12 @@
                 
                 <div class="heatmap-fond">
                     <span class="fond-navn">Lazard Emerging Markets Equity Fund</span>
-                    <span class="fond-ret pos">+11.8%</span>
+                    <span class="fond-ret pos">+12.6%</span>
                 </div>
                 
                 <div class="heatmap-fond">
                     <span class="fond-navn">Sydinvest Globale EM-aktier</span>
-                    <span class="fond-ret pos">+16.5%</span>
+                    <span class="fond-ret pos">+16.9%</span>
                 </div>
                 
             </div>
@@ -438,7 +598,7 @@
                 
                 <div class="heatmap-fond">
                     <span class="fond-navn">C WorldWide Asien</span>
-                    <span class="fond-ret pos">+21.6%</span>
+                    <span class="fond-ret pos">+21.7%</span>
                 </div>
                 
             </div>
@@ -449,7 +609,7 @@
                 
                 <div class="heatmap-fond">
                     <span class="fond-navn">Robeco Circular Economy Equities</span>
-                    <span class="fond-ret pos">+10.2%</span>
+                    <span class="fond-ret pos">+11.3%</span>
                 </div>
                 
             </div>
@@ -582,7 +742,7 @@
                     <td style="font-size:12px; color:#666;">2025-07-08</td>
                     <td style="font-size:12px; color:#666;">2026-03-02</td>
                     <td style="text-align: right;" class="pos">
-                        +20.75%
+                        +21.67%
                     </td>
                 </tr>
                 
@@ -591,7 +751,7 @@
                     <td style="font-size:12px; color:#666;">2026-03-02</td>
                     <td style="font-size:12px; color:#666;">2026-05-05</td>
                     <td style="text-align: right;" class="neg">
-                        -20.76%
+                        -19.80%
                     </td>
                 </tr>
                 
@@ -613,6 +773,43 @@
                     <li><strong>⚠️ Slower:</strong> Faldet ud af Top 7 eller negativt afkast.</li>
                     <li><strong>🛑 Outperformed:</strong> Uden for Top 10. Andre fonde løber markant hurtigere.</li>
                 </ul>
+                <h4>📊 Sharpe-ratio & Standardafvigelse</h4>
+                <table class="def-table">
+                    <tr>
+                        <td>Sharpe 1y</td>
+                        <td>Risikojusteret afkast: hvor meget afkast du får per enhed risiko du tager.
+                            Over 1.0 er godt, over 2.0 er fremragende. En fond med Sharpe 2.5 leverer
+                            mere afkast i forhold til sin risiko end en fond med Sharpe 1.5 —
+                            selv hvis den absolutte afkastprocent er lavere.</td>
+                    </tr>
+                    <tr>
+                        <td>Std.afv 1y</td>
+                        <td>Standardafvigelse — måler hvor meget kursen svinger op og ned om sit gennemsnit.
+                            15% betyder at kursen i et normalår kan svinge ±15% fra sin gennemsnitlige bane.
+                            Lavere = roligere fond. Højere = større udsving i begge retninger.</td>
+                    </tr>
+                    <tr>
+                        <td>ÅOP</td>
+                        <td>Årlige Omkostninger i Procent — det du betaler i gebyrer hvert år uanset afkast.
+                            Fratrækkes direkte fra fondens kurs. Over lang tid er forskellen på 1.38% og 2.58%
+                            markant for det endelige afkast.</td>
+                    </tr>
+                </table>
+                <h4>🔗 Overlap-analyse</h4>
+                <table class="def-table">
+                    <tr>
+                        <td>Overlap</td>
+                        <td>Når den samme aktie optræder som top-beholdning i flere af dine fonde
+                            er du reelt mere koncentreret end antallet af fonde antyder. Fx betyder
+                            TSMC i top-3 hos tre fonde at din samlede eksponering mod én aktie
+                            er langt større end du måske tror.</td>
+                    </tr>
+                    <tr>
+                        <td>Konsekvens</td>
+                        <td>Høj overlap reducerer den reelle diversifikationseffekt. En fondsstigning
+                            i Taiwan-halvledere vil løfte alle tre fonde — men et fald vil ramme dem alle.</td>
+                    </tr>
+                </table>
                 <h4>⚡ Trend Velocity (Acceleration)</h4>
                 <p>Sammenligner ugens afkast mod månedens gennemsnit per uge (1M / 4):</p>
                 <ul>
