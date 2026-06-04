@@ -5,14 +5,12 @@
     "trend_state": "BULL"
   },
   "PFA000002726": {
-    "hwm": 246.1,
-    "hwm_date": "2026-06-03",
-    "trend_state": "BULL"
+    "hwm": 247.64,
+    "hwm_date": "2026-06-04"
   },
   "PFA000002732": {
-    "hwm": 478.83,
-    "hwm_date": "2026-06-03",
-    "trend_state": "BULL"
+    "hwm": 482.5,
+    "hwm_date": "2026-06-04"
   },
   "PFA000002761": {
     "trend_state": "BEAR"
@@ -21,8 +19,7 @@
     "trend_state": "BULL"
   },
   "PFA000002753": {
-    "hwm": 160.92,
-    "hwm_date": "2026-06-03",
-    "trend_state": "BULL"
+    "hwm": 162.07,
+    "hwm_date": "2026-06-04"
   }
 }
