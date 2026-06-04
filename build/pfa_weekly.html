@@ -58,6 +58,22 @@
                                 width: 180px; padding-right: 15px; }
     .strategy-box { margin-top: 30px; padding: 20px; background: #fff; border-radius: 8px;
                     border-left: 5px solid #22c55e; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+
+    /* Rang & Momentum */
+    .rank-badge-top { display: inline-block; background: #e6f4ea; color: #1e7e34;
+                      border: 1px solid #c3e6cb; padding: 2px 8px; border-radius: 4px;
+                      font-size: 12px; font-weight: bold; white-space: nowrap; }
+    .rank-badge-mid { display: inline-block; background: #e8f0fe; color: #1a56b0;
+                      border: 1px solid #c5d8f6; padding: 2px 8px; border-radius: 4px;
+                      font-size: 12px; font-weight: bold; white-space: nowrap; }
+    .rank-badge-low { display: inline-block; background: #f1f3f4; color: #5f6368;
+                      border: 1px solid #dadce0; padding: 2px 8px; border-radius: 4px;
+                      font-size: 12px; font-weight: bold; white-space: nowrap; }
+    .momentum-dots { display: flex; gap: 3px; align-items: center; margin-bottom: 3px; }
+    .mdot-up   { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; display: inline-block; }
+    .mdot-flat { width: 8px; height: 8px; border-radius: 50%; background: #9ca3af; display: inline-block; }
+    .mdot-dn   { width: 8px; height: 8px; border-radius: 50%; background: #ef4444; display: inline-block; }
+    .rank-hist { font-size: 11px; color: #888; }
   </style>
 </head>
 <body>
@@ -67,11 +83,11 @@
     <div class="header">
       <div>
         <h1>📈 PFA Weekly</h1>
-        <small>Uge 23 | Dato: 03. June 2026</small>
+        <small>Uge 23 | Dato: 04. June 2026</small>
       </div>
       <div class="score-box">
         <small>UGENS AFKAST (⭐)</small><br>
-        <strong style="font-size: 24px; color: #15803d;">4.06%</strong>
+        <strong style="font-size: 24px; color: #15803d;">3.29%</strong>
       </div>
     </div>
 
@@ -86,7 +102,7 @@
         <div style="margin-top:10px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.05);">
           <strong>🎯 Nye BULL-muligheder:</strong>
           <span style="color: #444;">
-          iShares MSCI Emerging Markets UCITS ETF, Xtrackers Råvarer UCITS ETF, iShares MSCI ACWI Global Equities UCITS ETF, UBS Globale Bæredygtige Aktier, iShares Core MSCI Japan UCITS ETF
+          iShares MSCI Emerging Markets UCITS ETF, Xtrackers Råvarer UCITS ETF, Sparinvest Value Aktier, iShares MSCI ACWI Global Equities UCITS ETF, PFA Indeks Globale Aktier
           </span>
         </div>
       
@@ -100,27 +116,27 @@
         
           <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
             <span>C WorldWide Asien</span>
-            <strong style="color: #16a34a;">+6.19%</strong>
+            <strong style="color: #16a34a;">+3.68%</strong>
           </div>
         
           <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
             <span>iShares MSCI Emerging Markets UCITS</span>
-            <strong style="color: #16a34a;">+4.93%</strong>
-          </div>
-        
-          <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
-            <span>Sydinvest Globale EM-aktier</span>
-            <strong style="color: #16a34a;">+4.71%</strong>
-          </div>
-        
-          <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
-            <span>UBS Globale Bæredygtige Aktier</span>
-            <strong style="color: #16a34a;">+2.72%</strong>
+            <strong style="color: #16a34a;">+3.58%</strong>
           </div>
         
           <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
             <span>Lazard Emerging Markets Equity Fund</span>
-            <strong style="color: #16a34a;">+2.69%</strong>
+            <strong style="color: #16a34a;">+3.25%</strong>
+          </div>
+        
+          <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
+            <span>Robeco Circular Economy Equities</span>
+            <strong style="color: #16a34a;">+3.21%</strong>
+          </div>
+        
+          <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
+            <span>Sydinvest Globale EM-aktier</span>
+            <strong style="color: #16a34a;">+3.03%</strong>
           </div>
         
       </div>
@@ -128,28 +144,28 @@
         <h4 style="margin-top:0;">⚠️ Ugens Bund 5</h4>
         
           <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
-            <span>iShares MSCI World Health Care Sec </span>
-            <strong style="color: #dc2626;">-1.44%</strong>
-          </div>
-        
-          <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
             <span>Kerne Invest Danske Aktier</span>
-            <strong style="color: #dc2626;">-1.35%</strong>
+            <strong style="color: #dc2626;">-1.74%</strong>
           </div>
         
           <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
             <span>Maj Invest Danske Aktier</span>
-            <strong style="color: #dc2626;">-1.20%</strong>
+            <strong style="color: #dc2626;">-1.74%</strong>
           </div>
         
           <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
-            <span>BankInvest Højt Udbytte Aktier</span>
-            <strong style="color: #dc2626;">-0.97%</strong>
+            <span>iShares MSCI World Health Care Sec </span>
+            <strong style="color: #dc2626;">-1.74%</strong>
           </div>
         
           <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
-            <span>iShares MSCI China UCITS ETF</span>
-            <strong style="color: #dc2626;">-0.73%</strong>
+            <span>iShares Global Aerospace & Defence </span>
+            <strong style="color: #dc2626;">-1.23%</strong>
+          </div>
+        
+          <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
+            <span>SKAGEN Global</span>
+            <strong style="color: #dc2626;">-1.19%</strong>
           </div>
         
       </div>
@@ -165,6 +181,7 @@
       <thead>
         <tr>
           <th>Fond</th>
+          <th>Rang</th>
           <th>Uge %</th>
           <th>Total %</th>
           <th>Trend (MA200)</th>
@@ -173,6 +190,7 @@
           <th>ÅTD %</th>
           <th>Drawdown</th>
           <th>Trail Stop</th>
+          <th>Momentum-trend</th>
         </tr>
       </thead>
       <tbody>
@@ -183,12 +201,20 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-top">#1 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #16a34a; font-weight: 500;">
-            +6.19%
+            +3.68%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
-            +21.64%
+            +21.71%
           </td>
 
           <td class="trend-bull">
@@ -197,7 +223,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +33.06%
+            +32.86%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -205,7 +231,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +39.31%
+            +39.39%
           </td>
 
           <td style="color: #dc2626;">0.00%</td>
@@ -214,9 +240,34 @@
             
               
                 <span style="font-size:12px; color:#666;">
-                  HWM: 478.56
+                  HWM: 478.83
                 </span>
               
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Stabil →</span>
+              </div>
+              <div class="rank-hist">#1→#1→#1→#1→#1</div>
             
           </td>
         </tr>
@@ -225,18 +276,22 @@
           <td>⭐
             Sydinvest Globale EM-aktier
             
-              <span style="font-size:11px; margin-left:4px;">
-                🔴
-              </span>
+          </td>
+
+          <td>
+            
+              
+                <span class="rank-badge-top">#2 af 47</span>
+              
             
           </td>
 
           <td style="color: #16a34a; font-weight: 500;">
-            +4.71%
+            +3.03%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
-            +16.53%
+            +16.92%
           </td>
 
           <td class="trend-bull">
@@ -245,7 +300,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +29.01%
+            +29.17%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -253,7 +308,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +33.49%
+            +33.93%
           </td>
 
           <td style="color: #dc2626;">0.00%</td>
@@ -262,9 +317,34 @@
             
               
                 <span style="font-size:12px; color:#666;">
-                  HWM: 245.28
+                  HWM: 246.1
                 </span>
               
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Stabil →</span>
+              </div>
+              <div class="rank-hist">#3→#3→#3→#2→#2</div>
             
           </td>
         </tr>
@@ -279,12 +359,20 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-top">#3 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #16a34a; font-weight: 500;">
-            +2.66%
+            +3.21%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
-            +10.17%
+            +11.30%
           </td>
 
           <td class="trend-bull">
@@ -293,7 +381,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +26.84%
+            +27.88%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -301,7 +389,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +30.75%
+            +32.10%
           </td>
 
           <td style="color: #dc2626;">0.00%</td>
@@ -310,9 +398,34 @@
             
               
                 <span style="font-size:12px; color:#666;">
-                  HWM: 159.28
+                  HWM: 160.92
                 </span>
               
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Stabil →</span>
+              </div>
+              <div class="rank-hist">#2→#2→#2→#3→#3</div>
             
           </td>
         </tr>
@@ -323,12 +436,20 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-top">#5 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #16a34a; font-weight: 500;">
-            +2.69%
+            +3.25%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
-            +11.80%
+            +12.60%
           </td>
 
           <td class="trend-bull">
@@ -337,7 +458,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +24.63%
+            +25.24%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -345,7 +466,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +27.73%
+            +28.64%
           </td>
 
           <td style="color: #dc2626;">0.00%</td>
@@ -354,9 +475,34 @@
             
               
                 <span style="font-size:12px; color:#666;">
-                  HWM: 464.2
+                  HWM: 467.52
                 </span>
               
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Stabil →</span>
+              </div>
+              <div class="rank-hist">#6→#6→#6→#5→#5</div>
             
           </td>
         </tr>
@@ -367,8 +513,16 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-top">#4 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #16a34a; font-weight: 500;">
-            +4.93%
+            +3.58%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -381,7 +535,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +24.63%
+            +25.09%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -389,7 +543,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +28.02%
+            +28.76%
           </td>
 
           <td style="color: #dc2626;">0.00%</td>
@@ -397,6 +551,31 @@
           <td>
             
               <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Stabil →</span>
+              </div>
+              <div class="rank-hist">#4→#4→#4→#4→#4</div>
             
           </td>
         </tr>
@@ -407,8 +586,16 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-low">#22 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #16a34a; font-weight: 500;">
-            +0.43%
+            +1.80%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -421,7 +608,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +19.64%
+            +20.04%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -429,174 +616,39 @@
           </td>
 
           <td style="color: #16a34a;">
-            +24.11%
+            +24.64%
           </td>
 
-          <td style="color: #dc2626;">-1.71%</td>
+          <td style="color: #dc2626;">-1.29%</td>
 
           <td>
             
               <span style="color:#ccc;">—</span>
             
           </td>
-        </tr>
-        
-        <tr class="">
-          <td>
-            iShares MSCI ACWI Global Equities UCITS 
-            
-          </td>
-
-          <td style="color: #16a34a; font-weight: 500;">
-            +1.59%
-          </td>
-
-          <td style="font-weight: bold; color: #16a34a">
-            -%
-          </td>
-
-          <td class="trend-bull">
-            BULL
-            <small style="color:#999; font-weight:normal;">(MA200)</small>
-          </td>
-
-          <td style="color: #16a34a;">
-            +13.88%
-          </td>
-
-          <td style="font-size: 12px; color: #ccc;">
-            –
-          </td>
-
-          <td style="color: #16a34a;">
-            +13.45%
-          </td>
-
-          <td style="color: #dc2626;">0.00%</td>
 
           <td>
             
-              <span style="color:#ccc;">—</span>
-            
-          </td>
-        </tr>
-        
-        <tr class="">
-          <td>
-            UBS Globale Bæredygtige Aktier
-            
-          </td>
-
-          <td style="color: #16a34a; font-weight: 500;">
-            +2.72%
-          </td>
-
-          <td style="font-weight: bold; color: #16a34a">
-            -%
-          </td>
-
-          <td class="trend-bull">
-            BULL
-            <small style="color:#999; font-weight:normal;">(MA200)</small>
-          </td>
-
-          <td style="color: #16a34a;">
-            +13.87%
-          </td>
-
-          <td style="font-size: 12px; color: #ccc;">
-            –
-          </td>
-
-          <td style="color: #16a34a;">
-            +11.52%
-          </td>
-
-          <td style="color: #dc2626;">0.00%</td>
-
-          <td>
-            
-              <span style="color:#ccc;">—</span>
-            
-          </td>
-        </tr>
-        
-        <tr class="">
-          <td>
-            iShares Core MSCI Japan UCITS ETF
-            
-          </td>
-
-          <td style="color: #16a34a; font-weight: 500;">
-            +1.04%
-          </td>
-
-          <td style="font-weight: bold; color: #16a34a">
-            -%
-          </td>
-
-          <td class="trend-bull">
-            BULL
-            <small style="color:#999; font-weight:normal;">(MA200)</small>
-          </td>
-
-          <td style="color: #16a34a;">
-            +13.39%
-          </td>
-
-          <td style="font-size: 12px; color: #ccc;">
-            –
-          </td>
-
-          <td style="color: #16a34a;">
-            +16.55%
-          </td>
-
-          <td style="color: #dc2626;">0.00%</td>
-
-          <td>
-            
-              <span style="color:#ccc;">—</span>
-            
-          </td>
-        </tr>
-        
-        <tr class="">
-          <td>
-            Kerne Invest Globale Aktier
-            
-          </td>
-
-          <td style="color: #16a34a; font-weight: 500;">
-            +1.85%
-          </td>
-
-          <td style="font-weight: bold; color: #16a34a">
-            -%
-          </td>
-
-          <td class="trend-bull">
-            BULL
-            <small style="color:#999; font-weight:normal;">(MA200)</small>
-          </td>
-
-          <td style="color: #16a34a;">
-            +13.25%
-          </td>
-
-          <td style="font-size: 12px; color: #ccc;">
-            –
-          </td>
-
-          <td style="color: #16a34a;">
-            +12.22%
-          </td>
-
-          <td style="color: #dc2626;">0.00%</td>
-
-          <td>
-            
-              <span style="color:#ccc;">—</span>
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Accelererer ↑</span>
+              </div>
+              <div class="rank-hist">#35→#35→#32→#22→#22</div>
             
           </td>
         </tr>
@@ -607,8 +659,16 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-mid">#13 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #16a34a; font-weight: 500;">
-            +0.25%
+            +1.08%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -621,7 +681,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +13.22%
+            +14.57%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -629,47 +689,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +13.07%
-          </td>
-
-          <td style="color: #dc2626;">-0.20%</td>
-
-          <td>
-            
-              <span style="color:#ccc;">—</span>
-            
-          </td>
-        </tr>
-        
-        <tr class="">
-          <td>
-            PFA Indeks USA Aktier
-            
-          </td>
-
-          <td style="color: #16a34a; font-weight: 500;">
-            +1.82%
-          </td>
-
-          <td style="font-weight: bold; color: #16a34a">
-            -%
-          </td>
-
-          <td class="trend-bull">
-            BULL
-            <small style="color:#999; font-weight:normal;">(MA200)</small>
-          </td>
-
-          <td style="color: #16a34a;">
-            +13.15%
-          </td>
-
-          <td style="font-size: 12px; color: #ccc;">
-            –
-          </td>
-
-          <td style="color: #16a34a;">
-            +12.25%
+            +14.53%
           </td>
 
           <td style="color: #dc2626;">0.00%</td>
@@ -677,6 +697,104 @@
           <td>
             
               <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Stabil →</span>
+              </div>
+              <div class="rank-hist">#14→#14→#19→#19→#13</div>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            iShares MSCI ACWI Global Equities UCITS 
+            
+          </td>
+
+          <td>
+            
+              
+                <span class="rank-badge-mid">#11 af 47</span>
+              
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +1.25%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA200)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +14.03%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +13.71%
+          </td>
+
+          <td style="color: #dc2626;">0.00%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Stabil →</span>
+              </div>
+              <div class="rank-hist">#11→#11→#13→#11→#11</div>
             
           </td>
         </tr>
@@ -687,8 +805,16 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-mid">#9 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #16a34a; font-weight: 500;">
-            +1.72%
+            +1.26%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -701,7 +827,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +13.11%
+            +13.34%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -709,7 +835,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +13.20%
+            +13.42%
           </td>
 
           <td style="color: #dc2626;">0.00%</td>
@@ -717,6 +843,323 @@
           <td>
             
               <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Accelererer ↑</span>
+              </div>
+              <div class="rank-hist">#13→#13→#11→#10→#9</div>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            UBS Globale Bæredygtige Aktier
+            
+          </td>
+
+          <td>
+            
+              
+                <span class="rank-badge-mid">#7 af 47</span>
+              
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +1.29%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA200)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +13.14%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +10.92%
+          </td>
+
+          <td style="color: #dc2626;">-0.54%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Stabil →</span>
+              </div>
+              <div class="rank-hist">#7→#7→#7→#7→#7</div>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            PFA Indeks USA Aktier
+            
+          </td>
+
+          <td>
+            
+              
+                <span class="rank-badge-mid">#10 af 47</span>
+              
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +1.26%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA200)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +13.09%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +12.19%
+          </td>
+
+          <td style="color: #dc2626;">-0.05%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Stabil →</span>
+              </div>
+              <div class="rank-hist">#10→#10→#12→#9→#10</div>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            Kerne Invest Globale Aktier
+            
+          </td>
+
+          <td>
+            
+              
+                <span class="rank-badge-mid">#8 af 47</span>
+              
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +1.06%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA200)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +12.93%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +12.03%
+          </td>
+
+          <td style="color: #dc2626;">-0.17%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Stabil →</span>
+              </div>
+              <div class="rank-hist">#8→#8→#10→#8→#8</div>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            iShares Core MSCI Japan UCITS ETF
+            
+          </td>
+
+          <td>
+            
+              
+                <span class="rank-badge-low">#17 af 47</span>
+              
+            
+          </td>
+
+          <td style="color: #dc2626; font-weight: 500;">
+            -0.48%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA200)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +12.52%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +15.80%
+          </td>
+
+          <td style="color: #dc2626;">-0.64%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Falder ↓</span>
+              </div>
+              <div class="rank-hist">#9→#9→#15→#13→#17</div>
             
           </td>
         </tr>
@@ -727,8 +1170,16 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-low">#18 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #16a34a; font-weight: 500;">
-            +1.28%
+            +1.01%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -741,7 +1192,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +11.22%
+            +11.44%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -749,7 +1200,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +9.39%
+            +9.75%
           </td>
 
           <td style="color: #dc2626;">0.00%</td>
@@ -757,6 +1208,31 @@
           <td>
             
               <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Falder ↓</span>
+              </div>
+              <div class="rank-hist">#16→#16→#16→#17→#18</div>
             
           </td>
         </tr>
@@ -767,8 +1243,16 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-mid">#14 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #16a34a; font-weight: 500;">
-            +1.38%
+            +0.99%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -781,7 +1265,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +10.32%
+            +10.54%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -789,7 +1273,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +10.04%
+            +10.25%
           </td>
 
           <td style="color: #dc2626;">0.00%</td>
@@ -797,6 +1281,31 @@
           <td>
             
               <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Accelererer ↑</span>
+              </div>
+              <div class="rank-hist">#17→#17→#17→#15→#14</div>
             
           </td>
         </tr>
@@ -807,8 +1316,16 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-low">#19 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #16a34a; font-weight: 500;">
-            +0.78%
+            +0.45%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -821,7 +1338,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +8.27%
+            +8.82%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -829,54 +1346,39 @@
           </td>
 
           <td style="color: #16a34a;">
-            +9.41%
+            +9.99%
           </td>
 
-          <td style="color: #dc2626;">-0.08%</td>
+          <td style="color: #dc2626;">0.00%</td>
 
           <td>
             
               <span style="color:#ccc;">—</span>
             
           </td>
-        </tr>
-        
-        <tr class="">
-          <td>
-            Maj Invest Defence & Cybersecurity Fund 
-            
-          </td>
-
-          <td style="color: #16a34a; font-weight: 500;">
-            +2.58%
-          </td>
-
-          <td style="font-weight: bold; color: #16a34a">
-            -%
-          </td>
-
-          <td class="trend-bull">
-            BULL
-            <small style="color:#999; font-weight:normal;">(MA200)</small>
-          </td>
-
-          <td style="color: #16a34a;">
-            +7.68%
-          </td>
-
-          <td style="font-size: 12px; color: #ccc;">
-            –
-          </td>
-
-          <td style="color: #16a34a;">
-            +11.14%
-          </td>
-
-          <td style="color: #dc2626;">-3.52%</td>
 
           <td>
             
-              <span style="color:#ccc;">—</span>
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Stabil →</span>
+              </div>
+              <div class="rank-hist">#20→#20→#21→#18→#19</div>
             
           </td>
         </tr>
@@ -887,8 +1389,16 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-low">#23 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #dc2626; font-weight: 500;">
-            -0.63%
+            -0.45%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -901,7 +1411,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +7.39%
+            +8.24%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -909,14 +1419,39 @@
           </td>
 
           <td style="color: #16a34a;">
-            +7.03%
+            +7.83%
           </td>
 
-          <td style="color: #dc2626;">-1.28%</td>
+          <td style="color: #dc2626;">-0.55%</td>
 
           <td>
             
               <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Falder ↓</span>
+              </div>
+              <div class="rank-hist">#18→#18→#25→#23→#23</div>
             
           </td>
         </tr>
@@ -927,8 +1462,16 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-mid">#12 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #16a34a; font-weight: 500;">
-            +2.15%
+            +1.04%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -941,7 +1484,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +7.29%
+            +7.86%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -949,14 +1492,39 @@
           </td>
 
           <td style="color: #16a34a;">
-            +15.49%
+            +16.37%
           </td>
 
-          <td style="color: #dc2626;">-0.12%</td>
+          <td style="color: #dc2626;">0.00%</td>
 
           <td>
             
               <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Accelererer ↑</span>
+              </div>
+              <div class="rank-hist">#25→#25→#9→#16→#12</div>
             
           </td>
         </tr>
@@ -967,8 +1535,16 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-low">#20 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #16a34a; font-weight: 500;">
-            +1.04%
+            +0.72%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -981,7 +1557,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +7.15%
+            +7.35%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -989,7 +1565,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +6.94%
+            +7.14%
           </td>
 
           <td style="color: #dc2626;">0.00%</td>
@@ -999,44 +1575,29 @@
               <span style="color:#ccc;">—</span>
             
           </td>
-        </tr>
-        
-        <tr class="">
-          <td>
-            Robeco Global SDG Equities
-            
-          </td>
-
-          <td style="color: #16a34a; font-weight: 500;">
-            +1.54%
-          </td>
-
-          <td style="font-weight: bold; color: #16a34a">
-            -%
-          </td>
-
-          <td class="trend-bull">
-            BULL
-            <small style="color:#999; font-weight:normal;">(MA200)</small>
-          </td>
-
-          <td style="color: #16a34a;">
-            +6.89%
-          </td>
-
-          <td style="font-size: 12px; color: #ccc;">
-            –
-          </td>
-
-          <td style="color: #16a34a;">
-            +6.41%
-          </td>
-
-          <td style="color: #dc2626;">0.00%</td>
 
           <td>
             
-              <span style="color:#ccc;">—</span>
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Accelererer ↑</span>
+              </div>
+              <div class="rank-hist">#24→#24→#24→#21→#20</div>
             
           </td>
         </tr>
@@ -1047,8 +1608,16 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-low">#21 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #dc2626; font-weight: 500;">
-            -0.66%
+            -0.34%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -1061,7 +1630,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +5.95%
+            +7.05%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -1069,21 +1638,200 @@
           </td>
 
           <td style="color: #16a34a;">
-            +5.71%
+            +6.85%
           </td>
 
-          <td style="color: #dc2626;">-3.21%</td>
+          <td style="color: #dc2626;">-2.16%</td>
 
           <td>
             
               <span style="color:#ccc;">—</span>
             
           </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Falder ↓</span>
+              </div>
+              <div class="rank-hist">#15→#15→#26→#25→#21</div>
+            
+          </td>
         </tr>
         
         <tr class="">
           <td>
-            iShares Global Aerospace & Defence UCITS
+            Maj Invest Defence & Cybersecurity Fund 
+            
+          </td>
+
+          <td>
+            
+              
+                <span class="rank-badge-mid">#6 af 47</span>
+              
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +1.52%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA200)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +6.92%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +10.54%
+          </td>
+
+          <td style="color: #dc2626;">-4.04%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Stabil →</span>
+              </div>
+              <div class="rank-hist">#5→#5→#5→#6→#6</div>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            Robeco Global SDG Equities
+            
+          </td>
+
+          <td>
+            
+              
+                <span class="rank-badge-mid">#15 af 47</span>
+              
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +0.94%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA200)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +6.67%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +6.21%
+          </td>
+
+          <td style="color: #dc2626;">-0.19%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Accelererer ↑</span>
+              </div>
+              <div class="rank-hist">#26→#26→#18→#14→#15</div>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            C WorldWide Globale Aktier
+            
+          </td>
+
+          <td>
+            
+              
+                <span class="rank-badge-low">#28 af 47</span>
+              
             
           </td>
 
@@ -1101,7 +1849,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +4.67%
+            +4.43%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -1109,54 +1857,39 @@
           </td>
 
           <td style="color: #16a34a;">
-            +6.40%
+            +3.41%
           </td>
 
-          <td style="color: #dc2626;">-8.42%</td>
+          <td style="color: #dc2626;">-0.91%</td>
 
           <td>
             
               <span style="color:#ccc;">—</span>
             
           </td>
-        </tr>
-        
-        <tr class="">
-          <td>
-            WM Opportunistisk Emerging Markets Oblig
-            
-          </td>
-
-          <td style="color: #16a34a; font-weight: 500;">
-            +1.03%
-          </td>
-
-          <td style="font-weight: bold; color: #16a34a">
-            -%
-          </td>
-
-          <td class="trend-bull">
-            BULL
-            <small style="color:#999; font-weight:normal;">(MA200)</small>
-          </td>
-
-          <td style="color: #16a34a;">
-            +4.08%
-          </td>
-
-          <td style="font-size: 12px; color: #ccc;">
-            –
-          </td>
-
-          <td style="color: #16a34a;">
-            +3.67%
-          </td>
-
-          <td style="color: #dc2626;">0.00%</td>
 
           <td>
             
-              <span style="color:#ccc;">—</span>
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Accelererer ↑</span>
+              </div>
+              <div class="rank-hist">#34→#34→#37→#28→#28</div>
             
           </td>
         </tr>
@@ -1167,8 +1900,16 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-low">#27 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #16a34a; font-weight: 500;">
-            +0.70%
+            +0.44%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -1181,7 +1922,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +3.98%
+            +4.17%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -1189,7 +1930,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +3.87%
+            +4.05%
           </td>
 
           <td style="color: #dc2626;">0.00%</td>
@@ -1199,16 +1940,49 @@
               <span style="color:#ccc;">—</span>
             
           </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Accelererer ↑</span>
+              </div>
+              <div class="rank-hist">#29→#29→#29→#27→#27</div>
+            
+          </td>
         </tr>
         
         <tr class="">
           <td>
-            C WorldWide Globale Aktier
+            WM Opportunistisk Emerging Markets Oblig
+            
+          </td>
+
+          <td>
+            
+              
+                <span class="rank-badge-low">#26 af 47</span>
+              
             
           </td>
 
           <td style="color: #16a34a; font-weight: 500;">
-            +0.38%
+            +0.90%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -1221,7 +1995,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +3.98%
+            +4.13%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -1229,14 +2003,39 @@
           </td>
 
           <td style="color: #16a34a;">
-            +2.99%
+            +3.71%
           </td>
 
-          <td style="color: #dc2626;">-1.31%</td>
+          <td style="color: #dc2626;">0.00%</td>
 
           <td>
             
               <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Accelererer ↑</span>
+              </div>
+              <div class="rank-hist">#30→#30→#31→#26→#26</div>
             
           </td>
         </tr>
@@ -1247,8 +2046,16 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-low">#33 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #dc2626; font-weight: 500;">
-            -1.35%
+            -1.74%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -1261,7 +2068,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +3.96%
+            +3.66%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -1269,14 +2076,112 @@
           </td>
 
           <td style="color: #16a34a;">
-            +0.35%
+            +0.10%
           </td>
 
-          <td style="color: #dc2626;">-3.89%</td>
+          <td style="color: #dc2626;">-4.13%</td>
 
           <td>
             
               <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Falder ↓</span>
+              </div>
+              <div class="rank-hist">#22→#22→#23→#30→#33</div>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            iShares Global Aerospace & Defence UCITS
+            
+          </td>
+
+          <td>
+            
+              
+                <span class="rank-badge-low">#24 af 47</span>
+              
+            
+          </td>
+
+          <td style="color: #dc2626; font-weight: 500;">
+            -1.23%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA200)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +3.51%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +5.41%
+          </td>
+
+          <td style="color: #dc2626;">-9.27%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Falder ↓</span>
+              </div>
+              <div class="rank-hist">#12→#12→#8→#20→#24</div>
             
           </td>
         </tr>
@@ -1287,8 +2192,16 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-low">#31 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #16a34a; font-weight: 500;">
-            +1.09%
+            +0.71%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -1301,7 +2214,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +2.60%
+            +2.74%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -1309,14 +2222,39 @@
           </td>
 
           <td style="color: #16a34a;">
-            +2.39%
+            +2.57%
           </td>
 
-          <td style="color: #dc2626;">-0.41%</td>
+          <td style="color: #dc2626;">-0.23%</td>
 
           <td>
             
               <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Accelererer ↑</span>
+              </div>
+              <div class="rank-hist">#36→#36→#30→#32→#31</div>
             
           </td>
         </tr>
@@ -1327,8 +2265,16 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-low">#32 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #16a34a; font-weight: 500;">
-            +1.19%
+            +0.92%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -1341,7 +2287,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +2.50%
+            +2.72%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -1349,14 +2295,39 @@
           </td>
 
           <td style="color: #16a34a;">
-            +1.68%
+            +1.92%
           </td>
 
-          <td style="color: #dc2626;">-1.30%</td>
+          <td style="color: #dc2626;">-1.07%</td>
 
           <td>
             
               <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Accelererer ↑</span>
+              </div>
+              <div class="rank-hist">#43→#43→#35→#35→#32</div>
             
           </td>
         </tr>
@@ -1367,8 +2338,16 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-low">#30 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #16a34a; font-weight: 500;">
-            +0.07%
+            +0.37%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -1381,7 +2360,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +2.27%
+            +2.69%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -1389,14 +2368,112 @@
           </td>
 
           <td style="color: #dc2626;">
-            -2.03%
+            -1.64%
           </td>
 
-          <td style="color: #dc2626;">-5.34%</td>
+          <td style="color: #dc2626;">-4.97%</td>
 
           <td>
             
               <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Falder ↓</span>
+              </div>
+              <div class="rank-hist">#28→#28→#20→#29→#30</div>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            iShares Inflation Linked Govt Bond UCITS
+            
+          </td>
+
+          <td>
+            
+              
+                <span class="rank-badge-low">#42 af 47</span>
+              
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +0.20%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA200)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +2.37%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +3.34%
+          </td>
+
+          <td style="color: #dc2626;">0.00%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Falder ↓</span>
+              </div>
+              <div class="rank-hist">#32→#32→#41→#42→#42</div>
             
           </td>
         </tr>
@@ -1407,43 +2484,11 @@
             
           </td>
 
-          <td style="color: #16a34a; font-weight: 500;">
-            +0.07%
-          </td>
-
-          <td style="font-weight: bold; color: #16a34a">
-            -%
-          </td>
-
-          <td class="trend-bull">
-            BULL
-            <small style="color:#999; font-weight:normal;">(MA200)</small>
-          </td>
-
-          <td style="color: #16a34a;">
-            +2.23%
-          </td>
-
-          <td style="font-size: 12px; color: #ccc;">
-            –
-          </td>
-
-          <td style="color: #16a34a;">
-            +2.05%
-          </td>
-
-          <td style="color: #dc2626;">0.00%</td>
-
           <td>
             
-              <span style="color:#ccc;">—</span>
-            
-          </td>
-        </tr>
-        
-        <tr class="">
-          <td>
-            iShares Inflation Linked Govt Bond UCITS
+              
+                <span class="rank-badge-low">#44 af 47</span>
+              
             
           </td>
 
@@ -1461,7 +2506,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +2.11%
+            +2.20%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -1469,14 +2514,39 @@
           </td>
 
           <td style="color: #16a34a;">
-            +3.05%
+            +2.06%
           </td>
 
-          <td style="color: #dc2626;">-0.14%</td>
+          <td style="color: #dc2626;">0.00%</td>
 
           <td>
             
               <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Falder ↓</span>
+              </div>
+              <div class="rank-hist">#33→#33→#43→#43→#44</div>
             
           </td>
         </tr>
@@ -1487,8 +2557,16 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-low">#37 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #dc2626; font-weight: 500;">
-            -1.20%
+            -1.74%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -1501,7 +2579,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +1.93%
+            +1.68%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -1509,14 +2587,39 @@
           </td>
 
           <td style="color: #dc2626;">
-            -3.64%
+            -3.84%
           </td>
 
-          <td style="color: #dc2626;">-5.93%</td>
+          <td style="color: #dc2626;">-6.13%</td>
 
           <td>
             
               <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Falder ↓</span>
+              </div>
+              <div class="rank-hist">#23→#23→#22→#34→#37</div>
             
           </td>
         </tr>
@@ -1527,8 +2630,16 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-low">#35 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #16a34a; font-weight: 500;">
-            +0.48%
+            +0.43%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -1541,7 +2652,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +1.61%
+            +1.68%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -1549,7 +2660,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +0.87%
+            +0.97%
           </td>
 
           <td style="color: #dc2626;">0.00%</td>
@@ -1557,6 +2668,31 @@
           <td>
             
               <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Accelererer ↑</span>
+              </div>
+              <div class="rank-hist">#38→#38→#34→#36→#35</div>
             
           </td>
         </tr>
@@ -1567,8 +2703,16 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-low">#43 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #dc2626; font-weight: 500;">
-            -0.97%
+            -0.64%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -1581,7 +2725,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +1.43%
+            +1.16%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -1589,14 +2733,39 @@
           </td>
 
           <td style="color: #16a34a;">
-            +0.76%
+            +0.45%
           </td>
 
-          <td style="color: #dc2626;">-4.82%</td>
+          <td style="color: #dc2626;">-5.11%</td>
 
           <td>
             
               <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Falder ↓</span>
+              </div>
+              <div class="rank-hist">#31→#31→#39→#37→#43</div>
             
           </td>
         </tr>
@@ -1607,8 +2776,16 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-low">#38 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #16a34a; font-weight: 500;">
-            +0.35%
+            +0.17%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -1621,7 +2798,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +0.84%
+            +1.01%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -1629,14 +2806,112 @@
           </td>
 
           <td style="color: #16a34a;">
-            +0.87%
+            +1.03%
           </td>
 
-          <td style="color: #dc2626;">-0.52%</td>
+          <td style="color: #dc2626;">-0.36%</td>
 
           <td>
             
               <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Stabil →</span>
+              </div>
+              <div class="rank-hist">#37→#37→#36→#40→#38</div>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            iShares Global HY Corp Bond EUR Hedged U
+            
+          </td>
+
+          <td>
+            
+              
+                <span class="rank-badge-low">#40 af 47</span>
+              
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +0.28%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bull">
+            BULL
+            <small style="color:#999; font-weight:normal;">(MA50)</small>
+          </td>
+
+          <td style="color: #16a34a;">
+            +0.81%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #16a34a;">
+            +0.81%
+          </td>
+
+          <td style="color: #dc2626;">-0.06%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Stabil →</span>
+              </div>
+              <div class="rank-hist">#40→#40→#42→#39→#40</div>
             
           </td>
         </tr>
@@ -1647,8 +2922,16 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-low">#45 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #16a34a; font-weight: 500;">
-            +0.04%
+            +0.03%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -1661,7 +2944,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +0.77%
+            +0.76%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -1679,84 +2962,29 @@
               <span style="color:#ccc;">—</span>
             
           </td>
-        </tr>
-        
-        <tr class="">
-          <td>
-            iShares Global HY Corp Bond EUR Hedged U
-            
-          </td>
-
-          <td style="color: #16a34a; font-weight: 500;">
-            +0.39%
-          </td>
-
-          <td style="font-weight: bold; color: #16a34a">
-            -%
-          </td>
-
-          <td class="trend-bull">
-            BULL
-            <small style="color:#999; font-weight:normal;">(MA50)</small>
-          </td>
-
-          <td style="color: #16a34a;">
-            +0.76%
-          </td>
-
-          <td style="font-size: 12px; color: #ccc;">
-            –
-          </td>
-
-          <td style="color: #16a34a;">
-            +0.73%
-          </td>
-
-          <td style="color: #dc2626;">-0.14%</td>
 
           <td>
             
-              <span style="color:#ccc;">—</span>
-            
-          </td>
-        </tr>
-        
-        <tr class="">
-          <td>
-            Fundsmith Equity Fund
-            
-          </td>
-
-          <td style="color: #16a34a; font-weight: 500;">
-            +1.95%
-          </td>
-
-          <td style="font-weight: bold; color: #16a34a">
-            -%
-          </td>
-
-          <td class="trend-bull">
-            BULL
-            <small style="color:#999; font-weight:normal;">(MA200)</small>
-          </td>
-
-          <td style="color: #16a34a;">
-            +0.59%
-          </td>
-
-          <td style="font-size: 12px; color: #ccc;">
-            –
-          </td>
-
-          <td style="color: #dc2626;">
-            -1.64%
-          </td>
-
-          <td style="color: #dc2626;">-10.57%</td>
-
-          <td>
-            
-              <span style="color:#ccc;">—</span>
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Falder ↓</span>
+              </div>
+              <div class="rank-hist">#41→#41→#44→#44→#45</div>
             
           </td>
         </tr>
@@ -1767,8 +2995,16 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-low">#39 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #16a34a; font-weight: 500;">
-            +0.62%
+            +0.33%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -1781,22 +3017,47 @@
           </td>
 
           <td style="color: #16a34a;">
-            +0.50%
+            +0.57%
           </td>
 
-          <td style="font-size: 12px; color: #ccc;">
-            –
+          <td style="font-size: 12px; color: #1a73e8;">
+            🚀 GOLDEN
           </td>
 
-          <td style="color: #dc2626;">
-            -0.06%
+          <td style="color: #16a34a;">
+            +0.02%
           </td>
 
-          <td style="color: #dc2626;">-1.25%</td>
+          <td style="color: #dc2626;">-1.16%</td>
 
           <td>
             
               <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Accelererer ↑</span>
+              </div>
+              <div class="rank-hist">#42→#42→#40→#38→#39</div>
             
           </td>
         </tr>
@@ -1807,8 +3068,16 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-low">#41 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #16a34a; font-weight: 500;">
-            +0.13%
+            +0.03%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -1821,7 +3090,7 @@
           </td>
 
           <td style="color: #16a34a;">
-            +0.32%
+            +0.42%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -1829,14 +3098,39 @@
           </td>
 
           <td style="color: #16a34a;">
-            +0.18%
+            +0.28%
           </td>
 
-          <td style="color: #dc2626;">-0.73%</td>
+          <td style="color: #dc2626;">-0.62%</td>
 
           <td>
             
               <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Falder ↓</span>
+              </div>
+              <div class="rank-hist">#39→#39→#38→#41→#41</div>
             
           </td>
         </tr>
@@ -1847,21 +3141,29 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-low">#36 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #16a34a; font-weight: 500;">
-            +1.18%
+            +0.63%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
             -%
           </td>
 
-          <td class="trend-bull">
-            BULL
+          <td class="trend-bear">
+            BEAR
             <small style="color:#999; font-weight:normal;">(MA200)</small>
           </td>
 
-          <td style="color: #16a34a;">
-            +0.04%
+          <td style="color: #dc2626;">
+            -0.09%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -1869,14 +3171,112 @@
           </td>
 
           <td style="color: #16a34a;">
-            +0.78%
+            +0.64%
           </td>
 
-          <td style="color: #dc2626;">-5.34%</td>
+          <td style="color: #dc2626;">-5.47%</td>
 
           <td>
             
               <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Accelererer ↑</span>
+              </div>
+              <div class="rank-hist">#44→#44→#45→#33→#36</div>
+            
+          </td>
+        </tr>
+        
+        <tr class="">
+          <td>
+            Fundsmith Equity Fund
+            
+          </td>
+
+          <td>
+            
+              
+                <span class="rank-badge-low">#16 af 47</span>
+              
+            
+          </td>
+
+          <td style="color: #16a34a; font-weight: 500;">
+            +0.66%
+          </td>
+
+          <td style="font-weight: bold; color: #16a34a">
+            -%
+          </td>
+
+          <td class="trend-bear">
+            BEAR
+            <small style="color:#999; font-weight:normal;">(MA200)</small>
+          </td>
+
+          <td style="color: #dc2626;">
+            -0.17%
+          </td>
+
+          <td style="font-size: 12px; color: #ccc;">
+            –
+          </td>
+
+          <td style="color: #dc2626;">
+            -2.47%
+          </td>
+
+          <td style="color: #dc2626;">-11.33%</td>
+
+          <td>
+            
+              <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Accelererer ↑</span>
+              </div>
+              <div class="rank-hist">#21→#21→#14→#12→#16</div>
             
           </td>
         </tr>
@@ -1887,8 +3287,16 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-low">#34 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #dc2626; font-weight: 500;">
-            -1.44%
+            -1.74%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -1901,7 +3309,7 @@
           </td>
 
           <td style="color: #dc2626;">
-            -0.54%
+            -1.80%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -1909,14 +3317,39 @@
           </td>
 
           <td style="color: #dc2626;">
-            -3.64%
+            -4.96%
           </td>
 
-          <td style="color: #dc2626;">-7.15%</td>
+          <td style="color: #dc2626;">-8.42%</td>
 
           <td>
             
               <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Falder ↓</span>
+              </div>
+              <div class="rank-hist">#19→#19→#27→#24→#34</div>
             
           </td>
         </tr>
@@ -1927,8 +3360,16 @@
             
           </td>
 
-          <td style="color: #16a34a; font-weight: 500;">
-            +0.08%
+          <td>
+            
+              
+                <span class="rank-badge-low">#46 af 47</span>
+              
+            
+          </td>
+
+          <td style="color: #dc2626; font-weight: 500;">
+            -0.39%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -1941,7 +3382,7 @@
           </td>
 
           <td style="color: #dc2626;">
-            -1.97%
+            -2.01%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -1949,26 +3390,59 @@
           </td>
 
           <td style="color: #dc2626;">
-            -0.78%
+            -0.85%
           </td>
 
-          <td style="color: #dc2626;">-7.38%</td>
+          <td style="color: #dc2626;">-7.44%</td>
 
           <td>
             
               <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Falder ↓</span>
+              </div>
+              <div class="rank-hist">#27→#27→#33→#45→#46</div>
             
           </td>
         </tr>
         
         <tr class="">
           <td>
-            SKAGEN Global
+            iShares MSCI China UCITS ETF
+            
+          </td>
+
+          <td>
+            
+              
+                <span class="rank-badge-low">#29 af 47</span>
+              
             
           </td>
 
           <td style="color: #16a34a; font-weight: 500;">
-            +0.23%
+            +2.17%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -1981,7 +3455,7 @@
           </td>
 
           <td style="color: #dc2626;">
-            -2.81%
+            -3.50%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -1989,14 +3463,39 @@
           </td>
 
           <td style="color: #dc2626;">
-            -5.51%
+            -3.75%
           </td>
 
-          <td style="color: #dc2626;">-12.94%</td>
+          <td style="color: #dc2626;">-12.28%</td>
 
           <td>
             
               <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Accelererer ↑</span>
+              </div>
+              <div class="rank-hist">#46→#46→#47→#46→#29</div>
             
           </td>
         </tr>
@@ -2007,8 +3506,16 @@
             
           </td>
 
+          <td>
+            
+              
+                <span class="rank-badge-low">#25 af 47</span>
+              
+            
+          </td>
+
           <td style="color: #16a34a; font-weight: 500;">
-            +1.29%
+            +0.46%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -2021,7 +3528,7 @@
           </td>
 
           <td style="color: #dc2626;">
-            -5.17%
+            -4.22%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -2029,26 +3536,59 @@
           </td>
 
           <td style="color: #16a34a;">
-            +12.43%
+            +13.80%
           </td>
 
-          <td style="color: #dc2626;">-19.05%</td>
+          <td style="color: #dc2626;">-18.06%</td>
 
           <td>
             
               <span style="color:#ccc;">—</span>
             
           </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-up" title="Steg"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Accelererer ↑</span>
+              </div>
+              <div class="rank-hist">#47→#47→#28→#31→#25</div>
+            
+          </td>
         </tr>
         
         <tr class="">
           <td>
-            iShares MSCI China UCITS ETF
+            SKAGEN Global
+            
+          </td>
+
+          <td>
+            
+              
+                <span class="rank-badge-low">#47 af 47</span>
+              
             
           </td>
 
           <td style="color: #dc2626; font-weight: 500;">
-            -0.73%
+            -1.19%
           </td>
 
           <td style="font-weight: bold; color: #16a34a">
@@ -2061,7 +3601,7 @@
           </td>
 
           <td style="color: #dc2626;">
-            -6.59%
+            -4.48%
           </td>
 
           <td style="font-size: 12px; color: #ccc;">
@@ -2069,14 +3609,39 @@
           </td>
 
           <td style="color: #dc2626;">
-            -6.80%
+            -7.20%
           </td>
 
-          <td style="color: #dc2626;">-15.07%</td>
+          <td style="color: #dc2626;">-14.49%</td>
 
           <td>
             
               <span style="color:#ccc;">—</span>
+            
+          </td>
+
+          <td>
+            
+              <div class="momentum-dots">
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-dn" title="Faldt"></span>
+                  
+                
+                  <span class="mdot-flat" title="Uændret"></span>
+                  
+                
+                <span style="font-size:11px; color:#555; margin-left:5px;">Falder ↓</span>
+              </div>
+              <div class="rank-hist">#45→#45→#46→#47→#47</div>
             
           </td>
         </tr>
@@ -2097,9 +3662,9 @@
           <div class="cat-titel" style="color: #1a73e8;">Region — Emerging Markets</div>
           <div class="cat-andel" style="color: #1a73e8;">50%</div>
           
-          <div class="cat-fond">Lazard Emerging Markets Equ… <span class="pos" style="font-weight:600;">+11.8%</span></div>
+          <div class="cat-fond">Lazard Emerging Markets Equ… <span class="pos" style="font-weight:600;">+12.6%</span></div>
           
-          <div class="cat-fond">Sydinvest Globale EM-aktier <span class="pos" style="font-weight:600;">+16.5%</span></div>
+          <div class="cat-fond">Sydinvest Globale EM-aktier <span class="pos" style="font-weight:600;">+16.9%</span></div>
           
         </div>
         
@@ -2107,7 +3672,7 @@
           <div class="cat-titel" style="color: #1a73e8;">Region — Asien</div>
           <div class="cat-andel" style="color: #1a73e8;">25%</div>
           
-          <div class="cat-fond">C WorldWide Asien <span class="pos" style="font-weight:600;">+21.6%</span></div>
+          <div class="cat-fond">C WorldWide Asien <span class="pos" style="font-weight:600;">+21.7%</span></div>
           
         </div>
         
@@ -2115,7 +3680,7 @@
           <div class="cat-titel" style="color: #f59c00;">Tema — Cirkulær Økonomi</div>
           <div class="cat-andel" style="color: #f59c00;">25%</div>
           
-          <div class="cat-fond">Robeco Circular Economy Equities <span class="pos" style="font-weight:600;">+10.2%</span></div>
+          <div class="cat-fond">Robeco Circular Economy Equities <span class="pos" style="font-weight:600;">+11.3%</span></div>
           
         </div>
         
@@ -2148,6 +3713,17 @@
 
           <h3>📊 Nøgletal</h3>
           <table class="def-table">
+            <tr>
+              <td>Rang</td>
+              <td>Fondens placering i hele PFA-universet (47 fonde) rangeret efter momentum-score.
+                  #1 = stærkeste fond. Grøn badge = top 5, blå = top 15, grå = øvrige.</td>
+            </tr>
+            <tr>
+              <td>Momentum-trend</td>
+              <td>Viser rangeringsudviklingen de seneste 5 handelsdage som farvede prikker:
+                  🟢 steg i rang, ⚫ uændret, 🔴 faldt i rang.
+                  Giver et hurtigt billede af om fonden accelererer eller flader ud.</td>
+            </tr>
             <tr>
               <td>Uge %</td>
               <td>Officielt afkast fra PFA's faktaark for den seneste uge.</td>
@@ -2244,13 +3820,13 @@
     new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: ["C WorldWide Asien", "Sydinvest Globale EM", "Robeco Circular Econ", "iShares MSCI Emergin", "Lazard Emerging Mark", "Xtrackers R\u00e5varer UC", "iShares MSCI ACWI Gl", "UBS Globale B\u00e6redygt", "iShares Core MSCI Ja", "Kerne Invest Globale"],
+        labels: ["C WorldWide Asien", "Sydinvest Globale EM", "Robeco Circular Econ", "Lazard Emerging Mark", "iShares MSCI Emergin", "Xtrackers R\u00e5varer UC", "Sparinvest Value Akt", "iShares MSCI ACWI Gl", "PFA Indeks Globale A", "UBS Globale B\u00e6redygt"],
         datasets: [{
           label: 'Momentum % (Afstand til MA)',
-          data: [33.06, 29.01, 26.84, 24.63, 24.63, 19.64, 13.88, 13.87, 13.39, 13.25],
-          backgroundColor: [33.06, 29.01, 26.84, 24.63, 24.63, 19.64, 13.88, 13.87, 13.39, 13.25].map(v => v >= 0
+          data: [32.86, 29.17, 27.88, 25.24, 25.09, 20.04, 14.57, 14.03, 13.34, 13.14],
+          backgroundColor: [32.86, 29.17, 27.88, 25.24, 25.09, 20.04, 14.57, 14.03, 13.34, 13.14].map(v => v >= 0
             ? 'rgba(34, 197, 94, 0.6)' : 'rgba(239, 68, 68, 0.6)'),
-          borderColor: [33.06, 29.01, 26.84, 24.63, 24.63, 19.64, 13.88, 13.87, 13.39, 13.25].map(v => v >= 0
+          borderColor: [32.86, 29.17, 27.88, 25.24, 25.09, 20.04, 14.57, 14.03, 13.34, 13.14].map(v => v >= 0
             ? 'rgba(34, 197, 94, 1)' : 'rgba(239, 68, 68, 1)'),
           borderWidth: 1
         }]
