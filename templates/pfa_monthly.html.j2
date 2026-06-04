@@ -115,6 +115,30 @@
         .heatmap-fond .fond-navn { flex: 1; }
         .heatmap-fond .fond-ret { font-weight: 700; margin-left: 8px; }
 
+        /* Rang & Overlap & Risiko */
+        .rank-badge-top { background: #e6f4ea; color: #1e7e34; border: 1px solid #c3e6cb;
+                          padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .rank-badge-mid { background: #e8f0fe; color: #1a56b0; border: 1px solid #c5d8f6;
+                          padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .rank-badge-low { background: #f1f3f4; color: #5f6368; border: 1px solid #dadce0;
+                          padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .overlap-section { background: white; border-radius: 12px; border-left: 5px solid #f59c00;
+                           box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 30px; padding: 20px; }
+        .overlap-section > h3 { padding: 0; margin: 0 0 14px 0; color: #2c3e50; font-size: 18px; }
+        .overlap-chip { display: inline-block; background: #fef3cd; color: #856404;
+                        border-radius: 4px; padding: 2px 8px; font-size: 12px; font-weight: bold;
+                        margin-right: 8px; white-space: nowrap; }
+        .overlap-row { display: flex; align-items: center; padding: 8px 0;
+                       border-bottom: 1px solid #f0f0f0; font-size: 13px; }
+        .overlap-row:last-child { border-bottom: none; }
+        .risk-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 4px; }
+        .risk-table th { background: #f8f9fa; padding: 10px; text-align: left; color: #666;
+                         font-size: 11px; font-weight: 600; border-bottom: 2px solid #eee;
+                         text-transform: uppercase; letter-spacing: 0.04em; }
+        .risk-table td { padding: 10px; border-bottom: 1px solid #f0f0f0; }
+        .risk-best { color: #1e7e34; font-weight: bold; }
+        .risk-worst { color: #d93025; }
+
         .trades-section { background: white; border-radius: 12px; border-left: 5px solid #2c3e50;
                           box-shadow: 0 4px 12px rgba(0,0,0,0.05);
                           margin-bottom: 30px; padding: 20px; }
@@ -280,7 +304,7 @@
         <table>
             <thead>
                 <tr>
-                    <th>Rank</th><th>Fond Navn</th><th>Trend Velocity</th>
+                    <th>Rank</th><th>Fond Navn</th><th>Rang i universet</th><th>Trend Velocity</th>
                     <th>Momentum Status</th><th>Sidste 1M %</th><th>ÅTD %</th>
                     <th style="text-align: right;">Total Afkast %</th>
                 </tr>
@@ -300,6 +324,19 @@
                             </span>
                         {% endif %}
                     </td>
+                    <td>
+                        {% if f.rank_now %}
+                          {% if f.rank_now <= 5 %}
+                            <span class="rank-badge-top">#{{ f.rank_now }} af {{ total_market_count }}</span>
+                          {% elif f.rank_now <= 15 %}
+                            <span class="rank-badge-mid">#{{ f.rank_now }} af {{ total_market_count }}</span>
+                          {% else %}
+                            <span class="rank-badge-low">#{{ f.rank_now }} af {{ total_market_count }}</span>
+                          {% endif %}
+                        {% else %}
+                          <span style="color:#ccc;">—</span>
+                        {% endif %}
+                    </td>
                     <td><span class="{{ f.trend_class }}">{{ f.trend_label }}</span></td>
                     <td><span class="m-tag {{ f.momentum_class }}">{{ f.momentum_label }}</span></td>
                     <td class="{{ 'pos' if f.return_1m >= 0 else 'neg' }}">{{ "%+.2f"|format(f.return_1m) }}%</td>
@@ -314,6 +351,76 @@
             </tbody>
         </table>
     </div>
+
+    {% if overlap_data %}
+    <div class="overlap-section">
+        <h3>🔗 Overlap-analyse — Fælles beholdninger</h3>
+        <p style="font-size:13px; color:#555; margin: 0 0 14px 0;">
+            Viser aktier der optræder som top-beholdninger i mere end én af dine aktive fonde.
+            Høj overlap betyder at fondene i praksis er mere ens end navnene antyder.
+        </p>
+        {% for item in overlap_data %}
+        <div class="overlap-row">
+            <span class="overlap-chip">{{ item.count }} af {{ active_funds|length }} fonde</span>
+            <strong>{{ item.holding }}</strong>
+            <span style="color:#888; margin-left:8px; font-size:12px;">— {{ item.funds_str }}</span>
+        </div>
+        {% endfor %}
+        <p style="font-size:12px; color:#888; margin: 12px 0 0 0;">
+            Halvleder-koncentration (Taiwan + Sydkorea) dominerer på tværs — højere samlet risiko end kategorierne antyder.
+        </p>
+    </div>
+    {% endif %}
+
+    {% if fund_risk_data %}
+    <div class="overlap-section" style="border-left-color: #1a73e8;">
+        <h3>📊 Omkostnings- og risikosammenligning</h3>
+        <p style="font-size:13px; color:#555; margin: 0 0 14px 0;">
+            Sharpe-ratio: afkast per risikoenhed (højere = bedre). Std.afv: hvor meget kursen svinger (lavere = roligere).
+        </p>
+        <table class="risk-table">
+            <thead>
+                <tr>
+                    <th>Fond</th>
+                    <th>ÅOP %</th>
+                    <th>Sharpe 1y</th>
+                    <th>Std.afv 1y %</th>
+                    <th>Rang nu</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for f in fund_risk_data %}
+                <tr>
+                    <td style="font-weight:600;">{{ f.name }}</td>
+                    <td class="{{ 'risk-best' if f.aop_best else 'risk-worst' if f.aop_worst else '' }}">
+                        {{ "%.2f"|format(f.aop) }}%
+                    </td>
+                    <td class="{{ 'risk-best' if f.sharpe_best else '' }}">
+                        {{ "%.2f"|format(f.sharpe_1y) }}
+                    </td>
+                    <td class="{{ 'risk-best' if f.std_best else 'risk-worst' if f.std_worst else '' }}">
+                        {{ "%.1f"|format(f.std_afv_1y) }}%
+                    </td>
+                    <td>
+                        {% if f.rank_now %}
+                          {% if f.rank_now <= 5 %}
+                            <span class="rank-badge-top">#{{ f.rank_now }}</span>
+                          {% elif f.rank_now <= 15 %}
+                            <span class="rank-badge-mid">#{{ f.rank_now }}</span>
+                          {% else %}
+                            <span class="rank-badge-low">#{{ f.rank_now }}</span>
+                          {% endif %}
+                        {% else %}—{% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <p style="font-size:12px; color:#888; margin:10px 0 0 0;">
+            Grøn = bedste i din portefølje på dette parameter. Rød = dyreste/mest volatil.
+        </p>
+    </div>
+    {% endif %}
 
     <div class="table-container" style="border-left: 5px solid #1a73e8;">
         <h3>🎯 Top 5 Markedsmuligheder (Hele PFA universet)</h3>
@@ -503,6 +610,43 @@
                     <li><strong>⚠️ Slower:</strong> Faldet ud af Top 7 eller negativt afkast.</li>
                     <li><strong>🛑 Outperformed:</strong> Uden for Top 10. Andre fonde løber markant hurtigere.</li>
                 </ul>
+                <h4>📊 Sharpe-ratio & Standardafvigelse</h4>
+                <table class="def-table">
+                    <tr>
+                        <td>Sharpe 1y</td>
+                        <td>Risikojusteret afkast: hvor meget afkast du får per enhed risiko du tager.
+                            Over 1.0 er godt, over 2.0 er fremragende. En fond med Sharpe 2.5 leverer
+                            mere afkast i forhold til sin risiko end en fond med Sharpe 1.5 —
+                            selv hvis den absolutte afkastprocent er lavere.</td>
+                    </tr>
+                    <tr>
+                        <td>Std.afv 1y</td>
+                        <td>Standardafvigelse — måler hvor meget kursen svinger op og ned om sit gennemsnit.
+                            15% betyder at kursen i et normalår kan svinge ±15% fra sin gennemsnitlige bane.
+                            Lavere = roligere fond. Højere = større udsving i begge retninger.</td>
+                    </tr>
+                    <tr>
+                        <td>ÅOP</td>
+                        <td>Årlige Omkostninger i Procent — det du betaler i gebyrer hvert år uanset afkast.
+                            Fratrækkes direkte fra fondens kurs. Over lang tid er forskellen på 1.38% og 2.58%
+                            markant for det endelige afkast.</td>
+                    </tr>
+                </table>
+                <h4>🔗 Overlap-analyse</h4>
+                <table class="def-table">
+                    <tr>
+                        <td>Overlap</td>
+                        <td>Når den samme aktie optræder som top-beholdning i flere af dine fonde
+                            er du reelt mere koncentreret end antallet af fonde antyder. Fx betyder
+                            TSMC i top-3 hos tre fonde at din samlede eksponering mod én aktie
+                            er langt større end du måske tror.</td>
+                    </tr>
+                    <tr>
+                        <td>Konsekvens</td>
+                        <td>Høj overlap reducerer den reelle diversifikationseffekt. En fondsstigning
+                            i Taiwan-halvledere vil løfte alle tre fonde — men et fald vil ramme dem alle.</td>
+                    </tr>
+                </table>
                 <h4>⚡ Trend Velocity (Acceleration)</h4>
                 <p>Sammenligner ugens afkast mod månedens gennemsnit per uge (1M / 4):</p>
                 <ul>
