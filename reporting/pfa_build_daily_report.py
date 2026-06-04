@@ -21,7 +21,8 @@ ROOT           = Path(__file__).resolve().parents[1]
 DATA_FILE      = ROOT / "data/pfa_latest.json"
 HISTORY_FILE   = ROOT / "data/pfa_history.json"
 PORTFOLIO_FILE = ROOT / "config/pfa_portfolio.json"
-HWM_FILE       = ROOT / "data/pfa_hwm.json"
+HWM_FILE           = ROOT / "data/pfa_hwm.json"
+RANK_HISTORY_FILE  = ROOT / "data/pfa_rank_history.json"
 TEMPLATE_FILE  = ROOT / "templates/pfa_daily.html.j2"
 REPORT_FILE    = ROOT / "build/pfa_daily.html"
 README_FILE    = ROOT / "README.md"
@@ -46,6 +47,16 @@ def save_high_water_marks(hwm_data):
     HWM_FILE.parent.mkdir(exist_ok=True)
     with open(HWM_FILE, "w", encoding="utf-8") as f:
         json.dump(hwm_data, f, indent=2)
+
+
+def load_rank_history():
+    if RANK_HISTORY_FILE.exists():
+        try:
+            with open(RANK_HISTORY_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {}
 
 
 def build_report():
@@ -84,7 +95,8 @@ def build_report():
         print(f"Fejl ved indlæsning: {e}")
         return
 
-    hwm_data  = load_high_water_marks()
+    hwm_data     = load_high_water_marks()
+    rank_history = load_rank_history()
     today_str = datetime.now().strftime('%Y-%m-%d')
     timestamp = datetime.now().strftime('%d-%m-%Y %H:%M')
 
@@ -186,6 +198,11 @@ def build_report():
                 "is_active":   is_active,
             })
 
+        # Rang fra rank_history
+        isin_ranks       = rank_history.get(isin, {})
+        latest_rank_date = max(isin_ranks.keys()) if isin_ranks else None
+        rank_now         = isin_ranks.get(latest_rank_date) if latest_rank_date else None
+
         processed_list.append({
             'isin':         isin,
             'name':         item.get('name'),
@@ -203,6 +220,7 @@ def build_report():
             'total_return': total_return,
             'stop_alert':   stop_alert,
             'trail_alert':  trail_alert,
+            'rank_now':     rank_now,
             't_state':      t_state,
             'buy_price':    buy_p if is_active else None,
             'hwm':          hwm_data.get(isin, {}).get('hwm') if is_active else None,
@@ -252,13 +270,16 @@ def build_report():
         return
 
     template   = Template(TEMPLATE_FILE.read_text(encoding="utf-8"))
+    total_market_count = len(latest_data)
+
     html_output = template.render(
-        timestamp     = timestamp,
-        funds         = processed_list,
-        top_3         = top_3,
-        bottom_3      = bottom_3,
-        daily_alerts  = daily_alerts,
-        trail_stop_pct = TRAIL_STOP_PCT,
+        timestamp          = timestamp,
+        funds              = processed_list,
+        top_3              = top_3,
+        bottom_3           = bottom_3,
+        daily_alerts       = daily_alerts,
+        trail_stop_pct     = TRAIL_STOP_PCT,
+        total_market_count = total_market_count,
     )
     REPORT_FILE.parent.mkdir(exist_ok=True)
     REPORT_FILE.write_text(html_output, encoding="utf-8")
