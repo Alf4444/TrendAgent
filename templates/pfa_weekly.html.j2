@@ -58,6 +58,22 @@
                                 width: 180px; padding-right: 15px; }
     .strategy-box { margin-top: 30px; padding: 20px; background: #fff; border-radius: 8px;
                     border-left: 5px solid #22c55e; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+
+    /* Rang & Momentum */
+    .rank-badge-top { display: inline-block; background: #e6f4ea; color: #1e7e34;
+                      border: 1px solid #c3e6cb; padding: 2px 8px; border-radius: 4px;
+                      font-size: 12px; font-weight: bold; white-space: nowrap; }
+    .rank-badge-mid { display: inline-block; background: #e8f0fe; color: #1a56b0;
+                      border: 1px solid #c5d8f6; padding: 2px 8px; border-radius: 4px;
+                      font-size: 12px; font-weight: bold; white-space: nowrap; }
+    .rank-badge-low { display: inline-block; background: #f1f3f4; color: #5f6368;
+                      border: 1px solid #dadce0; padding: 2px 8px; border-radius: 4px;
+                      font-size: 12px; font-weight: bold; white-space: nowrap; }
+    .momentum-dots { display: flex; gap: 3px; align-items: center; margin-bottom: 3px; }
+    .mdot-up   { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; display: inline-block; }
+    .mdot-flat { width: 8px; height: 8px; border-radius: 50%; background: #9ca3af; display: inline-block; }
+    .mdot-dn   { width: 8px; height: 8px; border-radius: 50%; background: #ef4444; display: inline-block; }
+    .rank-hist { font-size: 11px; color: #888; }
   </style>
 </head>
 <body>
@@ -156,6 +172,7 @@
       <thead>
         <tr>
           <th>Fond</th>
+          <th>Rang</th>
           <th>Uge %</th>
           <th>Total %</th>
           <th>Trend ({{ rows[0].ma_label if rows else 'MA' }})</th>
@@ -164,6 +181,7 @@
           <th>ÅTD %</th>
           <th>Drawdown</th>
           <th>Trail Stop</th>
+          <th>Momentum-trend</th>
         </tr>
       </thead>
       <tbody>
@@ -175,6 +193,20 @@
               <span style="font-size:11px; margin-left:4px;">
                 {{ '🔴' if row.rsi_alert == 'overkøbt' else '🔵' }}
               </span>
+            {% endif %}
+          </td>
+
+          <td>
+            {% if row.rank_now %}
+              {% if row.rank_now <= 5 %}
+                <span class="rank-badge-top">#{{ row.rank_now }} af {{ total_market_count }}</span>
+              {% elif row.rank_now <= 15 %}
+                <span class="rank-badge-mid">#{{ row.rank_now }} af {{ total_market_count }}</span>
+              {% else %}
+                <span class="rank-badge-low">#{{ row.rank_now }} af {{ total_market_count }}</span>
+              {% endif %}
+            {% else %}
+              <span style="color:#ccc;">—</span>
             {% endif %}
           </td>
 
@@ -217,6 +249,23 @@
                   HWM: {{ row.hwm }}
                 </span>
               {% endif %}
+            {% else %}
+              <span style="color:#ccc;">—</span>
+            {% endif %}
+          </td>
+
+          <td>
+            {% if row.rank_history %}
+              <div class="momentum-dots">
+                {% for r in row.rank_history %}
+                  {% if r.direction == 'up' %}<span class="mdot-up" title="Steg"></span>
+                  {% elif r.direction == 'dn' %}<span class="mdot-dn" title="Faldt"></span>
+                  {% else %}<span class="mdot-flat" title="Uændret"></span>
+                  {% endif %}
+                {% endfor %}
+                <span style="font-size:11px; color:#555; margin-left:5px;">{{ row.rank_trend_label }}</span>
+              </div>
+              <div class="rank-hist">{{ row.rank_history_str }}</div>
             {% else %}
               <span style="color:#ccc;">—</span>
             {% endif %}
@@ -272,6 +321,17 @@
 
           <h3>📊 Nøgletal</h3>
           <table class="def-table">
+            <tr>
+              <td>Rang</td>
+              <td>Fondens placering i hele PFA-universet ({{ rows|length }} fonde) rangeret efter momentum-score.
+                  #1 = stærkeste fond. Grøn badge = top 5, blå = top 15, grå = øvrige.</td>
+            </tr>
+            <tr>
+              <td>Momentum-trend</td>
+              <td>Viser rangeringsudviklingen de seneste 5 handelsdage som farvede prikker:
+                  🟢 steg i rang, ⚫ uændret, 🔴 faldt i rang.
+                  Giver et hurtigt billede af om fonden accelererer eller flader ud.</td>
+            </tr>
             <tr>
               <td>Uge %</td>
               <td>Officielt afkast fra PFA's faktaark for den seneste uge.</td>
