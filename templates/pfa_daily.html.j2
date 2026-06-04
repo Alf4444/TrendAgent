@@ -72,6 +72,15 @@
         .rsi-hot  { color: #d93025; font-weight: bold; font-size: 12px; }
         .rsi-cold { color: #1a73e8; font-weight: bold; font-size: 12px; }
         .rsi-norm { color: #555; font-size: 12px; }
+        .rank-badge-top { display: inline-block; background: #e6f4ea; color: #1e7e34;
+                          border: 1px solid #c3e6cb; padding: 2px 7px; border-radius: 4px;
+                          font-size: 11px; font-weight: bold; white-space: nowrap; }
+        .rank-badge-mid { display: inline-block; background: #e8f0fe; color: #1a56b0;
+                          border: 1px solid #c5d8f6; padding: 2px 7px; border-radius: 4px;
+                          font-size: 11px; font-weight: bold; white-space: nowrap; }
+        .rank-badge-low { display: inline-block; background: #f1f3f4; color: #5f6368;
+                          border: 1px solid #dadce0; padding: 2px 7px; border-radius: 4px;
+                          font-size: 11px; font-weight: bold; white-space: nowrap; }
 
         /* FOOTER — ensartet med weekly/monthly */
         .footer { margin-top: 30px; padding: 30px; background: white; border-radius: 12px;
@@ -217,6 +226,7 @@
             <thead>
                 <tr>
                     <th>Fond</th>
+                    <th>Rang</th>
                     <th>Signal</th>
                     <th>1D %</th>
                     <th>Trend (MA)</th>
@@ -234,6 +244,20 @@
 
                     <td style="font-weight: {{ 'bold' if f.is_active else 'normal' }}; max-width: 200px;">
                         {{ '⚠️ ' if f.stop_alert else '' }}{{ '⭐ ' if f.is_active else '' }}{{ f.name[:42] }}
+                    </td>
+
+                    <td>
+                        {% if f.is_active and f.rank_now %}
+                            {% if f.rank_now <= 5 %}
+                                <span class="rank-badge-top">#{{ f.rank_now }} af {{ total_market_count }}</span>
+                            {% elif f.rank_now <= 15 %}
+                                <span class="rank-badge-mid">#{{ f.rank_now }} af {{ total_market_count }}</span>
+                            {% else %}
+                                <span class="rank-badge-low">#{{ f.rank_now }} af {{ total_market_count }}</span>
+                            {% endif %}
+                        {% else %}
+                            <span style="color:#ccc;">–</span>
+                        {% endif %}
                     </td>
 
                     <td>
@@ -326,6 +350,10 @@
                 <h4>📊 Tekniske Indikatorer</h4>
                 <p>Alle tekniske beregninger bruger kun handelsdage (mandag–fredag) — weekender filtreres fra historikken.</p>
                 <table class="def-table">
+                    <tr>
+                        <td>Rang</td>
+                        <td>Fondens placering i hele PFA-universet ({{ total_market_count }} fonde) rangeret efter momentum-score. #1 = stærkeste fond. Grøn badge = top 5, blå = top 15, grå = øvrige. Kun vist for aktive positioner.</td>
+                    </tr>
                     <tr>
                         <td>Trend (MA)</td>
                         <td>BULL hvis kurs > bedste tilgængelige MA. BEAR hvis under. MA200 er primær indikator — fallback til MA50 → MA20 → WARM-UP mens historik opbygges.</td>
