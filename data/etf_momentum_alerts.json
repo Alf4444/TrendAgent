@@ -3,16 +3,16 @@
     "kriterium": "K3",
     "dato": "2026-05-28"
   },
-  "IE00BMC38736": {
-    "kriterium": "K3",
-    "dato": "2026-05-28"
-  },
   "IE00BHZRR030": {
-    "kriterium": "K3",
-    "dato": "2026-06-01"
+    "kriterium": "K2",
+    "dato": "2026-06-05"
   },
   "IE000I8KRLL9": {
     "kriterium": "K3",
     "dato": "2026-06-01"
+  },
+  "IE0002RPS3K2": {
+    "kriterium": "K2",
+    "dato": "2026-06-05"
   }
 }
