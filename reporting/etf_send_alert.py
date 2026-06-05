@@ -849,10 +849,11 @@ def main():
     # Byg signal-liste til Lag 3 (Trail Stop + K2 + K3 — ikke K1)
     lag3_signaler = []
     for a in trail_alerts:
+        isin = a.get('isin', '')
         lag3_signaler.append({
             'ticker':    a.get('ticker', ''),
             'navn':      a.get('name', ''),
-            'sektor':    watchlist.get(a.get('isin', ''), {}).get('category', '—'),
+            'sektor':    portfolio.get(isin, {}).get('category', '—'),
             'kriterium': 'Trail Stop',
         })
     for a in momentum_svækkes:
