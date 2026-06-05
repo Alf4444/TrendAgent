@@ -28,6 +28,7 @@ HITS_FILE      = ROOT / "data/etf_spejder_hits.json"
 PREV_FILE      = ROOT / "data/etf_spejder_prev.json"
 HWM_FILE       = ROOT / "data/etf_hwm.json"
 PORTFOLIO_FILE = ROOT / "config/etf_portfolio.json"
+WATCHLIST_FILE = ROOT / "config/etf_watchlist.json"
 LATEST_FILE    = ROOT / "data/etf_latest.json"
 
 # Momentum-pile der signalerer aftagende momentum for ejede fonde
@@ -120,7 +121,7 @@ def get_trail_alerts(portfolio, latest_map, hwm_data):
 # ROTATION-ALTERNATIVER — til K2/K3 signaler
 # ==========================================
 
-def get_rotation_alternatives(isin, portfolio, hits_data, latest_map, n=3):
+def get_rotation_alternatives(isin, portfolio, hits_data, latest_map, n=3, watchlist=None):
     """
     Finder top-N Spejder-kandidater som rotationsalternativer.
     Sorteret på momentum (stærkest først).
@@ -133,7 +134,7 @@ def get_rotation_alternatives(isin, portfolio, hits_data, latest_map, n=3):
     owned_category_map = {}
     for i, p in portfolio.items():
         if p.get('active', False):
-            cat = latest_map.get(i, {}).get('category', '') or p.get('category', '')
+            cat = (watchlist or {}).get(i, {}).get('category', '') or latest_map.get(i, {}).get('category', '')
             if cat:
                 owned_category_map[i] = cat
 
@@ -158,7 +159,7 @@ def get_rotation_alternatives(isin, portfolio, hits_data, latest_map, n=3):
     alternatives = []
     for h in unique_hits[:n]:
         h_isin    = h.get('isin', '')
-        h_cat     = latest_map.get(h_isin, {}).get('category', '') or h.get('category', '')
+        h_cat     = (watchlist or {}).get(h_isin, {}).get('category', '') or latest_map.get(h_isin, {}).get('category', '')
 
         # Find ejede fonde i samme kategori
         same_cat_owned = []
@@ -391,7 +392,7 @@ def get_momentum_alerts(portfolio, hits_data, prev_data):
 # ROTATIONSFORSLAG — baseret på score + momentum
 # ==========================================
 
-def get_rotation_suggestion(portfolio, latest_map, hits_data, momentum_alerts, trail_alerts):
+def get_rotation_suggestion(portfolio, latest_map, hits_data, momentum_alerts, trail_alerts, watchlist=None):
     """
     Finder det bedste rotationsforslag:
       Sælg: svagest ejet fond (lavest score/momentum, eller dem med advarsel)
@@ -782,6 +783,7 @@ def main():
     hits_data = load_json(HITS_FILE, {})
     prev_data = load_json(PREV_FILE, {})
     portfolio = load_json(PORTFOLIO_FILE, {})
+    watchlist = {k: v for k, v in load_json(WATCHLIST_FILE, {}).items() if not k.startswith("_")}
     latest    = load_json(LATEST_FILE, [])
     hwm_data  = load_json(HWM_FILE, {})
 
@@ -813,7 +815,7 @@ def main():
 
     # ---- 🔄 Rotationsforslag ----
     rotation_weakest, rotation_best_new = get_rotation_suggestion(
-        portfolio, latest_map, hits_data, momentum_alerts, trail_alerts
+        portfolio, latest_map, hits_data, momentum_alerts, trail_alerts, watchlist=watchlist
     )
 
     # Ingen mail hvis ingenting at rapportere
