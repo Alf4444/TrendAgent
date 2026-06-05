@@ -6,7 +6,8 @@
     "buy_date": "2026-05-26",
     "buy_price": 9.2,
     "depot": "Nordnet-ASK",
-    "ask_eligible": true
+    "ask_eligible": true,
+    "category": "Tema — AI & Infrastruktur"
   },
   "IE00BMC38736": {
     "name": "VanEck Semiconductor UCITS ETF",
@@ -15,7 +16,8 @@
     "buy_date": "2026-05-05",
     "buy_price": 78.04,
     "depot": "Nordnet-AKT",
-    "ask_eligible": true
+    "ask_eligible": true,
+    "category": "Sektor — Halvledere"
   },
   "IE00BHZRR030": {
     "name": "Franklin FTSE Korea UCITS ETF",
@@ -24,7 +26,8 @@
     "buy_date": "2026-05-05",
     "buy_price": 76.81,
     "depot": "Nordnet-AOP",
-    "ask_eligible": false
+    "ask_eligible": false,
+    "category": "Lande — Korea"
   },
   "IE0002RPS3K2": {
     "name": "Global X Hydrogen UCITS ETF",
@@ -33,15 +36,17 @@
     "buy_date": "2026-05-08",
     "buy_price": 13.564,
     "depot": "Nordnet-AKT",
-    "ask_eligible": false
+    "ask_eligible": false,
+    "category": "Tema — Hydrogen & Clean Energy"
   },
   "IE000I8KRLL9": {
     "name": "iShares MSCI Global Semiconductors UCITS ETF USD Acc",
     "ticker": "SEC0.DE",
     "active": true,
     "buy_date": "2026-05-11",
-    "buy_price": 16.70,
+    "buy_price": 16.7,
     "depot": "Nordnet-AOP",
-    "ask_eligible": true
+    "ask_eligible": true,
+    "category": "Sektor — Halvledere"
   }
 }
