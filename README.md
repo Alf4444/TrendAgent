@@ -1,11 +1,10 @@
 # 📈 TrendAgent Fokus
-**Opdateret:** 09-06-2026 21:23
+**Opdateret:** 10-06-2026 21:41
 
 | | Fond | Signal | RSI | Afkast % | Trend | MA % | Cross |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| ⭐ | C WorldWide Asien | – | 47 | +13.5% | BULL | +22.8% | – |
-| ⭐ | Lazard Emerging Markets E | – | 51 | +7.8% | BULL | +18.9% | – |
-| ⭐ | Robeco Circular Economy E | – | 62 | +8.7% | BULL | +23.8% | – |
-| ⭐ | Sydinvest Globale EM-akti | – | 47 | +9.9% | BULL | +20.4% | – |
-| 🔍 | ⚠️ Fundsmith Equity Fund | 🚀 KØB | 76 | – | BULL | +0.2% | – |
-| 🔍 | Robeco Sustainable Water  | ⚠️ SALG | 53 | – | BEAR | -0.4% | – |
+| ⭐ | C WorldWide Asien | – | 58 | +17.5% | BULL | +26.8% | – |
+| ⭐ | Lazard Emerging Markets E | – | 61 | +9.2% | BULL | +20.1% | – |
+| ⭐ | Robeco Circular Economy E | – | 62 | +7.3% | BULL | +21.9% | – |
+| ⭐ | Sydinvest Globale EM-akti | – | 59 | +13.3% | BULL | +23.8% | – |
+| 🔍 | ⚠️ Fundsmith Equity Fund | ⚠️ SALG | 69 | – | BEAR | -0.3% | – |
