@@ -301,9 +301,10 @@
 <script>
   const REPO_OWNER = 'alf4444';
   const REPO_NAME  = 'TrendAgent';
-  const FILE_PATH       = 'config/trades.json';
-  const PORTFOLIO_FILE  = 'config/etf_portfolio.json';
-  const WATCHLIST_FILE  = 'config/etf_watchlist.json';
+  const FILE_PATH           = 'config/trades.json';
+  const PORTFOLIO_FILE      = 'config/etf_portfolio.json';
+  const PFA_PORTFOLIO_FILE  = 'config/pfa_portfolio.json';
+  const WATCHLIST_FILE      = 'config/etf_watchlist.json';
 
   let currentHandling = 'KØB';
   let currentFundType = 'ETF';
@@ -572,8 +573,9 @@
       renderPositions(existing);
       renderTrades(existing);
 
-      // Synkroniser etf_portfolio.json automatisk (kører i baggrunden)
+      // Synkroniser etf_portfolio.json og pfa_portfolio.json automatisk (kører i baggrunden)
       syncEtfPortfolio(existing, token);
+      syncPfaPortfolio(existing, token);
 
     } catch(e) { showStatus('❌ Fejl: ' + e.message, 'error'); }
     finally { document.getElementById('submitBtn').disabled = false; }
@@ -667,6 +669,87 @@
       console.warn('etf_portfolio.json sync fejl:', e.message);
     }
   }
+
+  // ── SYNC pfa_portfolio.json fra trades.json ──────────────────
+  // Kaldes automatisk efter hvert KØB/SALG er gemt
+  async function syncPfaPortfolio(trades, token) {
+    try {
+      // Byg pfa_portfolio.json fra PFA-handler i trades.json
+      // Kun KØB-poster — SALG opdaterer den tilsvarende KØB-post
+      const portfolio = {};
+
+      // Først: opret alle KØB-poster
+      trades
+        .filter(t => t.type === 'PFA' && t.handling === 'KØB')
+        .forEach(t => {
+          const isin = t.isin;
+          const isActive = t.status === 'ÅBEN';
+          portfolio[isin] = {
+            name:     t.navn,
+            category: t.category || '',
+            active:   isActive,
+            buy_date: t.dato,
+            buy_price: t.kurs,
+          };
+          if (!isActive && t.lukket_dato) {
+            portfolio[isin].sell_date  = t.lukket_dato;
+            portfolio[isin].sell_price = t.lukket_kurs;
+            portfolio[isin].afkast_pct = t.afkast_pct;
+          }
+        });
+
+      // Bevar eksisterende felter der ikke styres af trades.json
+      // (fx category hvis den er sat manuelt i filen)
+      let sha = undefined;
+      try {
+        const getRes = await fetch(
+          `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${PFA_PORTFOLIO_FILE}`,
+          { headers: { 'Authorization': `token ${token}` } });
+        if (getRes.ok) {
+          const d = await getRes.json();
+          sha = d.sha;
+          const existing = JSON.parse(atob(d.content.replace(/\n/g, '')));
+          // Bevar category fra eksisterende fil hvis ikke sat i trades
+          Object.keys(portfolio).forEach(isin => {
+            if (existing[isin]) {
+              if (!portfolio[isin].category && existing[isin].category)
+                portfolio[isin].category = existing[isin].category;
+            }
+          });
+          // Bevar fonde der er i eksisterende fil men IKKE i trades
+          // (fx historiske handler fra før Portfolio Manager)
+          Object.keys(existing).forEach(isin => {
+            if (!portfolio[isin]) {
+              portfolio[isin] = existing[isin];
+            }
+          });
+        }
+      } catch(e) { /* fil eksisterer ikke endnu */ }
+
+      if (Object.keys(portfolio).length === 0) return;
+
+      // Gem opdateret pfa_portfolio.json
+      const body = {
+        message: '🔄 Sync pfa_portfolio.json fra trades.json [skip ci]',
+        content: btoa(unescape(encodeURIComponent(JSON.stringify(portfolio, null, 2)))),
+      };
+      if (sha) body.sha = sha;
+
+      const putRes = await fetch(
+        `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${PFA_PORTFOLIO_FILE}`,
+        { method: 'PUT', headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify(body) });
+
+      if (putRes.ok) {
+        console.log('pfa_portfolio.json synkroniseret OK');
+      } else {
+        console.warn('pfa_portfolio.json sync fejlede:', putRes.status);
+      }
+    } catch(e) {
+      console.warn('pfa_portfolio.json sync fejl:', e.message);
+    }
+  }
+
 
   // ── RESET ──────────────────────────────────────────────────
   function resetForm() {
