@@ -109,11 +109,6 @@
     "peak_dato": "2026-06-20",
     "historik": [
       {
-        "dato": "2026-05-05",
-        "afkast": 0.0,
-        "note": "VVSM + FLXK købt — ETF portefølje start"
-      },
-      {
         "dato": "2026-05-08",
         "afkast": 8.79
       },
@@ -203,6 +198,10 @@
       },
       {
         "dato": "2026-08-15",
+        "afkast": 0
+      },
+      {
+        "dato": "2026-08-22",
         "afkast": 0
       }
     ]
