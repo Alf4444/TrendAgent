@@ -4,11 +4,6 @@
     "peak_dato": "2026-06-20",
     "historik": [
       {
-        "dato": "2026-02-23",
-        "afkast": 0.0,
-        "note": "Lazard købt — portefølje start"
-      },
-      {
         "dato": "2026-03-02",
         "afkast": 1.5,
         "note": "C WorldWide + Sydinvest købt (estimeret)"
@@ -101,6 +96,10 @@
       {
         "dato": "2026-08-15",
         "afkast": 6.95
+      },
+      {
+        "dato": "2026-08-22",
+        "afkast": 5.45
       }
     ]
   },
