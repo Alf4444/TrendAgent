@@ -14,8 +14,8 @@
     "return_6m": 47.39,
     "return_1y": 86.12,
     "return_ytd": 53.58,
-    "volatility": 2.17,
-    "data_points": 431
+    "volatility": 2.04,
+    "data_points": 432
   },
   {
     "isin": "IE0002RPS3K2",
@@ -32,8 +32,8 @@
     "return_6m": 12.57,
     "return_1y": 65.71,
     "return_ytd": 39.69,
-    "volatility": 3.37,
-    "data_points": 586
+    "volatility": 3.08,
+    "data_points": 587
   },
   {
     "isin": "LU1900066975",
@@ -50,8 +50,8 @@
     "return_6m": 23.01,
     "return_1y": 162.86,
     "return_ytd": 89.45,
-    "volatility": 3.75,
-    "data_points": 586
+    "volatility": 3.49,
+    "data_points": 587
   },
   {
     "isin": "LU0292100046",
@@ -68,8 +68,8 @@
     "return_6m": 23.01,
     "return_1y": 161.58,
     "return_ytd": 89.85,
-    "volatility": 3.79,
-    "data_points": 587
+    "volatility": 3.55,
+    "data_points": 588
   },
   {
     "isin": "IE00B0M63391",
@@ -86,8 +86,8 @@
     "return_6m": 23.28,
     "return_1y": 161.37,
     "return_ytd": 88.8,
-    "volatility": 3.9,
-    "data_points": 586
+    "volatility": 3.6,
+    "data_points": 587
   },
   {
     "isin": "IE00BHZRR030",
@@ -104,8 +104,8 @@
     "return_6m": 27.38,
     "return_1y": 166.91,
     "return_ytd": 96.72,
-    "volatility": 3.83,
-    "data_points": 586
+    "volatility": 3.58,
+    "data_points": 587
   },
   {
     "isin": "IE0002PG6CA6",
@@ -122,8 +122,8 @@
     "return_6m": -19.55,
     "return_1y": 29.86,
     "return_ytd": 5.83,
-    "volatility": 2.39,
-    "data_points": 586
+    "volatility": 2.35,
+    "data_points": 587
   },
   {
     "isin": "IE000YU9K6K2",
@@ -140,8 +140,8 @@
     "return_6m": 4.46,
     "return_1y": 49.59,
     "return_ytd": 21.81,
-    "volatility": 2.75,
-    "data_points": 586
+    "volatility": 2.64,
+    "data_points": 587
   },
   {
     "isin": "IE000I8KRLL9",
@@ -158,8 +158,8 @@
     "return_6m": 46.73,
     "return_1y": 128.34,
     "return_ytd": 76.72,
-    "volatility": 2.93,
-    "data_points": 586
+    "volatility": 2.78,
+    "data_points": 587
   },
   {
     "isin": "IE000KHX9DX6",
@@ -176,8 +176,8 @@
     "return_6m": -11.95,
     "return_1y": 59.3,
     "return_ytd": 13.0,
-    "volatility": 2.11,
-    "data_points": 586
+    "volatility": 2.07,
+    "data_points": 587
   },
   {
     "isin": "IE00BMC38736",
@@ -194,8 +194,8 @@
     "return_6m": 48.91,
     "return_1y": 112.21,
     "return_ytd": 70.16,
-    "volatility": 2.74,
-    "data_points": 586
+    "volatility": 2.62,
+    "data_points": 587
   },
   {
     "isin": "IE0003BJ2JS4",
@@ -212,8 +212,8 @@
     "return_6m": -17.5,
     "return_1y": 25.17,
     "return_ytd": 7.4,
-    "volatility": 2.32,
-    "data_points": 372
+    "volatility": 2.21,
+    "data_points": 373
   },
   {
     "isin": "IE000UL6CLP7",
@@ -230,8 +230,8 @@
     "return_6m": -12.7,
     "return_1y": 85.77,
     "return_ytd": 16.25,
-    "volatility": 2.91,
-    "data_points": 586
+    "volatility": 2.95,
+    "data_points": 587
   },
   {
     "isin": "IE00BF0M2Z96",
@@ -248,8 +248,8 @@
     "return_6m": -3.14,
     "return_1y": 48.33,
     "return_ytd": 9.75,
-    "volatility": 1.93,
-    "data_points": 586
+    "volatility": 1.83,
+    "data_points": 587
   },
   {
     "isin": "IE00BLCHJN13",
@@ -266,8 +266,8 @@
     "return_6m": 2.87,
     "return_1y": 64.95,
     "return_ytd": 17.17,
-    "volatility": 1.65,
-    "data_points": 586
+    "volatility": 1.56,
+    "data_points": 587
   },
   {
     "isin": "IE000NDWFGA5",
@@ -302,7 +302,7 @@
     "return_6m": 12.89,
     "return_1y": 21.74,
     "return_ytd": 14.96,
-    "volatility": 0.68,
-    "data_points": 591
+    "volatility": 0.61,
+    "data_points": 592
   }
 ]
