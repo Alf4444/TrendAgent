@@ -4,11 +4,6 @@
     "peak_dato": "2026-06-20",
     "historik": [
       {
-        "dato": "2026-03-02",
-        "afkast": 1.5,
-        "note": "C WorldWide + Sydinvest købt (estimeret)"
-      },
-      {
         "dato": "2026-05-07",
         "afkast": 8.21,
         "note": "Bootstrap fra pfa_hwm.json"
@@ -100,6 +95,10 @@
       {
         "dato": "2026-08-22",
         "afkast": 5.45
+      },
+      {
+        "dato": "2026-08-29",
+        "afkast": 6.63
       }
     ]
   },
