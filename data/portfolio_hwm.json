@@ -4,11 +4,6 @@
     "peak_dato": "2026-06-20",
     "historik": [
       {
-        "dato": "2026-05-07",
-        "afkast": 8.21,
-        "note": "Bootstrap fra pfa_hwm.json"
-      },
-      {
         "dato": "2026-05-08",
         "afkast": 8.21
       },
@@ -99,6 +94,10 @@
       {
         "dato": "2026-08-29",
         "afkast": 6.63
+      },
+      {
+        "dato": "2026-09-05",
+        "afkast": 5.78
       }
     ]
   },
