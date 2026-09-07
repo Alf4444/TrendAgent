@@ -1,12 +1,11 @@
 # 📈 TrendAgent Fokus
-**Opdateret:** 04-09-2026 21:39
+**Opdateret:** 07-09-2026 22:42
 
 | | Fond | Signal | RSI | Afkast % | Trend | MA % | Cross |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| ⭐ | ⚠️ Robeco Circular Economy E | – | 36 | +2.3% | BULL | +6.4% | – |
-| ⭐ | Sydinvest Globale EM-akti | – | 47 | +12.4% | BULL | +10.3% | – |
-| ⭐ | iShares MSCI World Health | – | 64 | +2.6% | BULL | +8.5% | – |
-| 🔍 | Robeco Sustainable Water  | ⚠️ SALG | 20 | – | BEAR | -1.9% | – |
-| 🔍 | ⚠️ Sparinvest Value Aktier | ⚠️ SALG | 17 | – | BEAR | -1.6% | – |
-| 🔍 | WM Opportunistisk Emergin | ⚠️ SALG | 20 | – | BEAR | -0.5% | – |
-| 🔍 | iShares Inflation Linked  | 🚀 KØB | 38 | – | BULL | +0.2% | – |
+| ⭐ | ⚠️ Robeco Circular Economy E | – | 41 | +3.2% | BULL | +7.1% | – |
+| ⭐ | Sydinvest Globale EM-akti | – | 49 | +14.0% | BULL | +11.6% | – |
+| ⭐ | iShares MSCI World Health | – | 58 | +1.5% | BULL | +7.3% | – |
+| 🔍 | Maj Invest Globale Obliga | 🚀 KØB | 39 | – | BULL | +0.3% | – |
+| 🔍 | PFA Indeks USA Aktier | ⚠️ SALG | 18 | – | BEAR | -0.5% | – |
+| 🔍 | ⚠️ Robeco Global SDG Equitie | ⚠️ SALG | 20 | – | BEAR | -1.6% | – |
