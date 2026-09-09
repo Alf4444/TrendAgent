@@ -1,11 +1,13 @@
 # 📈 TrendAgent Fokus
-**Opdateret:** 08-09-2026 22:04
+**Opdateret:** 09-09-2026 21:55
 
 | | Fond | Signal | RSI | Afkast % | Trend | MA % | Cross |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| ⭐ | ⚠️ Robeco Circular Economy E | – | 51 | +3.9% | BULL | +7.7% | – |
-| ⭐ | Sydinvest Globale EM-akti | – | 60 | +15.9% | BULL | +13.3% | – |
-| ⭐ | iShares MSCI World Health | – | 48 | +0.7% | BULL | +6.4% | – |
-| 🔍 | BLS Invest Danske Aktier | ⚠️ SALG | 20 | – | BEAR | -1.6% | – |
-| 🔍 | Maj Invest Globale Obliga | ⚠️ SALG | 35 | – | BEAR | -0.1% | – |
-| 🔍 | iShares MSCI ACWI Global  | ⚠️ SALG | 18 | – | BEAR | -0.6% | – |
+| ⭐ | ⚠️ Robeco Circular Economy E | – | 58 | +3.5% | BULL | +7.2% | – |
+| ⭐ | Sydinvest Globale EM-akti | – | 68 | +15.5% | BULL | +12.8% | – |
+| ⭐ | iShares MSCI World Health | – | 30 | -1.5% | BULL | +4.0% | – |
+| 🔍 | PFA Indeks 25 | ⚠️ SALG | 18 | – | BEAR | -0.2% | – |
+| 🔍 | PFA Indeks 50 | ⚠️ SALG | 21 | – | BEAR | -0.3% | – |
+| 🔍 | ⚠️ Robeco Biodiversity Equit | ⚠️ SALG | 21 | – | BEAR | -4.0% | – |
+| 🔍 | Robeco Sustainable Water  | ⚠️ SALG | 30 | – | BEAR | -2.0% | – |
+| 🔍 | ⚠️ iShares Core MSCI Japan I | ⚠️ SALG | 34 | – | BEAR | -2.5% | – |
