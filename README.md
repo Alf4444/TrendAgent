@@ -1,13 +1,12 @@
 # 📈 TrendAgent Fokus
-**Opdateret:** 09-09-2026 21:55
+**Opdateret:** 10-09-2026 21:47
 
 | | Fond | Signal | RSI | Afkast % | Trend | MA % | Cross |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| ⭐ | ⚠️ Robeco Circular Economy E | – | 58 | +3.5% | BULL | +7.2% | – |
-| ⭐ | Sydinvest Globale EM-akti | – | 68 | +15.5% | BULL | +12.8% | – |
-| ⭐ | iShares MSCI World Health | – | 30 | -1.5% | BULL | +4.0% | – |
-| 🔍 | PFA Indeks 25 | ⚠️ SALG | 18 | – | BEAR | -0.2% | – |
-| 🔍 | PFA Indeks 50 | ⚠️ SALG | 21 | – | BEAR | -0.3% | – |
-| 🔍 | ⚠️ Robeco Biodiversity Equit | ⚠️ SALG | 21 | – | BEAR | -4.0% | – |
-| 🔍 | Robeco Sustainable Water  | ⚠️ SALG | 30 | – | BEAR | -2.0% | – |
-| 🔍 | ⚠️ iShares Core MSCI Japan I | ⚠️ SALG | 34 | – | BEAR | -2.5% | – |
+| ⭐ | ⚠️ Robeco Circular Economy E | – | 50 | +2.8% | BULL | +6.3% | – |
+| ⭐ | Sydinvest Globale EM-akti | – | 63 | +15.3% | BULL | +12.4% | – |
+| ⭐ | iShares MSCI World Health | – | 32 | -2.2% | BULL | +3.3% | – |
+| 🔍 | C WorldWide Globale Aktie | ⚠️ SALG | 33 | – | BEAR | -0.7% | – |
+| 🔍 | Maj Invest Globale Obliga | ⚠️ SALG | 43 | – | BEAR | -0.0% | – |
+| 🔍 | ⚠️ Maj Invest UCITS ETF Defe | ⚠️ SALG | 16 | – | BEAR | -7.9% | – |
+| 🔍 | iShares Inflation Linked  | ⚠️ SALG | 38 | – | BEAR | -0.2% | – |
