@@ -1,14 +1,16 @@
 # 📈 TrendAgent Fokus
-**Opdateret:** 17-09-2026 22:22
+**Opdateret:** 18-09-2026 21:46
 
 | | Fond | Signal | RSI | Afkast % | Trend | MA % | Cross |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| ⭐ | ⚠️ Robeco Circular Economy E | – | 38 | +1.3% | BULL | +4.4% | – |
-| ⭐ | Sydinvest Globale EM-akti | – | 43 | +12.0% | BULL | +8.6% | – |
-| ⭐ | iShares MSCI World Health | – | 39 | -0.7% | BULL | +4.8% | – |
-| 🔍 | Nordea Invest European Hi | 🚀 KØB | 13 | – | BULL | +0.1% | – |
-| 🔍 | PFA Indeks Globale Aktier | ⚠️ SALG | 18 | – | BEAR | -1.0% | 💀 DEATH |
-| 🔍 | Robeco Biodiversity Equit | 🚀 KØB | 20 | – | BULL | +0.1% | – |
-| 🔍 | ⚠️ SKAGEN Global | ⚠️ SALG | 30 | – | BEAR | -1.1% | – |
+| ⭐ | ⚠️ Robeco Circular Economy E | – | 44 | +1.9% | BULL | +5.0% | – |
+| ⭐ | Sydinvest Globale EM-akti | – | 44 | +12.4% | BULL | +8.8% | – |
+| ⭐ | iShares MSCI World Health | – | 45 | +0.3% | BULL | +5.7% | – |
+| 🔍 | BankInvest Højt Udbytte A | ⚠️ SALG | 17 | – | BEAR | -1.7% | – |
+| 🔍 | ⚠️ Fundsmith Equity Fund | ⚠️ SALG | 20 | – | BEAR | -3.7% | – |
+| 🔍 | ⚠️ Maj Invest Guld, Sølv & M | 🚀 KØB | 40 | – | BULL | +1.0% | – |
+| 🔍 | PFA Indeks 25 | ⚠️ SALG | 16 | – | BEAR | -0.3% | – |
+| 🔍 | PFA Indeks 75 | ⚠️ SALG | 14 | – | BEAR | -0.8% | 💀 DEATH |
+| 🔍 | ⚠️ Robeco Biodiversity Equit | ⚠️ SALG | 13 | – | BEAR | -4.0% | – |
 | 🔍 | ⚠️ UBS Globale Bæredygtige A | ⚠️ SALG | 20 | – | BEAR | -2.0% | 💀 DEATH |
-| 🔍 | ⚠️ iShares Core MSCI Japan I | ⚠️ SALG | 29 | – | BEAR | -3.0% | – |
+| 🔍 | iShares Global HY Corp Bo | 🚀 KØB | 28 | – | BULL | +0.0% | – |
