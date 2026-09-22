@@ -1,13 +1,13 @@
 # 📈 TrendAgent Fokus
-**Opdateret:** 21-09-2026 23:09
+**Opdateret:** 22-09-2026 22:20
 
 | | Fond | Signal | RSI | Afkast % | Trend | MA % | Cross |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| ⭐ | ⚠️ Robeco Circular Economy E | – | 51 | +3.0% | BULL | +5.9% | – |
-| ⭐ | Sydinvest Globale EM-akti | – | 54 | +14.4% | BULL | +10.4% | – |
-| ⭐ | iShares MSCI World Health | – | 46 | +0.1% | BULL | +5.5% | – |
-| 🔍 | C WorldWide Globale Aktie | 🚀 KØB | 34 | – | BULL | +0.0% | – |
-| 🔍 | PFA Indeks 25 | ⚠️ SALG | 16 | – | BEAR | -0.3% | – |
-| 🔍 | PFA Indeks 50 | ⚠️ SALG | 20 | – | BEAR | -0.5% | – |
-| 🔍 | Robeco Sustainable Water  | ⚠️ SALG | 26 | – | BEAR | -2.1% | – |
-| 🔍 | iShares Global HY Corp Bo | ⚠️ SALG | 27 | – | BEAR | -0.2% | – |
+| ⭐ | ⚠️ Robeco Circular Economy E | – | 59 | +4.0% | BULL | +6.8% | – |
+| ⭐ | Sydinvest Globale EM-akti | – | 58 | +16.1% | BULL | +12.0% | – |
+| ⭐ | iShares MSCI World Health | – | 45 | +0.7% | BULL | +6.1% | – |
+| 🔍 | C WorldWide Globale Aktie | 🚀 KØB | 50 | – | BULL | +0.7% | – |
+| 🔍 | Kerne Invest Danske Aktie | ⚠️ SALG | 19 | – | BEAR | -2.9% | – |
+| 🔍 | ⚠️ Kerne Invest Globale Akti | ⚠️ SALG | 19 | – | BEAR | -3.0% | – |
+| 🔍 | Maj Invest Danske Aktier | ⚠️ SALG | 16 | – | BEAR | -3.7% | – |
+| 🔍 | Xtrackers MSCI World EUR  | ⚠️ SALG | 25 | – | BEAR | -0.8% | – |
