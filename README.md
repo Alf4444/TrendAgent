@@ -1,13 +1,10 @@
 # 📈 TrendAgent Fokus
-**Opdateret:** 22-09-2026 22:20
+**Opdateret:** 23-09-2026 22:17
 
 | | Fond | Signal | RSI | Afkast % | Trend | MA % | Cross |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| ⭐ | ⚠️ Robeco Circular Economy E | – | 59 | +4.0% | BULL | +6.8% | – |
-| ⭐ | Sydinvest Globale EM-akti | – | 58 | +16.1% | BULL | +12.0% | – |
-| ⭐ | iShares MSCI World Health | – | 45 | +0.7% | BULL | +6.1% | – |
-| 🔍 | C WorldWide Globale Aktie | 🚀 KØB | 50 | – | BULL | +0.7% | – |
-| 🔍 | Kerne Invest Danske Aktie | ⚠️ SALG | 19 | – | BEAR | -2.9% | – |
-| 🔍 | ⚠️ Kerne Invest Globale Akti | ⚠️ SALG | 19 | – | BEAR | -3.0% | – |
-| 🔍 | Maj Invest Danske Aktier | ⚠️ SALG | 16 | – | BEAR | -3.7% | – |
-| 🔍 | Xtrackers MSCI World EUR  | ⚠️ SALG | 25 | – | BEAR | -0.8% | – |
+| ⭐ | ⚠️ iShares MSCI World Health | ⚠️ SALG | 17 | -12.4% | BEAR | -7.7% | 💀 DEATH |
+| ⭐ | Robeco Circular Economy E | – | 66 | +5.1% | BULL | +7.9% | – |
+| ⭐ | Sydinvest Globale EM-akti | – | 66 | +17.2% | BULL | +12.9% | – |
+| 🔍 | PFA Indeks 75 | ⚠️ SALG | 27 | – | BEAR | -1.0% | 💀 DEATH |
+| 🔍 | WM Opportunistisk Emergin | ⚠️ SALG | 30 | – | BEAR | -0.8% | – |
