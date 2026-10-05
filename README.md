@@ -1,12 +1,16 @@
 # 📈 TrendAgent Fokus
-**Opdateret:** 02-10-2026 23:30
+**Opdateret:** 06-10-2026 01:22
 
 | | Fond | Signal | RSI | Afkast % | Trend | MA % | Cross |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| ⭐ | Robeco Circular Economy E | – | 73 | +6.5% | BULL | +8.5% | – |
-| ⭐ | Sydinvest Globale EM-akti | – | 60 | +16.6% | BULL | +11.1% | – |
-| ⭐ | iShares MSCI World Health | – | 70 | +0.5% | BULL | +5.6% | – |
-| 🔍 | BankInvest Højt Udbytte A | 🚀 KØB | 36 | – | BULL | +0.0% | – |
+| ⭐ | Robeco Circular Economy E | – | 87 | +7.6% | BULL | +9.5% | – |
+| ⭐ | Sydinvest Globale EM-akti | – | 66 | +16.4% | BULL | +10.7% | – |
+| ⭐ | iShares MSCI World Health | – | 55 | +0.1% | BULL | +5.1% | – |
+| 🔍 | BankInvest Højt Udbytte A | 🚀 KØB | 25 | – | BULL | +0.2% | – |
+| 🔍 | ⚠️ Fundsmith Equity Fund | ⚠️ SALG | 36 | – | BEAR | -3.7% | – |
 | 🔍 | PFA Indeks 50 | ⚠️ SALG | 28 | – | BEAR | -0.9% | – |
-| 🔍 | Threadneedle Pan European | ⚠️ SALG | 33 | – | BEAR | -3.3% | – |
-| 🔍 | WM Opportunistisk Emergin | 🚀 KØB | 43 | – | BULL | +0.2% | – |
+| 🔍 | ⚠️ Sparinvest Value Aktier | ⚠️ SALG | 14 | – | BEAR | -3.5% | – |
+| 🔍 | WM Opportunistisk Emergin | ⚠️ SALG | 44 | – | BEAR | -0.1% | – |
+| 🔍 | iShares Global IG Corp Bo | 🚀 KØB | 59 | – | BULL | +0.1% | – |
+| 🔍 | iShares Inflation Linked  | 🚀 KØB | 60 | – | BULL | +0.3% | – |
+| 🔍 | iShares MSCI ACWI Global  | ⚠️ SALG | 26 | – | BEAR | -2.0% | – |
