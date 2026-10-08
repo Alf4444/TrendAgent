@@ -1,13 +1,13 @@
 # 📈 TrendAgent Fokus
-**Opdateret:** 08-10-2026 00:06
+**Opdateret:** 09-10-2026 00:09
 
 | | Fond | Signal | RSI | Afkast % | Trend | MA % | Cross |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| ⭐ | Robeco Circular Economy E | – | 90 | +9.4% | BULL | +11.1% | 🚀 GOLDEN |
-| ⭐ | Sydinvest Globale EM-akti | – | 79 | +19.4% | BULL | +13.4% | – |
-| ⭐ | iShares MSCI World Health | – | 62 | +1.0% | BULL | +6.0% | – |
-| 🔍 | ⚠️ Qblue Global Equities Res | ⚠️ SALG | 32 | – | BEAR | -2.0% | – |
-| 🔍 | ⚠️ Robeco Biodiversity Equit | ⚠️ SALG | 35 | – | BEAR | -4.2% | – |
-| 🔍 | ⚠️ UBS Globale Bæredygtige A | ⚠️ SALG | 29 | – | BEAR | -3.0% | – |
-| 🔍 | Xtrackers MSCI World EUR  | ⚠️ SALG | 30 | – | BEAR | -1.4% | – |
-| 🔍 | ⚠️ iShares MSCI Emerging Mar | ⚠️ SALG | 39 | – | BEAR | -0.6% | – |
+| ⭐ | ⚠️ iShares MSCI World Health | ⚠️ SALG | 18 | -12.4% | BEAR | -8.1% | – |
+| ⭐ | ⚠️ Robeco Circular Economy E | – | 43 | -0.6% | BULL | +0.8% | – |
+| ⭐ | Sydinvest Globale EM-akti | – | 74 | +18.7% | BULL | +12.6% | – |
+| 🔍 | BankInvest Højt Udbytte A | ⚠️ SALG | 26 | – | BEAR | -1.9% | – |
+| 🔍 | ⚠️ C WorldWide Asien | ⚠️ SALG | 34 | – | BEAR | -1.4% | – |
+| 🔍 | ⚠️ Kerne Invest Globale Akti | ⚠️ SALG | 25 | – | BEAR | -4.0% | – |
+| 🔍 | ⚠️ Maj Invest UCITS ETF Defe | ⚠️ SALG | 19 | – | BEAR | -9.0% | – |
+| 🔍 | Sydinvest HøjrenteLande | 🚀 KØB | 53 | – | BULL | +0.2% | – |
