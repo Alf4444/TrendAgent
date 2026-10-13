@@ -1,14 +1,14 @@
 # 📈 TrendAgent Fokus
-**Opdateret:** 13-10-2026 01:50
+**Opdateret:** 14-10-2026 00:04
 
 | | Fond | Signal | RSI | Afkast % | Trend | MA % | Cross |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| ⭐ | ⚠️ iShares MSCI World Health | ⚠️ SALG | 20 | -12.4% | BEAR | -8.1% | – |
-| ⭐ | Robeco Circular Economy E | – | 71 | +8.2% | BULL | +9.5% | – |
-| ⭐ | Sydinvest Globale EM-akti | – | 60 | +17.4% | BULL | +11.0% | – |
-| 🔍 | ⚠️ Magna Eastern European Fu | ⚠️ SALG | 24 | – | BEAR | -2.4% | – |
-| 🔍 | ⚠️ Sparinvest Value Aktier | ⚠️ SALG | 12 | – | BEAR | -3.8% | – |
-| 🔍 | Threadneedle Pan European | 🚀 KØB | 46 | – | BULL | +0.4% | – |
-| 🔍 | ⚠️ UBS Globale Bæredygtige A | ⚠️ SALG | 27 | – | BEAR | -3.1% | 💀 DEATH |
-| 🔍 | iShares Inflation Linked  | 🚀 KØB | 63 | – | BULL | +0.3% | – |
-| 🔍 | ⚠️ iShares MSCI ACWI Global  | ⚠️ SALG | 27 | – | BEAR | -2.3% | – |
+| ⭐ | Robeco Circular Economy E | – | 65 | +7.6% | BULL | +8.8% | – |
+| ⭐ | Sydinvest Globale EM-akti | – | 49 | +17.0% | BULL | +10.3% | – |
+| ⭐ | iShares MSCI World Health | – | 72 | +4.1% | BULL | +9.1% | 🚀 GOLDEN |
+| 🔍 | BankInvest Højt Udbytte A | ⚠️ SALG | 33 | – | BEAR | -2.0% | – |
+| 🔍 | ⚠️ C WorldWide Asien | ⚠️ SALG | 29 | – | BEAR | -1.8% | – |
+| 🔍 | ⚠️ Fundsmith Equity Fund | ⚠️ SALG | 34 | – | BEAR | -3.7% | – |
+| 🔍 | PFA Indeks Europa Aktier | ⚠️ SALG | 23 | – | BEAR | -3.1% | – |
+| 🔍 | ⚠️ Robeco Global SDG Equitie | ⚠️ SALG | 24 | – | BEAR | -3.2% | 💀 DEATH |
+| 🔍 | ⚠️ iShares MSCI China UCITS  | 🚀 KØB | 63 | – | BULL | +0.1% | – |
