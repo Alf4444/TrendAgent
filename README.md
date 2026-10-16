@@ -1,10 +1,12 @@
 # 📈 TrendAgent Fokus
-**Opdateret:** 15-10-2026 22:30
+**Opdateret:** 16-10-2026 22:08
 
 | | Fond | Signal | RSI | Afkast % | Trend | MA % | Cross |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| ⭐ | Robeco Circular Economy E | – | 57 | +6.5% | BULL | +7.3% | – |
-| ⭐ | Sydinvest Globale EM-akti | – | 39 | +14.2% | BULL | +7.5% | – |
-| ⭐ | iShares MSCI World Health | – | 68 | +5.8% | BULL | +10.7% | – |
-| 🔍 | PFA Indeks 50 | ⚠️ SALG | 24 | – | BEAR | -1.3% | – |
-| 🔍 | PFA Indeks Europa Aktier | ⚠️ SALG | 26 | – | BEAR | -3.1% | – |
+| ⭐ | ⚠️ Robeco Circular Economy E | – | 44 | +3.5% | BULL | +4.3% | – |
+| ⭐ | ⚠️ Sydinvest Globale EM-akti | – | 29 | +8.9% | BULL | +2.4% | – |
+| ⭐ | iShares MSCI World Health | – | 70 | +7.4% | BULL | +12.4% | – |
+| 🔍 | ⚠️ C WorldWide Asien | ⚠️ SALG | 20 | – | BEAR | -2.0% | – |
+| 🔍 | Maj Invest Globale Obliga | 🚀 KØB | 81 | – | BULL | +0.2% | – |
+| 🔍 | ⚠️ Qblue Global Equities Res | ⚠️ SALG | 20 | – | BEAR | -2.5% | – |
+| 🔍 | iShares Inflation Linked  | 🚀 KØB | 69 | – | BULL | +0.3% | – |
