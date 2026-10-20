@@ -1,12 +1,12 @@
 # 📈 TrendAgent Fokus
-**Opdateret:** 19-10-2026 23:40
+**Opdateret:** 20-10-2026 22:37
 
 | | Fond | Signal | RSI | Afkast % | Trend | MA % | Cross |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| ⭐ | ⚠️ Robeco Circular Economy E | – | 45 | +3.2% | BULL | +3.9% | – |
-| ⭐ | ⚠️ Sydinvest Globale EM-akti | – | 34 | +9.7% | BULL | +3.1% | – |
-| ⭐ | iShares MSCI World Health | – | 67 | +7.0% | BULL | +11.8% | – |
-| 🔍 | ⚠️ Kerne Invest Globale Akti | ⚠️ SALG | 16 | – | BEAR | -4.6% | – |
-| 🔍 | ⚠️ Magna Eastern European Fu | ⚠️ SALG | 25 | – | BEAR | -2.8% | – |
-| 🔍 | PFA Indeks 75 | ⚠️ SALG | 22 | – | BEAR | -2.1% | – |
-| 🔍 | Xtrackers MSCI World EUR  | ⚠️ SALG | 25 | – | BEAR | -1.8% | – |
+| ⭐ | ⚠️ Robeco Circular Economy E | ⚠️ SALG | 35 | -0.6% | BEAR | -0.0% | – |
+| ⭐ | ⚠️ Sydinvest Globale EM-akti | – | 35 | +9.8% | BULL | +3.0% | – |
+| ⭐ | iShares MSCI World Health | – | 66 | +6.7% | BULL | +11.5% | – |
+| 🔍 | ⚠️ Lazard Emerging Markets E | ⚠️ SALG | 25 | – | BEAR | -3.8% | – |
+| 🔍 | Maj Invest Globale Obliga | ⚠️ SALG | 82 | – | BEAR | -0.1% | – |
+| 🔍 | ⚠️ Robeco Global SDG Equitie | ⚠️ SALG | 24 | – | BEAR | -3.5% | – |
+| 🔍 | iShares Inflation Linked  | 🚀 KØB | 72 | – | BULL | +0.3% | – |
