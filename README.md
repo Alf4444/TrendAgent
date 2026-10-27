@@ -1,12 +1,13 @@
 # 📈 TrendAgent Fokus
-**Opdateret:** 26-10-2026 22:45
+**Opdateret:** 27-10-2026 22:26
 
 | | Fond | Signal | RSI | Afkast % | Trend | MA % | Cross |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| ⭐ | ⚠️ Robeco Circular Economy E | – | 34 | +2.7% | BULL | +3.1% | – |
-| ⭐ | ⚠️ Sydinvest Globale EM-akti | – | 27 | +7.0% | BULL | +0.2% | – |
-| ⭐ | iShares MSCI World Health | – | 78 | +9.8% | BULL | +14.5% | – |
-| 🔍 | PFA Indeks 75 | ⚠️ SALG | 21 | – | BEAR | -2.2% | – |
-| 🔍 | ⚠️ Qblue Global Equities Res | ⚠️ SALG | 26 | – | BEAR | -2.7% | – |
-| 🔍 | Threadneedle Pan European | ⚠️ SALG | 40 | – | BEAR | -0.5% | – |
-| 🔍 | ⚠️ iShares MSCI Emerging Mar | ⚠️ SALG | 24 | – | BEAR | -1.8% | – |
+| ⭐ | ⚠️ Sydinvest Globale EM-akti | ⚠️ SALG | 11 | +5.0% | BEAR | -1.7% | 💀 DEATH |
+| ⭐ | ⚠️ Robeco Circular Economy E | – | 34 | +4.3% | BULL | +4.6% | – |
+| ⭐ | iShares MSCI World Health | – | 76 | +10.1% | BULL | +14.7% | – |
+| 🔍 | ⚠️ Maj Invest Guld, Sølv & M | 🚀 KØB | 59 | – | BULL | +1.2% | – |
+| 🔍 | PFA Danske Erhvervsejendo | ⚠️ SALG | 14 | – | BEAR | -0.3% | – |
+| 🔍 | ⚠️ SKAGEN Global | ⚠️ SALG | 45 | – | BEAR | -1.1% | – |
+| 🔍 | ⚠️ iShares Core MSCI Japan I | ⚠️ SALG | 10 | – | BEAR | -5.7% | – |
+| 🔍 | iShares Inflation Linked  | 🚀 KØB | 75 | – | BULL | +0.4% | – |
