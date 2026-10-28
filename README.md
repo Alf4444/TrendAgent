@@ -1,13 +1,11 @@
 # 📈 TrendAgent Fokus
-**Opdateret:** 27-10-2026 22:26
+**Opdateret:** 28-10-2026 22:50
 
 | | Fond | Signal | RSI | Afkast % | Trend | MA % | Cross |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| ⭐ | ⚠️ Sydinvest Globale EM-akti | ⚠️ SALG | 11 | +5.0% | BEAR | -1.7% | 💀 DEATH |
-| ⭐ | ⚠️ Robeco Circular Economy E | – | 34 | +4.3% | BULL | +4.6% | – |
-| ⭐ | iShares MSCI World Health | – | 76 | +10.1% | BULL | +14.7% | – |
+| ⭐ | ⚠️ iShares MSCI World Health | ⚠️ SALG | 33 | -12.4% | BEAR | -8.7% | – |
+| ⭐ | Robeco Circular Economy E | – | 41 | +5.5% | BULL | +5.6% | – |
+| ⭐ | ⚠️ Sydinvest Globale EM-akti | – | 24 | +6.7% | BEAR | -0.3% | – |
 | 🔍 | ⚠️ Maj Invest Guld, Sølv & M | 🚀 KØB | 59 | – | BULL | +1.2% | – |
-| 🔍 | PFA Danske Erhvervsejendo | ⚠️ SALG | 14 | – | BEAR | -0.3% | – |
-| 🔍 | ⚠️ SKAGEN Global | ⚠️ SALG | 45 | – | BEAR | -1.1% | – |
-| 🔍 | ⚠️ iShares Core MSCI Japan I | ⚠️ SALG | 10 | – | BEAR | -5.7% | – |
-| 🔍 | iShares Inflation Linked  | 🚀 KØB | 75 | – | BULL | +0.4% | – |
+| 🔍 | Sydinvest HøjrenteLande | 🚀 KØB | 72 | – | BULL | +0.4% | – |
+| 🔍 | ⚠️ UBS Globale Bæredygtige A | ⚠️ SALG | 16 | – | BEAR | -4.0% | – |
