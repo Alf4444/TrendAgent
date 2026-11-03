@@ -1,12 +1,17 @@
 # 📈 TrendAgent Fokus
-**Opdateret:** 30-10-2026 22:42
+**Opdateret:** 03-11-2026 01:07
 
 | | Fond | Signal | RSI | Afkast % | Trend | MA % | Cross |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| ⭐ | ⚠️ Sydinvest Globale EM-akti | ⚠️ SALG | 27 | +4.7% | BEAR | -2.3% | – |
-| ⭐ | Robeco Circular Economy E | – | 40 | +5.3% | BULL | +5.2% | – |
-| ⭐ | iShares MSCI World Health | – | 78 | +12.3% | BULL | +16.9% | – |
-| 🔍 | BankInvest Højt Udbytte A | ⚠️ SALG | 38 | – | BEAR | -2.4% | – |
-| 🔍 | Maj Invest Globale Obliga | ⚠️ SALG | 58 | – | BEAR | -0.3% | – |
-| 🔍 | PFA Danske Erhvervsejendo | ⚠️ SALG | 14 | – | BEAR | -0.3% | – |
-| 🔍 | Xtrackers MSCI World EUR  | ⚠️ SALG | 25 | – | BEAR | -2.2% | – |
+| ⭐ | ⚠️ Robeco Circular Economy E | ⚠️ SALG | 30 | -0.6% | BEAR | -0.8% | – |
+| ⭐ | ⚠️ Sydinvest Globale EM-akti | ⚠️ SALG | 28 | +5.7% | BEAR | -1.4% | – |
+| ⭐ | ⚠️ iShares MSCI World Health | ⚠️ SALG | 33 | -12.4% | BEAR | -8.8% | – |
+| 🔍 | ⚠️ C WorldWide Asien | ⚠️ SALG | 20 | – | BEAR | -3.2% | – |
+| 🔍 | ⚠️ Lazard Emerging Markets E | ⚠️ SALG | 18 | – | BEAR | -4.6% | 💀 DEATH |
+| 🔍 | PFA Indeks Europa Aktier | ⚠️ SALG | 33 | – | BEAR | -3.6% | – |
+| 🔍 | PFA Pengemarked | ⚠️ SALG | 10 | – | BEAR | -0.2% | – |
+| 🔍 | ⚠️ Qblue Global Equities Res | ⚠️ SALG | 19 | – | BEAR | -3.0% | – |
+| 🔍 | ⚠️ SKAGEN Global | ⚠️ SALG | 40 | – | BEAR | -1.3% | – |
+| 🔍 | ⚠️ Sparinvest Value Aktier | ⚠️ SALG | 25 | – | BEAR | -4.8% | 💀 DEATH |
+| 🔍 | Threadneedle Pan European | ⚠️ SALG | 38 | – | BEAR | -3.7% | – |
+| 🔍 | ⚠️ UBS Globale Bæredygtige A | ⚠️ SALG | 20 | – | BEAR | -4.1% | – |
