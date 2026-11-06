@@ -1,11 +1,12 @@
 # 📈 TrendAgent Fokus
-**Opdateret:** 05-11-2026 23:53
+**Opdateret:** 06-11-2026 23:15
 
 | | Fond | Signal | RSI | Afkast % | Trend | MA % | Cross |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| ⭐ | ⚠️ Robeco Circular Economy E | – | 36 | +1.9% | BULL | +1.6% | – |
-| ⭐ | ⚠️ Sydinvest Globale EM-akti | – | 30 | +3.9% | BEAR | -3.1% | – |
-| ⭐ | iShares MSCI World Health | – | 84 | +15.4% | BULL | +19.8% | – |
-| 🔍 | Kerne Invest Indeks Melle | 🚀 KØB | 72 | – | BULL | +0.0% | – |
+| ⭐ | ⚠️ Robeco Circular Economy E | ⚠️ SALG | 34 | -2.0% | BEAR | -2.3% | – |
+| ⭐ | ⚠️ Sydinvest Globale EM-akti | – | 32 | +4.7% | BEAR | -2.4% | – |
+| ⭐ | iShares MSCI World Health | – | 76 | +13.8% | BULL | +18.1% | – |
+| 🔍 | ⚠️ BLS Invest Danske Aktier | ⚠️ SALG | 33 | – | BEAR | -3.2% | – |
+| 🔍 | ⚠️ Maj Invest Defence & Cybe | ⚠️ SALG | 39 | – | BEAR | -1.2% | – |
 | 🔍 | PFA Indeks Europa Aktier | ⚠️ SALG | 31 | – | BEAR | -3.7% | – |
-| 🔍 | ⚠️ iShares Core MSCI Japan I | ⚠️ SALG | 18 | – | BEAR | -6.2% | – |
+| 🔍 | PFA Pengemarked | ⚠️ SALG | 12 | – | BEAR | -0.3% | – |
