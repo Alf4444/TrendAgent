@@ -1,14 +1,16 @@
 # 📈 TrendAgent Fokus
-**Opdateret:** 18-11-2026 01:03
+**Opdateret:** 19-11-2026 00:36
 
 | | Fond | Signal | RSI | Afkast % | Trend | MA % | Cross |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| ⭐ | ⚠️ Robeco Circular Economy E | ⚠️ SALG | 35 | -0.6% | BEAR | -1.6% | – |
-| ⭐ | ⚠️ Sydinvest Globale EM-akti | – | 44 | +1.8% | BEAR | -5.4% | – |
-| ⭐ | iShares MSCI World Health | – | 81 | +17.6% | BULL | +20.8% | – |
-| 🔍 | ⚠️ C WorldWide Asien | ⚠️ SALG | 44 | – | BEAR | -2.8% | – |
+| ⭐ | ⚠️ iShares MSCI World Health | ⚠️ SALG | 23 | -12.4% | BEAR | -10.0% | – |
+| ⭐ | ⚠️ Robeco Circular Economy E | – | 31 | -1.0% | BEAR | -2.0% | – |
+| ⭐ | ⚠️ Sydinvest Globale EM-akti | – | 37 | -0.0% | BEAR | -7.2% | – |
 | 🔍 | Kerne Invest Indeks Melle | ⚠️ SALG | 56 | – | BEAR | -0.1% | – |
-| 🔍 | ⚠️ Maj Invest Danske Aktier | ⚠️ SALG | 27 | – | BEAR | -4.3% | – |
-| 🔍 | PFA Danske Erhvervsejendo | ⚠️ SALG | 11 | – | BEAR | -0.4% | 💀 DEATH |
-| 🔍 | ⚠️ PFA Indeks USA Aktier | ⚠️ SALG | 26 | – | BEAR | -4.2% | – |
-| 🔍 | Xtrackers Råvarer UCITS E | ⚠️ SALG | 23 | – | BEAR | -0.3% | – |
+| 🔍 | ⚠️ Maj Invest Guld, Sølv & M | 🚀 KØB | 61 | – | BULL | +2.8% | – |
+| 🔍 | ⚠️ Maj Invest UCITS ETF Defe | ⚠️ SALG | 22 | – | BEAR | -9.6% | – |
+| 🔍 | PFA Indeks 25 | ⚠️ SALG | 33 | – | BEAR | -0.9% | 💀 DEATH |
+| 🔍 | ⚠️ Robeco Sustainable Water  | ⚠️ SALG | 30 | – | BEAR | -3.4% | – |
+| 🔍 | Sydinvest HøjrenteLande | 🚀 KØB | 77 | – | BULL | +0.6% | – |
+| 🔍 | Xtrackers MSCI World EUR  | ⚠️ SALG | 35 | – | BEAR | -0.1% | – |
+| 🔍 | iShares Global IG Corp Bo | 🚀 KØB | 71 | – | BULL | +0.5% | – |
