@@ -1,15 +1,21 @@
 # 📈 TrendAgent Fokus
-**Opdateret:** 21-11-2026 00:16
+**Opdateret:** 24-11-2026 04:27
 
 | | Fond | Signal | RSI | Afkast % | Trend | MA % | Cross |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| ⭐ | ⚠️ Robeco Circular Economy E | – | 31 | -2.0% | BEAR | -3.0% | – |
-| ⭐ | ⚠️ Sydinvest Globale EM-akti | – | 34 | -0.9% | BEAR | -8.0% | – |
-| ⭐ | iShares MSCI World Health | – | 49 | +12.1% | BULL | +14.9% | – |
-| 🔍 | ⚠️ Fundsmith Equity Fund | ⚠️ SALG | 28 | – | BEAR | -4.7% | – |
-| 🔍 | ⚠️ Lazard Emerging Markets E | ⚠️ SALG | 30 | – | BEAR | -2.0% | – |
-| 🔍 | ⚠️ Maj Invest Defence & Cybe | ⚠️ SALG | 27 | – | BEAR | -0.0% | – |
-| 🔍 | PFA Indeks 25 | ⚠️ SALG | 35 | – | BEAR | -0.4% | – |
-| 🔍 | PFA Pengemarked | ⚠️ SALG | 9 | – | BEAR | -0.3% | – |
-| 🔍 | ⚠️ Qblue Global Equities Res | ⚠️ SALG | 27 | – | BEAR | -3.8% | – |
-| 🔍 | ⚠️ UBS Globale Bæredygtige A | ⚠️ SALG | 22 | – | BEAR | -5.0% | – |
+| ⭐ | ⚠️ Robeco Circular Economy E | – | 29 | -6.2% | BEAR | -7.3% | – |
+| ⭐ | ⚠️ Sydinvest Globale EM-akti | – | 30 | -4.4% | BEAR | -11.3% | – |
+| ⭐ | iShares MSCI World Health | – | 45 | +12.0% | BULL | +14.7% | – |
+| 🔍 | C WorldWide Globale Aktie | ⚠️ SALG | 34 | – | BEAR | -1.9% | – |
+| 🔍 | Kerne Invest Globale Akti | ⚠️ SALG | 25 | – | BEAR | -0.8% | – |
+| 🔍 | Kerne Invest Indeks Melle | 🚀 KØB | 68 | – | BULL | +0.2% | – |
+| 🔍 | ⚠️ Magna Eastern European Fu | ⚠️ SALG | 33 | – | BEAR | -1.6% | – |
+| 🔍 | PFA Indeks 50 | ⚠️ SALG | 30 | – | BEAR | -1.4% | – |
+| 🔍 | PFA Indeks 75 | ⚠️ SALG | 31 | – | BEAR | -1.7% | – |
+| 🔍 | PFA Indeks Globale Aktier | ⚠️ SALG | 31 | – | BEAR | -2.1% | – |
+| 🔍 | PFA Indeks USA Aktier | ⚠️ SALG | 33 | – | BEAR | -1.3% | – |
+| 🔍 | ⚠️ Qblue Global Equities Res | ⚠️ SALG | 28 | – | BEAR | -3.2% | – |
+| 🔍 | Threadneedle Pan European | ⚠️ SALG | 41 | – | BEAR | -0.0% | – |
+| 🔍 | UBS Globale Bæredygtige A | ⚠️ SALG | 29 | – | BEAR | -0.2% | – |
+| 🔍 | ⚠️ iShares Core MSCI Japan U | ⚠️ SALG | 35 | – | BEAR | -2.0% | – |
+| 🔍 | iShares MSCI ACWI Global  | ⚠️ SALG | 30 | – | BEAR | -2.2% | – |
